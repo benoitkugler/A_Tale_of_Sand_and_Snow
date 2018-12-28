@@ -33,7 +33,7 @@ AMLA : 	arbre cac : dmg, attaque, precision, reduit armure
 		arbre distance : dmg, attaque, precision
 		
 COMPETENCE SPE : Formations : 	Passif	Coup dans le dos (dmg, chance to hit)
-								Passif	Encerclement (dmg, chance to hit)
+								Passif	Encerclement Xavier a coté de 2 atks (dmg, chance to hit)
 								Passif 	Triangle défensif
 								Actif 	Déclenche attaque si formation
 								
@@ -57,7 +57,8 @@ COMPETENCE SPE : Inspiration :	Passif	Boost degats alliés (dmg portee)
 								
 
 Bumshop					-> Chien, tirailleur
-Frä Drumar				-> Sorcière, liche, Chaotique, darkens, slowwws (classique, pm only, slow de zone, dégats bonus sur slow, (boost allié), comp spe scale sur dégats froid et slow)
+Frä Drumar				-> Sorcière, liche, Chaotique, darkens, slowwws (classique, pm only, slow de zone, dégats bonus sur slow,
+ 				(boost allié), comp spe scale sur dégats froid et slow)
 
 Alyss, la Pieuvre		-> Mage rouge
 Séduction
