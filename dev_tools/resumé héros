@@ -1,0 +1,65 @@
+Vranken de Xaintrailles : "Héros elfe"
+AMLA: 	arbre cac : precision , cleave, attaque, damage , reset attaque
+		arbre mobilité : pm , pack neige, pack collines/sable
+		arbre distance : slow , attaque , damage 
+		arbre defense : resistances, regeneration, leeches cac
+	
+COMPETENCE SPE : Lien avec son épée :  Passif Leeches au cac
+										Passif Augmente les desgats de son attaque brute 
+										Passif drain si proximite de l'epee								Actif	Transposition !								
+		
+
+Esprit de l'épée : "Spectre"
+
+COMPETENCE SPE : Soif de sang/ Jeu d'ombre : Passif augmente l'intensité de son rayonnment
+								Passif idem pour la portée
+								Passif augmente l'esquive
+Brinx : Archer elfe
+AMLA: 	arbre distance : precision, attaque, dmg, type attaque, reset attaque, attaque transperce
+		arbre cac : dmg, attaque
+		arbre mobilité : pm , tirailleur
+		arbre defense : hp , res (un peu)
+
+COMPETENCE SPE : Tueur de muspelliens :	Passif meilleur defense contre muspell
+										Passif Degats bonus contre muspell
+										Passif Se soigne en tuant un muspellien
+										Passif Revanche donne et reçois plus de degats si allié muspell  
+		
+		
+
+Xavier : Général
+AMLA : 	arbre cac : dmg, attaque, precision, reduit armure
+		arbre commandement : lvls , aug defense adjacents
+		arbre distance : dmg, attaque, precision
+		
+COMPETENCE SPE : Formations : 	Passif	Coup dans le dos (dmg, chance to hit)
+								Passif	Encerclement (dmg, chance to hit)
+								Passif 	Triangle défensif
+								Actif 	Déclenche attaque si formation
+								
+								
+Morgane : Soin, soutient, faible physiquement		
+AMLA : 	arbre defense : compense res, hp, defense
+		arbre distance : slow, reduit res, precision, nb attaque
+		arbre soutient : heal, 	portee heal, guerison + heal
+		
+COMPETENCE SPE : Force mentale :	Passif: attaque mental, ne marche que contre les shamans
+									Passif : Ennemy not in cac deals less dmg, range
+									
+										
+															
+								
+Rymor					-> Tank/soutient
+COMPETENCE SPE : Inspiration :	Passif	Boost degats alliés (dmg portee)
+								Passif	Donne res si adjacent
+								Passif	Donne rage aux alliés
+								Actif 	Donne spin a un allié
+								
+
+Bumshop					-> Chien, tirailleur
+Frä Drumar				-> Sorcière, liche, Chaotique, darkens, slowwws (classique, pm only, slow de zone, dégats bonus sur slow, (boost allié), comp spe scale sur dégats froid et slow)
+
+Alyss, la Pieuvre		-> Mage rouge
+Séduction
+Atli Blodox, Khan		-> Bourin cac
+

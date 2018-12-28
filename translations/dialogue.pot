@@ -1,0 +1,1406 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: http://bugs.wesnoth.org/\n"
+"POT-Creation-Date: 2017-05-08 20:00 UTC\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. [scenario]: id=02_Bandits
+#: A_Tale_of_Sand_and_Snow/scenarios/02_Bandits.cfg:6
+msgid "2 - Skadian bandits"
+msgstr ""
+
+#. [part]
+#: A_Tale_of_Sand_and_Snow/scenarios/02_Bandits.cfg:17
+msgid ""
+"\n"
+"        Nifhell federation - Duchy of Skadi\n"
+"		\n"
+"    Vranken Xaintrailles stared at the snowy mountains. Skadi was a region of cold winds and frozen mist, which actually didn't bother the young captain. He had grown up here, in the old manor of Xaintrailles familly, raised up by a fidel butler since the death of his parents.\n"
+"    Although life in Nifhell was generally peaceful, expect for some skirmishes with Muspell, some bandits have turned to be a problem for Skadi citizens... And Vranken was send by the Council to put an end to their misdeeds !\n"
+"    His company had fought them for two days, and it was time to order the final assault. He glanced at Rymor, his first lieutenant, who has fought with him since the beginning, and his imposing bearing encouraged him. They actually had the upper hand, even without counting on the magical skills of Frä Drumar. A captain and an oracle fighting together was a centuries old nifhellian tradition, and it has done its proofs in several battles.\n"
+"    This battle was to be easy !"
+msgstr ""
+
+#. [objective]: condition=win
+#. [lua]: note_gondhul
+#: A_Tale_of_Sand_and_Snow/scenarios/02_Bandits.cfg:45
+#: A_Tale_of_Sand_and_Snow/lua/event_scenario/2.lua:113
+msgid "Defeat ennemy leader."
+msgstr ""
+
+#. [objective]: condition=lose
+#. [lua]: note_gondhul
+#: A_Tale_of_Sand_and_Snow/scenarios/02_Bandits.cfg:49
+#: A_Tale_of_Sand_and_Snow/lua/event_scenario/2.lua:113
+msgid "Death of Vranken."
+msgstr ""
+
+#. [objective]: condition=lose
+#. [lua]: note_gondhul
+#: A_Tale_of_Sand_and_Snow/scenarios/02_Bandits.cfg:53
+#: A_Tale_of_Sand_and_Snow/lua/event_scenario/2.lua:113
+msgid "Death of Rymôr."
+msgstr ""
+
+#. [objective]: condition=lose
+#. [lua]: note_gondhul
+#: A_Tale_of_Sand_and_Snow/scenarios/02_Bandits.cfg:57
+#: A_Tale_of_Sand_and_Snow/lua/event_scenario/2.lua:113
+msgid "Death of Frä Drumar."
+msgstr ""
+
+#. [objective]: condition=lose
+#. [lua]: note_gondhul
+#: A_Tale_of_Sand_and_Snow/scenarios/02_Bandits.cfg:61
+#: A_Tale_of_Sand_and_Snow/lua/event_scenario/2.lua:113
+msgid "Death of Bunshop."
+msgstr ""
+
+#. [objective]: condition=lose
+#. [lua]: note_gondhul
+#: A_Tale_of_Sand_and_Snow/scenarios/02_Bandits.cfg:65
+#: A_Tale_of_Sand_and_Snow/lua/event_scenario/2.lua:113
+msgid "Turns run out."
+msgstr ""
+
+#. [note]
+#. [lua]: note_gondhul
+#: A_Tale_of_Sand_and_Snow/scenarios/02_Bandits.cfg:69
+#: A_Tale_of_Sand_and_Snow/scenarios/01_Prologue.cfg:56
+#: A_Tale_of_Sand_and_Snow/lua/event_scenario/2.lua:113
+msgid "No gold carry over next scenario."
+msgstr ""
+
+#. [side]: id=brinx, type=brinx1
+#: A_Tale_of_Sand_and_Snow/scenarios/02_Bandits.cfg:78
+msgid "Xaintrailles company"
+msgstr ""
+
+#. [side]: id=leader, type=Bandit
+#: A_Tale_of_Sand_and_Snow/scenarios/02_Bandits.cfg:94
+msgid "Bandits"
+msgstr ""
+
+#. [scenario]: id=01_Prologue
+#: A_Tale_of_Sand_and_Snow/scenarios/01_Prologue.cfg:7
+msgid "1 - Prologue"
+msgstr ""
+
+#. [part]
+#: A_Tale_of_Sand_and_Snow/scenarios/01_Prologue.cfg:16
+msgid ""
+"Dead Island - White Arks Facility\n"
+"\n"
+"		Lieutenant Jödumur stared at the lifeless land. Dead Island wasn't really the place you would choose as holiday destination. Still, it was here that the White Arks engine room stood. \n"
+"		Thinking about this incredible installation, which allowed Nifhellians to travel extremely fast through the Veil, Jödumur felt himself so ordinary. Humans from the first generation had discovered the Veil and built the White Arks. How brave should have they been to cross the Veil on they own !\n"
+"		Nowadays, the Federation of Nifhell took its strength from the rapidity you could travel through the White Arks with. Uniting several powerful cities wasn't an easy task !\n"
+"		And now, it was his duty to protect the facility. Muspell Empire has been quiet for a couple of decency now, only opposing Nifhell in small skirmishes. But who knows ? They could attack at any moment, and Dead Island would probably be their first target..."
+msgstr ""
+
+#. [part]
+#: A_Tale_of_Sand_and_Snow/scenarios/01_Prologue.cfg:25
+msgid ""
+"		As Jödumur was feeling sad and alone, he thought to the newcomer, Brinx, and actually smiled. This boy was him some years ago, risk taker and fool, but so kind and devoted to his homeland. But he was so young ! At the age of sixteen, every citizens of Nifhell had to undertake an internship in the army. After all, the future of the Federation was based on the younger generation !\n"
+"		Getting rid of his melancholy, Jödumur stood up. He had to be an example ! Besides, days here in Dead Island wasn't so hard. Just a bit boring. \n"
+"		At least, for now..."
+msgstr ""
+
+#. [objective]: condition=win
+#: A_Tale_of_Sand_and_Snow/scenarios/01_Prologue.cfg:48
+msgid "Resist until turn 12."
+msgstr ""
+
+#. [objective]: condition=lose
+#: A_Tale_of_Sand_and_Snow/scenarios/01_Prologue.cfg:52
+msgid "Death of Brinx"
+msgstr ""
+
+#. [note]
+#: A_Tale_of_Sand_and_Snow/scenarios/01_Prologue.cfg:59
+msgid "<span style='italic'>Hint: You can't kill their leader, just play it safe and run if need be.</span>"
+msgstr ""
+
+#. [side]: type=brinx1, id=brinx, role=hero
+#. [side]: id=jod, type=LieutenantN
+#: A_Tale_of_Sand_and_Snow/scenarios/01_Prologue.cfg:69
+#: A_Tale_of_Sand_and_Snow/scenarios/01_Prologue.cfg:96
+msgid "Nifhellians"
+msgstr ""
+
+#. [side]: type=brinx1, id=brinx, role=hero
+#: A_Tale_of_Sand_and_Snow/scenarios/01_Prologue.cfg:75
+msgid "Brinx"
+msgstr ""
+
+#. [side]: id=jod, type=LieutenantN
+#: A_Tale_of_Sand_and_Snow/scenarios/01_Prologue.cfg:99
+msgid "Jödumur"
+msgstr ""
+
+#. [side]: id=rand, type=Dune Blademaster_muspell
+#: A_Tale_of_Sand_and_Snow/scenarios/01_Prologue.cfg:200
+msgid "Muspellians"
+msgstr ""
+
+#. [scenario]: id=Debut
+#. [scenario]: id=Suite
+#: A_Tale_of_Sand_and_Snow/scenarios/Debut.cfg:7
+#: A_Tale_of_Sand_and_Snow/scenarios/Suite.cfg:6
+msgid "Créer des nouvelles unités"
+msgstr ""
+
+#. [objective]: condition=win
+#: A_Tale_of_Sand_and_Snow/scenarios/Debut.cfg:28
+msgid "Manipuler une nouvelle unité"
+msgstr ""
+
+#. [objective]: condition=lose
+#: A_Tale_of_Sand_and_Snow/scenarios/Debut.cfg:32
+msgid "Fin des tours atteinte"
+msgstr ""
+
+#. [note]
+#: A_Tale_of_Sand_and_Snow/scenarios/Debut.cfg:36
+msgid "Il s'agit simplement d'un scénario de test, pas de panique !"
+msgstr ""
+
+#. [side]: type=vranken2, id=vranken, role=hero
+#: A_Tale_of_Sand_and_Snow/scenarios/Debut.cfg:44
+msgid "Les 7 merveilleux"
+msgstr ""
+
+#. [side]: type=vranken2, id=vranken, role=hero
+#. [lua]: ES.prestart
+#: A_Tale_of_Sand_and_Snow/scenarios/Debut.cfg:48
+#: A_Tale_of_Sand_and_Snow/lua/event_scenario/2.lua:49
+msgid "Vranken"
+msgstr ""
+
+#. [side]: type=Sergeant, id=Enne
+#: A_Tale_of_Sand_and_Snow/scenarios/Debut.cfg:79
+msgid "Les 1 merveilleux"
+msgstr ""
+
+#. [side]: type=Sergeant, id=Enne
+#: A_Tale_of_Sand_and_Snow/scenarios/Debut.cfg:83
+msgid "Bouse"
+msgstr ""
+
+#. [set_menu_item]: id=test
+#: A_Tale_of_Sand_and_Snow/scenarios/Debut.cfg:98
+msgid "Test"
+msgstr ""
+
+#. [set_menu_item]: id=lvlup
+#: A_Tale_of_Sand_and_Snow/scenarios/Debut.cfg:114
+msgid "Avancer l'unité"
+msgstr ""
+
+#. [isHere]: id=elusive
+#: A_Tale_of_Sand_and_Snow/scenarios/Debut.cfg:131
+#: A_Tale_of_Sand_and_Snow/utils/abilities.cfg:45
+msgid "Elusive"
+msgstr ""
+
+#. [isHere]: id=war_jump
+#: A_Tale_of_Sand_and_Snow/scenarios/Debut.cfg:134
+#: A_Tale_of_Sand_and_Snow/utils/abilities.cfg:37
+msgid "War jump"
+msgstr ""
+
+#. [lua]: ES.turn1
+#: A_Tale_of_Sand_and_Snow/scenarios/Debut.cfg:137
+#: A_Tale_of_Sand_and_Snow/lua/event_scenario/2.lua:89
+msgid "Bunshop"
+msgstr ""
+
+#. [lua]: ES.first_time
+#: A_Tale_of_Sand_and_Snow/lua/event_scenario/1.lua:37
+msgid "With me soldiers of Nifhell !"
+msgstr ""
+
+#. [lua]: ES.first_time
+#: A_Tale_of_Sand_and_Snow/lua/event_scenario/1.lua:37
+msgid "Stand still ! Protect the facility at all costs !"
+msgstr ""
+
+#. [lua]: ES.kill
+#: A_Tale_of_Sand_and_Snow/lua/event_scenario/1.lua:50
+msgid "Argh.. I fell.. The council must now about this att.."
+msgstr ""
+
+#. [lua]: ES.kill
+#: A_Tale_of_Sand_and_Snow/lua/event_scenario/1.lua:51
+msgid "Nooo ! Bloody muspellians !"
+msgstr ""
+
+#. [lua]: ES.kill
+#. [lua]: ES.turn12
+#: A_Tale_of_Sand_and_Snow/lua/event_scenario/1.lua:52
+#: A_Tale_of_Sand_and_Snow/lua/event_scenario/1.lua:167
+msgid "Welcome"
+msgstr ""
+
+#. [lua]: ES.kill
+#: A_Tale_of_Sand_and_Snow/lua/event_scenario/1.lua:52
+msgid "\tHello friend, and welcome to this campaign. Let me introduce you to your first hero : <span color='#357815' weight='bold'> Brinx</span>. As he has lost his revered Lieutenant, Brinx is feeling hatred towards muspellians, and this hatred will make him stronger. <span weight='bold'>Fighting muspellians</span> will eventually unlock unique skills for Brinx. \n\tYou can access more informations in the <span style='italic'>\"Skills\"</span> menu, by right-clicking on Brinx."
+msgstr ""
+
+#. [lua]: ES.kill
+#. [lua]: presentation
+#. [lua]: note_gondhul
+#. [lua]: ST.menus
+#: A_Tale_of_Sand_and_Snow/lua/event_scenario/1.lua:53
+#: A_Tale_of_Sand_and_Snow/lua/event_scenario/2.lua:62
+#: A_Tale_of_Sand_and_Snow/lua/event_scenario/2.lua:112
+#: A_Tale_of_Sand_and_Snow/lua/standard_event.lua:38
+msgid "Special skills"
+msgstr ""
+
+#. [lua]: ES.kill
+#: A_Tale_of_Sand_and_Snow/lua/event_scenario/1.lua:55
+msgid "No.. I have to avenge Nifhell.."
+msgstr ""
+
+#. [lua]: ES.prestart
+#: A_Tale_of_Sand_and_Snow/lua/event_scenario/1.lua:72
+msgid "Towards North White Ark"
+msgstr ""
+
+#. [lua]: ES.prestart
+#: A_Tale_of_Sand_and_Snow/lua/event_scenario/1.lua:73
+msgid "East White Ark"
+msgstr ""
+
+#. [lua]: ES.prestart
+#: A_Tale_of_Sand_and_Snow/lua/event_scenario/1.lua:74
+msgid "White Arks Facility"
+msgstr ""
+
+#. [lua]: ES.turn1
+#: A_Tale_of_Sand_and_Snow/lua/event_scenario/1.lua:92
+msgid "Hey, what's going on ?"
+msgstr ""
+
+#. [lua]: ES.turn1
+#: A_Tale_of_Sand_and_Snow/lua/event_scenario/1.lua:96
+msgid "Damned, the East White Ark is being activated !"
+msgstr ""
+
+#. [lua]: ES.turn1
+#: A_Tale_of_Sand_and_Snow/lua/event_scenario/1.lua:98
+msgid "Could Muspell dare attacking us ?"
+msgstr ""
+
+#. [lua]: ES.turn1
+#: A_Tale_of_Sand_and_Snow/lua/event_scenario/1.lua:107
+msgid "They actually did ! Sound the alarm !"
+msgstr ""
+
+#. [lua]: ES.turn1
+#: A_Tale_of_Sand_and_Snow/lua/event_scenario/1.lua:110
+msgid "What the hell ! Is Muspell really breaking the tacit piece ? Whatever, to arms men ! We have to protect the White Arks facilities at all costs !"
+msgstr ""
+
+#. [lua]: ES.turn1
+#: A_Tale_of_Sand_and_Snow/lua/event_scenario/1.lua:112
+msgid "And I need two volunteers to escort the young Brinx !"
+msgstr ""
+
+#. [lua]: ES.turn1
+#: A_Tale_of_Sand_and_Snow/lua/event_scenario/1.lua:115
+msgid "Thanks sir !"
+msgstr ""
+
+#. [lua]: ES.turn2
+#: A_Tale_of_Sand_and_Snow/lua/event_scenario/1.lua:119
+msgid "I let you a chance to live. Just surrender."
+msgstr ""
+
+#. [lua]: ES.turn2
+#. [lua]: ST.kill
+#: A_Tale_of_Sand_and_Snow/lua/event_scenario/1.lua:120
+#: A_Tale_of_Sand_and_Snow/lua/standard_event.lua:57
+msgid "..."
+msgstr ""
+
+#. [lua]: ES.turn2
+#: A_Tale_of_Sand_and_Snow/lua/event_scenario/1.lua:121
+msgid "So death will be. Soldiers, cut the escape path !"
+msgstr ""
+
+#. [lua]: ES.explo_mur
+#: A_Tale_of_Sand_and_Snow/lua/event_scenario/1.lua:142
+msgid "What just happened ?! "
+msgstr ""
+
+#. [lua]: ES.explo_mur
+#: A_Tale_of_Sand_and_Snow/lua/event_scenario/1.lua:150
+msgid "In the name of Powers ! Their naphta just destroyed our walls.."
+msgstr ""
+
+#. [lua]: ES.explo_mur
+#: A_Tale_of_Sand_and_Snow/lua/event_scenario/1.lua:152
+msgid "Nice job soldiers, the gate is ours ! Go ahead, for Muspell !"
+msgstr ""
+
+#. [lua]: ES.turn12
+#: A_Tale_of_Sand_and_Snow/lua/event_scenario/1.lua:165
+msgid "Halt soldiers, enough blood for today. We are in control of the White Arks facility, that's the point. Put in jail the remaining Nifhellians, and alert the Khan about the success of our mission !"
+msgstr ""
+
+#. [lua]: ES.turn12
+#: A_Tale_of_Sand_and_Snow/lua/event_scenario/1.lua:167
+msgid "\tHello friend, and welcome to this campaign. Let me introduce you to your first hero : Brinx. As he was struck by the savage muspellian raid on Dead Island, Brinx is feeling hatred towards muspellians, and this hatred will make him stronger. <span weight='bold'>Fighting muspellians</span> will eventually unlock unique skills for Brinx. \n\tYou can access more informations in the \"Skills\" menu, by right-clicking on Brinx."
+msgstr ""
+
+#. [lua]: ES.kill
+#: A_Tale_of_Sand_and_Snow/lua/event_scenario/2.lua:41
+msgid "<span style='italic'>(Shouting)</span> Sir ! Urgent message from the capital ! Seems like the Council needs you !"
+msgstr ""
+
+#. [lua]: presentation
+#: A_Tale_of_Sand_and_Snow/lua/event_scenario/2.lua:61
+msgid "New heroes"
+msgstr ""
+
+#. [lua]: presentation
+#: A_Tale_of_Sand_and_Snow/lua/event_scenario/2.lua:61
+msgid "\tYou now have three new heroes : <span color='#00FFF5' weight='bold'> Frä Drumar</span>, a powerful spell caster, <span color='#BCB4D6' weight='bold'> Rymôr</span>, solid as a rock, and <span color='#FFFA80' weight='bold'>Bunshop</span>, as nimble and fast as a storm. Each of them has unique skills and ways of enhancing them. \n\tYou will find more informations in the <span style='italic'>\"Skills\"</span> menu, by right-clicking on heroes."
+msgstr ""
+
+#. [lua]: ES.turn1
+#: A_Tale_of_Sand_and_Snow/lua/event_scenario/2.lua:73
+msgid "Come on soldiers ! Let's end this !"
+msgstr ""
+
+#. [lua]: ES.turn1
+#: A_Tale_of_Sand_and_Snow/lua/event_scenario/2.lua:77
+msgid "Rymôr"
+msgstr ""
+
+#. [lua]: ES.turn1
+#: A_Tale_of_Sand_and_Snow/lua/event_scenario/2.lua:79
+msgid "Ah some action, at last !"
+msgstr ""
+
+#. [lua]: ES.turn1
+#: A_Tale_of_Sand_and_Snow/lua/event_scenario/2.lua:82
+msgid "Frä Drumar"
+msgstr ""
+
+#. [lua]: ES.turn1
+#: A_Tale_of_Sand_and_Snow/lua/event_scenario/2.lua:83
+msgid "The Source is formel, Vranken, this should be an easy win !"
+msgstr ""
+
+#. [lua]: ES.turn1
+#: A_Tale_of_Sand_and_Snow/lua/event_scenario/2.lua:86
+msgid "Ready Bunshop ?"
+msgstr ""
+
+#. [lua]: ES.turn1
+#: A_Tale_of_Sand_and_Snow/lua/event_scenario/2.lua:91
+msgid "<span style='italic'>(enthusiastic barking)</span>"
+msgstr ""
+
+#. [lua]: note_gondhul
+#: A_Tale_of_Sand_and_Snow/lua/event_scenario/2.lua:111
+msgid "New hero"
+msgstr ""
+
+#. [lua]: note_gondhul
+#: A_Tale_of_Sand_and_Snow/lua/event_scenario/2.lua:111
+msgid "\tThis is <span color='#A00E27' weight='bold'> Göndhul</span>, the Xaintrailles family warden. He's link to Vranken in a special way, enhancing Vranken skills. \n\tYou will find more informations in the <span style='italic'>\"Skills\"</span> menu, by right-clicking on Vranken.\n\t<span style='italic'>Special note : Göndhul struggle with living beings.. Pay attention to his <span color='red'>\"Fear of love\"</span> ability.</span>"
+msgstr ""
+
+#. [lua]: note_gondhul
+#: A_Tale_of_Sand_and_Snow/lua/event_scenario/2.lua:113
+msgid "Death of Göndhul."
+msgstr ""
+
+#. [lua]: ES.see_ennemy
+#: A_Tale_of_Sand_and_Snow/lua/event_scenario/2.lua:117
+msgid "Hum.. I feel like this fight will be harder than expected.. Any help will be welcome.. "
+msgstr ""
+
+#. [lua]: ES.see_ennemy
+#: A_Tale_of_Sand_and_Snow/lua/event_scenario/2.lua:118
+msgid "<span style='italic'>(rubbing the pommel of his sword)</span>"
+msgstr ""
+
+#. [lua]: ES.see_ennemy
+#: A_Tale_of_Sand_and_Snow/lua/event_scenario/2.lua:119
+msgid "Göndhul ! Fight for us !"
+msgstr ""
+
+#. [lua]: ES.see_ennemy
+#: A_Tale_of_Sand_and_Snow/lua/event_scenario/2.lua:130
+msgid "<span style='italic'>(Deep, guttural voice)</span> Master.. At your service.."
+msgstr ""
+
+#. [lua]: ES.see_ennemy
+#: A_Tale_of_Sand_and_Snow/lua/event_scenario/2.lua:131
+msgid "<span style='italic'>(Feeling uncomfortable)</span> Bruuh, he's always scary, even after all these years.."
+msgstr ""
+
+#. [lua]: apply_special.res_magic1
+#: A_Tale_of_Sand_and_Snow/lua/event_combat.lua:300
+msgid "<span color='#DFB33B'>-5% magic resistances</span>"
+msgstr ""
+
+#. [lua]: apply_special.res_magic2
+#: A_Tale_of_Sand_and_Snow/lua/event_combat.lua:306
+msgid "<span color='#DFB33B'>-7% magic resistances</span>"
+msgstr ""
+
+#. [lua]: apply_special.weaker_slow
+#: A_Tale_of_Sand_and_Snow/lua/event_combat.lua:313
+msgid "<span color='#919191'>-10% damage</span>"
+msgstr ""
+
+#. [lua]: apply_special.snare
+#: A_Tale_of_Sand_and_Snow/lua/event_combat.lua:320
+msgid "<span color='#1CDC3F'>Snared</span>"
+msgstr ""
+
+#. [lua]: wesnoth.theme_items.unit_status
+#: A_Tale_of_Sand_and_Snow/lua/event_combat.lua:342
+msgid "chilled: This unit is tagged by  Cold Mastress. It will take <span color='#1ED9D0'>"
+msgstr ""
+
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:17
+msgid "<span color='#873D42'  >Leeches :</span>"
+msgstr ""
+
+#. [lua]: apply.transposition
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:17
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:22
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:34
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:112
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:118
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:130
+msgid "<span style='italic'>Skill not learned yet </span>"
+msgstr ""
+
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:18
+msgid "Leeches 10% of damage dealt with swords "
+msgstr ""
+
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:19
+msgid "Leeches 15% of damage dealt with swords "
+msgstr ""
+
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:20
+msgid "Leeches 20% of damage dealt with swords "
+msgstr ""
+
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:22
+msgid "<span color='#873D42' >Drain :</span>"
+msgstr ""
+
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:23
+msgid "Drains 30% of damage dealt with swords, if Göndhul is at most 4 hexes away from Vranken "
+msgstr ""
+
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:24
+msgid "Drains 40% of damage dealt with swords, if Göndhul is at most 8 hexes away from Vranken "
+msgstr ""
+
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:25
+msgid "Drains 50% of damage dealt with swords, if Göndhul is at most 16 hexes away from Vranken "
+msgstr ""
+
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:27
+msgid "<span color='#e7cfa9' >Lightning sword :</span>"
+msgstr ""
+
+#. [lua]: apply.transposition
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:28
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:124
+msgid "<span style='italic'>Skill not learned yet</span> "
+msgstr ""
+
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:29
+msgid "Grants a sword which deals true damage, but deals 70% of your usual sword damage "
+msgstr ""
+
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:30
+msgid "Now deals 85% of your usual sword damage "
+msgstr ""
+
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:31
+msgid "Now deals 100% of your usual sword damage "
+msgstr ""
+
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:33
+msgid "<span color='#62902b' style='italic' >War link</span>"
+msgstr ""
+
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:35
+msgid "Enables Vranken and Göndhul to switch position. Cooldown : 2 turns"
+msgstr ""
+
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:36
+msgid "Cooldown decreases to 1 turn "
+msgstr ""
+
+#. [lua]: apply.leeches_cac
+#. [isHere]: id=leeches3
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:46
+#: A_Tale_of_Sand_and_Snow/utils/abilities.cfg:144
+msgid "leeches"
+msgstr ""
+
+#. [lua]: apply.leeches_cac
+#. [lua]: apply.drain_cac
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:46
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:58
+msgid "Regenerates "
+msgstr ""
+
+#. [lua]: apply.drain_cac
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:58
+msgid "drains"
+msgstr ""
+
+#. [lua]: apply.drain_cac
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:58
+msgid "Göndhul is too far away from Vranken."
+msgstr ""
+
+#. [lua]: apply.atk_brut
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:78
+msgid "ether sword"
+msgstr ""
+
+#. [lua]: apply.transposition
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:100
+msgid "War link"
+msgstr ""
+
+#. [lua]: apply.transposition
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:100
+msgid "Vranken senses its sword spirit and may switch position with Göndhul, no matter the distance between them. \n<span color='green'>Available now </span>"
+msgstr ""
+
+#. [lua]: apply.transposition
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:112
+msgid "<span color='#4575AE'  >Nimble :</span>"
+msgstr ""
+
+#. [lua]: apply.transposition
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:113
+msgid "Gives Brinx 10% defense bonus against muspellians "
+msgstr ""
+
+#. [lua]: apply.transposition
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:114
+msgid "Gives Brinx 15% defense bonus against muspellians "
+msgstr ""
+
+#. [lua]: apply.transposition
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:115
+msgid "Gives Brinx 20% defense bonus against muspellians "
+msgstr ""
+
+#. [lua]: apply.transposition
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:117
+msgid "<span color='#873D42' >Muspell Terror :</span>"
+msgstr ""
+
+#. [lua]: apply.transposition
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:119
+msgid "Gives Brinx 10% bonus damage against Muspell troops "
+msgstr ""
+
+#. [lua]: apply.transposition
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:120
+msgid "Gives Brinx 20% bonus damage against Muspell troops "
+msgstr ""
+
+#. [lua]: apply.transposition
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:121
+msgid "Gives Brinx 30% bonus damage against Muspell troops "
+msgstr ""
+
+#. [lua]: apply.transposition
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:123
+msgid "<span color='#873D42' >Muspell strengh : </span>"
+msgstr ""
+
+#. [lua]: apply.transposition
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:125
+msgid "Regenerates 8 HP when killing a muspellian unit "
+msgstr ""
+
+#. [lua]: apply.transposition
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:126
+msgid "Regenerates 13 HP when killing a muspellian unit "
+msgstr ""
+
+#. [lua]: apply.transposition
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:127
+msgid "Regenerates 20 HP when killing a muspellian unit "
+msgstr ""
+
+#. [lua]: apply.transposition
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:129
+msgid "<span color='#873D42' style='italic' >Revenge</span>"
+msgstr ""
+
+#. [lua]: apply.transposition
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:131
+msgid "If a muspellian is at his sides, Brinx will take and deal +10% bonus damage against all ennemies "
+msgstr ""
+
+#. [lua]: apply.transposition
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:132
+msgid "Bonus increased to 20% "
+msgstr ""
+
+#. [lua]: apply.def_muspell
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:140
+msgid "Nimble"
+msgstr ""
+
+#. [lua]: apply.def_muspell
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:140
+msgid "Brinx learned how to better dodge muspellian attacks : +"
+msgstr ""
+
+#. [lua]: apply.dmg_muspell
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:153
+msgid "Muspell Terror"
+msgstr ""
+
+#. [lua]: apply.dmg_muspell
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:153
+msgid "Brinx deals "
+msgstr ""
+
+#. [lua]: apply.fresh_blood_musp
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:166
+msgid "Muspell strengh"
+msgstr ""
+
+#. [lua]: apply.fresh_blood_musp
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:166
+msgid "Brinx heals himself for "
+msgstr ""
+
+#. [lua]: apply.muspell_rage
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:178
+msgid "Revenge"
+msgstr ""
+
+#. [lua]: apply.muspell_rage
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:178
+msgid "Brinx deals and takes "
+msgstr ""
+
+#. [lua]: apply.muspell_rage
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:178
+msgid "There is no muspellian friend to anger Brinx."
+msgstr ""
+
+#. [lua]: MCS.menu
+#. [lua]: show_help
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:220
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:298
+msgid "Show infos"
+msgstr ""
+
+#. [lua]: MCS.menu
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:228
+msgid "Level up skill"
+msgstr ""
+
+#. [lua]: MCS.menu
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:245
+msgid "Confirm"
+msgstr ""
+
+#. [lua]: MCS.menu
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:245
+msgid "Exit"
+msgstr ""
+
+#. [lua]: MCS.preshow
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:268
+msgid "<span style='italic'>   Require level "
+msgstr ""
+
+#. [lua]: MCS.preshow
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:281
+msgid "<span font_size = 'large' font_weight ='bold' ><span  color ='#BFA63F' >Skills of your unit </span>"
+msgstr ""
+
+#. [lua]: MCS.preshow
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:283
+msgid " <span font_style='italic' ><span color ='#BFA63F'  >Points available :  </span><span font_weight ='bold' >"
+msgstr ""
+
+#. [lua]: MCS.preshow
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:284
+msgid " <span font_style='italic'  color ='#BFA63F'  >Total points:  "
+msgstr ""
+
+#. [lua]: show_help
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:292
+msgid "Hide infos"
+msgstr ""
+
+#. [lua]: select_lvlup
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:309
+msgid "Confirm ?"
+msgstr ""
+
+#. [lua]: selectl
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:325
+msgid "Max level reached "
+msgstr ""
+
+#. [lua]: selectl
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:336
+msgid "<span style='italic' color ='#BFA63F'>Next level : </span>"
+msgstr ""
+
+#. [lua]: selectl
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:339
+msgid "Level up : "
+msgstr ""
+
+#. [lua]: selectl
+#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:341
+msgid "Points needed : "
+msgstr ""
+
+#. [lua]: MI.war_jump
+#. [lua]: MI.elusive
+#: A_Tale_of_Sand_and_Snow/lua/menu_items.lua:22
+#: A_Tale_of_Sand_and_Snow/lua/menu_items.lua:27
+#: A_Tale_of_Sand_and_Snow/lua/menu_items.lua:42
+#: A_Tale_of_Sand_and_Snow/lua/menu_items.lua:48
+msgid "Error"
+msgstr ""
+
+#. [lua]: MI.war_jump
+#: A_Tale_of_Sand_and_Snow/lua/menu_items.lua:22
+msgid "This unit can't <span color='red'>War Jump </span> now. Please <span weight='bold'>select</span> it again."
+msgstr ""
+
+#. [lua]: MI.elusive
+#: A_Tale_of_Sand_and_Snow/lua/menu_items.lua:42
+msgid "This unit can't be <span color='green'>Elusive</span> right now. Please <span weight='bold'>select</span> it again."
+msgstr ""
+
+#. [lua]: AB.war_jump
+#: A_Tale_of_Sand_and_Snow/lua/ability.lua:64
+msgid "War jump here with "
+msgstr ""
+
+#. [lua]: AB.elusive
+#: A_Tale_of_Sand_and_Snow/lua/ability.lua:95
+msgid "Sneak here with "
+msgstr ""
+
+#. [lua]: ST.menus
+#: A_Tale_of_Sand_and_Snow/lua/standard_event.lua:30
+msgid "Special Ability"
+msgstr ""
+
+#. [lua]: ST.menus
+#: A_Tale_of_Sand_and_Snow/lua/standard_event.lua:32
+msgid "Advancements"
+msgstr ""
+
+#. [lua]: ST.menus
+#: A_Tale_of_Sand_and_Snow/lua/standard_event.lua:35
+msgid "Objects"
+msgstr ""
+
+#. [lua]: ST.kill
+#: A_Tale_of_Sand_and_Snow/lua/standard_event.lua:46
+msgid "I fall ? Is this even possible .."
+msgstr ""
+
+#. [lua]: ST.kill
+#: A_Tale_of_Sand_and_Snow/lua/standard_event.lua:47
+msgid "No ! Rymor ! "
+msgstr ""
+
+#. [lua]: ST.kill
+#: A_Tale_of_Sand_and_Snow/lua/standard_event.lua:50
+msgid "I protected you, Vranken, I can rest in peace now.."
+msgstr ""
+
+#. [lua]: ST.kill
+#: A_Tale_of_Sand_and_Snow/lua/standard_event.lua:51
+msgid "Frä Drumar.."
+msgstr ""
+
+#. [lua]: ST.kill
+#: A_Tale_of_Sand_and_Snow/lua/standard_event.lua:54
+msgid "Noo.. How could I let him die  ?!"
+msgstr ""
+
+#. [lua]: ST.kill
+#: A_Tale_of_Sand_and_Snow/lua/standard_event.lua:58
+msgid "He's grabbing me in the Death Lands ! Nooo.."
+msgstr ""
+
+#. [lua]: ST.kill
+#: A_Tale_of_Sand_and_Snow/lua/standard_event.lua:62
+msgid "Noo.. Still so much to do.."
+msgstr ""
+
+#. [lua]: ST.kill
+#: A_Tale_of_Sand_and_Snow/lua/standard_event.lua:63
+msgid "No ! Vranken ! Don't let me alone, old friend !"
+msgstr ""
+
+#. [lua]: get_heros
+#: A_Tale_of_Sand_and_Snow/lua/arbre.lua:24
+#: A_Tale_of_Sand_and_Snow/lua/objets.lua:117
+msgid "OK"
+msgstr ""
+
+#. [lua]: preshow
+#: A_Tale_of_Sand_and_Snow/lua/arbre.lua:48
+msgid "<span font_size = 'large' font_weight ='bold'> <span color = '#BFA63F'>Avancements de votre unité </span> "
+msgstr ""
+
+#: A_Tale_of_Sand_and_Snow/lua/objets.lua:9
+msgid "<span  color='red'>Anneau de <span font_weight = 'bold'>robustesse </span></span>"
+msgstr ""
+
+#. [lua]: get_heros
+#: A_Tale_of_Sand_and_Snow/lua/objets.lua:104
+msgid "Cancel"
+msgstr ""
+
+#. [lua]: onSelect
+#: A_Tale_of_Sand_and_Snow/lua/objets.lua:147
+#: A_Tale_of_Sand_and_Snow/lua/objets.lua:174
+msgid "<span style='italic'>Currently on <span color='#BFA63F'>"
+msgstr ""
+
+#. [lua]: onSelectInv
+#: A_Tale_of_Sand_and_Snow/lua/objets.lua:228
+#: A_Tale_of_Sand_and_Snow/lua/objets.lua:247
+#: A_Tale_of_Sand_and_Snow/lua/objets.lua:271
+msgid "<span style='italic'>Not eqquiped</span>"
+msgstr ""
+
+#. [lua]: preshow
+#: A_Tale_of_Sand_and_Snow/lua/objets.lua:336
+msgid " Artefacts collected"
+msgstr ""
+
+#. [lua]: preshow
+#: A_Tale_of_Sand_and_Snow/lua/objets.lua:338
+msgid "Inventory"
+msgstr ""
+
+#. [lua]: O.menuObj
+#: A_Tale_of_Sand_and_Snow/lua/objets.lua:357
+msgid "Note"
+msgstr ""
+
+#. [lua]: O.menuObj
+#: A_Tale_of_Sand_and_Snow/lua/objets.lua:357
+msgid "You still have to collect artefacts..."
+msgstr ""
+
+#. [lua]: fonc.transposition
+#: A_Tale_of_Sand_and_Snow/lua/competence_spe.lua:74
+msgid "This ability isn't ready yet ! ("
+msgstr ""
+
+#. [unit_type]: id=chien, race=
+#: A_Tale_of_Sand_and_Snow/units/autre/chien_vranken.cfg:5
+msgid "Dog"
+msgstr ""
+
+#. [unit_type]: id=chien, race=
+#: A_Tale_of_Sand_and_Snow/units/autre/chien_vranken.cfg:20
+msgid "Dogs are not high maintanence and are useful allies when hunting or scouting."
+msgstr ""
+
+#. [attack]: type=blade
+#: A_Tale_of_Sand_and_Snow/units/autre/chien_vranken.cfg:48
+msgid "fangs"
+msgstr ""
+
+#. [unit_type]: id=brinx4, race=nifhell
+#: A_Tale_of_Sand_and_Snow/units/heroes/brinx4.cfg:3
+msgid "Bow Master"
+msgstr ""
+
+#. [unit_type]: id=brinx4, race=nifhell
+#: A_Tale_of_Sand_and_Snow/units/heroes/brinx4.cfg:23
+msgid ""
+"Brinx is now outclassing even the best archers of the Empire. Still, he is willing to give his best to improve...\n"
+"Gameplay note : Brinx will access huge ranged damage and a fair mobility, while his defense and melee skills will stay quite low."
+msgstr ""
+
+#. [attack]: type=blade
+#: A_Tale_of_Sand_and_Snow/units/heroes/brinx4.cfg:55
+#: A_Tale_of_Sand_and_Snow/units/heroes/brinx3.cfg:39
+#: A_Tale_of_Sand_and_Snow/units/heroes/brinx2.cfg:45
+#: A_Tale_of_Sand_and_Snow/units/heroes/brinx1.cfg:38
+msgid "sword"
+msgstr ""
+
+#. [attack]: type=pierce
+#: A_Tale_of_Sand_and_Snow/units/heroes/brinx4.cfg:65
+msgid "hunter bow"
+msgstr ""
+
+#. [unit_type]: id=brinx3, race=nifhell
+#: A_Tale_of_Sand_and_Snow/units/heroes/brinx3.cfg:4
+msgid "Franc-tireur Elfe"
+msgstr ""
+
+#. [unit_type]: id=brinx3, race=nifhell
+#: A_Tale_of_Sand_and_Snow/units/heroes/brinx3.cfg:19
+msgid "En seulement quelques semaines de combats, Brinx se montre déjà aussi à l'aise que de nombreux vétérans endurcis. Ce garçon ira loin !"
+msgstr ""
+
+#. [attack]: type=pierce
+#: A_Tale_of_Sand_and_Snow/units/heroes/brinx3.cfg:48
+#: A_Tale_of_Sand_and_Snow/units/heroes/brinx2.cfg:54
+msgid "longbow"
+msgstr ""
+
+#. [unit_type]: id=drumar2, race=nifhell
+#: A_Tale_of_Sand_and_Snow/units/heroes/drumar2.cfg:4
+msgid "Great Oracle"
+msgstr ""
+
+#. [unit_type]: id=drumar2, race=nifhell
+#. [unit_type]: id=drumar1, race=nifhell
+#: A_Tale_of_Sand_and_Snow/units/heroes/drumar2.cfg:19
+#: A_Tale_of_Sand_and_Snow/units/heroes/drumar1.cfg:19
+msgid "Frä has been the eyes of Nifhell for centuries. They are told to be able to predict the future. They are at least very wise, and turn to be excellent counselors on the battlefield."
+msgstr ""
+
+#. [attack]: type=impact
+#: A_Tale_of_Sand_and_Snow/units/heroes/drumar2.cfg:38
+#: A_Tale_of_Sand_and_Snow/units/heroes/drumar1.cfg:38
+#: A_Tale_of_Sand_and_Snow/units/heroes/drumar4.cfg:39
+#: A_Tale_of_Sand_and_Snow/units/heroes/drumar3.cfg:38
+msgid "staff"
+msgstr ""
+
+#. [attack]: type=impact
+#: A_Tale_of_Sand_and_Snow/units/heroes/drumar2.cfg:48
+#: A_Tale_of_Sand_and_Snow/units/heroes/drumar1.cfg:48
+#: A_Tale_of_Sand_and_Snow/units/heroes/drumar4.cfg:49
+#: A_Tale_of_Sand_and_Snow/units/heroes/drumar3.cfg:48
+msgid "entangle"
+msgstr ""
+
+#. [attack]: type=cold
+#: A_Tale_of_Sand_and_Snow/units/heroes/drumar2.cfg:59
+#: A_Tale_of_Sand_and_Snow/units/heroes/drumar1.cfg:59
+#: A_Tale_of_Sand_and_Snow/units/heroes/drumar4.cfg:61
+#: A_Tale_of_Sand_and_Snow/units/heroes/drumar3.cfg:59
+msgid "chill wave"
+msgstr ""
+
+#. [unit_type]: id=drumar1, race=nifhell
+#: A_Tale_of_Sand_and_Snow/units/heroes/drumar1.cfg:4
+msgid "Oracle"
+msgstr ""
+
+#. [unit_type]: id=drumar4, race=nifhell
+#: A_Tale_of_Sand_and_Snow/units/heroes/drumar4.cfg:4
+msgid "Cold Mistress"
+msgstr ""
+
+#. [unit_type]: id=drumar4, race=nifhell
+#: A_Tale_of_Sand_and_Snow/units/heroes/drumar4.cfg:19
+msgid ""
+"Frä Drumar made herself a name by mastering ice and snow.\n"
+"    Gameplay note : Her age will make her rather slow, but she may learn powerful slowing and high damage spells."
+msgstr ""
+
+#. [unit_type]: id=vranken2, race=nifhell
+#: A_Tale_of_Sand_and_Snow/units/heroes/vranken2.cfg:4
+msgid "Nifhell Officer"
+msgstr ""
+
+#. [unit_type]: id=vranken2, race=nifhell
+#: A_Tale_of_Sand_and_Snow/units/heroes/vranken2.cfg:18
+msgid "Coming from a rich family, Vranken de Xaintrailles soon got a small company to lead. Smart and honnest, he earned respect and admiration from his soldiers."
+msgstr ""
+
+#. [attack]: type=blade
+#: A_Tale_of_Sand_and_Snow/units/heroes/vranken2.cfg:22
+#: A_Tale_of_Sand_and_Snow/units/heroes/vranken3.cfg:33
+msgid "Xaintrailles sword"
+msgstr ""
+
+#. [unit_type]: id=rymor3, race=nifhell
+#: A_Tale_of_Sand_and_Snow/units/heroes/rymor3.cfg:4
+msgid "Guardian"
+msgstr ""
+
+#. [unit_type]: id=rymor3, race=nifhell
+#: A_Tale_of_Sand_and_Snow/units/heroes/rymor3.cfg:19
+msgid "Rymor is now a master of the hammer, with a huge defensive strength. "
+msgstr ""
+
+#. [attack]: type=impact
+#: A_Tale_of_Sand_and_Snow/units/heroes/rymor3.cfg:27
+#: A_Tale_of_Sand_and_Snow/units/heroes/rymor2.cfg:27
+#: A_Tale_of_Sand_and_Snow/units/heroes/rymor1.cfg:27
+#: A_Tale_of_Sand_and_Snow/units/heroes/rymor4.cfg:28
+msgid "hammer"
+msgstr ""
+
+#. [attack]: type=impact
+#: A_Tale_of_Sand_and_Snow/units/heroes/rymor3.cfg:36
+#: A_Tale_of_Sand_and_Snow/units/heroes/rymor2.cfg:36
+#: A_Tale_of_Sand_and_Snow/units/heroes/rymor1.cfg:36
+#: A_Tale_of_Sand_and_Snow/units/heroes/rymor4.cfg:37
+msgid "shield"
+msgstr ""
+
+#. [unit_type]: id=rymor2, race=nifhell
+#. [unit_type]: id=rymor1, race=nifhell
+#: A_Tale_of_Sand_and_Snow/units/heroes/rymor2.cfg:4
+#: A_Tale_of_Sand_and_Snow/units/heroes/rymor1.cfg:4
+msgid "Shielder"
+msgstr ""
+
+#. [unit_type]: id=rymor2, race=nifhell
+#: A_Tale_of_Sand_and_Snow/units/heroes/rymor2.cfg:19
+msgid "It's hard to surpass Rymor's strength and resilience. He always bears the brunt of the assault."
+msgstr ""
+
+#. [unit_type]: id=drumar3, race=nifhell
+#: A_Tale_of_Sand_and_Snow/units/heroes/drumar3.cfg:4
+msgid "Cold Oracle"
+msgstr ""
+
+#. [unit_type]: id=drumar3, race=nifhell
+#: A_Tale_of_Sand_and_Snow/units/heroes/drumar3.cfg:19
+msgid "Frä has been the eyes of Nifhell for centuries. They are told to be able to predict the future. They are at least very wise, and turn to be excellent counselors on the battlefield. Frä Drumar has chosen to master cold element."
+msgstr ""
+
+#. [unit_type]: id=rymor1, race=nifhell
+#: A_Tale_of_Sand_and_Snow/units/heroes/rymor1.cfg:19
+msgid "The shielders are vigorous soldiers, who keep fighting till their last breath, and deal a tremendous amount of damage with their strong hammer blows."
+msgstr ""
+
+#. [unit_type]: id=brinx2, race=nifhell
+#: A_Tale_of_Sand_and_Snow/units/heroes/brinx2.cfg:4
+msgid "Tireur d'élite Elfe"
+msgstr ""
+
+#. [unit_type]: id=brinx2, race=nifhell
+#: A_Tale_of_Sand_and_Snow/units/heroes/brinx2.cfg:19
+msgid "Brinx is already using bows with great ease and shows courage when fighting."
+msgstr ""
+
+#. [unit_type]: id=vranken3, race=nifhell
+#: A_Tale_of_Sand_and_Snow/units/heroes/vranken3.cfg:4
+msgid "Nifhell Commander"
+msgstr ""
+
+#. [unit_type]: id=vranken3, race=nifhell
+#: A_Tale_of_Sand_and_Snow/units/heroes/vranken3.cfg:28
+msgid "Vranken recent behaviour has proven Nifhell can trust him, thus the Empire granted him more responsabilities."
+msgstr ""
+
+#. [attack]: type=pierce
+#: A_Tale_of_Sand_and_Snow/units/heroes/vranken3.cfg:42
+#: A_Tale_of_Sand_and_Snow/units/heroes/brinx1.cfg:47
+msgid "bow"
+msgstr ""
+
+#. [unit_type]: id=brinx1, race=nifhell
+#: A_Tale_of_Sand_and_Snow/units/heroes/brinx1.cfg:4
+msgid "Archer Elfe"
+msgstr ""
+
+#. [unit_type]: id=brinx1, race=nifhell
+#: A_Tale_of_Sand_and_Snow/units/heroes/brinx1.cfg:19
+msgid "Brinx est nouvellement arrivé sur Planète Morte et a hate de mettre ses talents d'archer au service de Nifhell."
+msgstr ""
+
+#. [unit_type]: id=rymor4, race=nifhell
+#: A_Tale_of_Sand_and_Snow/units/heroes/rymor4.cfg:4
+msgid "Hammer Terror"
+msgstr ""
+
+#. [unit_type]: id=rymor4, race=nifhell
+#: A_Tale_of_Sand_and_Snow/units/heroes/rymor4.cfg:19
+msgid ""
+"The blue hammer of Rymor is now know all across the Federation. Having him by your side is so comforting.\n"
+"    Gameplay note : Rymor may learn how to influence defense of allies or enemies, as well as enhancing its own resilience."
+msgstr ""
+
+#. [isHere]: id=bloodlust
+#: A_Tale_of_Sand_and_Snow/utils/abilities.cfg:6
+msgid "Bloodlust"
+msgstr ""
+
+#. [isHere]: id=bloodlust
+#: A_Tale_of_Sand_and_Snow/utils/abilities.cfg:7
+msgid "Killing a unit refreshes this unit's strengh, and gives it a new attack. Happens at most once a turn."
+msgstr ""
+
+#. [isHere]: id=war_leeches1
+#. [isHere]: id=war_leeches2
+#. [isHere]: id=war_leeches3
+#: A_Tale_of_Sand_and_Snow/utils/abilities.cfg:14
+#: A_Tale_of_Sand_and_Snow/utils/abilities.cfg:22
+#: A_Tale_of_Sand_and_Snow/utils/abilities.cfg:29
+msgid "War blood"
+msgstr ""
+
+#. [isHere]: id=war_leeches1
+#: A_Tale_of_Sand_and_Snow/utils/abilities.cfg:15
+msgid "When this unit is hit in defense, it regenerates 2 HP."
+msgstr ""
+
+#. [isHere]: id=war_leeches2
+#: A_Tale_of_Sand_and_Snow/utils/abilities.cfg:23
+msgid "When this unit is hit in defense, it regenerates 4 HP."
+msgstr ""
+
+#. [isHere]: id=war_leeches3
+#: A_Tale_of_Sand_and_Snow/utils/abilities.cfg:30
+msgid "When this unit is hit in defense, it regenerates 6 HP."
+msgstr ""
+
+#. [isHere]: id=war_jump
+#: A_Tale_of_Sand_and_Snow/utils/abilities.cfg:38
+msgid "This unit is able to jump through ennemies standing in its way, consuming its moves."
+msgstr ""
+
+#. [isHere]: id=elusive
+#: A_Tale_of_Sand_and_Snow/utils/abilities.cfg:46
+msgid "This unit is so nimble that it can avoid collision with ennemy units."
+msgstr ""
+
+#. [resistance]: id=fearlove
+#: A_Tale_of_Sand_and_Snow/utils/abilities.cfg:59
+msgid "Fear of love"
+msgstr ""
+
+#. [resistance]: id=fearlove
+#: A_Tale_of_Sand_and_Snow/utils/abilities.cfg:60
+msgid "Deadly endanger close friendly units ! (<span color='red'>reduces</span> resistances by <span color='red'>100%</span> for allies and <span color='red'>50%</span> for himself"
+msgstr ""
+
+#. [regenerate]: id=regenerate10
+#. [regenerate]: id=regenerate_cure20
+#: A_Tale_of_Sand_and_Snow/utils/abilities.cfg:89
+#: A_Tale_of_Sand_and_Snow/utils/abilities.cfg:99
+msgid "Regeneration"
+msgstr ""
+
+#. [regenerate]: id=regenerate10
+#: A_Tale_of_Sand_and_Snow/utils/abilities.cfg:90
+msgid "Heals himselft for 10 HP per turn."
+msgstr ""
+
+#. [regenerate]: id=regenerate_cure20
+#: A_Tale_of_Sand_and_Snow/utils/abilities.cfg:100
+msgid "Heals himselft for 20 HP per turn."
+msgstr ""
+
+#. [chance_to_hit]: id=arch_magical
+#: A_Tale_of_Sand_and_Snow/utils/abilities.cfg:109
+msgid "arch_magical"
+msgstr ""
+
+#. [chance_to_hit]: id=arch_magical
+#. [chance_to_hit]: id=focus
+#: A_Tale_of_Sand_and_Snow/utils/abilities.cfg:110
+#: A_Tale_of_Sand_and_Snow/utils/abilities.cfg:134
+msgid "This attack always has a 80% chance to hit regardless of the defensive ability of the unit being attacked."
+msgstr ""
+
+#. [chance_to_hit]: id=precis
+#: A_Tale_of_Sand_and_Snow/utils/abilities.cfg:121
+msgid "precision"
+msgstr ""
+
+#. [chance_to_hit]: id=precis
+#: A_Tale_of_Sand_and_Snow/utils/abilities.cfg:122
+msgid "This attack always has a 70% chance to hit regardless of the defensive ability of the unit being attacked."
+msgstr ""
+
+#. [chance_to_hit]: id=focus
+#: A_Tale_of_Sand_and_Snow/utils/abilities.cfg:133
+msgid "focus"
+msgstr ""
+
+#. [isHere]: id=leeches3
+#: A_Tale_of_Sand_and_Snow/utils/abilities.cfg:145
+msgid "Regenerates 20% of the damage dealt in offense and defense. Also works against undead."
+msgstr ""
+
+#. [isHere]: id=mayhem
+#: A_Tale_of_Sand_and_Snow/utils/abilities.cfg:154
+msgid "mayhem"
+msgstr ""
+
+#. [isHere]: id=mayhem
+#: A_Tale_of_Sand_and_Snow/utils/abilities.cfg:155
+msgid "Reduces damages of the target by 1 per hit, until the end of the scenario."
+msgstr ""
+
+#. [isHere]: id=cleave
+#: A_Tale_of_Sand_and_Snow/utils/abilities.cfg:165
+msgid "cleave"
+msgstr ""
+
+#. [isHere]: id=cleave
+#: A_Tale_of_Sand_and_Snow/utils/abilities.cfg:166
+msgid "Deals 75% damage to ennemies beetwen attacker and defender."
+msgstr ""
+
+#. [isHere]: id=weapon_pierce
+#: A_Tale_of_Sand_and_Snow/utils/abilities.cfg:173
+msgid "pierce"
+msgstr ""
+
+#. [isHere]: id=weapon_pierce
+#: A_Tale_of_Sand_and_Snow/utils/abilities.cfg:174
+msgid "Deals 75% dammage to the ennemy behind the target."
+msgstr ""
+
+#. [isHere]: id=status_chilled1
+#. [isHere]: id=status_chilled2
+#. [isHere]: id=status_chilled3
+#: A_Tale_of_Sand_and_Snow/utils/abilities.cfg:181
+#: A_Tale_of_Sand_and_Snow/utils/abilities.cfg:188
+#: A_Tale_of_Sand_and_Snow/utils/abilities.cfg:195
+msgid "chilling"
+msgstr ""
+
+#. [isHere]: id=status_chilled1
+#. [isHere]: id=status_chilled2
+#: A_Tale_of_Sand_and_Snow/utils/abilities.cfg:182
+#: A_Tale_of_Sand_and_Snow/utils/abilities.cfg:189
+msgid "Tags the target for 2 turns. Chilled unit will take bonus damage when hit by cold attacks."
+msgstr ""
+
+#. [isHere]: id=status_chilled3
+#: A_Tale_of_Sand_and_Snow/utils/abilities.cfg:196
+msgid "Tags the target for 3 turns. Chilled unit will take bonus damage when hit by cold attacks."
+msgstr ""
+
+#. [isHere]: id=res_magic1
+#. [isHere]: id=res_magic2
+#: A_Tale_of_Sand_and_Snow/utils/abilities.cfg:203
+#: A_Tale_of_Sand_and_Snow/utils/abilities.cfg:212
+msgid "magic weakness"
+msgstr ""
+
+#. [isHere]: id=res_magic1
+#: A_Tale_of_Sand_and_Snow/utils/abilities.cfg:204
+msgid "Reduces target's magic resitances by <span color='red'>5%</span> per hit."
+msgstr ""
+
+#. [isHere]: id=res_magic2
+#: A_Tale_of_Sand_and_Snow/utils/abilities.cfg:213
+msgid "Reduces target's magic resitances by <span color='red'>7%</span> per hit."
+msgstr ""
+
+#. [isHere]: id=weaker_slow
+#: A_Tale_of_Sand_and_Snow/utils/abilities.cfg:222
+msgid "weaker slow"
+msgstr ""
+
+#. [isHere]: id=weaker_slow
+#: A_Tale_of_Sand_and_Snow/utils/abilities.cfg:223
+msgid "Reduces target's damage by <span color='red'>10%</span> per hit. <span style='italic'>Last 1 turn.</span>"
+msgstr ""
+
+#. [isHere]: id=snare
+#: A_Tale_of_Sand_and_Snow/utils/abilities.cfg:231
+msgid "snare"
+msgstr ""
+
+#. [isHere]: id=snare
+#: A_Tale_of_Sand_and_Snow/utils/abilities.cfg:232
+msgid "Lock down the target for 1 turn."
+msgstr ""
+
+#. [advancement]: id=sword_marksman
+#: A_Tale_of_Sand_and_Snow/utils/amla.cfg:35
+msgid "More precise with swords : 60% chance to hit."
+msgstr ""
+
+#: A_Tale_of_Sand_and_Snow/utils/amla.cfg:51
+msgid "More precise with "
+msgstr ""
+
+#: A_Tale_of_Sand_and_Snow/utils/amla.cfg:70
+msgid "Deadly accurate with "
+msgstr ""
+
+#. [advancement]: id=amla_leeches
+#: A_Tale_of_Sand_and_Snow/utils/amla.cfg:94
+msgid " Able to leeches ennemies, even undead. Melee weapon special : leeches"
+msgstr ""
+
+#. [advancement]: id=amla_berserk
+#: A_Tale_of_Sand_and_Snow/utils/amla.cfg:117
+msgid " Fury of arrows. Ranged weapon special : berserk"
+msgstr ""
+
+#. [campaign]: id=A_Tale_of_Sand_and_Snow
+#: A_Tale_of_Sand_and_Snow/_main.cfg:10
+msgid "A Tale of Sand and Snow"
+msgstr ""
+
+#. [campaign]: id=A_Tale_of_Sand_and_Snow
+#: A_Tale_of_Sand_and_Snow/_main.cfg:11
+msgid "TSS"
+msgstr ""
+
+#. [difficulty]: description=normal
+#: A_Tale_of_Sand_and_Snow/_main.cfg:17
+msgid "Officer"
+msgstr ""
+
+#. [difficulty]: description=hard
+#: A_Tale_of_Sand_and_Snow/_main.cfg:23
+msgid "Hero"
+msgstr ""
+
+#. [campaign]: id=A_Tale_of_Sand_and_Snow
+#: A_Tale_of_Sand_and_Snow/_main.cfg:29
+msgid ""
+"Witness the confrontation between <span color='blue'>Nifhell</span> and <span color='yellow'>Muspell</span> and learn the story of the Sandy Wastes.\n"
+"	\n"
+"	<span style='italic'>Note : This campaign contains some RPG features and focus on a small amount of units.</span>\n"
+"	\n"
+"	(Intermediate level, 30 scenarios.)"
+msgstr ""
+
+#. [language]
+#: A_Tale_of_Sand_and_Snow/_main.cfg:61
+msgid "true damage"
+msgstr ""
+
+#. [editor_group]: id=cpben
+#: A_Tale_of_Sand_and_Snow/_main.cfg:72
+msgid "Under"
+msgstr ""
+

@@ -1,0 +1,61 @@
+heros = {}
+
+
+
+heros["vranken"] ={variables = {}}
+heros.vranken.variables.arbre = "<>" 
+heros.vranken.variables.xp =  500
+heros.vranken.variables.obj = "<>"
+heros.vranken.variables.bloodlust = false
+heros.vranken.variables.table_comp_spe = "< leeches_cac = 0 , drain_cac =0 , atk_brut=0 , transposition=0>"
+heros.vranken.variables.comp_spe = false
+heros.vranken.variables.comp_spe_lvl = 1
+heros.vranken.variables.comp_spe_cd = 0
+
+heros["rymor"] ={variables = {}}
+heros.rymor.variables.arbre = "<>" 
+heros.rymor.variables.xp =  500
+heros.rymor.variables.obj = "<>"
+heros.rymor.variables.bloodlust = false
+heros.rymor.variables.table_comp_spe = "< leeches_cac = 0 , drain_cac =0 , atk_brut=0 , transposition=0>"
+heros.rymor.variables.comp_spe = false
+heros.rymor.variables.comp_spe_lvl = 1
+heros.rymor.variables.comp_spe_cd = 0
+
+
+heros["morgane"] = {variables ={}}
+heros.morgane.variables.arbre = " <> "
+heros.morgane.variables.xp =  20
+heros.morgane.variables.obj = "<>"
+heros.morgane.variables.bloodlust = false
+heros.morgane.variables.table_comp_spe = "<>"
+heros.morgane.variables.comp_spe = false
+heros.morgane.variables.comp_spe_lvl = 1
+heros.morgane.variables.comp_spe_cd = 0
+
+heros["brinx"] = {variables ={}}
+heros.brinx.variables.arbre = " < > "
+heros.brinx.variables.xp =  20
+heros.brinx.variables.obj = "<>"
+heros.brinx.variables.bloodlust = false
+heros.brinx.variables.table_comp_spe = "< def_muspell = 0 , dmg_muspell =0 , fresh_blood_musp=0 , muspell_rage=0>"
+heros.brinx.variables.comp_spe = false
+
+
+
+heros["sword_spirit"] = {variables ={}}
+heros.sword_spirit.variables.arbre = "<>" 
+heros.sword_spirit.variables.xp =  10
+heros.sword_spirit.variables.obj = "<>"
+heros.sword_spirit.variables.bloodlust = false
+heros.sword_spirit.variables.table_comp_spe = false
+heros.sword_spirit.variables.comp_spe = false
+
+
+function init(myId)
+	local u = wesnoth.get_units{ id = myId}[1]
+	local r = heros[myId].variables
+	for i,v in pairs(u.variables)  do
+		u.variables[i] = r[i]
+	end
+end 
