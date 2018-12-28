@@ -43,6 +43,7 @@ function aux (arb)
         codewml =codewml.."{AMLA_"..unit.."_"..i.."}\n"
     end
     codewml=codewml.."\n{AMLA_"..unit.."_default} \n \n"
+    codewml = codewml .. "#Macro AMLA à compléter \n \n"
     for i,noeud in pairs(arb) do
         -- PARTIE GRAPHE
         table.insert(l_layers,noeud.id)
@@ -97,12 +98,12 @@ end
 
 function export(layers)
     local nb = 0
-    for line in io.lines(dir.."/graph/tree.dot") do
+    for line in io.lines(dir.."dev_tools/graph/tree.dot") do
         nb = nb +1
     end
     local contenu = ""
     local i = 1
-    for line in io.lines(dir.."/graph/tree.dot") do
+    for line in io.lines(dir.."dev_tools/graph/tree.dot") do
         if i <= (nb-1) then
                 contenu = contenu..line.."\n"
                 i = i+1
@@ -111,7 +112,7 @@ function export(layers)
         
     for j,k in pairs(layers) do
         local ajout= prem_l(layers,j)
-        local file = io.open(dir.."/graph/layers/"..k,"w")
+        local file = io.open(dir.."dev_tools/graph/layers/"..k,"w")
         io.output(file)
         io.write(contenu)
         io.write(ajout)
@@ -125,13 +126,13 @@ function main(inArbre)
     l_layers={"layer_fleche"}
     local codes = aux(inArbre)
     local code = dot..codes[1].."}"
-   local file = io.open(dir.."/graph/tree.dot","w")
+   local file = io.open(dir.."dev_tools/graph/tree.dot","w")
     io.output(file)
     io.write(code)
     io.close(file)
     export(l_layers)
     
-    local file = io.open(dir.."/graph/tmp.cfg","w")
+    local file = io.open(dir.."dev_tools/graph/tmp.cfg","w")
     
     io.output(file)
     io.write(codes[2])
@@ -140,7 +141,7 @@ function main(inArbre)
 end
 
 
-dofile(dir.."/graph/arbres_lua/"..unit..".lua")
+dofile(dir.."dev_tools/graph/arbres_lua/"..unit..".lua")
 couleur_bordure = defaultbordure
 
 couleur_fleche="#2C2C2C"
@@ -154,7 +155,7 @@ for i,v in pairs(liste_afaire) do
 end
 sortie=sortie:sub(2)
 print(sortie)
-local file = io.open(dir.."/graph/lastcmd","w")
+local file = io.open(dir.."dev_tools/graph/lastcmd","w")
 io.output(file)
 io.write(sortie)
 io.close(file)

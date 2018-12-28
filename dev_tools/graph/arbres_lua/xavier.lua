@@ -3,23 +3,21 @@ defaultfond="181 167 71"
 
 
 arbre={
-{id="bow",img="attacks/bow-elven.png",txt="Bow <BR /> <B> +2</B> dmg",max_level=2},
-{id="bow_atk",img="attacks/bow-elven.png",txt="Bow <BR /> <B> +1</B> str",max_level=1,parents={"bow"}},
-{id="bow_precis",levelbonus=true,img="attacks/bow_precis.png",txt="Bow <BR /> <B> Precision</B>",max_level=1,parents={"bow_atk"},couleur={69, 117, 174}},
-{id="bow_pierce",img="icons/arrow_strong.png",txt="<B> Piercing </B> <BR />  Arrows",max_level=1,parents={"bow_precis"},couleur={214, 220, 220}},
-{id="bow_fire",img="attacks/bow-elven-fire.png",txt="<B> Fire </B> <BR />  Bow",max_level=1,parents={"bow_precis"},couleur={214, 68, 17}},
-{id="bow2",img="attacks/bow-elven.png",txt="Bow <BR /> <B> +2</B> dmg",max_level=2,parents={"bow_precis"}},
-{id="bow_atk2",img="attacks/bow-elven.png",txt="Bow <BR /> <B> +1</B> str",max_level=1,parents={"bow2"}},
-{id="bow_focus",levelbonus=true,img="attacks/bow_focus.png",txt="Bow <BR /> <B> Focus </B>",max_level=1,parents={"bow_fire","bow_pierce"},couleur={69, 117, 174}},
-{id="bloodlust",levelbonus=true,img="icons/blood-frenzy.png",txt="<B> Bloodlust </B>",max_level=1,parents={"bow_focus","bow_atk2"},couleur={54, 255, 5}},
-{id="sword",img="attacks/sword-elven.png",txt="Sword <BR /> <B> +1 </B> dmg",max_level=3},
-{id="sword_atk",img="attacks/sword-elven.png",txt="Sword <BR /> <B> +1</B> str",max_level=1,parents={"sword"}},
-{id="pm",img="icons/boots_elven.png",txt="Moves <BR/>  <B> +1 </B>",max_level=2},
-{id="skirmisher",img="icons/sandals.png",txt="Skirmisher",max_level=1,parents={"pm"}},
-{id="movement",levelbonus=true,img="icons/sandals.png",txt="Faster on <BR /> sand &amp; snow",max_level=1,parents={"skirmisher"}},
-{id="hp",img="icons/amla-default.png",txt="Health <BR/> <B> +5 </B> hp",max_level=2},
-{id="though",img="icons/cuirass_leather_studded.png",txt="Resistances <BR/>  <B> +5 </B> %",max_level=2,parents={"hp"}}}
-
+{id="sword",img="attacks/sword-elven.png",txt="Sword <BR /> <B> +2</B> dmg",max_level=2},
+{id="sword_atk",img="attacks/sword-elven.png",txt="Sword <BR /> <B> +1</B> str.",max_level=1,parents={"sword"}},
+{id="sword_marksman",levelbonus=true,img="attacks/sword_marksman.png",txt="Sword <BR /> <B> Marksman</B>",max_level=1,parents={"sword_atk"},couleur={69, 117, 174}},
+{id="sword2",img="attacks/sword-elven.png",txt="Sword <BR /> <B> +2</B> dmg",max_level=1,parents={"sword_marksman", "crossbow_atk"}},
+{id="sword_atk2",img="attacks/sword-elven.png",txt="Sword <BR /> <B> +1</B> str",max_level=2,parents={"sword2"}},
+{id="sword_precis",levelbonus=true,img="attacks/sword_precis.png",txt="Sword <BR /> <B> Precis </B>",max_level=1,parents={"sword_atk2", "leadership"},couleur={69, 117, 174}},
+{id="armor_shred",levelbonus=true,img="icons/broken_shield.png",txt="<B> Armor shred </B>",max_level=3,parents={"sword_precis"},couleur={54, 255, 5}},
+{id="leadership",img="flags/wood-elvish-flag-icon.png",txt="Enhanced leadership",max_level=3},
+{id="defense",img="icons/dress-silk-green.png",txt="Bonus defense",max_level=3,parents={"leadership"}},
+{id="defense2",levelbonus=true, img="icons/dress-silk-green.png",txt="Defense range <BR /> + 1",max_level=1,parents={"defense"}},
+{id="crossbow",img="attacks/crossbow-human.png",txt="Crossbow <BR /> <B> +2</B> dmg",max_level=2},
+{id="crossbow_atk", img="attacks/crossbow-human.png",txt="Crossbow <BR /> <B> +1</B> str.",max_level=1,parents={"crossbow"}},
+{id="crossbow_marksman",levelbonus=true, img="attacks/crossbow-human.png",txt="Sword <BR /> <B> Marksman</B> str.",max_level=1, parents = {"crossbow_atk"}},
+{id="defense_reduc",img="icons/broken_tunic.png",txt="<B> Defense shred </B>",max_level=3, parents = {"crossbow_marksman"}}
+}
 
 
 
