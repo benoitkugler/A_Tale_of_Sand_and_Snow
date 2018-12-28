@@ -34,9 +34,9 @@ echo "Lancer la création du code du graphe et des ALMA ? (Poursuivre : Entree)"
 read 
 fi;
 
-rm -r ${ADDON_DATA_PATH}graph/layers;
-mkdir ${ADDON_DATA_PATH}graph/layers;
-> ${ADDON_DATA_PATH}graph/tmp.cfg;
+rm -r ${ADDON_DATA_PATH}dev_tools/graph/layers;
+mkdir ${ADDON_DATA_PATH}dev_tools/graph/layers;
+> ${ADDON_DATA_PATH}dev_tools/graph/tmp.cfg;
 myvar=$(lua ${ADDON_DATA_PATH}dev_tools/graph/gener.lua $id ${ADDON_DATA_PATH}); 
 echo "Codes générés !";
 
@@ -46,7 +46,7 @@ read
 fi;
 
 dot -Tpng ${ADDON_DATA_PATH}dev_tools/graph/tree.dot -o ${ADDON_DATA_PATH}dev_tools/graph/images/tree.png -Gimagepath=${ADDON_DATA_PATH}images:${WESNOTH_PATH}/data/core/images;
-cd ${ADDON_DATA_PATH}graph/layers;
+cd ${ADDON_DATA_PATH}dev_tools/graph/layers;
 
 for i in *
 do
