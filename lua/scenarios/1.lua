@@ -119,7 +119,7 @@ function ES.turn1()
 	wesnoth.fire("message",{speaker=u1.id,message=_"Could Muspell dare attacking us ?"})
 	ANIM.anim_zaap(55,5,"d")
 	wesnoth.fire("recall",{id = "rand" ,x=54,y=6})
-        wesnoth.get_units{id="rand"}[1].side=3
+	wesnoth.get_units{id="rand"}[1].side=3
 	wesnoth.delay(500)
 	
 	wesnoth.fire("move_unit",{id="rand",to_x = 41 ,to_y=25})

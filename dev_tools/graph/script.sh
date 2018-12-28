@@ -26,7 +26,7 @@ do
 done  
 
 
-couleurfond=$(lua -e "dofile(\"${ADDON_DATA_PATH}graph/arbres_lua/"$id".lua\"); print(defaultfond)")
+couleurfond=$(lua -e "dofile(\"${ADDON_DATA_PATH}dev_tools/graph/arbres_lua/"$id".lua\"); print(defaultfond)")
 
 
 if [ $full_process = "0" ]; then
@@ -37,7 +37,7 @@ fi;
 rm -r ${ADDON_DATA_PATH}graph/layers;
 mkdir ${ADDON_DATA_PATH}graph/layers;
 > ${ADDON_DATA_PATH}graph/tmp.cfg;
-myvar=$(lua ${ADDON_DATA_PATH}graph/gener.lua $id ${ADDON_DATA_PATH}); 
+myvar=$(lua ${ADDON_DATA_PATH}dev_tools/graph/gener.lua $id ${ADDON_DATA_PATH}); 
 echo "Codes générés !";
 
 if [ $full_process = "0" ]; then
@@ -45,7 +45,7 @@ echo "Lancer la création du graphe et des layers ? (Poursuivre : Entree)"
 read
 fi;
 
-dot -Tpng ${ADDON_DATA_PATH}graph/tree.dot -o ${ADDON_DATA_PATH}graph/images/tree.png -Gimagepath=${ADDON_DATA_PATH}images:${WESNOTH_PATH}/data/core/images;
+dot -Tpng ${ADDON_DATA_PATH}dev_tools/graph/tree.dot -o ${ADDON_DATA_PATH}dev_tools/graph/images/tree.png -Gimagepath=${ADDON_DATA_PATH}images:${WESNOTH_PATH}/data/core/images;
 cd ${ADDON_DATA_PATH}graph/layers;
 
 for i in *
@@ -59,7 +59,7 @@ if [ $full_process = "0" ]; then
 echo "Voir le graphe ? (Poursuivre : o, sauter: Entree)"
 read view;
     if [ "$view" = "o" ]; then
-        display ${ADDON_DATA_PATH}graph/images/tree.png
+        display ${ADDON_DATA_PATH}dev_tools/graph/images/tree.png
     fi;
 fi;
 
@@ -99,7 +99,7 @@ echo "Lancer la création de la couche cachante ? (Poursuivre : Entree)"
 read 
 fi;
 
-cd ${ADDON_DATA_PATH}graph
+cd ${ADDON_DATA_PATH}dev_tools/graph
 rm -r ${ADDON_DATA_PATH}images/arbres/$id;
 mkdir ${ADDON_DATA_PATH}images/arbres/$id;
 com="gimp-console -c -d -b '(script-fu-load-caches \"layers\" \"layer_fleche-1.png\" "$couleurfond" \"${ADDON_DATA_PATH}images/arbres/"$id"\")' -b '(gimp-quit 1)'"
