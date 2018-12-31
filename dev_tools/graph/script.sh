@@ -4,6 +4,8 @@ echo "Bienvenue dans l'outil de création d'arbre de compétences !"
 ADDON_DATA_PATH=$HOME/.config/wesnoth-1.14/data/add-ons/A_Tale_of_Sand_and_Snow/
 WESNOTH_PATH=/usr/share/games/wesnoth/1.14
 
+set -e;
+
 keep="1"
 full_process="0"
 while [ $keep = "1" ]
@@ -26,7 +28,7 @@ do
 done  
 
 
-couleurfond=$(lua -e "dofile(\"${ADDON_DATA_PATH}dev_tools/graph/arbres_lua/"$id".lua\"); print(defaultfond)")
+couleurfond=$(lua -e "dofile(\"${ADDON_DATA_PATH}dev_tools/graph/arbres_lua/"$id".lua\"); print(defaultfond)") &&
 
 
 if [ $full_process = "0" ]; then
@@ -64,34 +66,14 @@ read view;
 fi;
 
 if [ $full_process = "0" ]; then
-echo "Lancer la mise à jour des layers ? (Poursuivre : Entree)"
-read 
+echo "Lancer la mise à jour des layers ? (Poursuivre : o, sauter : Entree)"
+read update_layers
+    if [ "$update_layers" = "o" ]; then
+        cmd="gimp -i -d -b '(python-fu-build-wesnoth-text-effect RUN-NONINTERACTIVE \""$myvar"\")' -b '(gimp-quit 1)'"
+        eval $cmd &&
+        echo "Mise à jour des layers (couleur, nombre) réussie";
+    fi;
 fi;
-
-commandebash="gimp-console -d"
-
-for i in $(echo $myvar| tr ";" "\n")
-do
-param=(${i//:/ })
-
-    if [ ${param[5]} = 0 ]; then
-        if [ ${param[4]} = 1 ]; then
-            commandebash=$commandebash" -b '(script-fu-texte "${param[1]}" "${param[2]}" "${param[3]}" \""${param[0]}"-1.png\" 1 0)'"
-        else
-            commandebash=$commandebash" -b '(script-fu-texte 0 0 0 \""${param[0]}"-1.png\" 0 0)'"
-        fi
-    else
-        commandebash=$commandebash" -b '(script-fu-texte "${param[1]}" "${param[2]}" "${param[3]}" \""${param[0]}"-"1".png\" "${param[4]}" 1)'"
-        for ((j=2;j<=${param[5]};j++))
-        do
-            cp ${param[0]}"-1.png" ${param[0]}"-"$j".png" 
-            commandebash=$commandebash" -b '(script-fu-texte "${param[1]}" "${param[2]}" "${param[3]}" \""${param[0]}"-"$j".png\" "${param[4]}" "$j")'"
-        done
-    fi
-done &&
-commandebash=$commandebash" -b '(gimp-quit 1)'"
-eval $commandebash &&
-echo "Mise à jour des layers (couleur, nombre) réussie";
 
 
 if [ $full_process = "0" ]; then   
@@ -102,7 +84,8 @@ fi;
 cd ${ADDON_DATA_PATH}dev_tools/graph
 rm -r ${ADDON_DATA_PATH}images/arbres/$id;
 mkdir ${ADDON_DATA_PATH}images/arbres/$id;
-com="gimp-console -c -d -b '(script-fu-load-caches \"layers\" \"layer_fleche-1.png\" "$couleurfond" \"${ADDON_DATA_PATH}images/arbres/"$id"\")' -b '(gimp-quit 1)'"
+args=$couleurfond" "$ADDON_DATA_PATH"images/arbres/"$id
+com="gimp -i -d -b '(python-fu-build-wesnoth-caches RUN-NONINTERACTIVE \""$args"\")' -b '(gimp-quit 1)'"
 eval $com
 
 if [ $full_process = "0" ]; then
