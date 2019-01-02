@@ -20,13 +20,6 @@ function O.remove(unit_id, object_id)
     u:remove_modifications({id = object_id}, "object")
     u:remove_modifications({id = object_id}, "trait")
 
-    -- local obj_anti_effect = obj_DB[object_id]["contreff"]
-    -- wesnoth.add_modification(u, "object", {{"effect", obj_anti_effect}}, false)
-    -- wesnoth.extract_unit(u)
-    -- local newu = supp_id(u.__cfg, "trait", object_id)
-    -- newu = supp(newu, "object")
-    -- wesnoth.put_unit(newu)
-
     VAR.objets_joueur[object_id] = 0
 end
 
