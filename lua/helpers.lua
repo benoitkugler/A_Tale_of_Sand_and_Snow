@@ -143,21 +143,7 @@ function supp(tab, myType)
     return s
 end
 
--- Supprime tous les objets ayant no_write=true d'une unité
-function purge_objet(tab)
-    local s = {}
-    for i, v in pairs(tab) do
-        if type(v) == "table" and #v >= 2 then
-            if v[1] == "object" and v[2].no_write then
-            else
-                table.insert(s, {v[1], purge_objet(v[2])})
-            end
-        else
-            s[i] = v
-        end
-    end
-    return s
-end
+
 
 --Récupére l'unité primaire ou secondaire d'un event
 function get_pri()

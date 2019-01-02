@@ -82,8 +82,8 @@ read
 fi;
 
 cd ${ADDON_DATA_PATH}dev_tools/graph
-rm -r ${ADDON_DATA_PATH}images/arbres/$id;
-mkdir ${ADDON_DATA_PATH}images/arbres/$id;
+rm -r -f ${ADDON_DATA_PATH}images/arbres/$id;
+mkdir -p ${ADDON_DATA_PATH}images/arbres/$id;
 args=$couleurfond" "$ADDON_DATA_PATH"images/arbres/"$id
 com="gimp -i -d -b '(python-fu-build-wesnoth-caches RUN-NONINTERACTIVE \""$args"\")' -b '(gimp-quit 1)'"
 eval $com
