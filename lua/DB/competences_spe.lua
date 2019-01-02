@@ -1,16 +1,13 @@
--- In descriptions string the pattern | | will be replace by the color of the skill.
-
 local _ = wesnoth.textdomain "wesnoth-A_Tale_of_Sand_and_Snow"
 
-local apply = {}
-
+-- Metadata for specials skills (implementation follows)
+-- In descriptions string the pattern | | will be replace by the color of the skill.
 local info = {}
 
 info["bunshop"] = {}
 info["rymor"] = {}
 
 -- DRUMAR
-
 info["drumar"] = {
 	help_des = _ "Several years of battles in Vranken company have made Frä Drümar more warlike than any other Frä. " ..
 		"She excels at slowing enemies and taking advantage of their delayed reactions. " ..
@@ -66,7 +63,7 @@ info["drumar"] = {
 		name_aff = _ "|Cold Expert :|",
 		require_avancement = {
 			id = "attack_chilled",
-			des = _ "Requires <span weight='bold' color='#1ED9D0'>Chilling touch</span> advancement"
+			des = _ "Requires <span weight='bold' color='#1ED9D0'>Chilling touch</span> object"
 		},
 		require_lvl = 6,
 		{cout_suivant = 40, des = _ "<span style='italic'>Skill not learned yet.</span>"},
@@ -77,7 +74,6 @@ info["drumar"] = {
 }
 
 -- VRANKEN
-
 info["vranken"] = {
 	help_des = _ "Vranken has a familly link with his sword. " ..
 		"Every time <span  font_weight ='bold' >Göndhul fights</span>, Vranken earn points " ..
@@ -148,204 +144,7 @@ info["vranken"] = {
 	}
 }
 
--- Supprime tous les objets ayant no_write=true d'une unité
-function purge_objet(tab)
-	local s = {}
-	for i, v in pairs(tab) do
-		if type(v) == "table" and #v >= 2 then
-			if v[1] == "object" and v[2].no_write then
-			else
-				table.insert(s, {v[1], purge_objet(v[2])})
-			end
-		else
-			s[i] = v
-		end
-	end
-	return s
-end
-
-function apply.leeches_cac(lvl, unit)
-	local torem = "leeches1"
-	for i = 2, lvl - 1, 1 do
-		torem = torem .. ", leeches" .. i
-	end
-	wesnoth.add_modification(
-		unit,
-		"object",
-		{no_write = true, {"effect", {apply_to = "attack", range = "melee", remove_specials = torem}}}
-	)
-	wesnoth.add_modification(
-		unit,
-		"object",
-		{
-			no_write = true,
-			{
-				"effect",
-				{
-					apply_to = "attack",
-					range = "melee",
-					{
-						"set_specials",
-						{
-							mode = "append",
-							{
-								"isHere",
-								{
-									id = "leeches" .. tostring(lvl),
-									name = _ "leeches",
-									description = _ "Regenerates " ..
-										tostring(lvl * 5 + 5) .. " % of the damage dealt in offense and defense. Also works against undead" --des
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	)
-	wesnoth.extract_unit(unit)
-	local newu = purge_objet(unit.__cfg)
-	wesnoth.put_unit(newu)
-end
-
-function apply.drain_cac(lvl, unit)
-	local torem = "drain_cac1"
-	for i = 2, lvl - 1, 1 do
-		torem = torem .. ", drain_cac" .. i
-	end
-	wesnoth.add_modification(
-		unit,
-		"object",
-		{no_write = true, {"effect", {apply_to = "attack", range = "melee", remove_specials = torem}}}
-	)
-	wesnoth.add_modification(
-		unit,
-		"object",
-		{
-			no_write = true,
-			{
-				"effect",
-				{
-					apply_to = "attack",
-					range = "melee",
-					{
-						"set_specials",
-						{
-							mode = "append",
-							{
-								"drains",
-								{
-									id = "drain_cac" .. tostring(lvl),
-									name = _ "drains",
-									value = lvl * 10 + 20,
-									description = _ "Regenerates " ..
-										tostring(lvl * 10 + 20) .. " % of the damage dealt in offense and defense. Doesn't apply to undead", --ratio du drain
-									description_inactive = _ "Göndhul is too far away from Vranken.",
-									{
-										"filter_self",
-										{
-											{
-												"filter_location",
-												{
-													radius = 2 ^ (lvl + 1), --portee de la comp
-													{"filter", {id = "sword_spirit"}}
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	)
-	wesnoth.extract_unit(unit)
-	local newu = purge_objet(unit.__cfg)
-	wesnoth.put_unit(newu)
-end
-
-function apply.atk_brut(lvl, unit)
-	local torem = "atk_brut1"
-	for i = 2, lvl - 1, 1 do
-		torem = torem .. ", atk_brut" .. i
-	end
-	local atk = 0
-	for at in H.child_range(unit.__cfg, "attack") do
-		if at.name == "sword" and at.type == "blade" then
-			atk = at
-		end
-	end
-
-	atk.type = "brut"
-	atk.damage = atk.damage * (70 + (lvl - 1) * 15) / 100 --ratio degat
-	atk.description = _ "ether sword"
-	atk.icon = "attacks/ak_brut.png"
-	atk["apply_to"] = "new_attack"
-
-	if lvl == 1 then
-		wesnoth.add_modification(unit, "object", {no_write = true, {"effect", atk}})
-	else
-		wesnoth.add_modification(
-			unit,
-			"object",
-			{no_write = true, {"effect", {apply_to = "attack", type = "brut", name = "sword", increase_damage = "-100%"}}}
-		)
-		wesnoth.add_modification(
-			unit,
-			"object",
-			{no_write = true, {"effect", {apply_to = "attack", type = "brut", name = "sword", increase_damage = atk.damage}}}
-		)
-	end
-	wesnoth.extract_unit(unit)
-	local newu = purge_objet(unit.__cfg)
-	wesnoth.put_unit(newu)
-end
-
-function apply.transposition(lvl, unit)
-	local torem = "transposition" .. tostring(lvl - 1)
-	wesnoth.add_modification(
-		unit,
-		"object",
-		{no_write = true, {"effect", {apply_to = "remove_ability", {"abilities", {{"isHere", {id = torem}}}}}}}
-	)
-
-	unit.variables.comp_spe = true
-
-	wesnoth.add_modification(
-		unit,
-		"object",
-		{
-			no_write = true,
-			{
-				"effect",
-				{
-					apply_to = "new_ability",
-					{
-						"abilities",
-						{
-							{
-								"isHere",
-								{
-									id = "transposition" .. lvl,
-									name = _ "War link",
-									description = _ "Vranken senses its sword spirit and may switch position with Göndhul, no matter the distance between them. \n<span color='green'>Available now </span>"
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	)
-	wesnoth.extract_unit(unit)
-	local newu = purge_objet(unit.__cfg)
-	wesnoth.put_unit(newu)
-end
-
 -- BRINX
-
 info["brinx"] = {
 	help_des = _ "Brinx seeks to avenge Jödumur's death. Every time he " ..
 		"<span  font_weight ='bold' >fights against muspellians</span>, " ..
@@ -407,21 +206,117 @@ info["brinx"] = {
 	}
 }
 
-function apply.def_muspell(lvl, unit)
-	local id, old_id = "def_muspell" .. lvl, "def_muspell" .. tostring(lvl - 1)
-	wesnoth.add_modification(
-		unit,
-		"object",
-		{no_write = true, {"effect", {apply_to = "attack", remove_specials = "def_muspell" .. tostring(lvl - 1)}}}
-	)
-	wesnoth.add_modification(
-		unit,
+-- Implementation of special skills (trigered when choosing to a skill in menu item.)
+local apply = {}
+
+-- Supprime tous les objets ayant no_write=true d'une unité
+function purge_objet(tab)
+	local s = {}
+	for i, v in pairs(tab) do
+		if type(v) == "table" and #v >= 2 then
+			if v[1] == "object" and v[2].no_write then
+			else
+				table.insert(s, {v[1], purge_objet(v[2])})
+			end
+		else
+			s[i] = v
+		end
+	end
+	return s
+end
+
+function apply.leeches_cac(lvl, unit)
+	local id, old_id = "skill_leeches" .. lvl, "skill_leeches" .. tostring(lvl - 1)
+	unit:remove_modifications({id = old_id}, "object")
+
+	unit:add_modification(
 		"object",
 		{
-			no_write = true,
-			{"effect", {apply_to = "remove_ability", {"abilities", {{"isHere", {id = "def_muspell" .. tostring(lvl - 1)}}}}}}
+			id = id,
+			T.effect {
+				apply_to = "attack",
+				range = "melee",
+				T.set_specials {
+					mode = "append",
+					T.isHere {
+						id = "leeches*".. lvl,
+						name = _ "leeches",
+						description = _ "Regenerates " ..
+							tostring(lvl * 5 + 5) .. " % of the damage dealt in offense and defense. Also works against undead" --des
+					}
+				}
+			}
 		}
 	)
+end
+
+function apply.drain_cac(lvl, unit)
+	local id, old_id = "skill_drain_cac" .. lvl, "skill_drain_cac" .. tostring(lvl - 1)
+	unit:remove_modifications({id = old_id}, "object")
+
+	unit:add_modification(
+		"object",
+		{
+			id = id,
+			T.effect {
+				apply_to = "attack",
+				range = "melee",
+				T.set_specials {
+					mode = "append",
+					T.drains {
+						id = "drain_cac*" .. tostring(lvl),
+						name = _ "drains",
+						value = lvl * 10 + 20,
+						description = _ "Regenerates " ..
+							tostring(lvl * 10 + 20) .. " % of the damage dealt in offense and defense. Doesn't apply to undead", --ratio du drain
+						description_inactive = _ "Göndhul is too far away from Vranken.",
+						T.filter_self {
+							T.filter_location {
+								radius = 2 ^ (lvl + 1), --portee de la comp
+								T.filter {id = "sword_spirit"}
+							}
+						}
+					}
+				}
+			}
+		}
+	)
+end
+
+function apply.atk_brut(lvl, unit)
+	local id, old_id = "skill_atk_brut" .. lvl, "skill_atk_brut" .. tostring(lvl - 1)
+	unit:remove_modifications({id = old_id}, "object")
+
+	local atk = unit.attacks.sword
+	local new_attack = {
+		apply_to = "new_attack",
+		range = "melee",
+		type = "brut", 
+		damage = atk.damage * (70 + (lvl - 1) * 15) / 100,  --ratio degat
+		number = atk.number,
+		description = _ "ether sword",
+		icon = "attacks/atk_brut.png",
+	}
+
+	unit:add_modification(
+		"object",
+		{
+			id = id,
+			{"effect", new_attack}
+		}
+	)
+
+end
+
+function apply.transposition(lvl, unit)
+	local torem = "transposition" .. tostring(lvl - 1)
+	wesnoth.add_modification(
+		unit,
+		"object",
+		{no_write = true, {"effect", {apply_to = "remove_ability", {"abilities", {{"isHere", {id = torem}}}}}}}
+	)
+
+	unit.variables.comp_spe = true
 
 	wesnoth.add_modification(
 		unit,
@@ -438,42 +333,9 @@ function apply.def_muspell(lvl, unit)
 							{
 								"isHere",
 								{
-									id = "def_muspell" .. lvl,
-									name = _ "Nimble",
-									description = _ "Brinx learned how to better dodge muspellian attacks : +" ..
-										tostring(5 + lvl * 5) .. " % bonus defense." --des
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	)
-
-	wesnoth.add_modification(
-		unit,
-		"object",
-		{
-			no_write = true,
-			{
-				"effect",
-				{
-					apply_to = "attack",
-					{
-						"set_specials",
-						{
-							mode = "append",
-							{
-								"chance_to_hit",
-								{
-									id = "def_muspell" .. tostring(lvl),
-									name = "",
-									description = "",
-									sub = (5 + 5 * lvl),
-									 --chance to hit
-									apply_to = "opponent",
-									{"filter_opponent", {race = "muspell"}}
+									id = "transposition" .. lvl,
+									name = _ "War link",
+									description = _ "Vranken senses its sword spirit and may switch position with Göndhul, no matter the distance between them. \n<span color='green'>Available now </span>"
 								}
 							}
 						}
@@ -485,6 +347,44 @@ function apply.def_muspell(lvl, unit)
 	wesnoth.extract_unit(unit)
 	local newu = purge_objet(unit.__cfg)
 	wesnoth.put_unit(newu)
+end
+
+function apply.def_muspell(lvl, unit)
+	local id, old_id = "def_muspell" .. lvl, "def_muspell" .. tostring(lvl - 1)
+	unit:remove_modifications({id = old_id}, "object")
+
+	unit:add_modification(
+		"object",
+		{
+			id = id,
+			T.effect {
+				apply_to = "new_ability",
+				T.abilities {
+					T.isHere {
+						id = id,
+						name = _ "Nimble",
+						description = _ "Brinx learned how to better dodge muspellian attacks : +" ..
+							tostring(5 + lvl * 5) .. " % bonus defense." --des
+					}
+				}
+			},
+			T.effect {
+				apply_to = "attack",
+				T.set_specials {
+					mode = "append",
+					T.chance_to_hit {
+						id = "def_muspell" .. tostring(lvl),
+						name = "",
+						description = "",
+						sub = (5 + 5 * lvl),
+						--chance to hit
+						apply_to = "opponent",
+						T.filter_opponent {race = "muspell"}
+					}
+				}
+			}
+		}
+	)
 end
 
 function apply.dmg_muspell(lvl, unit)
@@ -520,7 +420,7 @@ function apply.dmg_muspell(lvl, unit)
 									id = "dmg_muspell" .. lvl,
 									name = _ "Muspell Terror",
 									description = _ "Brinx deals " .. tostring(lvl * 10) .. " % bonus damage when facing a muspellian opponent."
-								 --des
+									--des
 								}
 							}
 						}
@@ -642,7 +542,7 @@ function apply.muspell_rage(lvl, unit)
 									id = "muspell_rage" .. lvl,
 									name = _ "Revenge",
 									description = _ "Brinx deals and takes " .. (lvl * 10) .. " % bonus damage.",
-									 --des
+									--des
 									description_inactive = _ "There is no muspellian friend to anger Brinx.",
 									{"filter", {{"filter_side", {{"has_unit", {race = "muspell"}}}}}}
 								}
@@ -675,7 +575,7 @@ function apply.muspell_rage(lvl, unit)
 									apply_to = "both",
 									description = "",
 									multiply = (1 + lvl * 0.1),
-									 --rage bonus
+									--rage bonus
 									{"filter_self", {{"filter_side", {{"has_unit", {race = "muspell"}}}}}}
 								}
 							}

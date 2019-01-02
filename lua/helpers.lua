@@ -205,20 +205,6 @@ function get_ability(u, id_ability)
     return false
 end
 
-function get_special(att, id_special)
-    local list_specials = H.get_child(att, "specials") or {}
-    for spe in H.child_range(list_specials, "isHere") do
-        local name, lvl = spe.id:split("*")
-        if name == id_special then
-            if lvl == "" then
-                return 1
-            else
-                return tonumber(lvl)
-            end
-        end
-    end
-    return false
-end
 
 function sleep(s)
     local ntime = os.clock() + s
@@ -232,18 +218,17 @@ function table_skills(u)
     for adv in H.child_range(l, "advancement") do
         table.insert(s, adv.id)
     end
-    local function structure_skills(liste) -- construit la table de format {skill =lvl ,..} à partir de liste
-        local tab_u = {}
-        for i, v in pairs(liste) do
-            if tab_u[v] ~= nil then
-                tab_u[v] = tab_u[v] + 1
-            else
-                tab_u[v] = 1
-            end
+
+    -- construit la table de format {skill =lvl ,..} à partir de liste
+    local table_skill = {}
+    for i, v in pairs(s) do
+        if table_skill[v] ~= nil then
+            table_skill[v] = table_skill[v] + 1
+        else
+            table_skill[v] = 1
         end
-        return tab_u
     end
-    local table_skill = structure_skills(s)
+    
     return table_skill
 end
 

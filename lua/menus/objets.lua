@@ -19,6 +19,7 @@ function O.remove(unit_id, object_id)
 
     u:remove_modifications({id = object_id}, "object")
     u:remove_modifications({id = object_id}, "trait")
+    AM.update_lvl(u) -- remove_modification may delete extra lvls
 
     VAR.objets_joueur[object_id] = 0
 end

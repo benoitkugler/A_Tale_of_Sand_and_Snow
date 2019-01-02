@@ -197,6 +197,7 @@ function MCS.preshow(unit)
             local newlvl = unit.variables["table_comp_spe."..comp.name] + 1
             unit.variables["table_comp_spe."..comp.name] = newlvl 
             DB.apply[comp.name](newlvl,unit)
+            AM.update_lvl(unit) -- needed not to loose extras LVL, removed by u:remove_modifications
             MCS.init()
         else
             wesnoth.set_dialog_value(_"Confirm ?","lvl_up")

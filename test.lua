@@ -12,6 +12,7 @@ VAR.table_status.chilled[1] = {id="eefge",cd=5}
 
 
 
+
 function ES.kill()
 end
 function ES.atk()

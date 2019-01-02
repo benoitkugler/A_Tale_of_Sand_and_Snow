@@ -66,8 +66,8 @@ function fonc.transposition ()
 		local x ,y = vr.x ,vr.y
 		local x2,y2 = sword_spirit.x,sword_spirit.y
 	
-		wesnoth.put_unit(sword_spirit.x,sword_spirit.y,vr)
-		wesnoth.put_unit(x,y,sword_spirit)
+		vr:to_map(sword_spirit.x,sword_spirit.y)
+		sword_spirit:to_map(x,y)
 		wesnoth.fire("animate_unit",{flag="transposition_out" ,{"filter", { id="vranken"}},{"animate" ,{flag="transposition_out" ,{"filter", { id="sword_spirit"}}}}})
 		update_ab("transposition"..tostring(vr.variables.comp_spe_lvl),vr)
 	else
