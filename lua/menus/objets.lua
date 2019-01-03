@@ -1,6 +1,6 @@
 -- Menu Object and function to add and remove objects
 
-local _ = wesnoth.textdomain "wesnoth-A_Tale_of_Sand_and_Snow"
+ 
 
 -- Librairie Objets
 

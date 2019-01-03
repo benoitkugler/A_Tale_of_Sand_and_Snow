@@ -2,7 +2,7 @@
 -- Actual modiciation should be oneliner, annotated with a -- comment
 
 
-local _ = wesnoth.textdomain "wesnoth-A_Tale_of_Sand_and_Snow"
+ 
 
 
 EXP = {}

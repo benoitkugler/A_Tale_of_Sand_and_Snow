@@ -1,4 +1,4 @@
-local _ = wesnoth.textdomain "wesnoth-A_Tale_of_Sand_and_Snow"
+ 
 
 DB = wesnoth.require("~add-ons/A_Tale_of_Sand_and_Snow/lua/DB/competences_spe.lua")
 

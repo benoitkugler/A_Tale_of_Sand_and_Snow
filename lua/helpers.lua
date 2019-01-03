@@ -1,6 +1,6 @@
 -- Misc. helpers
 
-local _ = wesnoth.textdomain "wesnoth-A_Tale_of_Sand_and_Snow"
+ 
 
 function table.val_to_str(v)
     if "string" == type(v) then

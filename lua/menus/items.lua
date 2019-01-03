@@ -1,4 +1,4 @@
-local _ = wesnoth.textdomain "wesnoth-A_Tale_of_Sand_and_Snow"
+ 
 
 wesnoth.dofile("~add-ons/A_Tale_of_Sand_and_Snow/lua/menus/comp_spe.lua")
 wesnoth.dofile("~add-ons/A_Tale_of_Sand_and_Snow/lua/menus/arbre.lua")

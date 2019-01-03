@@ -3,7 +3,7 @@ ES = {}
 
 
 
-local _ = wesnoth.textdomain "wesnoth-A_Tale_of_Sand_and_Snow"
+ 
 
 local explain_brinx_skill = _ " <span weight='bold'>Fighting muspellians</span> will eventually unlock unique " ..
 		"skills for Brinx." ..
@@ -64,10 +64,10 @@ function ES.kill()
 	if u.id == "jod" then
 		wesnoth.fire("message" , {speaker="jod",message=_"Argh... I fell... The council must now about this att..."})
 		wesnoth.fire("message" , {speaker="brinx",message=_"Nooo ! Bloody muspellians !"})
-		popup(_"Welcome",_"\tHello friend, and welcome to this campaign. 
-		Let me introduce you to your first hero : <span color='" .. brinx_color .. "' weight='bold'> Brinx</span>.
-		 As he has lost his revered Lieutenant, Brinx is feeling hatred towards muspellians, 
-		 and this hatred will make him stronger." .. explain_brinx_skill)
+		popup(_"Welcome",_"\tHello friend, and welcome to this campaign." ..
+		"Let me introduce you to your first hero : <span color='" .. brinx_color .. "' weight='bold'> Brinx</span>. " ..
+		 "As he has lost his revered Lieutenant, Brinx is feeling hatred towards muspellians, " .. 
+		 "and this hatred will make him stronger." .. explain_brinx_skill)
         
 	elseif u.id == "brinx" then
 		wesnoth.fire("message" , {speaker="brinx",message=_"No... I have to avenge Nifhell..."})
@@ -186,8 +186,8 @@ function ES.turn12()
 	wesnoth.fire("message" , {speaker="rand",message=_"Halt soldiers, enough blood for today. We are in control of the White Arks facility, that's the point. Put in jail the remaining Nifhellians, and alert the Khan about the success of our mission !"})
 	if wesnoth.get_units{ id="jod"}[1] ~= nil then
 			popup(_"Welcome",_"\tHello friend, and welcome to this campaign."
-			"Let me introduce you to your first hero : <span color='" .. brinx_color .. "' weight='bold'> Brinx</span>"
-			"As he was struck by the savage muspellian raid on Dead Island, Brinx is feeling"
+			"Let me introduce you to your first hero : <span color='" .. brinx_color .. "' weight='bold'> Brinx</span>" ..
+			"As he was struck by the savage muspellian raid on Dead Island, Brinx is feeling" ..
 			"hatred towards muspellians, and this hatred will make him stronger." .. explain_brinx_skill)
         end
        wesnoth.fire("endlevel",{result="victory",side=1})

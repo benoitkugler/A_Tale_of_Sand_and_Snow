@@ -1,6 +1,6 @@
 -- Called once at lua require. Setup common events.
 
-local _ = wesnoth.textdomain "wesnoth-A_Tale_of_Sand_and_Snow"
+ 
 
 ST={}
 

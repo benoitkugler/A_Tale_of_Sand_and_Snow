@@ -1,0 +1,299 @@
+DB_AMLAS.brinx = {
+	{
+		id = "sword",
+		image = "attacks/sword-elven.png",
+		max_times = 3,
+		always_display = 1,
+		description = _ "Better with swords",
+		T.effect {
+			apply_to = "attack",
+			increase_damage = 1,
+			name = "sword"
+		},
+		unpack(standard_amla_heal(5))
+	},
+	{
+		id = "though",
+		require_amla = "hp,hp",
+		image = "icons/cuirass_leather_studded.png",
+		max_times = 2,
+		always_display = 1,
+		description = _ "Tougher, + 5% resistances",
+		T.effect {
+			apply_to = "resistance",
+			T.resistance {
+				impact = -5,
+				blade = -5,
+				arcane = -5,
+				cold = -5,
+				pierce = -5,
+				fire = -5
+			}
+		},
+		unpack(standard_amla_heal(7))
+	},
+	{
+		id = "bow_fire",
+		require_amla = "bow_precis",
+		image = "attacks/bow-elven-fire.png",
+		max_times = 1,
+		always_display = 1,
+		description = _ "Grants a bow enchanted by elven magic, which sets arrows ablaze.",
+		T.effect {
+			icon = "attacks/bow-elven-fire.png",
+			range = "ranged",
+			number = 0,
+			type = "fire",
+			description = _ "burning bow",
+			damage = -2,
+			apply_to = "new_attack",
+			name = "copy_bow"
+		},
+		unpack(standard_amla_heal(15))
+	},
+	{
+		id = "pm",
+		image = "icons/boots_elven.png",
+		max_times = 2,
+		always_display = 1,
+		description = _ "Faster, +1 move",
+		T.effect {
+			increase = 1,
+			apply_to = "movement"
+		},
+		unpack(standard_amla_heal(5))
+	},
+	{
+		id = "bow_focus",
+		_level_bonus = true,
+		require_amla = "bow_fire,bow_pierce",
+		image = "attacks/bow_focus.png",
+		max_times = 1,
+		always_display = 1,
+		description = _ "Deadly accurate with bows : 80% chance to hit.",
+		T.effect {
+			set_icon = "attacks/bow_focus.png",
+			apply_to = "attack",
+			name = "bow",
+			T.set_specials {
+				mode = "append",
+				T.chance_to_hit {
+					id = "focus",
+					value = 80,
+					description = _ "This attack always has a 80% chance to hit regardless of the defensive ability of the unit being attacked.",
+					cumulative = false,
+					name = "focus"
+				}
+			}
+		},
+		T.effect {
+			apply_to = "attack",
+			remove_specials = "marksman,precis",
+			name = "bow"
+		},
+		unpack(standard_amla_heal(10))
+	},
+	{
+		id = "bow2",
+		require_amla = "bow_precis",
+		image = "attacks/bow-elven.png",
+		max_times = 2,
+		always_display = 1,
+		description = _ "Even better with bows",
+		T.effect {
+			apply_to = "attack",
+			increase_damage = 2,
+			name = "bow"
+		},
+		unpack(standard_amla_heal(5))
+	},
+	{
+		id = "bow_pierce",
+		require_amla = "bow_precis",
+		image = "icons/arrow_strong.png",
+		max_times = 1,
+		always_display = 1,
+		description = _ "Massive arrows dealing damgage to 2 ennemies at once.",
+		T.effect {
+			name = "bow",
+			apply_to = "attack",
+			T.set_specials {
+				mode = "append",
+				T.isHere {
+					id = "weapon_pierce",
+					description = _ "Deals 75% damage to the enemy behind the target.",
+					name = "pierce"
+				}
+			}
+		},
+		unpack(standard_amla_heal(15))
+	},
+	{
+		id = "movement",
+		_level_bonus = true,
+		require_amla = "skirmisher",
+		image = "icons/sandals.png",
+		max_times = 1,
+		always_display = 1,
+		description = _ "Even faster on sands or snow",
+		T.effect {
+			replace = true,
+			apply_to = "movement_costs",
+			T.movement_costs {
+				frozen = 1,
+				sand = 1
+			}
+		},
+		unpack(standard_amla_heal(10))
+	},
+	{
+		id = "bow_precis",
+		_level_bonus = true,
+		require_amla = "bow_atk",
+		image = "attacks/bow_precis.png",
+		max_times = 1,
+		always_display = 1,
+		description = _ "More precise with bows : 70% chance to hit.",
+		T.effect {
+			set_icon = "attacks/bow_precis.png",
+			apply_to = "attack",
+			name = "bow",
+			T.set_specials {
+				mode = "append",
+				T.chance_to_hit {
+					id = "precis",
+					value = 70,
+					description = _ "This attack always has a 70% chance to hit regardless of the defensive ability of the unit being attacked.",
+					cumulative = false,
+					name = "precision"
+				}
+			}
+		},
+		T.effect {
+			apply_to = "attack",
+			remove_specials = "marksman",
+			name = "bow"
+		},
+		unpack(standard_amla_heal(10))
+	},
+	{
+		id = "skirmisher",
+		require_amla = "pm,pm",
+		image = "icons/sandals.png",
+		max_times = 1,
+		always_display = 1,
+		description = _ "Extremly nimble, now able to dodge ennemies",
+		T.effect {
+			apply_to = "new_ability",
+			T.abilities {
+				T.skirmisher {
+					id = "skirmisher",
+					affect_self = true,
+					description = _ "This unit is skilled in moving past enemies quickly, and ignores all enemy Zones of Control.",
+					female_name = "skirmisher",
+					name = "skirmisher"
+				}
+			}
+		},
+		unpack(standard_amla_heal(10))
+	},
+	{
+		id = "bow_atk",
+		require_amla = "bow,bow",
+		image = "attacks/bow-elven.png",
+		max_times = 1,
+		always_display = 1,
+		description = _ "Faster with bows",
+		T.effect {
+			apply_to = "attack",
+			name = "bow",
+			increase_attacks = 1
+		},
+		unpack(standard_amla_heal(10))
+	},
+	{
+		id = "sword_atk",
+		require_amla = "sword,sword,sword",
+		image = "attacks/sword-elven.png",
+		max_times = 1,
+		always_display = 1,
+		description = _ "Faster with swords",
+		T.effect {
+			apply_to = "attack",
+			name = "sword",
+			increase_attacks = 1
+		},
+		unpack(standard_amla_heal(10))
+	},
+	{
+		id = "bloodlust",
+		_level_bonus = true,
+		require_amla = "bow_focus,bow_atk2",
+		image = "icons/blood-frenzy.png",
+		max_times = 1,
+		always_display = 1,
+		description = _ "Upon killing a unit, this unit will gain another attack and some moves.",
+		T.effect {
+			apply_to = "new_ability",
+			T.abilities {
+				T.isHere {
+					id = "bloodlust",
+					description = _ "Killing a unit refreshes this unit's strength, and gives it a new attack. Happens at most once a turn.",
+					name = "Bloodlust"
+				}
+			}
+		},
+		unpack(standard_amla_heal(15))
+	},
+	{
+		id = "hp",
+		image = "icons/hp.png",
+		max_times = 2,
+		always_display = 1,
+		description = _ "Healthier, + 5HP",
+		T.effect {
+			increase_total = 5,
+			apply_to = "hitpoints"
+		},
+		unpack(standard_amla_heal(5))
+	},
+	{
+		id = "bow_atk2",
+		require_amla = "bow2,bow2",
+		image = "attacks/bow-elven.png",
+		max_times = 1,
+		always_display = 1,
+		description = _ "Even faster with bows",
+		T.effect {
+			apply_to = "attack",
+			name = "bow",
+			increase_attacks = 1
+		},
+		unpack(standard_amla_heal(10))
+	},
+	{
+		id = "bow",
+		image = "attacks/bow-elven.png",
+		max_times = 2,
+		always_display = 1,
+		description = _ "Better with bows",
+		T.effect {
+			apply_to = "attack",
+			increase_damage = 2,
+			name = "bow"
+		},
+		unpack(standard_amla_heal(5))
+	},
+	{
+		max_times = -1,
+		description = _ "",
+		require_amla = "bloodlust,movement,though,though",
+		id = "default",
+		image = "",
+		T.effect {
+			increase_total = 1,
+			apply_to = "hitpoints"
+		},
+		unpack(standard_amla_heal(5))
+	}
+}

@@ -1,4 +1,4 @@
-local _ = wesnoth.textdomain "wesnoth-A_Tale_of_Sand_and_Snow"
+ 
 
 -- Metadata for specials skills (implementation follows)
 -- In descriptions string the pattern | | will be replace by the color of the skill.
