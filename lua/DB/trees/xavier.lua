@@ -1,6 +1,9 @@
 DB_AMLAS.xavier = {
+	_default_border = "#a99508", 
+	_default_background = "181 167 71", -- rgb
 	{
 		id = "leadership1",
+		_short_desc = "Leadership I",
 		image = "misc/laurel.png",
 		max_times = 1,
 		always_display = 1,
@@ -28,6 +31,7 @@ DB_AMLAS.xavier = {
 	},
 	{
 		id = "leadership2",
+		_short_desc = "Leadership II",
 		require_amla = "leadership1",
 		image = "misc/laurel.png",
 		max_times = 1,
@@ -62,6 +66,7 @@ DB_AMLAS.xavier = {
 	},
 	{
 		id = "leadership3",
+		_short_desc = "Leadership III",
 		require_amla = "leadership2",
 		image = "misc/laurel.png",
 		max_times = 1,
@@ -81,6 +86,8 @@ DB_AMLAS.xavier = {
 	},
 	{
 		id = "defense_reduc",
+		_short_desc = "<B> Defense shred </B>",
+		_color = {54, 255, 5},
 		require_amla = "sword_precis,crossbow_marksman",
 		image = "icons/broken_tunic.png",
 		max_times = 3,
@@ -94,6 +101,7 @@ DB_AMLAS.xavier = {
 	},
 	{
 		id = "sword2",
+		_short_desc = "Sword <BR /> <B> +2</B> dmg",
 		require_amla = "sword_marksman",
 		image = "attacks/sword-elven.png",
 		max_times = 2,
@@ -108,6 +116,7 @@ DB_AMLAS.xavier = {
 	},
 	{
 		id = "defense",
+		_short_desc = "Bonus defense",
 		require_amla = "leadership3",
 		image = "icons/dress_silk_green.png",
 		max_times = 3,
@@ -121,6 +130,7 @@ DB_AMLAS.xavier = {
 	},
 	{
 		id = "crossbow",
+		_short_desc = "Crossbow <BR /> <B> +2</B> dmg",
 		image = "attacks/crossbow-human.png",
 		max_times = 2,
 		always_display = 1,
@@ -134,6 +144,8 @@ DB_AMLAS.xavier = {
 	},
 	{
 		id = "armor_shred",
+		_short_desc = "<B> Armor shred </B>",
+		_color = {54, 255, 5},
 		_level_bonus = true,
 		require_amla = "sword_precis,crossbow_marksman",
 		image = "icons/broken_shield.png",
@@ -148,6 +160,7 @@ DB_AMLAS.xavier = {
 	},
 	{
 		id = "crossbow_marksman",
+		_short_desc = "Crossbow <BR /> <B> Marksman</B> ",
 		_level_bonus = true,
 		require_amla = "crossbow_atk",
 		image = "attacks/crossbow-human.png",
@@ -174,6 +187,8 @@ DB_AMLAS.xavier = {
 	},
 	{
 		id = "sword_marksman",
+		_short_desc = "Sword <BR /> <B> Marksman</B>",
+		_color = {69, 117, 174},
 		_level_bonus = true,
 		require_amla = "sword,sword",
 		image = "attacks/sword_marksman.png",
@@ -200,6 +215,7 @@ DB_AMLAS.xavier = {
 	},
 	{
 		id = "crossbow_atk",
+		_short_desc = "Crossbow <BR /> <B> +1</B> str.",
 		require_amla = "crossbow,crossbow",
 		image = "attacks/crossbow-human.png",
 		max_times = 1,
@@ -214,6 +230,7 @@ DB_AMLAS.xavier = {
 	},
 	{
 		id = "sword",
+		_short_desc = "Sword <BR /> <B> +2</B> dmg",
 		image = "attacks/sword-elven.png",
 		max_times = 2,
 		always_display = 1,
@@ -227,6 +244,7 @@ DB_AMLAS.xavier = {
 	},
 	{
 		id = "sword_atk2",
+		_short_desc = "Sword <BR /> <B> +1</B> str",
 		require_amla = "sword2,sword2",
 		image = "attacks/sword-elven.png",
 		max_times = 1,
@@ -241,6 +259,7 @@ DB_AMLAS.xavier = {
 	},
 	{
 		id = "defense2",
+		_short_desc = "Defense range <BR /> + 1",
 		_level_bonus = true,
 		require_amla = "defense,defense,defense",
 		image = "icons/dress_silk_green.png",
@@ -255,6 +274,8 @@ DB_AMLAS.xavier = {
 	},
 	{
 		id = "sword_precis",
+		_short_desc = "Sword <BR /> <B> Precis </B>",
+		_color = {69, 117, 174},
 		_level_bonus = true,
 		require_amla = "sword_atk2,leadership3",
 		image = "attacks/sword_precis.png",

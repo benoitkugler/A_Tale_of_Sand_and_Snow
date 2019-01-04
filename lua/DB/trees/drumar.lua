@@ -1,6 +1,9 @@
 DB_AMLAS.drumar = {
+	_default_border="#00FFF5",
+	_defaultf_background="0 168 162",
 	{
 		id = "though",
+		_short_desc = "Magic resistances <BR/>  <B> +7 </B> %",
 		require_amla = "hp,hp",
 		image = "icons/helmet_chain-coif.png",
 		max_times = 3,
@@ -18,6 +21,7 @@ DB_AMLAS.drumar = {
 	},
 	{
 		id = "wave",
+		_short_desc = "Chill wave <BR /> <B> +2</B> dmg",
 		image = "attacks/iceball.png",
 		max_times = 3,
 		always_display = 1,
@@ -31,6 +35,8 @@ DB_AMLAS.drumar = {
 	},
 	{
 		id = "toile_snare",
+		_short_desc = "Entangle  <BR/><B>Snare</B>",
+		_color = {28, 220, 63},
 		_level_bonus = true,
 		require_amla = "toile_atk,toile_atk,toile_atk",
 		image = "attacks/entangle_snare.png",
@@ -55,6 +61,7 @@ DB_AMLAS.drumar = {
 	},
 	{
 		id = "toile",
+		_short_desc = "Entangle <BR /> <B> +2</B> dmg",
 		image = "attacks/entangle.png",
 		max_times = 2,
 		always_display = 1,
@@ -68,6 +75,8 @@ DB_AMLAS.drumar = {
 	},
 	{
 		id = "wave_weaker_slow2",
+		_short_desc = "<B> Freezing</B><BR />  Chill wave  ",
+		_color = {145, 145, 145},
 		require_amla = "wave_weaker_slow1",
 		image = "icons/iceball_slow.png",
 		max_times = 1,
@@ -95,6 +104,8 @@ DB_AMLAS.drumar = {
 	},
 	{
 		id = "attack_chilled",
+		_short_desc = "<B> Chilling touch</B> ",
+		_color = {30, 217, 208},
 		_level_bonus = true,
 		require_amla = "wave_arch_magical,wave_res2,wave_weaker_slow2",
 		image = "attacks/touch-undead.png",
@@ -122,6 +133,7 @@ DB_AMLAS.drumar = {
 	},
 	{
 		id = "hp",
+		_short_desc = "Health <BR/> <B> +7 </B> hp",
 		image = "icons/amla-default.png",
 		max_times = 2,
 		always_display = 1,
@@ -134,6 +146,7 @@ DB_AMLAS.drumar = {
 	},
 	{
 		id = "toile_atk",
+		_short_desc = "Entangle  <BR /> <B> +1</B> str",
 		require_amla = "toile,toile",
 		image = "attacks/entangle.png",
 		max_times = 3,
@@ -148,6 +161,7 @@ DB_AMLAS.drumar = {
 	},
 	{
 		id = "wave_atk",
+		_short_desc = "Chill wave  <BR /> <B> +1</B> str",
 		require_amla = "wave,wave,wave",
 		image = "attacks/iceball.png",
 		max_times = 2,
@@ -162,6 +176,8 @@ DB_AMLAS.drumar = {
 	},
 	{
 		id = "wave_res2",
+		_short_desc = "<B> Cracking </B><BR />  Chill wave ",
+		_color = {185, 92, 67},
 		require_amla = "wave_res1",
 		image = "icons/iceball_res.png",
 		max_times = 1,
@@ -189,6 +205,8 @@ DB_AMLAS.drumar = {
 	},
 	{
 		id = "wave_weaker_slow1",
+		_short_desc = "<B> Slowing</B><BR />  Chill wave  ",
+		_color = {145, 145, 145},
 		require_amla = "wave_atk,wave_atk",
 		image = "icons/iceball_slow.png",
 		max_times = 1,
@@ -211,6 +229,8 @@ DB_AMLAS.drumar = {
 	},
 	{
 		id = "wave_arch_magical",
+		_short_desc = "Chill wave  <BR /><B>Arch Magical </B>",
+		_color = {69, 117, 174},
 		_level_bonus = true,
 		require_amla = "wave_atk,wave_atk",
 		image = "attacks/iceball_arch_magical.png",
@@ -241,6 +261,8 @@ DB_AMLAS.drumar = {
 	},
 	{
 		id = "wave_res1",
+		_short_desc = "<B> Weakening </B><BR />  Chill wave ",
+		_color = {185, 92, 67},
 		require_amla = "wave_atk,wave_atk",
 		image = "icons/iceball_res.png",
 		max_times = 1,

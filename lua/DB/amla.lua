@@ -1,15 +1,10 @@
 -- Load amlas tree defined in trees/
 -- Each amla may have function as effect, which will be called with current unit as argument
+-- Each amla may have _level_bonus boolean raising by 1 the lvl of the unit
+-- Each amla should define a _short_desc string field (where dot formatting is allowed). 
+-- This string will be the title of the matching node in the graph displayed in game.
 
 -- TODO: Refactor copy objet
-
-
--- ##################################################
--- standalone header. Should be commented when working in wesnoth.
--- _  = function (s) return s end
--- T = {}
--- setmetatable(T, {__index = function(k,t) return function(...) return ... end end})
--- ################################################
 
 AM = {}
 

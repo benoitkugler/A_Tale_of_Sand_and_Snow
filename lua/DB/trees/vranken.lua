@@ -1,6 +1,9 @@
 DB_AMLAS.vranken = {
+	_default_border = "#1C71CD",
+	_default_background = "66 65 193",
 	{
 		id = "sword_marksman",
+		_short_desc = "Sword <BR/>Marksman",
 		_level_bonus = true,
 		require_amla = "sword_bow_atk",
 		image = "attacks/sword_marksman.png",
@@ -27,6 +30,8 @@ DB_AMLAS.vranken = {
 	},
 	{
 		id = "bow_slow",
+		_short_desc = "Slowing <BR/>Bow",
+		_color = {79, 253, 235},
 		require_amla = "sword_bow_atk",
 		image = "attacks/bow_slow.png",
 		max_times = 1,
@@ -49,6 +54,7 @@ DB_AMLAS.vranken = {
 	},
 	{
 		id = "sword_atk",
+		_short_desc = "Sword <BR /> <B> +1</B> str",
 		require_amla = "sword,sword",
 		image = "attacks/sword-human.png",
 		max_times = 1,
@@ -63,6 +69,8 @@ DB_AMLAS.vranken = {
 	},
 	{
 		id = "sword_precis",
+		_short_desc = "Sword <BR /> <B> Precision</B>",
+		_color = {211, 224, 238},
 		require_amla = "sword_atk",
 		image = "attacks/sword_precis.png",
 		max_times = 1,
@@ -92,6 +100,7 @@ DB_AMLAS.vranken = {
 	},
 	{
 		id = "sword_bow_atk",
+		_short_desc = "Sword and Bow <BR /> <B> +1</B> str",
 		require_amla = "sword_bow,sword_bow,sword_bow",
 		image = "icons/bow_sword.png",
 		max_times = 1,
@@ -111,6 +120,7 @@ DB_AMLAS.vranken = {
 	},
 	{
 		id = "sword_bow",
+		_short_desc = "Sword and Bow <BR /> <B> +1</B> dmg",
 		image = "icons/bow_sword.png",
 		max_times = 3,
 		always_display = 1,
@@ -129,6 +139,7 @@ DB_AMLAS.vranken = {
 	},
 	{
 		id = "sand",
+		_short_desc = "More nimble <BR/> on <B> sand </B>",
 		_level_bonus = true,
 		require_amla = "snow",
 		image = "icons/boots_sand.png",
@@ -153,6 +164,7 @@ DB_AMLAS.vranken = {
 	},
 	{
 		id = "snow",
+		_short_desc = "More nimble <BR/> on <B> snow </B>",
 		require_amla = "pm,pm",
 		image = "icons/boots_ice.png",
 		max_times = 1,
@@ -176,6 +188,7 @@ DB_AMLAS.vranken = {
 	},
 	{
 		id = "though",
+		_short_desc = "Resistances <BR/>  <B> +7 </B> %",
 		require_amla = "regen10,regen20",
 		image = "icons/cuirass_leather_studded.png",
 		max_times = 2,
@@ -196,6 +209,7 @@ DB_AMLAS.vranken = {
 	},
 	{
 		id = "bow",
+		_short_desc = "Bow <BR /> <B> +2</B> dmg",
 		require_amla = "bow_slow",
 		image = "attacks/bow-elven.png",
 		max_times = 1,
@@ -210,6 +224,7 @@ DB_AMLAS.vranken = {
 	},
 	{
 		id = "regen20",
+		_short_desc = "Regeneration <BR/> <B> +20 </B> hp",
 		require_amla = "regen10",
 		image = "icons/potion_red_medium.png",
 		max_times = 1,
@@ -239,6 +254,7 @@ DB_AMLAS.vranken = {
 	},
 	{
 		id = "regen10",
+		_short_desc = "Regeneration <BR/> <B> +10 </B> hp",
 		image = "icons/potion_red_small.png",
 		max_times = 1,
 		always_display = 1,
@@ -258,6 +274,8 @@ DB_AMLAS.vranken = {
 	},
 	{
 		id = "bow_mayhem",
+		_short_desc = "Bow<BR /> <B> Mayhem </B>",
+		_color = {123, 106, 184},
 		require_amla = "bow_atk,bow_atk",
 		image = "icons/bow_mayhem.png",
 		max_times = 1,
@@ -280,6 +298,8 @@ DB_AMLAS.vranken = {
 	},
 	{
 		id = "sword",
+		_short_desc = "Sword <BR /> <B> +2</B> dmg",
+		_color = {211, 224, 238},
 		require_amla = "sword_marksman",
 		image = "attacks/sword-human.png",
 		max_times = 2,
@@ -294,6 +314,7 @@ DB_AMLAS.vranken = {
 	},
 	{
 		id = "bow_atk",
+		_short_desc = "Bow <BR /> <B> +1</B> str",
 		require_amla = "bow",
 		image = "attacks/bow-elven.png",
 		max_times = 2,
@@ -308,6 +329,7 @@ DB_AMLAS.vranken = {
 	},
 	{
 		id = "pm",
+		_short_desc = "Moves <BR/> <B> +1 </B>",
 		image = "icons/boots_elven.png",
 		max_times = 2,
 		always_display = 1,
@@ -320,6 +342,7 @@ DB_AMLAS.vranken = {
 	},
 	{
 		id = "bow_firststrike",
+		_short_desc = "Bow <BR /> <B> First-strike</B>",
 		require_amla = "bow_atk,bow_atk",
 		image = "icons/bow_firststrike.png",
 		max_times = 1,
@@ -341,6 +364,8 @@ DB_AMLAS.vranken = {
 	},
 	{
 		id = "sword_cleave",
+		_short_desc = "Sword <BR /> <B> Cleave </B>",
+		_color = {132, 94, 114},
 		_level_bonus = true,
 		require_amla = "sword_atk",
 		image = "icons/sword_cleave.png",

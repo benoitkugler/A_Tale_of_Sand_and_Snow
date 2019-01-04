@@ -1,6 +1,9 @@
 DB_AMLAS.brinx = {
+	_default_border="#1EF113",
+	_default_background="68 154 42",
 	{
 		id = "sword",
+		_short_desc = "Sword <BR /> <B> +1 </B> dmg",
 		image = "attacks/sword-elven.png",
 		max_times = 3,
 		always_display = 1,
@@ -14,6 +17,7 @@ DB_AMLAS.brinx = {
 	},
 	{
 		id = "though",
+		_short_desc = "Resistances <BR/>  <B> +5 </B> %",
 		require_amla = "hp,hp",
 		image = "icons/cuirass_leather_studded.png",
 		max_times = 2,
@@ -34,6 +38,8 @@ DB_AMLAS.brinx = {
 	},
 	{
 		id = "bow_fire",
+		_short_desc = "<B> Fire </B> <BR />  Bow",
+		_color = {214, 68, 17},
 		require_amla = "bow_precis",
 		image = "attacks/bow-elven-fire.png",
 		max_times = 1,
@@ -53,6 +59,7 @@ DB_AMLAS.brinx = {
 	},
 	{
 		id = "pm",
+		_short_desc = "Moves <BR/>  <B> +1 </B>",
 		image = "icons/boots_elven.png",
 		max_times = 2,
 		always_display = 1,
@@ -65,6 +72,8 @@ DB_AMLAS.brinx = {
 	},
 	{
 		id = "bow_focus",
+		_short_desc = "Bow <BR /> <B> Focus </B>",
+		_color = {69, 117, 174},
 		_level_bonus = true,
 		require_amla = "bow_fire,bow_pierce",
 		image = "attacks/bow_focus.png",
@@ -95,6 +104,7 @@ DB_AMLAS.brinx = {
 	},
 	{
 		id = "bow2",
+		_short_desc = "Bow <BR /> <B> +2</B> dmg",
 		require_amla = "bow_precis",
 		image = "attacks/bow-elven.png",
 		max_times = 2,
@@ -109,6 +119,8 @@ DB_AMLAS.brinx = {
 	},
 	{
 		id = "bow_pierce",
+		_short_desc = "<B> Piercing </B> <BR />  Arrows",
+		_color = {214, 220, 220},
 		require_amla = "bow_precis",
 		image = "icons/arrow_strong.png",
 		max_times = 1,
@@ -130,6 +142,7 @@ DB_AMLAS.brinx = {
 	},
 	{
 		id = "movement",
+		_short_desc = "Faster on <BR /> sand &amp; snow",
 		_level_bonus = true,
 		require_amla = "skirmisher",
 		image = "icons/sandals.png",
@@ -148,6 +161,8 @@ DB_AMLAS.brinx = {
 	},
 	{
 		id = "bow_precis",
+		_short_desc = "Bow <BR /> <B> Precision</B>",
+		_color = {69, 117, 174},
 		_level_bonus = true,
 		require_amla = "bow_atk",
 		image = "attacks/bow_precis.png",
@@ -178,6 +193,7 @@ DB_AMLAS.brinx = {
 	},
 	{
 		id = "skirmisher",
+		_short_desc = "Skirmisher",
 		require_amla = "pm,pm",
 		image = "icons/sandals.png",
 		max_times = 1,
@@ -199,6 +215,7 @@ DB_AMLAS.brinx = {
 	},
 	{
 		id = "bow_atk",
+		_short_desc = "Bow <BR /> <B> +1</B> str",
 		require_amla = "bow,bow",
 		image = "attacks/bow-elven.png",
 		max_times = 1,
@@ -213,6 +230,7 @@ DB_AMLAS.brinx = {
 	},
 	{
 		id = "sword_atk",
+		_short_desc = "Sword <BR /> <B> +1</B> str",
 		require_amla = "sword,sword,sword",
 		image = "attacks/sword-elven.png",
 		max_times = 1,
@@ -227,6 +245,8 @@ DB_AMLAS.brinx = {
 	},
 	{
 		id = "bloodlust",
+		_short_desc = "<B> Bloodlust </B>",
+		_color = {54, 255, 5},
 		_level_bonus = true,
 		require_amla = "bow_focus,bow_atk2",
 		image = "icons/blood-frenzy.png",
@@ -247,6 +267,7 @@ DB_AMLAS.brinx = {
 	},
 	{
 		id = "hp",
+		_short_desc = "Health <BR/> <B> +5 </B> hp",
 		image = "icons/hp.png",
 		max_times = 2,
 		always_display = 1,
@@ -259,6 +280,7 @@ DB_AMLAS.brinx = {
 	},
 	{
 		id = "bow_atk2",
+		_short_desc = "Bow <BR /> <B> +1</B> str",
 		require_amla = "bow2,bow2",
 		image = "attacks/bow-elven.png",
 		max_times = 1,
@@ -273,6 +295,7 @@ DB_AMLAS.brinx = {
 	},
 	{
 		id = "bow",
+		_short_desc = "Bow <BR /> <B> +2</B> dmg",
 		image = "attacks/bow-elven.png",
 		max_times = 2,
 		always_display = 1,
@@ -286,7 +309,7 @@ DB_AMLAS.brinx = {
 	},
 	{
 		max_times = -1,
-		description = _ "",
+		description = _ " Whow, you've completed all the tree. Bravo !",
 		require_amla = "bloodlust,movement,though,though",
 		id = "default",
 		image = "",

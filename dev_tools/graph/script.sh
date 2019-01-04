@@ -1,5 +1,5 @@
 #!/bin/bash
-echo "Bienvenue dans l'outil de création d'arbre de compétences !"
+echo "Welcome in the ALMA tree image builder !"
  
 ADDON_DATA_PATH=$HOME/.config/wesnoth-1.14/data/add-ons/A_Tale_of_Sand_and_Snow/
 WESNOTH_PATH=/usr/share/games/wesnoth/1.14
@@ -10,25 +10,20 @@ keep="1"
 full_process="0"
 while [ $keep = "1" ]
 do  
-    echo "Choisir l'ID du personnage (fichier lua à charger et dossier d'écriture) :";
+    echo "Character ID ? :";
     read commande;
     if [ "$commande" = "" ]; then
-        echo "Parametres manquants !"
+        echo "Missing parameters !"
     else
         tabl_par=(${commande// / })
-        arg1=${tabl_par[0]}
+        id=${tabl_par[0]}
+        arg1=${tabl_par[1]}
         if [ "$arg1" == "-f" ]; then
             full_process="1"
-            id=${tabl_par[1]}
-        else
-            id=$arg1
         fi;
         keep="0"
     fi;
 done  
-
-
-couleurfond=$(lua -e "dofile(\"${ADDON_DATA_PATH}dev_tools/graph/arbres_lua/"$id".lua\"); print(defaultfond)") &&
 
 
 if [ $full_process = "0" ]; then
@@ -38,8 +33,11 @@ fi;
 
 rm -r ${ADDON_DATA_PATH}dev_tools/graph/layers;
 mkdir ${ADDON_DATA_PATH}dev_tools/graph/layers;
-> ${ADDON_DATA_PATH}dev_tools/graph/tmp.cfg;
-myvar=$(lua ${ADDON_DATA_PATH}dev_tools/graph/gener.lua $id ${ADDON_DATA_PATH}); 
+lua_out=$(lua ${ADDON_DATA_PATH}dev_tools/graph/build_graph.lua $id); 
+lua_out=($lua_out)
+
+liste_layers=${lua_out[0]}
+couleurfond=${lua_out[1]}" "${lua_out[2]}" "${lua_out[3]}
 echo "Codes générés !";
 
 if [ $full_process = "0" ]; then
@@ -69,7 +67,7 @@ if [ $full_process = "0" ]; then
 echo "Lancer la mise à jour des layers ? (Poursuivre : o, sauter : Entree)"
 read update_layers
     if [ "$update_layers" = "o" ]; then
-        cmd="gimp -i -d -b '(python-fu-build-wesnoth-text-effect RUN-NONINTERACTIVE \""$myvar"\")' -b '(gimp-quit 1)'"
+        cmd="gimp -i -d -b '(python-fu-build-wesnoth-text-effect RUN-NONINTERACTIVE \""$liste_layers"\")' -b '(gimp-quit 1)'"
         eval $cmd &&
         echo "Mise à jour des layers (couleur, nombre) réussie";
     fi;
@@ -81,7 +79,7 @@ echo "Lancer la création de la couche cachante ? (Poursuivre : Entree)"
 read 
 fi;
 
-cd ${ADDON_DATA_PATH}dev_tools/graph
+# cd ${ADDON_DATA_PATH}dev_tools/graph
 rm -r -f ${ADDON_DATA_PATH}images/arbres/$id;
 mkdir -p ${ADDON_DATA_PATH}images/arbres/$id;
 args=$couleurfond" "$ADDON_DATA_PATH"images/arbres/"$id
@@ -89,9 +87,12 @@ com="gimp -i -d -b '(python-fu-build-wesnoth-caches RUN-NONINTERACTIVE \""$args"
 eval $com
 
 if [ $full_process = "0" ]; then
-echo "Ouvrir le dossier ?"
-read
+echo "Ouvrir le dossier ? (Poursuivre : o, sauter: Entree)"
+read view;
+    if [ "$view" = "o" ]; then  
+        nautilus ${ADDON_DATA_PATH}images/arbres/$id
+    fi;
 fi;
 
-nautilus ${ADDON_DATA_PATH}images/arbres/$id
+echo "Building process achieved with succes."
 exit 0

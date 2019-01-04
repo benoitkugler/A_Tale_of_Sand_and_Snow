@@ -6,7 +6,7 @@ import json
 import shutil
 import time
 
-GRAPH_PATH = "/home/benoit/.config/wesnoth-1.14/data/add-ons/A_Tale_of_Sand_and_Snow/dev_tools/graph/images/"
+GRAPH_PATH = "/home/benoit/.config/wesnoth-1.14/data/add-ons/A_Tale_of_Sand_and_Snow/dev_tools/graph/"
 
 # gimp constants
 RUN_NONINTERACTIVE = 1
@@ -64,7 +64,7 @@ def cree_background(inLayer,inLayerF,Img):
 
 
 def caches(inImg, inNameLayerFleche, inNameLayerFond):
-	path_cadenas = GRAPH_PATH + "cadenas.png"
+	path_cadenas = GRAPH_PATH + "images/cadenas.png"
 	imagecadenas = pdb.gimp_file_load(path_cadenas, path_cadenas)
 	layercadenas  = pdb.gimp_image_get_active_layer(imagecadenas)
       
@@ -97,10 +97,10 @@ def caches(inImg, inNameLayerFleche, inNameLayerFond):
 
 def load_caches(args):
 	inColorFondR, inColorFondG, inColorFondB, outDir = args.split(" ")
-	inDir, inNameLayerFleche = "layers", "layer_fleche-1.png"
+	inDir, inNameLayerFleche =  GRAPH_PATH + "layers/", "layer_fleche-1.png"
 	inColorFondR, inColorFondG, inColorFondB = int(inColorFondR), int(inColorFondG), int(inColorFondB)
 	
-	nb, listimg = pdb.file_glob(inDir + "/*.png", 1)
+	nb, listimg = pdb.file_glob(inDir + "*.png", 1)
 	baseimage = pdb.gimp_image_new(10, 10, RGB)
 	fondcolor =(inColorFondR,inColorFondG,inColorFondB)
 
@@ -112,7 +112,7 @@ def load_caches(args):
 	pdb.gimp_message("Layers chargés")
 	pdb.gimp_selection_all(baseimage)
 
-	layerfond = pdb.gimp_image_get_layers(baseimage)[1][1]
+	layerfond = pdb.gimp_image_get_layers(baseimage)[1][0]
 	layerfond = gimp.Item.from_id(layerfond)
 	fond = pdb.gimp_layer_copy(layerfond, 1)
 	_,_,_, xmax, ymax = pdb.gimp_selection_bounds(baseimage)
