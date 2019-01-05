@@ -112,7 +112,7 @@ function apply.war_leeches (event,pri,snd,dmg)
     if event == "attacker_hits" then
         local lvl = get_ability(snd,"war_leeches")
         if lvl then
-            wesnoth.fire ("heal_unit" ,{ T.filter {id = snd.id} , animate =true,amount =  2*lvl}) --def is hit
+            wesnoth.fire ("heal_unit" ,{ T.filter {id = snd.id} , animate =true,amount = 2 * lvl}) --def is hit
         end
     end
 end
@@ -132,10 +132,13 @@ function apply.bloodlust (event,pri,snd,dmg)
 end
 
 function apply.fresh_blood_musp (event,pri,snd,dmg)
-    if event == "kill" then
+    if event == "die" then
         local lvl = get_ability(snd,"fresh_blood_musp")
+        if not lvl then
+            return 
+        end 
         if pri.__cfg.race == "muspell" then
-            wesnoth.fire("heal_unit",{animate=(snd.hitpoints ~= snd.max_hitpoints), T.filter{id = snd.id},amount = 2 + 6*lvl}) --on kill
+            wesnoth.fire("heal_unit",{animate=(snd.hitpoints ~= snd.max_hitpoints), T.filter{id = snd.id},amount = 2 + 6 * lvl}) --on kill
         end
     end
 end

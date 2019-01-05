@@ -4,8 +4,6 @@
 -- Each amla should define a _short_desc string field (where dot formatting is allowed). 
 -- This string will be the title of the matching node in the graph displayed in game.
 
--- TODO: Refactor copy objet
-
 AM = {}
 
 -- shortcut to avoid boilerplate code in trees

@@ -189,20 +189,14 @@ function has_ab(unit, id)
     return (H.get_child(abb, "isHere", id) ~= nil)
 end
 
--- helper pour récupérer le lvl d'une ability ou d'une special
+-- Return the field _level of the abilities with id id_ability
 function get_ability(u, id_ability)
     local list_abilities = H.get_child(u.__cfg, "abilities") or {}
     for ab in H.child_range(list_abilities, "isHere") do
-        local name, lvl = ab.id:split("*")
-        if name == id_ability then
-            if lvl == "" then
-                return 1
-            else
-                return lvl
-            end
+        if ab.id == id_ability then
+            return ab._level
         end
     end
-    return false
 end
 
 

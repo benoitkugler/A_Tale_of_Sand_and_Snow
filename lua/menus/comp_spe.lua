@@ -1,19 +1,38 @@
- 
+DB = wesnoth.require("~add-ons/A_Tale_of_Sand_and_Snow/lua/DB/special_skills.lua")
 
-DB = wesnoth.require("~add-ons/A_Tale_of_Sand_and_Snow/lua/DB/competences_spe.lua")
-
-MCS ={}
+MCS = {}
 
 
 --Helper de mise en couleur
-local function in_color(str_translatable,str_color)
-    local str = tostring(str_translatable)
-    local function replace (s)
-        local s2 = s:gsub("|","")
-        return "<span color='"..str_color.."'>"..s2.."</span>"         
+-- local function in_color(str_translatable,str_color)
+--     local str = tostring(str_translatable)
+--     local function replace (s)
+--         local s2 = s:gsub("|","")
+--         return "<span color='"..str_color.."'>"..s2.."</span>"         
+--     end
+--     local sr,u = str:gsub("(|[%s%w:%-%%]*|)",replace)
+--     return sr
+-- end
+
+local LVL_0_DESC = _ "<span style='italic'>Skill not learned yet</span>"
+local MAX_LVL_REACHED = _"<span style='italic'>Max level reached </span>"
+
+local function format_description(lvl, callable, description, str_color)
+    if callable == nil then 
+        return description
     end
-    local sr,u = str:gsub("(|[%s%w:%-%%]*|)",replace)
-    return sr
+    local description = tostring(description) -- translation here   
+    local value = callable(lvl)
+    if type(value) == "table" then
+        local coloreds = {}
+        for i, v in ipairs(value) do
+            table.insert(coloreds, string.format("<span color='%s'>%d</span>", str_color, v))
+        end
+        return string.format(description, unpack(coloreds)) 
+    else 
+        local colored = string.format("<span color='%s'>%d</span>", str_color, value)
+        return string.format(description, colored)
+    end
 end
 
 -- Gestion du menu
@@ -21,7 +40,7 @@ end
 function MCS.postshow()
     MCS.table = nil
     MCS.u_lvl = nil
-    MCS.t = nil
+    MCS.skills_table = nil
     MCS.xp_total = nil
     MCS.xp_dispo = nil 
     MCS.select_functions =nil
@@ -71,12 +90,12 @@ function MCS.preshow(unit)
     local function active_selectl(i)
         affiche_pres(false)
         
-        local comp = MCS.t[i]
+        local comp = MCS.skills_table[i]
         local lvl = tonumber(MCS.table[comp["name"]])
         if lvl  == comp.max_lvl then
-            wesnoth.set_dialog_value(_"<span style='italic'>Max level reached </span>","text_pres_suiv")	
+            wesnoth.set_dialog_value(MAX_LVL_REACHED,"text_pres_suiv")	
             wesnoth.set_dialog_value("","titre_pres")	
-            wesnoth.set_dialog_value(_" ","lvl_up")
+            wesnoth.set_dialog_value("","lvl_up")
             affiche_pres(true)
             wesnoth.set_dialog_visible(false,"lvl_up")
             wesnoth.set_dialog_active(false,"lvl_up")
@@ -85,11 +104,12 @@ function MCS.preshow(unit)
         else
             wesnoth.set_dialog_active(true,"lvl_up")
             wesnoth.set_dialog_value(_"<span style='italic' color ='#BFA63F'>Next level : </span>","titre_pres")
-            wesnoth.set_dialog_value(in_color(comp[lvl+2].des,comp.color),"text_pres_suiv")
-            if  MCS.xp_dispo >= comp[lvl+1].cout_suivant then
-                wesnoth.set_dialog_value(_"Level up : "..comp[lvl+1].cout_suivant.." points","lvl_up")
+            local formatted_desc = format_description(lvl + 1, MCS.skills_table[comp["name"]], comp.desc, comp.color)
+            wesnoth.set_dialog_value(formatted_desc,"text_pres_suiv")
+            if  MCS.xp_dispo >= comp.costs[lvl + 1] then
+                wesnoth.set_dialog_value(_"Level up : "..comp.costs[lvl + 1].." points","lvl_up")
             else
-                wesnoth.set_dialog_value(_"Points needed : "..comp[lvl+1].cout_suivant,"lvl_up")
+                wesnoth.set_dialog_value(_"Points needed : "..comp.costs[lvl + 1],"lvl_up")
                 wesnoth.set_dialog_active(false,"lvl_up")
             end
             affiche_pres(true)
@@ -114,8 +134,8 @@ function MCS.preshow(unit)
         
         
         MCS.table = unit.variables["table_comp_spe"]
-        MCS.u_lvl = tonumber( unit.__cfg.level)
-        MCS.t = DB.info[unit.id]
+        MCS.u_lvl = unit.level
+        MCS.skills_table = DB.info[unit.id]
         MCS.xp_total = unit.variables.xp
         MCS.xp_dispo = unit.variables.xp 
         
@@ -124,18 +144,25 @@ function MCS.preshow(unit)
         MCS.to_valid = false
    
 --         suppression des items de la liste des competences
-        wesnoth.remove_dialog_item(1,#(MCS.t),"lcomp")
+        wesnoth.remove_dialog_item(1,#(MCS.skills_table),"lcomp")
         
 --         ecriture de la liste des competences et mise à jour de l'xp
-        for i,v in ipairs(MCS.t) do
+        for i,v in ipairs(MCS.skills_table) do
             local max_lvl = v["max_lvl"]
             local lvl = tonumber(MCS.table[v["name"]])
             for j = 1,lvl,1 do
-                MCS.xp_dispo = MCS.xp_dispo - v[j].cout_suivant		
+                MCS.xp_dispo = MCS.xp_dispo - v.costs[j]	
             end
             if MCS.u_lvl >= v.require_lvl then
                 if not v.require_avancement or (table_skills(unit)[v.require_avancement.id] ~= nil) then
-                    wesnoth.set_dialog_value(in_color(v.name_aff,v.color).."\n"..in_color(v[lvl+1].des,v.color),"lcomp",i,"text_comp")
+                    local formatted_title = string.format("<span color='%s'>%s</span>", v.color, v.name_aff)
+                    local formatted_desc
+                    if lvl == 0 then
+                        formatted_desc = LVL_0_DESC
+                    else
+                        formatted_desc = format_description(lvl, MCS.skills_table[v.name], v.desc, v.color)
+                    end 
+                    wesnoth.set_dialog_value(formatted_title .."\n".. formatted_desc,"lcomp",i,"text_comp")
                     wesnoth.set_dialog_value(v.img,"lcomp",i,"img_comp")
                     wesnoth.set_dialog_value("comp_spe/"..max_lvl.."-"..lvl..".png","lcomp",i,"img_lvl")
                     MCS.select_functions[i] = active_selectl
@@ -177,7 +204,7 @@ function MCS.preshow(unit)
             wesnoth.set_dialog_visible(false,"help")
             wesnoth.set_dialog_visible(true,"help")          
             
-            wesnoth.set_dialog_value(MCS.t.help_des.."\n<span style='italic'>"..MCS.t.help_ratios.."</span>","help")
+            wesnoth.set_dialog_value(MCS.skills_table.help_des.."\n<span style='italic'>"..MCS.skills_table.help_ratios.."</span>","help")
             wesnoth.set_dialog_value(_"Hide info","help_button")
             MI.skills_help =false
         else
@@ -193,7 +220,7 @@ function MCS.preshow(unit)
  	local function select_lvlup()
         if MCS.to_valid then
             local i = wesnoth.get_dialog_value("lcomp")
-            local comp = MCS.t[i]
+            local comp = MCS.skills_table[i]
             local newlvl = unit.variables["table_comp_spe."..comp.name] + 1
             unit.variables["table_comp_spe."..comp.name] = newlvl 
             DB.apply[comp.name](newlvl,unit)
