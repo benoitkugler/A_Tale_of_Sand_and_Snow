@@ -1,26 +1,12 @@
 local info = wesnoth.require("~add-ons/A_Tale_of_Sand_and_Snow/lua/DB/special_skills_meta.lua")
 
 -- Implementation of special skills (trigered when choosing to a skill in menu item.)
--- Each special skill is coded in WML has an object with id
--- skill_idoftheskill_level
+-- Each special skill is coded in WML has an object with id skill_idoftheskill
+-- An attribut _level maybe added to abilities and specials when needed
 -- Upgrading a skill should remove the old level and create a new one.
+
 local apply = {}
 
--- -- Supprime tous les objets ayant no_write=true d'une unité
--- function purge_objet(tab)
--- 	local s = {}
--- 	for i, v in pairs(tab) do
--- 		if type(v) == "table" and #v >= 2 then
--- 			if v[1] == "object" and v[2].no_write then
--- 			else
--- 				table.insert(s, {v[1], purge_objet(v[2])})
--- 			end
--- 		else
--- 			s[i] = v
--- 		end
--- 	end
--- 	return s
--- end
 local function _get_ids(lvl, skill_name)
 	local id, old_id = "skill_" .. skill_name .. lvl, "skill_" .. skill_name .. tostring(lvl - 1)
 	return id, old_id
@@ -31,6 +17,8 @@ function apply.leeches_cac(lvl, unit)
 	local id, old_id = _get_ids(lvl, "leeches_cac")
 	unit:remove_modifications({id = old_id}, "object")
 
+	local value = info[unit.id].leeches_cac(lvl)
+	local desc = string.format(tostring(_ "Regenerates %d%% of the damage dealt in offense and defense. Also works against undead"),value)
 	unit:add_modification(
 		"object",
 		{
@@ -44,8 +32,7 @@ function apply.leeches_cac(lvl, unit)
 						id = "leeches",
 						_level = lvl,
 						name = _ "leeches",
-						description = _ "Regenerates " ..
-							tostring(lvl * 5 + 5) .. " % of the damage dealt in offense and defense. Also works against undead" --des
+						description = desc
 					}
 				}
 			}
@@ -57,6 +44,9 @@ function apply.drain_cac(lvl, unit)
 	local id, old_id = _get_ids(lvl, "drain_cac")
 	unit:remove_modifications({id = old_id}, "object")
 
+	local values = info[unit.id].drain_cac(lvl)
+	local dmg, radius = values[1], values[2]
+	local desc = string.format(tostring(_ "Regenerates %d%% of the damage dealt in offense and defense. Doesn't apply to undead"), dmg)
 	unit:add_modification(
 		"object",
 		{
@@ -70,13 +60,12 @@ function apply.drain_cac(lvl, unit)
 						id = "drain_cac",
 						_level = lvl,
 						name = _ "drains",
-						value = lvl * 10 + 20,
-						description = _ "Regenerates " ..
-							tostring(lvl * 10 + 20) .. " % of the damage dealt in offense and defense. Doesn't apply to undead", --ratio du drain
+						value = dmg,
+						description = desc,
 						description_inactive = _ "Göndhul is too far away from Vranken.",
 						T.filter_self {
 							T.filter_location {
-								radius = 2 ^ (lvl + 1), --portee de la comp
+								radius = radius, 
 								T.filter {id = "sword_spirit"}
 							}
 						}
@@ -91,13 +80,15 @@ function apply.atk_brut(lvl, unit)
 	local id, old_id = _get_ids(lvl, "atk_brut")
 	unit:remove_modifications({id = old_id}, "object")
 
+	local ratio = info[unit.id].atk_brut(lvl)
+
 	local atk = unit.attacks.sword
 	local new_attack = {
 		apply_to = "new_attack",
 		name = "sword",
 		range = "melee",
 		type = "brut",
-		damage = atk.damage * (70 + (lvl - 1) * 15) / 100, --ratio degat
+		damage = atk.damage * ratio / 100, 
 		number = atk.number,
 		description = _ "ether sword",
 		icon = "attacks/atk_brut.png"
@@ -116,8 +107,8 @@ function apply.transposition(lvl, unit)
 	local id, old_id = _get_ids(lvl, "transposition")
 	unit:remove_modifications({id = old_id}, "object")
 
-	unit.variables.comp_spe = true
 
+	unit.variables.comp_spe = true
 	unit:add_modification(
 		"object",
 		{

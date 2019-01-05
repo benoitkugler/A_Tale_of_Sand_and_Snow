@@ -113,7 +113,7 @@ local function preshow(unit)
                 wesnoth.set_dialog_visible(true,"cache")
             end 
         else
-            if next(unit.variables["special_skills"]) then
+            if next(unit.variables.special_skills) then
                 if  unit.__cfg.advances_to == "" then
                     MCS.init()
                 else
