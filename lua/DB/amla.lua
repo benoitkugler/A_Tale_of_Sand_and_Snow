@@ -40,7 +40,7 @@ wesnoth.require "trees/xavier"
 -- Process an amla tree by computing effect given by a function
 local function _process_amlas(amlas_table, unit)
 	local computed_table = {}
-	for i , amla in pairs(amlas_table) do
+	for i , amla in ipairs(amlas_table) do
 		local computed_amla = {}
 		for j, value in pairs(amla) do 
 			if type(value) == "function" then -- executing function with unit as argument

@@ -45,16 +45,21 @@ DB_AMLAS.brinx = {
 		max_times = 1,
 		always_display = 1,
 		description = _ "Grants a bow enchanted by elven magic, which sets arrows ablaze.",
-		T.effect {
-			icon = "attacks/bow-elven-fire.png",
-			range = "ranged",
-			number = 0,
-			type = "fire",
-			description = _ "burning bow",
-			damage = -2,
-			apply_to = "new_attack",
-			name = "copy_bow"
-		},
+		function (unit) 
+			local atk_bow = unit.attacks.bow
+			local effect = T.effect {
+				apply_to = "new_attack",
+				name = "bow",
+				icon = "attacks/bow-elven-fire.png",
+				range = "ranged",
+				number = atk_bow.number,
+				type = "fire",
+				description = _ "burning bow",
+				damage = atk_bow.damage,
+				T.specials(atk_bow.specials)
+			}
+			return effect
+		end,
 		unpack(standard_amla_heal(15))
 	},
 	{

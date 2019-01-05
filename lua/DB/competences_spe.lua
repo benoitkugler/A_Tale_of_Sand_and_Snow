@@ -290,6 +290,7 @@ function apply.atk_brut(lvl, unit)
 	local atk = unit.attacks.sword
 	local new_attack = {
 		apply_to = "new_attack",
+		name = "sword",
 		range = "melee",
 		type = "brut", 
 		damage = atk.damage * (70 + (lvl - 1) * 15) / 100,  --ratio degat
