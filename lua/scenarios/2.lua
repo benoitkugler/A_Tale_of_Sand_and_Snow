@@ -66,7 +66,7 @@ function ES.prestart()
             comp_spe="",
             comp_spe_lvl="",
             comp_spe_cd="",
-            T.table_comp_spe{}}
+            T.special_skills{}}
         }},
         br.x,
         br.y)
@@ -89,11 +89,11 @@ local function presentation()
     "by right-clicking on heroes.")
 
     local u = wesnoth.get_unit("rymor")
-    u.variables["table_comp_spe"]={skill1=0}
+    u.variables["special_skills"]={skill1=0}
     local u = wesnoth.get_unit("bunshop")
-    u.variables["table_comp_spe"]={skill1=0}
+    u.variables["special_skills"]={skill1=0}
     local u = wesnoth.get_unit("drumar")
-    u.variables["table_comp_spe"]={skill1=0}
+    u.variables["special_skills"]={skill1=0}
 end
 
 function ES.turn1()
@@ -108,12 +108,12 @@ function ES.turn1()
     
     
     x,y = wesnoth.find_vacant_tile(vr.x,vr.y)
-    wesnoth.put_unit({id="rymor",type="rymor1",side=1,name=_"Rymôr",role="hero",{"variables",	{xp="",bloodlust="",comp_spe="",comp_spe_lvl="",comp_spe_cd="",T.table_comp_spe{}}}},x,y)
+    wesnoth.put_unit({id="rymor",type="rymor1",side=1,name=_"Rymôr",role="hero",{"variables",	{xp="",bloodlust="",comp_spe="",comp_spe_lvl="",comp_spe_cd="",T.special_skills{}}}},x,y)
     
     wesnoth.fire("message",{speaker="rymor",message=_"Ah some action, at last !"})
     
     x,y = wesnoth.find_vacant_tile(vr.x,vr.y)
-    wesnoth.put_unit({id="drumar",type="drumar1",side=1,name=_"Frä Drumar",role="hero",{"variables",	{xp="",bloodlust="",comp_spe="",comp_spe_lvl="",comp_spe_cd="",T.table_comp_spe{}}}},x,y)
+    wesnoth.put_unit({id="drumar",type="drumar1",side=1,name=_"Frä Drumar",role="hero",{"variables",	{xp="",bloodlust="",comp_spe="",comp_spe_lvl="",comp_spe_cd="",T.special_skills{}}}},x,y)
     wesnoth.fire("message",{speaker="drumar",message=_"The Source is formal, Vranken, this should be an easy win !"})
     
     
@@ -121,7 +121,7 @@ function ES.turn1()
     
     x,y = wesnoth.find_vacant_tile(vr.x,vr.y)
     wesnoth.put_unit({id="bunshop",type="bunshop0",side=1,name=_"Bunshop",role="hero",{"variables",
-    {xp="",bloodlust="",comp_spe="",comp_spe_lvl="",comp_spe_cd="",T.table_comp_spe{}}}},x,y)
+    {xp="",bloodlust="",comp_spe="",comp_spe_lvl="",comp_spe_cd="",T.special_skills{}}}},x,y)
     wesnoth.fire("message",{speaker="bunshop",message=_"<span style='italic'>(enthusiastic barking)</span>"})
     
     -- initialisation des variables
@@ -162,7 +162,7 @@ function ES.see_ennemy()
     wesnoth.fire("message",{speaker="vranken",message=_"<span style='italic'>(rubbing the pommel of his sword)</span>"})
     wesnoth.fire("message",{speaker="vranken",message=_"Göndhul ! Fight for us !"})
     
-    wesnoth.put_recall_unit({type="sword_spirit2" , id="sword_spirit",name="Göndhul",role="hero", {"variables",{bloodlust="",T.table_comp_spe{},comp_spe=""}}},1)
+    wesnoth.put_recall_unit({type="sword_spirit2" , id="sword_spirit",name="Göndhul",role="hero", {"variables",{bloodlust="",T.special_skills{},comp_spe=""}}},1)
     local vr = wesnoth.get_unit("vranken")
     local sp = wesnoth.get_units{id="sword_spirit"}[1]
     local x,y = wesnoth.find_vacant_tile(vr.x,vr.y,sp)

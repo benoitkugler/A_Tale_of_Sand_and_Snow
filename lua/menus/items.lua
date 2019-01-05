@@ -1,4 +1,4 @@
-wesnoth.dofile("~add-ons/A_Tale_of_Sand_and_Snow/lua/menus/comp_spe.lua")
+wesnoth.dofile("~add-ons/A_Tale_of_Sand_and_Snow/lua/menus/special_skills.lua")
 wesnoth.dofile("~add-ons/A_Tale_of_Sand_and_Snow/lua/menus/arbre.lua")
 
 MI ={}
@@ -113,7 +113,7 @@ local function preshow(unit)
                 wesnoth.set_dialog_visible(true,"cache")
             end 
         else
-            if next(unit.variables["table_comp_spe"]) then
+            if next(unit.variables["special_skills"]) then
                 if  unit.__cfg.advances_to == "" then
                     MCS.init()
                 else

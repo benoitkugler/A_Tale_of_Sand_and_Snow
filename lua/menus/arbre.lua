@@ -8,7 +8,7 @@ A = {}
 
 
 A.dialog = { 
-    T.row { T.column{ T.label { label = _ "These are the posible AMLAs for the unit."}}},
+    -- T.row { T.column{ T.label { label = _ "These are the posible AMLAs for the unit."}}}, -- no room left
     T.row {  T.column{ T.image { id = "img1" }}}
 }
   

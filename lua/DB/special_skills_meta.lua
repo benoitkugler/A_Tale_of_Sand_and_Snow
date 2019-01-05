@@ -23,55 +23,53 @@ info["drumar"] = {
 		max_lvl = 3,
 		name = "wave_dmg",
 		color = "#D02300",
-		name_aff = _ "|Cold Strengh :|",
+		name_aff = _ "Cold Strengh :",
 		require_lvl = 4,
-		{cout_suivant = 50, des = _ "<span style='italic'>Skill not learned yet.</span>"},
-		{cout_suivant = 50, des = _ "Grants |10%| bonus damage on the chilling wave. "},
-		{cout_suivant = 60, des = _ "Grants |20%| bonus damage on the chilling wave. "},
-		{cout_suivant = 0, des = _ "Grants |one bonus attack| on the chilling wave. "}
+		desc = _ "Grants %s%% bonus damage and %s bonus attack on the chilling wave.",
+		costs = {50,50,60}
 	},
+	wave_dmg = function(lvl) return lvl == 3 and {20, 1} or {lvl * 10 , 0} end,
 	{
 		img = "comp_spe/forecast.png",
 		max_lvl = 3,
-		name = "defense",
+		name = "forecast_defense",
 		color = "#265690",
-		name_aff = _ "|Forecast :|",
+		name_aff = _ "Forecast :",
 		require_lvl = 4,
-		{cout_suivant = 70, des = _ "<span style='italic'>Skill not learned yet.</span>"},
-		{cout_suivant = 70, des = _ "Ennemies struggle to hit : |7%| bonus defense. "},
-		{cout_suivant = 70, des = _ "Ennemies struggle to hit : |14%| bonus defense. "},
-		{cout_suivant = 0, des = "Ennemies struggle to hit : |21%| bonus defense. "}
+		desc = _ "Ennemies struggle to hit : %s%% bonus defense.",
+		costs = {70,70,70}
 	},
+	forecast_defense = function(lvl) return 7 * lvl end,
 	{
 		img = "comp_spe/slow_zone.png",
 		max_lvl = 1,
 		name = "slow_zone",
 		color = "#00A8A2",
-		name_aff = _ "|Slowing field :|",
+		name_aff = _ "Slowing field :",
 		require_avancement = {
 			id = "toile_atk",
 			des = _ "Requires <span weight='bold' color='#919191'>faster entangle</span> "
 		},
 		require_lvl = 4,
-		{cout_suivant = 110, des = _ "<span style='italic'>Skill not learned yet.</span>"},
-		{cout_suivant = 35, des = _ "Entangle now |slows all enemies| near the target. "}
+		desc = _ "Entangle now <span color='#00A8A2'>slows all enemies<span> near the target. Intensity : %s%%",
+		costs = {150, 100}
 	},
+	slow_zone = function(lvl) return 10 + (20 * lvl) end,
 	{
 		img = "attacks/chilling_touch_master.png",
 		max_lvl = 3,
 		name = "bonus_cold_mistress",
 		color = "#1ED9D0",
-		name_aff = _ "|Cold Expert :|",
+		name_aff = _ "Cold Expert :",
 		require_avancement = {
 			id = "attack_chilled",
 			des = _ "Requires <span weight='bold' color='#1ED9D0'>Chilling touch</span> object"
 		},
 		require_lvl = 6,
-		{cout_suivant = 40, des = _ "<span style='italic'>Skill not learned yet.</span>"},
-		{cout_suivant = 35, des = _ "Increases Chilling bonus damage to |90%|. "},
-		{cout_suivant = 40, des = _ "Increases Chilling bonus damage to |110%|. "},
-		{cout_suivant = 0, des = _ "Chilling state now lasts |3 turns|. "}
-	}
+		desc = _ "Increases Chilling bonus damage to %s%% and %s turns duration.",
+		costs = {40, 40, 60}
+	},
+	bonus_cold_mistress = function(lvl) return lvl == 3 and {110, 3} or {70 + 20 * lvl, 2} end
 }
 
 -- VRANKEN
@@ -101,23 +99,6 @@ info["vranken"] = {
 		require_lvl = 4,
 		desc = _ "Drains %s%% of damage dealt with swords, if Göndhul is at most <span weight ='bold'>%s</span> hexes away from Vranken",
 		costs = {50,35,35},
-		
-		-- {cout_suivant = 50, des = _ "<span style='italic'>Skill not learned yet.</span>"},
-		-- {
-		-- 	cout_suivant = 35,
-		-- 	des = _ "Drains |30%| of damage dealt with swords, " ..
-		-- 		"if Göndhul is at most <span weight ='bold'>4</span> hexes away from Vranken "
-		-- },
-		-- {
-		-- 	cout_suivant = 35,
-		-- 	des = _ "Drains |40%| of damage dealt with swords, " ..
-		-- 		"if Göndhul is at most <span weight ='bold'>8</span> hexes away from Vranken "
-		-- },
-		-- {
-		-- 	cout_suivant = 0,
-		-- 	des = _ "Drains |50%| of damage dealt with swords, " ..
-		-- 		"if Göndhul is at most <span weight ='bold'>16</span> hexes away from Vranken "
-		-- }
 	},
 	drain_cac = function(lvl) return {20 + lvl * 10, 2 ^ (lvl + 1) } end,
 	{
@@ -129,11 +110,6 @@ info["vranken"] = {
 		require_lvl = 5,
 		desc = _ "Grants a sword which deals <span color='#e7cfa9'>true damage</span>, but deals %s%% of your usual sword damage ",
 		costs = {100,50,50},
-		-- {cout_suivant = 100, des = _ "<span style='italic'>Skill not learned yet.</span> "},
-		
-		-- {cout_suivant = 50, des = _ "Grants a sword which deals |true damage|, but deals |70%| of your usual sword damage "},
-		-- {cout_suivant = 50, des = _ "Now deals |85%| of your usual sword damage "},
-		-- {cout_suivant = 0, des = _ "Now deals |100%| of your usual sword damage "}
 	},
 	atk_brut = function(lvl) return 65 + (lvl * 15) end,
 	{
@@ -145,12 +121,6 @@ info["vranken"] = {
 		require_lvl = 6,
 		desc = _ "Enables Vranken and Göndhul to <span color='#9E25C7'>switch position</span>. Cooldown : <span weight='bold'>%s</span> turns.",
 		costs = {150, 100},
-		-- {cout_suivant = 150, des = _ "<span style='italic'>Skill not learned yet.</span>"},
-		-- {
-		-- 	cout_suivant = 100,
-		-- 	des = _ "Enables Vranken and Göndhul to |switch position|. " .. "Cooldown : <span weight='bold'>2</span> turns"
-		-- },
-		-- {cout_suivant = 0, des = _ "Cooldown decreases to <span weight='bold'>1</span>  turn "}
 	},
 	transposition = function(lvl) return 3 - lvl  end 
 }

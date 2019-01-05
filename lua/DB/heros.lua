@@ -8,7 +8,7 @@ local heroes = {}
 heroes["vranken"] ={variables = {}}
 heroes.vranken.variables.xp =  0
 heroes.vranken.variables.bloodlust = false
-heroes.vranken.variables.table_comp_spe = {leeches_cac=0, drain_cac=0, atk_brut=0, transposition=0}
+heroes.vranken.variables.special_skills = {leeches_cac=0, drain_cac=0, atk_brut=0, transposition=0}
 heroes.vranken.variables.comp_spe = false
 heroes.vranken.variables.comp_spe_lvl = 1
 heroes.vranken.variables.comp_spe_cd = 0
@@ -17,7 +17,7 @@ heroes.vranken.variables.comp_spe_cd = 0
 heroes["rymor"] ={variables = {}} 
 heroes.rymor.variables.xp = 0
 heroes.rymor.variables.bloodlust = false
-heroes.rymor.variables.table_comp_spe = {}
+heroes.rymor.variables.special_skills = {}
 heroes.rymor.variables.comp_spe = false
 heroes.rymor.variables.comp_spe_lvl = 1
 heroes.rymor.variables.comp_spe_cd = 0
@@ -27,7 +27,7 @@ heroes.rymor.color = '#BCB4D6'
 heroes["drumar"] ={variables = {}}
 heroes.drumar.variables.xp =  0
 heroes.drumar.variables.bloodlust = false
-heroes.drumar.variables.table_comp_spe ={ wave_dmg = 0 , defense =0 , slow_zone=0 , bonus_cold_mistress=0}
+heroes.drumar.variables.special_skills ={ wave_dmg = 0 , forecast_defense =0 , slow_zone=0 , bonus_cold_mistress=0}
 heroes.drumar.variables.comp_spe = false
 heroes.drumar.color = "#00FFF5"
 
@@ -35,7 +35,7 @@ heroes.drumar.color = "#00FFF5"
 heroes["bunshop"] ={variables = {}}  
 heroes.bunshop.variables.xp =  0
 heroes.bunshop.variables.bloodlust = false
-heroes.bunshop.variables.table_comp_spe = {}
+heroes.bunshop.variables.special_skills = {}
 heroes.bunshop.variables.comp_spe = false
 heroes.bunshop.variables.comp_spe_lvl = 1
 heroes.bunshop.variables.comp_spe_cd = 0
@@ -45,7 +45,7 @@ heroes.bunshop.color = '#FFFA80'
 heroes["morgane"] = {variables ={}} 
 heroes.morgane.variables.xp =  0
 heroes.morgane.variables.bloodlust = false
-heroes.morgane.variables.table_comp_spe = {}
+heroes.morgane.variables.special_skills = {}
 heroes.morgane.variables.comp_spe = false
 heroes.morgane.variables.comp_spe_lvl = 1
 heroes.morgane.variables.comp_spe_cd = 0
@@ -54,7 +54,7 @@ heroes.morgane.variables.comp_spe_cd = 0
 heroes["brinx"] = {variables ={}} 
 heroes.brinx.variables.xp =  0
 heroes.brinx.variables.bloodlust = false
-heroes.brinx.variables.table_comp_spe = {def_muspell = 0 , dmg_muspell =0 , fresh_blood_musp=0 , muspell_rage=0}
+heroes.brinx.variables.special_skills = {def_muspell = 0 , dmg_muspell =0 , fresh_blood_musp=0 , muspell_rage=0}
 heroes.brinx.variables.comp_spe = false
 heroes.brinx.color = '#357815'
 
@@ -62,14 +62,14 @@ heroes.brinx.color = '#357815'
 --Heroes  sword_spirit 
 heroes["sword_spirit"] = {variables ={}}  
 heroes.sword_spirit.variables.bloodlust = false
-heroes.sword_spirit.variables.table_comp_spe = {}
+heroes.sword_spirit.variables.special_skills = {}
 heroes.sword_spirit.variables.comp_spe = false
 heroes.sword_spirit.color = "#A00E27"
 
 -- Heroes Xavier
 heroes["xavier"] = {variables = {}}
 heroes.xavier.variables.bloodlust = false
-heroes.xavier.variables.table_comp_spe = {}
+heroes.xavier.variables.special_skills = {}
 heroes.xavier.variables.comp_spe = false
 heroes.xavier.color = "#a99508"
 

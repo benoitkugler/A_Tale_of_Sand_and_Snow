@@ -278,5 +278,22 @@ function apply.muspell_rage(lvl, unit)
 	)
 end
 
+-- ----------------------------------- Drumar ----------------------------------- --
+function apply.wave_dmg(lvl, unit)
+	wesnoth.message("A implémenter !")
+end
+
+function apply.forecast_defense(lvl, unit)
+	wesnoth.message("A implémenter !")
+end
+
+function apply.slow_zone(lvl, unit)
+	wesnoth.message("A implémenter !")
+end
+
+function apply.bonus_cold_mistress(lvl, unit)
+	wesnoth.message("A implémenter !")
+end
+
 local DB = {apply = apply, info = info}
 return DB
