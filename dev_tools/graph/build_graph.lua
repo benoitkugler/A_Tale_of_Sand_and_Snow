@@ -180,6 +180,7 @@ end
 -- setup globals needed by amlas.
 _ = function(s) return s end
 standard_amla_heal = function (s) return {} end
+fmt = string.format
 T = {}
 DB_AMLAS = {}
 setmetatable(T,

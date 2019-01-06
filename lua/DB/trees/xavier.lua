@@ -3,9 +3,15 @@ local V = {
 	BETTER_LEADERSHIP_RATIO = 15, -- % per level
 	ALLIES_DEFENSE_RATIO = 5 ,-- % per level
 	REDUCE_DEFENSE = 2, -- % per hit per level
+	REDUCE_ARMOR = 3, -- % per hit per level
+	SWORD_BONUS_DAMAGE = 2, -- per amla
+	SWORD_BONUS_ATK = 1, -- per amla
+	SWORD2_BONUS_ATK = 1, -- per amla
+	CROSSBOW_BONUS_DAMAGE = 2, -- per amla
+	CROSSBOW_BONUS_ATK = 1, -- per amla
 }
 
-local ROMANS = {"I", "II", "III"}
+local ROMANS = {"I", "II", "III", "IV", "V", "VI"}
 DB_AMLAS.xavier = {
 	_default_border = "#a99508",
 	_default_background = "181 167 71", -- rgb
@@ -27,7 +33,6 @@ DB_AMLAS.xavier = {
 		},
 		function(unit)
 			local current_lvl = get_ability(unit, "better_leadership", "leadership") or 0
-			wesnoth.message(current_lvl)
 			local value = V.BETTER_LEADERSHIP_RATIO * (current_lvl + 1)
 			return T.effect {
 				apply_to = "new_ability",
@@ -56,7 +61,7 @@ Adjacent own units of equal or higher level will do %d%% more damage. ]],
 		id = "defense_shred",
 		_short_desc = "<B> Defense shred </B>",
 		_color = {54, 255, 5},
-		require_amla = "sword_precis,crossbow_marksman",
+		require_amla = "defense",
 		image = "icons/broken_tunic.png",
 		max_times = 3,
 		always_display = 1,
@@ -73,6 +78,7 @@ Adjacent own units of equal or higher level will do %d%% more damage. ]],
 						id = "defense_shred",
 						_level = current_lvl + 1,
 						active_on = "offense",
+						name = _ "destabilize",
 						description = fmt(_ "Decreses defense by %d%% per hit",shred_on_hit)
 					}
 				}
@@ -81,24 +87,9 @@ Adjacent own units of equal or higher level will do %d%% more damage. ]],
 		unpack(standard_amla_heal(10))
 	},
 	{
-		id = "sword2",
-		_short_desc = "Sword <BR /> <B> +2</B> dmg",
-		require_amla = "sword_marksman",
-		image = "attacks/sword-elven.png",
-		max_times = 2,
-		always_display = 1,
-		description = _ "Even better with sword",
-		T.effect {
-			apply_to = "attack",
-			increase_damage = 2,
-			name = "sword"
-		},
-		unpack(standard_amla_heal(5))
-	},
-	{
 		id = "defense",
 		_short_desc = "Bonus defense",
-		require_amla = "better_leadership, better_leadership, better_leadership",
+		require_amla = "better_leadership,better_leadership,better_leadership,sword_precis,crossbow_marksman",
 		image = "icons/dress_silk_green.png",
 		max_times = 3,
 		always_display = 1,
@@ -106,7 +97,9 @@ Adjacent own units of equal or higher level will do %d%% more damage. ]],
 		T.effect {
 			apply_to = "remove_ability",
 			T.abilities {
-				id = "allies_defense"
+				T.isHere {
+					id = "allies_defense"
+				}
 			}
 		},
 		function(unit) -- need the current ability level.adjacent
@@ -118,7 +111,7 @@ Adjacent own units of equal or higher level will do %d%% more damage. ]],
 					T.isHere {
 						id = "allies_defense",
 						_level = current_lvl + 1,
-						name = _ "Defense " .. ROMANS[current_lvl + 1],
+						name = _ "Defense-" .. ROMANS[current_lvl + 1],
 						description = fmt(_ "Adjacent allies gain %d%% defense", value)
 					}
 				}
@@ -128,14 +121,14 @@ Adjacent own units of equal or higher level will do %d%% more damage. ]],
 	},
 	{
 		id = "crossbow",
-		_short_desc = "Crossbow <BR /> <B> +2</B> dmg",
+		_short_desc = fmt("Crossbow <BR /> <B> +%d </B> dmg",V.CROSSBOW_BONUS_DAMAGE),
 		image = "attacks/crossbow-human.png",
 		max_times = 2,
 		always_display = 1,
 		description = _ "Better with crossbows",
 		T.effect {
 			apply_to = "attack",
-			increase_damage = 2,
+			increase_damage = V.CROSSBOW_BONUS_DAMAGE,
 			name = "crossbow"
 		},
 		unpack(standard_amla_heal(5))
@@ -145,15 +138,29 @@ Adjacent own units of equal or higher level will do %d%% more damage. ]],
 		_short_desc = "<B> Armor shred </B>",
 		_color = {54, 255, 5},
 		_level_bonus = true,
-		require_amla = "sword_precis,crossbow_marksman",
+		require_amla = "defense",
 		image = "icons/broken_shield.png",
 		max_times = 3,
 		always_display = 1,
-		description = _ "Reduces ennemies armor on hit. A implémenter !",
-		T.effect {
-			name = "",
-			apply_to = ""
-		},
+		description = _ "Reduces ennemies armor on hit, with sword or crossbow.",
+		function(unit)
+			local current_lvl = get_special(unit.attacks.sword, "armor_shred") or 0
+			local shred_on_hit = V.REDUCE_ARMOR * (current_lvl + 1)
+			return T.effect {
+				apply_to = "attack",
+				remove_specials = "armor_shred",
+				T.set_specials {
+					mode = "append",
+					T.isHere {
+						id = "armor_shred",
+						_level = current_lvl + 1,
+						active_on = "offense",
+						name = _ "shreds",
+						description = fmt(_ "Decreses physical resistances by %d%% per hit",shred_on_hit)
+					}
+				}
+			}
+		end,
 		unpack(standard_amla_heal(10))
 	},
 	{
@@ -213,45 +220,45 @@ Adjacent own units of equal or higher level will do %d%% more damage. ]],
 	},
 	{
 		id = "crossbow_atk",
-		_short_desc = "Crossbow <BR /> <B> +1</B> str.",
+		_short_desc = fmt("Crossbow <BR /> <B>+%d</B> str.", V.CROSSBOW_BONUS_ATK),
 		require_amla = "crossbow,crossbow",
 		image = "attacks/crossbow-human.png",
-		max_times = 1,
+		max_times = 2,
 		always_display = 1,
 		description = _ "Faster with crossbows",
 		T.effect {
 			apply_to = "attack",
 			name = "crossbow",
-			increase_attacks = 1
+			increase_attacks = V.CROSSBOW_BONUS_ATK
 		},
 		unpack(standard_amla_heal(10))
 	},
 	{
 		id = "sword",
-		_short_desc = "Sword <BR /> <B> +2</B> dmg",
+		_short_desc = fmt("Sword <BR /> <B>+%d</B> dmg", V.SWORD_BONUS_DAMAGE),
 		image = "attacks/sword-elven.png",
 		max_times = 2,
 		always_display = 1,
 		description = _ "Better with sword",
 		T.effect {
 			apply_to = "attack",
-			increase_damage = 2,
+			increase_damage = V.SWORD_BONUS_DAMAGE,
 			name = "sword"
 		},
 		unpack(standard_amla_heal(5))
 	},
 	{
 		id = "sword_atk2",
-		_short_desc = "Sword <BR /> <B> +1</B> str",
-		require_amla = "sword2,sword2",
+		_short_desc = fmt("Sword <BR /> <B>+%d</B> str", V.SWORD2_BONUS_ATK),
+		require_amla = "sword_marksman",
 		image = "attacks/sword-elven.png",
-		max_times = 1,
+		max_times = 2,
 		always_display = 1,
 		description = _ "Faster with sword",
 		T.effect {
 			apply_to = "attack",
 			name = "sword",
-			increase_attacks = 1
+			increase_attacks = V.SWORD2_BONUS_ATK
 		},
 		unpack(standard_amla_heal(10))
 	},
@@ -260,7 +267,7 @@ Adjacent own units of equal or higher level will do %d%% more damage. ]],
 		_short_desc = "Sword <BR /> <B> Precis </B>",
 		_color = {69, 117, 174},
 		_level_bonus = true,
-		require_amla = "sword_atk2,better_leadership, better_leadership, better_leadership",
+		require_amla = "sword_atk2",
 		image = "attacks/sword_precis.png",
 		max_times = 1,
 		always_display = 1,

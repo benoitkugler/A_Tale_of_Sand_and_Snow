@@ -204,13 +204,19 @@ function get_ability(u, id_ability, ability_name)
     end
 end
 
---helper
+-- Returns the level of the id_special on the atk.
+-- Atk is a unit.attack proxy or a weapon child
 function get_special(atk, id_special, special_name)
     special_name = special_name or "isHere"
     if atk == nil then
         return
     end
-    local list_specials = H.get_child(atk, "specials") or {}
+    local list_specials
+    if type(atk) == "userdata" then
+        list_specials = atk.specials or {}
+    else
+        list_specials = H.get_child(atk, "specials")
+    end
     for spe in H.child_range(list_specials, special_name) do
         if spe.id == id_special then
             return spe._level

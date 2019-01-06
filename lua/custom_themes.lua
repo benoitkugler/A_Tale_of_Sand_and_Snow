@@ -67,7 +67,7 @@ function wesnoth.theme_items.unit_traits()
             if objet then
                 local str = (objet.code and objet.code(u)) or objet.description
                 element.text = objet.name.." "
-                element.tooltip = _"Artifact : <b>"..objet.name.."</b>\n"..str
+                element.tooltip = fmt(_"Artifact : <b>%s</b>\n %s", object.name, str)
             end
         end
     end

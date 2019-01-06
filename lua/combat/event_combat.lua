@@ -2,6 +2,7 @@
 EC = {}
 
 local COLOR_MAGIC_RES_SHRED = "#B95C43"
+local COLOR_ARMOR_SHRED = "#104d00"
 local COLOR_DEFENSE_SHRED = "#994d00"
 
 
@@ -234,6 +235,22 @@ function apply.res_magic(event, pri, snd, dmg)
     end
 end
 
+function apply.armor_shred(event, pri, snd, dmg)
+    if event == "attacker_hits" then
+        local lvl = get_special(H.get_child(wesnoth.current.event_context, "weapon"), "armor_shred")
+        if lvl then
+            local value = DB_AMLAS.xavier.values.REDUCE_DEFENSE * lvl
+            wesnoth.add_modification(
+                snd,
+                "object",
+                {T.effect {apply_to = "resistance", {"resistance", {blade = value, pierce = value, impact = value}}}},
+                false
+            )
+            label_snd = label_snd .. fmt(_"<span color='%s'>-%d%% armor</span>\n", COLOR_ARMOR_SHRED, value)
+        end
+    end
+end
+
 function apply.defense_shred(event, pri, snd, dmg)
     if event == "attacker_hits" then
         local lvl = get_special(H.get_child(wesnoth.current.event_context, "weapon"), "defense_shred")
@@ -246,7 +263,7 @@ function apply.defense_shred(event, pri, snd, dmg)
                 },
                 false
             )
-            label_snd = label_snd .. fmt(_"<span color='%s'>-%d%% magic resistances</span>\n", COLOR_DEFENSE_SHRED, shred_per_hit)
+            label_snd = label_snd .. fmt(_"<span color='%s'>-%d%% defense</span>\n", COLOR_DEFENSE_SHRED, shred_per_hit)
         end
     end
 end

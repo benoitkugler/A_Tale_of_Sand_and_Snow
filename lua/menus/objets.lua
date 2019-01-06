@@ -1,7 +1,5 @@
 -- Menu Object and function to add and remove objects
 
- 
-
 -- Librairie Objets
 
 O = {}
@@ -28,15 +26,15 @@ end
 function O.apply(unit_id, objet_id)
     local u = wesnoth.get_units {id = unit_id}[1]
     local obj = obj_DB[objet_id]
-    local modif_object = { 
-        id = objet_id ,
+    local modif_object = {
+        id = objet_id,
         {"effect", obj.effect}
     }
 
     local modif_trait = {
-        id = objet_id, 
-        name = obj.name, 
-        description = obj.description, 
+        id = objet_id,
+        name = obj.name,
+        description = obj.description,
         {"effect", {}}
     }
 
@@ -57,8 +55,6 @@ function O.echange(hero1, obj1, hero2, obj2)
     O.apply(hero1, obj2)
     O.apply(hero2, obj1)
 end
-
-
 
 -- PARTIE fenêtre de gestion des objets
 
@@ -91,7 +87,7 @@ local dialog = {
             T.column {
                 T.horizontal_listbox {
                     id = "lobjets",
-                    tooltip = _ "Equipped artefacts are shown in red font", 
+                    tooltip = _ "Equipped artefacts are shown in red font",
                     T.list_definition {
                         T.row {
                             T.column {
