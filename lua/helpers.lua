@@ -1,11 +1,138 @@
 -- Misc. helpers
 
 -- Format a translatable string
-function fmt(translatable_str, ...) 
+function fmt(translatable_str, ...)
     return string.format(tostring(translatable_str), ...)
 end
- 
 
+--Return string keys
+function table.keys(t)
+    local s = {}
+    for i, v in pairs(t) do
+        if type(i) == "string" then
+            s[#s + 1] = i
+        end
+    end
+    return s
+end
+
+-- round
+function arrondi(f)
+    return math.floor(0.5 + f)
+end
+
+
+--Récupére l'unité primaire ou secondaire d'un event
+function get_pri()
+    return wesnoth.get_units {x = wesnoth.current.event_context.x1, y = wesnoth.current.event_context.y1}[1]
+end
+
+function get_snd()
+    return wesnoth.get_units {x = wesnoth.current.event_context.x2, y = wesnoth.current.event_context.y2}[1]
+end
+
+
+
+-- Return the field _level of the abilities with id id_ability
+function get_ability(u, id_ability, ability_name)
+    ability_name = ability_name or "isHere"
+    local list_abilities = H.get_child(u.__cfg, "abilities") or {}
+    for ab in H.child_range(list_abilities, ability_name) do
+        if ab.id == id_ability then
+            return ab._level
+        end
+    end
+end
+
+-- Returns the level of the id_special on the atk.
+-- Atk is a unit.attack proxy or a weapon child
+function get_special(atk, id_special, special_name)
+    special_name = special_name or "isHere"
+    if atk == nil then
+        return
+    end
+    local list_specials
+    if type(atk) == "userdata" then
+        list_specials = atk.specials or {}
+    else
+        list_specials = H.get_child(atk, "specials")
+    end
+    for spe in H.child_range(list_specials, special_name) do
+        if spe.id == id_special then
+            return spe._level
+        end
+    end
+end
+
+-- Return an effect wml table augmenting all defenses by given number (positive is better)
+function add_defenses(def)
+    return T.effect {
+        apply_to = "defense",
+        T.defense {
+            deep_water = -def,
+            shallow_water = -def,
+            reef = -def,
+            swamp_water = -def,
+            flat = -def,
+            sand = -def,
+            forest = -def,
+            hills = -def,
+            mountains = -def,
+            village = -def,
+            castle = -def,
+            cave = -def,
+            frozen = -def,
+            unwalkable = -def,
+            fungus = -def,
+            impassable = -def
+        }
+    }
+end
+
+
+function get_loc()
+    return wesnoth.current.event_context.x1, wesnoth.current.event_context.y1
+end
+
+
+function table_skills(u)
+    local table_skill = {} -- build table {id_skill = lvl }
+    for __, adv in pairs(u.advancements) do
+        table_skill[adv.id] = (table_skill[adv.id] or 0) + 1
+    end
+    return table_skill
+end
+
+
+-- Boite d'information avec chain translatable
+function popup(title, message)
+    local dialog = {
+        T.tooltip {id = "tooltip_large"},
+        T.helptip {id = "tooltip_large"},
+        T.grid {
+            T.row {T.column {T.label {id = "the_title"}}},
+            T.row {T.column {T.spacer {id = "space", height = 10}}},
+            T.row {T.column {horizontal_alignement = "left", T.label {id = "the_message", characters_per_line = 100}}},
+            T.row {T.column {T.spacer {id = "space2", height = 10}}},
+            T.row {T.column {T.button {id = "ok", label = _ "OK"}}}
+        }
+    }
+
+    local function preshow()
+        wesnoth.set_dialog_markup(true, "the_title")
+        wesnoth.set_dialog_markup(true, "the_message")
+        wesnoth.set_dialog_value(
+            "<span size='large' color ='#BFA63F' font_weight ='bold'>" .. title .. "</span>",
+            "the_title"
+        )
+        wesnoth.set_dialog_value(message, "the_message")
+    end
+    wesnoth.show_dialog(dialog, preshow)
+end
+
+
+
+-- TODO: Cleanup 
 function table.val_to_str(v)
     if "string" == type(v) then
         v = string.gsub(v, "\n", "\\n")
@@ -108,10 +235,7 @@ function toInt(boole)
     return (boole and 1 or 0)
 end
 
--- Arrondi
-function arrondi(f)
-    return math.floor(0.5 + f)
-end
+
 
 --Renvoie une table sans les blocs du type myType et d'id myId
 
@@ -147,21 +271,6 @@ function supp(tab, myType)
     return s
 end
 
-
-
---Récupére l'unité primaire ou secondaire d'un event
-function get_pri()
-    return wesnoth.get_units {x = wesnoth.current.event_context.x1, y = wesnoth.current.event_context.y1}[1]
-end
-
-function get_snd()
-    return wesnoth.get_units {x = wesnoth.current.event_context.x2, y = wesnoth.current.event_context.y2}[1]
-end
-
-function get_loc()
-    return wesnoth.current.event_context.x1, wesnoth.current.event_context.y1
-end
-
 function is_empty(x, y)
     return wesnoth.get_units {x = x, y = y}[1] == nil
 end
@@ -193,62 +302,6 @@ function has_ab(unit, id)
     return (H.get_child(abb, "isHere", id) ~= nil)
 end
 
--- Return the field _level of the abilities with id id_ability
-function get_ability(u, id_ability, ability_name)
-    ability_name = ability_name or "isHere"
-    local list_abilities = H.get_child(u.__cfg, "abilities") or {}
-    for ab in H.child_range(list_abilities, ability_name) do
-        if ab.id == id_ability then
-            return ab._level
-        end
-    end
-end
-
--- Returns the level of the id_special on the atk.
--- Atk is a unit.attack proxy or a weapon child
-function get_special(atk, id_special, special_name)
-    special_name = special_name or "isHere"
-    if atk == nil then
-        return
-    end
-    local list_specials
-    if type(atk) == "userdata" then
-        list_specials = atk.specials or {}
-    else
-        list_specials = H.get_child(atk, "specials")
-    end
-    for spe in H.child_range(list_specials, special_name) do
-        if spe.id == id_special then
-            return spe._level
-        end
-    end
-end
-
--- Return an effect wml table augmenting all defenses by given number (positive is better)
-function add_defenses(def)
-    return T.effect {
-        apply_to = "defense",
-        T.defense {
-            deep_water = -def,
-            shallow_water = -def,
-            reef = -def,
-            swamp_water = -def,
-            flat = -def,
-            sand = -def,
-            forest = -def,
-            hills = -def,
-            mountains = -def,
-            village = -def,
-            castle = -def,
-            cave = -def,
-            frozen = -def,
-            unwalkable = -def,
-            fungus = -def,
-            impassable = -def
-        }
-    }
-end
-
 
 function sleep(s)
     local ntime = os.clock() + s
@@ -256,48 +309,6 @@ function sleep(s)
     until os.clock() > ntime
 end
 
-function table_skills(u)
-    local s = {}
-    local l = H.get_child(u.__cfg, "modifications") or {}
-    for adv in H.child_range(l, "advancement") do
-        table.insert(s, adv.id)
-    end
 
-    -- construit la table de format {skill =lvl ,..} à partir de liste
-    local table_skill = {}
-    for i, v in pairs(s) do
-        if table_skill[v] ~= nil then
-            table_skill[v] = table_skill[v] + 1
-        else
-            table_skill[v] = 1
-        end
-    end
-    
-    return table_skill
-end
 
--- Boite d'information avec chain translatable
-function popup(title, message)
-    local dialog = {
-        T.tooltip {id = "tooltip_large"},
-        T.helptip {id = "tooltip_large"},
-        T.grid {
-            T.row {T.column {T.label {id = "the_title"}}},
-            T.row {T.column {T.spacer {id = "space", height = 10}}},
-            T.row {T.column {horizontal_alignement = "left", T.label {id = "the_message", characters_per_line = 100}}},
-            T.row {T.column {T.spacer {id = "space2", height = 10}}},
-            T.row {T.column {T.button {id = "ok", label = _ "OK"}}}
-        }
-    }
 
-    local function preshow()
-        wesnoth.set_dialog_markup(true, "the_title")
-        wesnoth.set_dialog_markup(true, "the_message")
-        wesnoth.set_dialog_value(
-            "<span size='large' color ='#BFA63F' font_weight ='bold'>" .. title .. "</span>",
-            "the_title"
-        )
-        wesnoth.set_dialog_value(message, "the_message")
-    end
-    wesnoth.show_dialog(dialog, preshow)
-end

@@ -1,13 +1,12 @@
 ES={}
- 
 
- 
+
 VAR.objets_joueur={ceinture_geant="brinx",bottes_celerite=0,ring_haste="vranken",shield_myrom="drumar"}
 wesnoth.set_variable("heros_joueur","brinx,vranken,drumar")
-wesnoth.set_variable("table_shields",{er="ee"})
-VAR.table_status_chilled = {}
 
-
+local br = wesnoth.get_unit("brinx")
+br.variables.status_shielded_hp = 15
+br.status.shielded = true
 
 function ES.kill()
 end
@@ -61,7 +60,7 @@ end
 
 local s = wesnoth.theme_items.edit_left_button_function
 function wesnoth.theme_items.edit_left_button_function()
-    local r=  s()
+    local r = s()
     wesnoth.message(wesnoth.debug(r))
     return r
 end

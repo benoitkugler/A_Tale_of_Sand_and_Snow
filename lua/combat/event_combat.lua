@@ -4,21 +4,14 @@ EC = {}
 local COLOR_MAGIC_RES_SHRED = "#B95C43"
 local COLOR_ARMOR_SHRED = "#104d00"
 local COLOR_DEFENSE_SHRED = "#994d00"
+local COLOR_SHIELDED = "#4A4257"
+
+-- Table of event handlers
+local endturn = {} -- end of turn event
+local apply = {} -- combat event
 
 
---Fonctions d'applications des effets
-local endturn = {}
-local apply = {}
-local noms = {}
-setmetatable(
-    apply,
-    {__newindex = function(t, k, v)
-            table.insert(noms, k)
-            rawset(t, k, v)
-        end}
-)
-
-local label_pri, label_snd = "", "" -- Labels personnalisés
+local label_pri, label_snd = "", "" -- custom labels
 local delay = 0
 
 function EC.combat(dmg_dealt)
@@ -28,7 +21,9 @@ function EC.combat(dmg_dealt)
     label_pri, label_snd = "", ""
     local x1, y1, x2, y2 = u1 and u1.x, u1 and u1.y, u2 and u2.x, u2 and u2.y
 
-    for nb, i in ipairs(noms) do
+    local keys = table.keys(apply)
+    table.sort(keys) -- deterministic order
+    for __, i in ipairs(keys) do
         if u1 and u1.valid and u2 and u2.valid then
             apply[i](type_event, u1, u2, dmg_dealt)
         end
@@ -51,7 +46,7 @@ function EC.combat(dmg_dealt)
     end
     if not (u1 == nil) and u1.valid then
         u1:advance(true, true)
-    end 
+    end
     if not (u2 == nil) and u2.valid then
         u2:advance(true, true)
     end
@@ -69,10 +64,11 @@ end
 
 -- ABILITIES GENERIQUES
 
--- Shield flat
+-- Shield flat : absorb a fix amount of dmg on every hit, defense and offense.
+-- TODO:Object : to refactor.
 function apply.shield_flat(event, pri, snd, dmg)
     local s1, s2 = pri.level * 2, snd.level * 2 --shields
-    if event == "attack" then
+    if event == "attack" then -- adding shield value to avoid temporary death.
         if get_ability(pri, "shield_flat") then
             pri.hitpoints = pri.hitpoints + s1
         end
@@ -230,7 +226,8 @@ function apply.res_magic(event, pri, snd, dmg)
                 {T.effect {apply_to = "resistance", {"resistance", {fire = value, cold = value, arcane = value}}}},
                 false
             )
-            label_snd = label_snd .. fmt(_"<span color='%s'>-%d%% magic resistances</span>\n", COLOR_MAGIC_RES_SHRED, value)
+            label_snd =
+                label_snd .. fmt(_ "<span color='%s'>-%d%% magic resistances</span>\n", COLOR_MAGIC_RES_SHRED, value)
         end
     end
 end
@@ -246,7 +243,7 @@ function apply.armor_shred(event, pri, snd, dmg)
                 {T.effect {apply_to = "resistance", {"resistance", {blade = value, pierce = value, impact = value}}}},
                 false
             )
-            label_snd = label_snd .. fmt(_"<span color='%s'>-%d%% armor</span>\n", COLOR_ARMOR_SHRED, value)
+            label_snd = label_snd .. fmt(_ "<span color='%s'>-%d%% armor</span>\n", COLOR_ARMOR_SHRED, value)
         end
     end
 end
@@ -259,11 +256,12 @@ function apply.defense_shred(event, pri, snd, dmg)
             snd:add_modification(
                 "trait",
                 {
-                    add_defenses(- shred_per_hit)
+                    add_defenses(-shred_per_hit)
                 },
                 false
             )
-            label_snd = label_snd .. fmt(_"<span color='%s'>-%d%% defense</span>\n", COLOR_DEFENSE_SHRED, shred_per_hit)
+            label_snd =
+                label_snd .. fmt(_ "<span color='%s'>-%d%% defense</span>\n", COLOR_DEFENSE_SHRED, shred_per_hit)
         end
     end
 end
@@ -332,7 +330,7 @@ function apply.chilled_dmg(event, pri, snd, dmg)
         local percent_bonus = values[1]
         local bonus_dmg = arrondi(dmg * percent_bonus / 100)
         if att.type == "cold" then
-            local dmg_display 
+            local dmg_display
             if snd.hitpoints - bonus_dmg > 0 then
                 snd.hitpoints = snd.hitpoints - bonus_dmg
                 dmg_display = bonus_dmg
@@ -351,7 +349,7 @@ function apply.chilled_dmg(event, pri, snd, dmg)
 end
 
 -- Apply chilled status on target
--- table_status_chilled has id with _ instead of - as keys, and a 2 char string lvl cd 
+-- table_status_chilled has id with _ instead of - as keys, and a 2 char string lvl cd
 function apply.put_status_chilled(event, pri, snd, dmg)
     if event == "attacker_hits" and snd then
         local lvl = get_special(H.get_child(wesnoth.current.event_context, "weapon"), "status_chilled")
@@ -359,12 +357,7 @@ function apply.put_status_chilled(event, pri, snd, dmg)
             local values = SPECIAL_SKILLS.info.drumar.bonus_cold_mistress(lvl - 1)
             local cd = values[2]
             snd.variables.status_chilled_lvl = lvl
-            snd.variables.status_chilled_cd =  cd 
-            -- if VAR.table_status_chilled == nil then
-            --     H.set_variable_array("table_status_chilled", {{id = snd.id, lvl = lvl, cd = cd}})
-            -- else 
-            --     table.insert(VAR.table_status_chilled, {id = snd.id, lvl = lvl, cd = cd})
-            -- end
+            snd.variables.status_chilled_cd = cd
             snd.status.chilled = true
             label_snd = label_snd .. _ "<span color='#1ED9D0'>Chilled !</span>\n"
         end
@@ -373,7 +366,7 @@ end
 
 -- Mise à jour des status chilled
 function endturn.status_chilled()
-    local us = wesnoth.get_units { status = "chilled" }
+    local us = wesnoth.get_units {status = "chilled"}
     for id, u in ipairs(us) do
         local lvl, cd = u.variables.status_chilled_lvl, u.variables.status_chilled_cd
         wesnoth.message(id .. lvl .. cd)
@@ -382,65 +375,66 @@ function endturn.status_chilled()
             u.variables.status_chilled_lvl = nil
             u.variables.status_chilled_cd = nil
         elseif cd then
-            u.variables.status_chilled_cd =  u.variables.status_chilled_cd - 1
-        end 
+            u.variables.status_chilled_cd = u.variables.status_chilled_cd - 1
+        end
     end
-end 
+end
+
 
 function apply.shield(event, pri, snd, dmg)
-    if event == "attack" then
+    function _init_shield(unit)
+        local shield = unit.variables.status_shielded_hp
+        unit.hitpoints = unit.hitpoints + shield
+        return fmt(_"<span color='%s'> +%d shield points</span>\n", COLOR_SHIELDED, shield)
+    end 
+
+    if event == "attack" then -- applying inital shield
         if pri.status.shielded then
-            local s = case_array(H.get_variable_array("table_status.shielded"), pri.id).value
-            pri.hitpoints = pri.hitpoints + s
-            label_pri = label_pri .. "<span color='#4A4257'> +" .. s .. _ " shield points</span>\n"
+            local l =_init_shield(pri)
+            label_pri = label_pri .. l
         end
         if snd.status.shielded then
-            local s = case_array(H.get_variable_array("table_status.shielded"), snd.id).value
-            snd.hitpoints = snd.hitpoints + s
-            label_snd = label_snd .. "<span color='#4A4257'> +" .. s .. _ " shield points</span>\n"
+            _init_shield(snd)
+            label_snd = label_snd .. l
         end
         delay = 50
     end
-    if event == "attacker_hits" and snd.status.shielded then
-        local c, i = case_array(H.get_variable_array("table_status.shielded"), snd.id)
-        local sh = c.value
-        if dmg >= sh then
-            VAR.table_status.shielded[i - 1] = nil
-            snd.status.shielded = nil
-        else
-            VAR.table_status.shielded[i - 1].value = sh - dmg
+
+    function _update_shield(unit)
+        local sh = unit.variables.status_shielded_hp
+        if dmg >= sh then -- no more shield
+            unit.variables.status_shielded_hp = nil
+            unit.status.shielded = nil
+        else -- updating shield
+            unit.variables.status_shielded_hp = sh - dmg
         end
+    end
+
+    if event == "attacker_hits" and snd.status.shielded then
+        _update_shield(snd)
     end
     if event == "defender_hits" and pri.status.shielded then
-        local c, i = case_array(H.get_variable_array("table_status.shielded"), pri.id)
-        local sh = c.value
-        if dmg >= sh then
-            VAR.table_status.shielded[i - 1] = nil
-            pri.status.shielded = nil
-        else
-            VAR.table_status.shielded[i - 1].value = sh - dmg
-        end
+        _update_shield(pri)
     end
-    if event == "attack_end" then
+
+    function _remove_over(unit)
+        unit.hitpoints = unit.hitpoints - unit.variables.status_shielded_hp
+    end
+
+    if event == "attack_end" then -- removing over shield left. If shield is remaining, hitpoints were untouched
         if pri.status.shielded then
-            local s = case_array(H.get_variable_array("table_status.shielded"), pri.id).value
-            pri.hitpoints = pri.hitpoints - s
+            _remove_over(pri)
         end
         if snd.status.shielded then
-            local s = case_array(H.get_variable_array("table_status.shielded"), snd.id).value
-            snd.hitpoints = snd.hitpoints - s
+            _remove_over(snd)
         end
     end
 end
 
 function endturn.status_shielded()
     local l_status = wesnoth.get_units {status = "shielded"}
-    for i, v in ipairs(l_status) do
+    for __, v in ipairs(l_status) do
         v.status.shielded = nil
+        v.variables.status_shielded_hp = nil
     end
-    VAR.table_status_shielded = nil
-    VAR.table_status_shielded = {}
 end
-
---Tri pour executer les skills dans l'ordre souhaité
-table.sort(noms)
