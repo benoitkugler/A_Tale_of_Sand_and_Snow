@@ -1,6 +1,6 @@
 local COLOR_SHIELD = "#ADA5BB"
 
--- Affichage personnalise du statut chilled
+--Customs status
 local old_unit_status = wesnoth.theme_items.unit_status
 function wesnoth.theme_items.unit_status()
     local u = wesnoth.get_displayed_unit()
@@ -55,25 +55,23 @@ function wesnoth.theme_items.unit_status()
             )
         end
     end
-    if
-        wesnoth.eval_conditional {
+    if wesnoth.eval_conditional {
             T.have_unit {
                 id = "sword_spirit",
                 T.filter_adjacent {id = u.id},
                 T.fiter_side {T.allied_with {side = u.side}}
             }
-        }
-     then
-        table.insert(
-            s,
+    } then
+    table.insert(
+        s,
+        {
+            "element",
             {
-                "element",
-                {
-                    image = "menu/fear_of_love.png",
-                    tooltip = _ "endangered: Resistances reduces by <span color='red'>100%</span> !"
-                }
+                image = "menu/fear_of_love.png",
+                tooltip = _ "endangered: Resistances reduces by <span color='red'>100%</span> !"
             }
-        )
+        }
+    )
     end
     return s
 end

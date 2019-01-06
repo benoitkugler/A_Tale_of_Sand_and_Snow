@@ -275,10 +275,9 @@ function is_empty(x, y)
     return wesnoth.get_units {x = x, y = y}[1] == nil
 end
 
---Renvoie la location de la case derriere la case 2 (pour la cas 1)
+--Renvoie la location de la case derriere la case 2 (pour la case 1)
 function case_derriere(x1, y1, x2, y2)
-    local dir = wesnoth.map.get_relative_dir({x1, y1}, {x2, y2})
-    return wesnoth.map.get_direction(wesnoth.map.get_direction({x1, y1}, dir), dir)
+    return wesnoth.map.rotate_right_around_center({x1, y1}, {x2, y2},3)
 end
 
 -- Renvoie la (première) case du tableau ayant comme id myId
