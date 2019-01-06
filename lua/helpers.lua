@@ -1,5 +1,9 @@
 -- Misc. helpers
 
+-- Format a translatable string
+function fmt(translatable_str, ...) 
+    return string.format(tostring(translatable_str), ...)
+end
  
 
 function table.val_to_str(v)
@@ -190,13 +194,53 @@ function has_ab(unit, id)
 end
 
 -- Return the field _level of the abilities with id id_ability
-function get_ability(u, id_ability)
+function get_ability(u, id_ability, ability_name)
+    ability_name = ability_name or "isHere"
     local list_abilities = H.get_child(u.__cfg, "abilities") or {}
-    for ab in H.child_range(list_abilities, "isHere") do
+    for ab in H.child_range(list_abilities, ability_name) do
         if ab.id == id_ability then
             return ab._level
         end
     end
+end
+
+--helper
+function get_special(atk, id_special, special_name)
+    special_name = special_name or "isHere"
+    if atk == nil then
+        return
+    end
+    local list_specials = H.get_child(atk, "specials") or {}
+    for spe in H.child_range(list_specials, special_name) do
+        if spe.id == id_special then
+            return spe._level
+        end
+    end
+end
+
+-- Return an effect wml table augmenting all defenses by given number (positive is better)
+function add_defenses(def)
+    return T.effect {
+        apply_to = "defense",
+        T.defense {
+            deep_water = -def,
+            shallow_water = -def,
+            reef = -def,
+            swamp_water = -def,
+            flat = -def,
+            sand = -def,
+            forest = -def,
+            hills = -def,
+            mountains = -def,
+            village = -def,
+            castle = -def,
+            cave = -def,
+            frozen = -def,
+            unwalkable = -def,
+            fungus = -def,
+            impassable = -def
+        }
+    }
 end
 
 

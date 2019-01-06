@@ -1,102 +1,83 @@
+-- Numerical values
+local V = {
+	BETTER_LEADERSHIP_RATIO = 15, -- % per level
+	ALLIES_DEFENSE_RATIO = 5 ,-- % per level
+	REDUCE_DEFENSE = 2, -- % per hit per level
+}
+
+local ROMANS = {"I", "II", "III"}
 DB_AMLAS.xavier = {
-	_default_border = "#a99508", 
+	_default_border = "#a99508",
 	_default_background = "181 167 71", -- rgb
+	values = V,
 	{
-		id = "leadership1",
-		_short_desc = "Leadership I",
+		id = "better_leadership",
+		_short_desc = "Better Leadership",
 		image = "misc/laurel.png",
-		max_times = 1,
+		max_times = 3,
 		always_display = 1,
-		description = _ "Grants 15% bonus damage for higher level allies.",
-		T.effect {
-			apply_to = "new_ability",
-			T.abilities {
-				T.leadership {
-					cumulative = false,
-					value = "(15 * 1)",
-					affect_self = false,
-					description = _ "Even more experienced units are impressed by its skills ! Adjacent own units of equal or higher level will do $(15*RATIO) more damage.",
-					id = "leadership1",
-					female_name = "inspiration1",
-					name = "inspiration1",
-					T.affect_adjacent {
-						T.filter {
-							formula = "level >= other.level"
-						}
-					}
-				}
-			}
-		},
-		unpack(standard_amla_heal(5))
-	},
-	{
-		id = "leadership2",
-		_short_desc = "Leadership II",
-		require_amla = "leadership1",
-		image = "misc/laurel.png",
-		max_times = 1,
-		always_display = 1,
-		description = _ "Grants 30% bonus damage for higher level allies.",
+		description = fmt(_ "Grants additionnal %d%% bonus damage for higher level allies.", V.BETTER_LEADERSHIP_RATIO),
 		T.effect {
 			apply_to = "remove_ability",
 			T.abilities {
-				id = "leadership1"
-			}
-		},
-		T.effect {
-			apply_to = "new_ability",
-			T.abilities {
 				T.leadership {
-					cumulative = false,
-					value = "(15 * 2)",
-					affect_self = false,
-					description = _ "Even more experienced units are impressed by its skills ! Adjacent own units of equal or higher level will do $(15*RATIO) more damage.",
-					id = "leadership2",
-					female_name = "inspiration2",
-					name = "inspiration2",
-					T.affect_adjacent {
-						T.filter {
-							formula = "level >= other.level"
-						}
-					}
+					id = "better_leadership"
 				}
 			}
 		},
-		unpack(standard_amla_heal(5))
-	},
-	{
-		id = "leadership3",
-		_short_desc = "Leadership III",
-		require_amla = "leadership2",
-		image = "misc/laurel.png",
-		max_times = 1,
-		always_display = 1,
-		description = _ "Grants 45% bonus damage for higher level allies.",
-		T.effect {
-			apply_to = "remove_ability",
-			T.abilities {
-				id = "leadership2"
+		function(unit)
+			local current_lvl = get_ability(unit, "better_leadership", "leadership") or 0
+			wesnoth.message(current_lvl)
+			local value = V.BETTER_LEADERSHIP_RATIO * (current_lvl + 1)
+			return T.effect {
+				apply_to = "new_ability",
+				T.abilities {
+					T.leadership {
+						cumulative = true,
+						id = "better_leadership",
+						_level = current_lvl + 1,
+						value = value,
+						affect_self = false,
+						description = fmt(
+							_ [[
+Even more experienced units are impressed by Xavier's skills !
+Adjacent own units of equal or higher level will do %d%% more damage. ]],
+							value
+						),
+						name = "Inspiration-" .. ROMANS[current_lvl + 1],
+						T.affect_adjacent { T.filter { formula = "level >= other.level" }}
+					}
+				}
 			}
-		},
-		T.effect {
-			name = "",
-			apply_to = ""
-		},
+		end,
 		unpack(standard_amla_heal(5))
 	},
 	{
-		id = "defense_reduc",
+		id = "defense_shred",
 		_short_desc = "<B> Defense shred </B>",
 		_color = {54, 255, 5},
 		require_amla = "sword_precis,crossbow_marksman",
 		image = "icons/broken_tunic.png",
 		max_times = 3,
 		always_display = 1,
-		description = _ "Reduces ennemies defense on hit. A implémenter !",
-		T.effect {
-			name = "",
-			apply_to = ""
-		},
+		description = _ "In offense, reduces ennemies defense on hit, both with sword and crossbow.",
+		function(unit)
+			local current_lvl = get_special(unit.attacks.sword, "defense_shred") or 0
+			local shred_on_hit = V.REDUCE_DEFENSE * (current_lvl + 1)
+			return T.effect {
+				apply_to = "attack",
+				remove_specials = "defense_shred",
+				T.set_specials {
+					mode = "append",
+					T.isHere {
+						id = "defense_shred",
+						_level = current_lvl + 1,
+						active_on = "offense",
+						description = fmt(_ "Decreses defense by %d%% per hit",shred_on_hit)
+					}
+				}
+			}
+		end,
 		unpack(standard_amla_heal(10))
 	},
 	{
@@ -117,15 +98,32 @@ DB_AMLAS.xavier = {
 	{
 		id = "defense",
 		_short_desc = "Bonus defense",
-		require_amla = "leadership3",
+		require_amla = "better_leadership, better_leadership, better_leadership",
 		image = "icons/dress_silk_green.png",
 		max_times = 3,
 		always_display = 1,
-		description = _ "Enhance allies defenses. A implémenter !",
+		description = fmt(_ "Adjacent allies gain additionnal %d%% defense", V.ALLIES_DEFENSE_RATIO),
 		T.effect {
-			name = "",
-			apply_to = ""
+			apply_to = "remove_ability",
+			T.abilities {
+				id = "allies_defense"
+			}
 		},
+		function(unit) -- need the current ability level.adjacent
+			local current_lvl = get_ability(unit, "allies_defense") or 0
+			local value = (current_lvl + 1) * V.ALLIES_DEFENSE_RATIO
+			return T.effect {
+				apply_to = "new_ability",
+				T.abilities {
+					T.isHere {
+						id = "allies_defense",
+						_level = current_lvl + 1,
+						name = _ "Defense " .. ROMANS[current_lvl + 1],
+						description = fmt(_ "Adjacent allies gain %d%% defense", value)
+					}
+				}
+			}
+		end,
 		unpack(standard_amla_heal(10))
 	},
 	{
@@ -258,26 +256,11 @@ DB_AMLAS.xavier = {
 		unpack(standard_amla_heal(10))
 	},
 	{
-		id = "defense2",
-		_short_desc = "Defense range <BR /> + 1",
-		_level_bonus = true,
-		require_amla = "defense,defense,defense",
-		image = "icons/dress_silk_green.png",
-		max_times = 1,
-		always_display = 1,
-		description = _ "Even better defense for allies ! A implémenter",
-		T.effect {
-			name = "",
-			apply_to = ""
-		},
-		unpack(standard_amla_heal(10))
-	},
-	{
 		id = "sword_precis",
 		_short_desc = "Sword <BR /> <B> Precis </B>",
 		_color = {69, 117, 174},
 		_level_bonus = true,
-		require_amla = "sword_atk2,leadership3",
+		require_amla = "sword_atk2,better_leadership, better_leadership, better_leadership",
 		image = "attacks/sword_precis.png",
 		max_times = 1,
 		always_display = 1,
@@ -291,7 +274,8 @@ DB_AMLAS.xavier = {
 				T.chance_to_hit {
 					id = "precis",
 					value = 70,
-					description = _ "This attack always has a 70% chance to hit regardless of the defensive ability of the unit being attacked.",
+					description = _ [[ This attack always has a 70% chance to hit,
+					regardless of the defensive ability of the unit being attacked. ]],
 					cumulative = false,
 					name = "precision"
 				}

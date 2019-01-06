@@ -257,7 +257,7 @@ DB_AMLAS.brinx = {
 		image = "icons/blood-frenzy.png",
 		max_times = 1,
 		always_display = 1,
-		description = _ "Upon killing a unit, this unit will gain another attack and some moves.",
+		description = _ "Upon killing a unit, this unit will gain another attack and some moves.",	
 		T.effect {
 			apply_to = "new_ability",
 			T.abilities {

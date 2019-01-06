@@ -1,6 +1,9 @@
 -- Implementation of special effect during figth.
-
 EC = {}
+
+local COLOR_MAGIC_RES_SHRED = "#B95C43"
+local COLOR_DEFENSE_SHRED = "#994d00"
+
 
 --Fonctions d'applications des effets
 local endturn = {}
@@ -60,19 +63,6 @@ function EC.fin_tour()
     end
     for i, v in pairs(endturn) do
         v()
-    end
-end
-
---helper
-function _get_special(att, id_special)
-    if att == nil then
-        return
-    end
-    local list_specials = H.get_child(att, "specials") or {}
-    for spe in H.child_range(list_specials, "isHere") do
-        if spe.id == id_special then
-            return spe._level
-        end
     end
 end
 
@@ -161,10 +151,10 @@ end
 function apply.leeches(event, pri, snd, dmg)
     local lvl, u
     if event == "attacker_hits" then
-        lvl = _get_special(H.get_child(wesnoth.current.event_context, "weapon"), "leeches")
+        lvl = get_special(H.get_child(wesnoth.current.event_context, "weapon"), "leeches")
         u = pri
     elseif event == "defender_hits" then
-        lvl = _get_special(H.get_child(wesnoth.current.event_context, "second_weapon"), "leeches")
+        lvl = get_special(H.get_child(wesnoth.current.event_context, "second_weapon"), "leeches")
         u = snd
     end
     if lvl then
@@ -179,7 +169,7 @@ end
 
 -- Pierce
 function apply.weapon_pierce(event, pri, snd, dmg)
-    if event == "attacker_hits" and _get_special(H.get_child(wesnoth.current.event_context, "weapon"), "weapon_pierce") then
+    if event == "attacker_hits" and get_special(H.get_child(wesnoth.current.event_context, "weapon"), "weapon_pierce") then
         local loc = case_derriere(pri.x, pri.y, snd.x, snd.y)
         local weapon = H.get_child(wesnoth.current.event_context, "weapon")
         wesnoth.fire(
@@ -197,14 +187,14 @@ end
 
 -- Mayhem
 function apply.mayhem(event, pri, snd, dmg)
-    if event == "attacker_hits" and _get_special(H.get_child(wesnoth.current.event_context, "weapon"), "mayhem") then
+    if event == "attacker_hits" and get_special(H.get_child(wesnoth.current.event_context, "weapon"), "mayhem") then
         wesnoth.add_modification(snd, "object", {T.effect {apply_to = "attack", increase_damage = -1}}, false) --atker hit
     end
 end
 
 -- Cleave
 function apply.cleave(event, pri, snd, dmg)
-    if event == "attacker_hits" and _get_special(H.get_child(wesnoth.current.event_context, "weapon"), "cleave") then
+    if event == "attacker_hits" and get_special(H.get_child(wesnoth.current.event_context, "weapon"), "cleave") then
         local l =
             wesnoth.get_locations {
             T.filter_adjacent_location {x = pri.x, y = pri.y},
@@ -230,7 +220,7 @@ end
 
 function apply.res_magic(event, pri, snd, dmg)
     if event == "attacker_hits" then
-        local lvl = _get_special(H.get_child(wesnoth.current.event_context, "weapon"), "res_magic")
+        local lvl = get_special(H.get_child(wesnoth.current.event_context, "weapon"), "res_magic")
         if lvl then
             local value = 3 + 2 * lvl --atker hit
             wesnoth.add_modification(
@@ -239,14 +229,31 @@ function apply.res_magic(event, pri, snd, dmg)
                 {T.effect {apply_to = "resistance", {"resistance", {fire = value, cold = value, arcane = value}}}},
                 false
             )
-            label_snd = label_snd .. _ "<span color='#B95C43'>-" .. value .. "% magic resistances</span>\n"
+            label_snd = label_snd .. fmt(_"<span color='%s'>-%d%% magic resistances</span>\n", COLOR_MAGIC_RES_SHRED, value)
+        end
+    end
+end
+
+function apply.defense_shred(event, pri, snd, dmg)
+    if event == "attacker_hits" then
+        local lvl = get_special(H.get_child(wesnoth.current.event_context, "weapon"), "defense_shred")
+        if lvl then
+            local shred_per_hit = DB_AMLAS[pri.id].values.REDUCE_DEFENSE * lvl
+            snd:add_modification(
+                "trait",
+                {
+                    add_defenses(- shred_per_hit)
+                },
+                false
+            )
+            label_snd = label_snd .. fmt(_"<span color='%s'>-%d%% magic resistances</span>\n", COLOR_DEFENSE_SHRED, shred_per_hit)
         end
     end
 end
 
 function apply.weaker_slow(event, pri, snd, dmg)
     if event == "attacker_hits" then
-        local lvl = _get_special(H.get_child(wesnoth.current.event_context, "weapon"), "weaker_slow")
+        local lvl = get_special(H.get_child(wesnoth.current.event_context, "weapon"), "weaker_slow")
         if lvl then
             local value = 5 + 5 * lvl --atker hit
             wesnoth.add_modification(
@@ -261,7 +268,7 @@ function apply.weaker_slow(event, pri, snd, dmg)
 end
 
 function apply.snare(event, pri, snd, dmg)
-    if event == "attacker_hits" and _get_special(H.get_child(wesnoth.current.event_context, "weapon"), "snare") then
+    if event == "attacker_hits" and get_special(H.get_child(wesnoth.current.event_context, "weapon"), "snare") then
         wesnoth.add_modification(
             snd,
             "object",
@@ -273,7 +280,7 @@ function apply.snare(event, pri, snd, dmg)
 end
 
 function apply.slow_zone(event, pri, snd, dmg)
-    local lvl = _get_special(H.get_child(wesnoth.current.event_context, "weapon"), "slow_zone")
+    local lvl = get_special(H.get_child(wesnoth.current.event_context, "weapon"), "slow_zone")
     if event == "attacker_hits" and lvl then
         local intensity = SPECIAL_SKILLS.info[pri.id].slow_zone(lvl)
         local targets = wesnoth.get_units {T.filter_adjacent {id = snd.id, is_enemy = false}}
@@ -330,7 +337,7 @@ end
 -- table_status_chilled has id with _ instead of - as keys, and a 2 char string lvl cd 
 function apply.put_status_chilled(event, pri, snd, dmg)
     if event == "attacker_hits" and snd then
-        local lvl = _get_special(H.get_child(wesnoth.current.event_context, "weapon"), "status_chilled")
+        local lvl = get_special(H.get_child(wesnoth.current.event_context, "weapon"), "status_chilled")
         if lvl and not snd.status.chilled then
             local values = SPECIAL_SKILLS.info.drumar.bonus_cold_mistress(lvl - 1)
             local cd = values[2]

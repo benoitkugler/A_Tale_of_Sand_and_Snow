@@ -73,7 +73,7 @@ function AM.pre_advance()
 	local u = get_pri()
 	local table_amlas = DB_AMLAS[u.id]  -- loading custom amlas
 	if (table_amlas == nil) or #(u.advances_to) > 0 then
-		return 
+		return
 	end
 
 	table_amlas =  _process_amlas(table_amlas, u)

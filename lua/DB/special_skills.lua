@@ -310,27 +310,7 @@ function apply.forecast_defense(lvl, unit)
 		"object",
 		{
 			id = id,
-			T.effect {
-				apply_to = "defense",
-				T.defense {
-					deep_water = -def,
-					shallow_water = -def,
-					reef = -def,
-					swamp_water = -def,
-					flat = -def,
-					sand = -def,
-					forest = -def,
-					hills = -def,
-					mountains = -def,
-					village = -def,
-					castle = -def,
-					cave = -def,
-					frozen = -def,
-					unwalkable = -def,
-					fungus = -def,
-					impassable = -def
-				}
-			}
+			add_defenses(def)
 		}
 	)
 end
