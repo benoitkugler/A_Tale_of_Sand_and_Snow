@@ -1,6 +1,3 @@
- 
-
-
 -- Affichage personnalise du statut chilled
 local old_unit_status = wesnoth.theme_items.unit_status
 function wesnoth.theme_items.unit_status()
@@ -8,11 +5,19 @@ function wesnoth.theme_items.unit_status()
     if not u then return {} end
     local s = old_unit_status()
     if u.status.chilled then
-        local c = case_array(H.get_variable_array("table_status.chilled"),u.id)
-        local lvl,cd= c.lvl,c.cd
+        local c = case_array(H.get_variable_array("table_status_chilled"),u.id)
+        local lvl,cd = c.lvl, c.cd
+        local bonus_dmg = SPECIAL_SKILLS.info.drumar.bonus_cold_mistress(lvl - 1)[1]
         table.insert(s, { "element", {
             image = "menu/chilled.png",
-            tooltip = _"chilled: This unit is infoged by Cold Mistress. It will take <span color='#1ED9D0'>"..100*(lvl*0.2+0.5).."%</span> bonus damage when hit by cold attacks. <span style='italic'>Last "..cd.." turn(s).</span>"
+            tooltip = string.format(tostring(_"chilled: This unit is infoged by Cold Mistress. It will take <span color='#1ED9D0'>%d%%</span> bonus damage when hit by cold attacks. " ..
+            "<span style='italic'>Last %d turn(s).</span>"), bonus_dmg, cd)
+        } })
+    end
+    if u.status._zone_slowed then
+        table.insert(s, { "element", {
+            image = "menu/chilled.png",
+            tooltip = _"slowing field: This unit was hit by a slowing field."
         } })
     end
     if u.id == "sword_spirit" then

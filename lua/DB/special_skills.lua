@@ -18,7 +18,11 @@ function apply.leeches_cac(lvl, unit)
 	unit:remove_modifications({id = old_id}, "object")
 
 	local value = info[unit.id].leeches_cac(lvl)
-	local desc = string.format(tostring(_ "Regenerates %d%% of the damage dealt in offense and defense. Also works against undead"),value)
+	local desc =
+		string.format(
+		tostring(_ "Regenerates %d%% of the damage dealt in offense and defense. Also works against undead"),
+		value
+	)
 	unit:add_modification(
 		"object",
 		{
@@ -46,7 +50,8 @@ function apply.drain_cac(lvl, unit)
 
 	local values = info[unit.id].drain_cac(lvl)
 	local dmg, radius = values[1], values[2]
-	local desc = string.format(tostring(_ "Regenerates %d%% of the damage dealt in offense and defense. Doesn't apply to undead"), dmg)
+	local desc =
+		string.format(tostring(_ "Regenerates %d%% of the damage dealt in offense and defense. Doesn't apply to undead"), dmg)
 	unit:add_modification(
 		"object",
 		{
@@ -65,7 +70,7 @@ function apply.drain_cac(lvl, unit)
 						description_inactive = _ "Göndhul is too far away from Vranken.",
 						T.filter_self {
 							T.filter_location {
-								radius = radius, 
+								radius = radius,
 								T.filter {id = "sword_spirit"}
 							}
 						}
@@ -88,7 +93,7 @@ function apply.atk_brut(lvl, unit)
 		name = "sword",
 		range = "melee",
 		type = "brut",
-		damage = atk.damage * ratio / 100, 
+		damage = atk.damage * ratio / 100,
 		number = atk.number,
 		description = _ "ether sword",
 		icon = "attacks/atk_brut.png"
@@ -106,7 +111,6 @@ end
 function apply.transposition(lvl, unit)
 	local id, old_id = _get_ids(lvl, "transposition")
 	unit:remove_modifications({id = old_id}, "object")
-
 
 	unit.variables.comp_spe = true
 	unit:add_modification(
@@ -133,6 +137,9 @@ function apply.def_muspell(lvl, unit)
 	local id, old_id = _get_ids(lvl, "def_muspell")
 	unit:remove_modifications({id = old_id}, "object")
 
+	local value = info[unit.id].def_muspell(lvl)
+	local desc =
+		string.format(tostring(_ "Brinx learned how to better dodge muspellian attacks : %d%% bonus defense."), value)
 	unit:add_modification(
 		"object",
 		{
@@ -143,8 +150,7 @@ function apply.def_muspell(lvl, unit)
 					T.isHere {
 						id = id,
 						name = _ "Muspell Equilibrium",
-						description = _ "Brinx learned how to better dodge muspellian attacks : +" ..
-							tostring(5 + lvl * 5) .. " % bonus defense." --des
+						description = desc
 					}
 				}
 			},
@@ -157,8 +163,7 @@ function apply.def_muspell(lvl, unit)
 						_level = lvl,
 						name = "",
 						description = "",
-						sub = (5 + 5 * lvl),
-						--chance to hit
+						sub = value,
 						apply_to = "opponent",
 						T.filter_opponent {race = "muspell"}
 					}
@@ -172,6 +177,8 @@ function apply.dmg_muspell(lvl, unit)
 	local id, old_id = _get_ids(lvl, "dmg_muspell")
 	unit:remove_modifications({id = old_id}, "object")
 
+	local value = info[unit.id].dmg_muspell(lvl)
+	local desc = string.format(tostring(_ "Brinx deals %d%% bonus damage when facing a muspellian opponent."), value)
 	unit:add_modification(
 		"object",
 		{
@@ -183,7 +190,7 @@ function apply.dmg_muspell(lvl, unit)
 						id = "dmg_muspell",
 						_level = lvl,
 						name = _ "Muspell Terror",
-						description = _ "Brinx deals " .. tostring(lvl * 10) .. " % bonus damage when facing a muspellian opponent." --des
+						description = desc
 					}
 				}
 			},
@@ -196,7 +203,7 @@ function apply.dmg_muspell(lvl, unit)
 						_level = lvl,
 						name = "",
 						description = "",
-						multiply = (1 + lvl * 0.1), --special damage
+						multiply = 1 + value / 100,
 						T.filter_opponent {race = "muspell"}
 					}
 				}
@@ -206,9 +213,11 @@ function apply.dmg_muspell(lvl, unit)
 end
 
 function apply.fresh_blood_musp(lvl, unit)
-	local id, old_id = _get_ids(lvl, "fresh_bloo_musp")
+	local id, old_id = _get_ids(lvl, "fresh_blood_musp")
 	unit:remove_modifications({id = old_id}, "object")
 
+	local value = info[unit.id].fresh_blood_musp(lvl)
+	local desc = string.format(tostring(_ "Brinx heals himself for %d HP when killing a muspellian"), value)
 	unit:add_modification(
 		"object",
 		{
@@ -220,7 +229,7 @@ function apply.fresh_blood_musp(lvl, unit)
 						id = "fresh_blood_musp",
 						_level = lvl,
 						name = _ "Muspell strength",
-						description = _ "Brinx heals himself for " .. (2 + 6 * lvl) .. "HP when killing a muspellian" --des
+						description = desc
 					}
 				}
 			}
@@ -229,9 +238,11 @@ function apply.fresh_blood_musp(lvl, unit)
 end
 
 function apply.muspell_rage(lvl, unit)
-	local id, old_id = _get_ids(lvl, "fresh_bloo_musp")
+	local id, old_id = _get_ids(lvl, "muspell_rage")
 	unit:remove_modifications({id = old_id}, "object")
 
+	local value = info[unit.id].muspell_rage(lvl)
+	local desc = string.format(tostring(_ "Brinx deals and takes %d%% bonus damage."), value)
 	unit:add_modification(
 		"object",
 		{
@@ -243,8 +254,7 @@ function apply.muspell_rage(lvl, unit)
 						id = "muspell_rage",
 						_level = lvl,
 						name = _ "Revenge",
-						description = _ "Brinx deals and takes " .. (lvl * 10) .. " % bonus damage.",
-						--des
+						description = desc,
 						description_inactive = _ "There is no muspellian friend to anger Brinx.",
 						T.filter {T.filter_side {T.has_unit {race = "muspell"}}}
 					}
@@ -260,7 +270,7 @@ function apply.muspell_rage(lvl, unit)
 						name = "",
 						apply_to = "both",
 						description = "",
-						multiply = (1 + lvl * 0.1), --rage bonus
+						multiply = 1 + value / 100,
 						T.filter {T.filter_side {T.has_unit {race = "muspell"}}}
 					}
 				}
@@ -271,19 +281,114 @@ end
 
 -- ----------------------------------- Drumar ----------------------------------- --
 function apply.wave_dmg(lvl, unit)
-	wesnoth.message("A implémenter !")
+	local id, old_id = _get_ids(lvl, "wave_dmg")
+	unit:remove_modifications({id = old_id}, "object")
+
+	local values = info[unit.id].wave_dmg(lvl)
+	local dmg, nb_atk = values[1], values[2]
+
+	unit:add_modification(
+		"object",
+		{
+			id = id,
+			T.effect {
+				apply_to = "attack",
+				name = "chill wave",
+				increase_damage = tostring(dmg) .. "%",
+				increase_attacks = nb_atk
+			}
+		}
+	)
 end
 
 function apply.forecast_defense(lvl, unit)
-	wesnoth.message("A implémenter !")
+	local id, old_id = _get_ids(lvl, "forecast_defense")
+	unit:remove_modifications({id = old_id}, "object")
+
+	local def = info[unit.id].forecast_defense(lvl)
+	unit:add_modification(
+		"object",
+		{
+			id = id,
+			T.effect {
+				apply_to = "defense",
+				T.defense {
+					deep_water = -def,
+					shallow_water = -def,
+					reef = -def,
+					swamp_water = -def,
+					flat = -def,
+					sand = -def,
+					forest = -def,
+					hills = -def,
+					mountains = -def,
+					village = -def,
+					castle = -def,
+					cave = -def,
+					frozen = -def,
+					unwalkable = -def,
+					fungus = -def,
+					impassable = -def
+				}
+			}
+		}
+	)
 end
 
 function apply.slow_zone(lvl, unit)
-	wesnoth.message("A implémenter !")
+	local id, old_id = _get_ids(lvl, "slow_zone")
+	unit:remove_modifications({id = old_id}, "object")
+
+	local intensity = info[unit.id].slow_zone(lvl)
+	local desc = string.format(tostring(_ "Decrease adjacent ennemies damages and movements by %d%%"), intensity)
+	unit:add_modification(
+		"object",
+		{
+			id = id,
+			T.effect {
+				apply_to = "attack",
+				name = "entangle",
+				T.set_specials {
+					mode = "append",
+					T.isHere {
+						id = "slow_zone",
+						_level = lvl,
+						name = _ "slowing field",
+						description = desc
+					}
+				}
+			}
+		}
+	)
 end
 
 function apply.bonus_cold_mistress(lvl, unit)
-	wesnoth.message("A implémenter !")
+	local id, old_id = _get_ids(lvl, "bonus_cold_mistress")
+	unit:remove_modifications({id = old_id}, "object")
+
+	local values = info[unit.id].bonus_cold_mistress(lvl)
+	local dmg, nb_turn = values[1], values[2]
+	local desc = string.format(tostring(_ "Target takes <span weight='bold'>%d%%</span> bonus damage, when hit by cold attacks. Last <span weight='bold'>%d</span> turns."), dmg, nb_turn)
+	unit:add_modification(
+		"object",
+		{
+			id = id,
+			T.effect {
+				apply_to = "attack",
+				name = "chilling touch",
+				remove_specials = "status_chilled",
+				T.set_specials {
+					mode = "append",
+					T.isHere {
+						id = "status_chilled",
+						_level = lvl + 1,
+						name = _ "chilling",
+						description = desc
+					}
+				}
+			}
+		}
+	)
 end
 
 local DB = {apply = apply, info = info}

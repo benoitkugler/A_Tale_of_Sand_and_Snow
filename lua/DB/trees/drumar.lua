@@ -89,7 +89,8 @@ DB_AMLAS.drumar = {
 				mode = "append",
 				T.isHere {
 					description = _ "Reduces target's damage by <span color='red'> 15%</span> per hit. <span style='italic'>Last 1 turn.</span>",
-					id = "weaker_slow*2",
+					id = "weaker_slow",
+					_level = 2,
 					active_on = "offense",
 					name = "weaker slow"
 				}
@@ -97,7 +98,7 @@ DB_AMLAS.drumar = {
 		},
 		T.effect {
 			apply_to = "attack",
-			remove_specials = "weaker_slow*1",
+			remove_specials = "weaker_slow",
 			name = "chill wave"
 		},
 		unpack(standard_amla_heal(10))
@@ -123,7 +124,8 @@ DB_AMLAS.drumar = {
 			name = "chilling touch",
 			T.specials {
 				T.isHere {
-					id = "status_chilled*1",
+					id = "status_chilled",
+					_level = 1,
 					description = _ "Tags the target for 2 turns. Chilled unit will take bonus damage when hit by cold attacks.",
 					name = "chilling"
 				}
@@ -190,7 +192,8 @@ DB_AMLAS.drumar = {
 				mode = "append",
 				T.isHere {
 					description = _ "Reduces target's magic resistances by <span color='red'>7%</span> per hit.",
-					id = "res_magic*2",
+					id = "res_magic",
+					_level = 2,
 					active_on = "offense",
 					name = "magic weakness"
 				}
@@ -198,7 +201,7 @@ DB_AMLAS.drumar = {
 		},
 		T.effect {
 			apply_to = "attack",
-			remove_specials = "res_magic*1",
+			remove_specials = "res_magic",
 			name = "chill wave"
 		},
 		unpack(standard_amla_heal(10))
@@ -219,7 +222,8 @@ DB_AMLAS.drumar = {
 				mode = "append",
 				T.isHere {
 					description = _ "Reduces target's damage by <span color='red'> 10%</span> per hit. <span style='italic'>Last 1 turn.</span>",
-					id = "weaker_slow*1",
+					id = "weaker_slow",
+					_level = 1,
 					active_on = "offense",
 					name = "weaker slow"
 				}
@@ -275,7 +279,8 @@ DB_AMLAS.drumar = {
 				mode = "append",
 				T.isHere {
 					description = _ "Reduces target's magic resistances by <span color='red'>5%</span> per hit.",
-					id = "res_magic*1",
+					id = "res_magic",
+					_level = 1,
 					active_on = "offense",
 					name = "magic weakness"
 				}

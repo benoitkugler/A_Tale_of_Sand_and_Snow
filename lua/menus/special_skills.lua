@@ -1,4 +1,4 @@
-DB = wesnoth.require("~add-ons/A_Tale_of_Sand_and_Snow/lua/DB/special_skills.lua")
+SPECIAL_SKILLS = wesnoth.require("~add-ons/A_Tale_of_Sand_and_Snow/lua/DB/special_skills.lua")
 
 MCS = {}
 
@@ -183,7 +183,7 @@ function MCS.preshow(unit)
 
         MCS.unit_specials_skills = unit.variables["special_skills"]
         MCS.u_lvl = unit.level
-        MCS.skills_table = DB.info[unit.id]
+        MCS.skills_table = SPECIAL_SKILLS.info[unit.id]
         MCS.xp_total = unit.variables.xp
         MCS.xp_dispo = unit.variables.xp
 
@@ -280,7 +280,7 @@ function MCS.preshow(unit)
             local comp = MCS.skills_table[i]
             local newlvl = unit.variables["special_skills." .. comp.name] + 1
             unit.variables["special_skills." .. comp.name] = newlvl
-            DB.apply[comp.name](newlvl, unit)
+            SPECIAL_SKILLS.apply[comp.name](newlvl, unit)
             AM.update_lvl(unit) -- needed not to loose extras LVL, removed by u:remove_modifications
             MCS.init()
         else

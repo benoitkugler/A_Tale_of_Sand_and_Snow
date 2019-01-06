@@ -25,10 +25,10 @@ info["drumar"] = {
 		color = "#D02300",
 		name_aff = _ "Cold Strengh :",
 		require_lvl = 4,
-		desc = _ "Grants %s%% bonus damage and %s bonus attack on the chilling wave.",
+		desc = _ "Grants %s%% additionnal bonus damage and %s bonus attack on the chilling wave.",
 		costs = {50,50,60}
 	},
-	wave_dmg = function(lvl) return lvl == 3 and {20, 1} or {lvl * 10 , 0} end,
+	wave_dmg = function(lvl) return lvl == 3 and {15, 1} or {10 , 0} end,
 	{
 		img = "comp_spe/forecast.png",
 		max_lvl = 3,
@@ -36,10 +36,10 @@ info["drumar"] = {
 		color = "#265690",
 		name_aff = _ "Forecast :",
 		require_lvl = 4,
-		desc = _ "Ennemies struggle to hit : %s%% bonus defense.",
+		desc = _ "Ennemies struggle to hit : %s%% additional bonus defense.",
 		costs = {70,70,70}
 	},
-	forecast_defense = function(lvl) return 7 * lvl end,
+	forecast_defense = function(lvl) return 7 end,
 	{
 		img = "comp_spe/slow_zone.png",
 		max_lvl = 1,
@@ -51,10 +51,10 @@ info["drumar"] = {
 			des = _ "Requires <span weight='bold' color='#919191'>faster entangle</span> "
 		},
 		require_lvl = 4,
-		desc = _ "Entangle now <span color='#00A8A2'>slows all enemies<span> near the target. Intensity : %s%%",
+		desc = _ "Entangle now <span color='#00A8A2'>permanetly slows all enemies</span> near the target. Intensity : %s%%",
 		costs = {150, 100}
 	},
-	slow_zone = function(lvl) return 10 + (20 * lvl) end,
+	slow_zone = function(lvl) return 10 + (10	 * lvl) end,
 	{
 		img = "attacks/chilling_touch_master.png",
 		max_lvl = 3,
@@ -69,7 +69,7 @@ info["drumar"] = {
 		desc = _ "Increases Chilling bonus damage to %s%% and %s turns duration.",
 		costs = {40, 40, 60}
 	},
-	bonus_cold_mistress = function(lvl) return lvl == 3 and {110, 3} or {70 + 20 * lvl, 2} end
+	bonus_cold_mistress = function(lvl) return lvl == 3 and {60, 3} or {30 + 10 * lvl, 2} end
 }
 
 -- VRANKEN
