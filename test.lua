@@ -5,7 +5,7 @@ ES={}
 VAR.objets_joueur={ceinture_geant="brinx",bottes_celerite=0,ring_haste="vranken",shield_myrom="drumar"}
 wesnoth.set_variable("heros_joueur","brinx,vranken,drumar")
 wesnoth.set_variable("table_shields",{er="ee"})
-
+VAR.table_status_chilled = {}
 
 
 

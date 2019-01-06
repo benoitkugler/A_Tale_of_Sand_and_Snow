@@ -34,10 +34,9 @@ function ES.first_time()
         wesnoth.add_event_handler(v)
     end
     
-    -- Initialisation des variables WML globales à la campagne
+    -- Global variables for the whole campaign
     VAR.table_status = {}
-    VAR.table_status.chilled = {}
-    VAR.table_status.shielded = {}
+    VAR.table_status_shielded = {}
     VAR.objets_joueur = {}
     VAR.heros_joueur = "brinx"  
 end

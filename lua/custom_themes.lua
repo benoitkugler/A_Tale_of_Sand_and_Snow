@@ -5,8 +5,7 @@ function wesnoth.theme_items.unit_status()
     if not u then return {} end
     local s = old_unit_status()
     if u.status.chilled then
-        local c = case_array(H.get_variable_array("table_status_chilled"),u.id)
-        local lvl,cd = c.lvl, c.cd
+        local lvl, cd = u.variables.status_chilled_lvl, u.variables.status_chilled_cd
         local bonus_dmg = SPECIAL_SKILLS.info.drumar.bonus_cold_mistress(lvl - 1)[1]
         table.insert(s, { "element", {
             image = "menu/chilled.png",

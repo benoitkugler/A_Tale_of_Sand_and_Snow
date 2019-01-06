@@ -299,11 +299,10 @@ function apply.slow_zone(event, pri, snd, dmg)
     end
 end
 
--- Utilise le status chilled
+-- Consume chilled status
 function apply.chilled_dmg(event, pri, snd, dmg)
     if event == "attacker_hits" and snd.status.chilled then
-        local c = case_array(H.get_variable_array("table_status_chilled"),snd.id)
-        local special_lvl = c.lvl
+        local special_lvl = snd.variables.status_chilled_lvl
         local att = H.get_child(wesnoth.current.event_context, "weapon")
         local values = SPECIAL_SKILLS.info.drumar.bonus_cold_mistress(special_lvl - 1)
         local percent_bonus = values[1]
@@ -327,19 +326,21 @@ function apply.chilled_dmg(event, pri, snd, dmg)
     end
 end
 
--- Met le status
--- Use list strucuture, because units id are not always valid WML keys
+-- Apply chilled status on target
+-- table_status_chilled has id with _ instead of - as keys, and a 2 char string lvl cd 
 function apply.put_status_chilled(event, pri, snd, dmg)
     if event == "attacker_hits" and snd then
         local lvl = _get_special(H.get_child(wesnoth.current.event_context, "weapon"), "status_chilled")
         if lvl and not snd.status.chilled then
             local values = SPECIAL_SKILLS.info.drumar.bonus_cold_mistress(lvl - 1)
             local cd = values[2]
-            if VAR.table_status_chilled == nil then
-                H.set_variable_array("table_status_chilled", {{id = snd.id, lvl = lvl, cd = cd}})
-            else 
-                table.insert(VAR.table_status_chilled, {id = snd.id, lvl = lvl, cd = cd})
-            end
+            snd.variables.status_chilled_lvl = lvl
+            snd.variables.status_chilled_cd =  cd 
+            -- if VAR.table_status_chilled == nil then
+            --     H.set_variable_array("table_status_chilled", {{id = snd.id, lvl = lvl, cd = cd}})
+            -- else 
+            --     table.insert(VAR.table_status_chilled, {id = snd.id, lvl = lvl, cd = cd})
+            -- end
             snd.status.chilled = true
             label_snd = label_snd .. _ "<span color='#1ED9D0'>Chilled !</span>\n"
         end
@@ -348,20 +349,18 @@ end
 
 -- Mise à jour des status chilled
 function endturn.status_chilled()
-    local new_a = {}
-    for i, v in ipairs(H.get_variable_array("table_status_chilled")) do
-        local lvl, cd = v.lvl, v.cd
-        wesnoth.message(i .. v.id .. cd)
+    local us = wesnoth.get_units { status = "chilled" }
+    for id, u in ipairs(us) do
+        local lvl, cd = u.variables.status_chilled_lvl, u.variables.status_chilled_cd
+        wesnoth.message(id .. lvl .. cd)
         if cd == 1 then
-            local u = wesnoth.get_unit(v.id)
-            if u then
-                u.status.chilled = nil
-            end
+            u.status.chilled = nil
+            u.variables.status_chilled_lvl = nil
+            u.variables.status_chilled_cd = nil
         elseif cd then
-            table.insert(new_a, { id = v.id, lvl = v.lvl, cd = cd -1})
-        end
+            u.variables.status_chilled_cd =  u.variables.status_chilled_cd - 1
+        end 
     end
-    H.set_variable_array("table_status_chilled", new_a)
 end 
 
 function apply.shield(event, pri, snd, dmg)
