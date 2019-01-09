@@ -4,9 +4,9 @@ ES={}
 VAR.objets_joueur={ceinture_geant="brinx",bottes_celerite=0,ring_haste="vranken",shield_myrom="drumar"}
 wesnoth.set_variable("heros_joueur","brinx,vranken,drumar")
 
-local br = wesnoth.get_unit("brinx")
-br.variables.status_shielded_hp = 15
-br.status.shielded = true
+-- local br = wesnoth.get_unit("brinx")
+-- br.variables.status_shielded_hp = 15
+-- br.status.shielded = true
 
 function ES.kill()
 end

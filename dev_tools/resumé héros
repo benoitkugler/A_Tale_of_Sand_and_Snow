@@ -32,11 +32,12 @@ AMLA : 	arbre cac : dmg, attaque, precision, reduit armure
 		arbre commandement : lvls , aug defense adjacents
 		arbre distance : dmg, attaque, precision
 		
-COMPETENCE SPE : Formations : 	Passif	Coup dans le dos (dmg, chance to hit)
-								Passif	Encerclement Xavier a coté de 2 atks (dmg, chance to hit)
+COMPETENCE SPE : Formations : 	Passif	Encerclement Xavier a coté de 2 atks (dmg, chance to hit)
 								Passif 	Triangle défensif
-								Actif 	Déclenche attaque si formation
-								
+								Passif: Bonus damage for xavier si a la pointe d'une attaque de 4
+								Actif 	Déclenche attaque si formation % des pv actuels en face des heros
+XP SPE : Sur commandemnt, attaque d'une unite adjacente, sur formation
+
 								
 Morgane : Soin, soutient, faible physiquement		
 AMLA : 	arbre defense : compense res, hp, defense
