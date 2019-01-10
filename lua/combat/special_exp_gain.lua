@@ -2,18 +2,19 @@
 local V = {
     rymor = {
         ADJ_NEXT = 2, -- + atk.level
-        DEF = 2, -- * atk.level
+        DEF = 2 -- * atk.level
     },
     brinx = {
         DEF_MUSPELL = 1, -- + ath.level
         ATK_MUSPELL = 3, -- * def.level
-        KILL_MUSPELL = 5, -- * dying.level
+        KILL_MUSPELL = 5 -- * dying.level
     },
-    sword_spirit = { -- xp goes to vranken
+    sword_spirit = {
+        -- xp goes to vranken
         LEVEL_UP = 60, -- on level up
         ATK = 2, -- * def.level
         DEF = 1, -- + def.level
-        KILL = 3, -- * dying.level
+        KILL = 3 -- * dying.level
     },
     drumar = {
         DEF_COLD = 1, -- + atk.level
@@ -21,17 +22,17 @@ local V = {
         ATK_COLD = 2, -- + def.level
         ATK_SLOW = 1.45, -- * def.level
         ATK_SNARE = 2, -- * def.level
-        ATK_CHILLING_TOUCH = 2.4, -- * def.level
+        ATK_CHILLING_TOUCH = 2.4 -- * def.level
     },
     bunshop = {
         ATK_BACKSTAB = 2, -- * def.level
-        ONE_SHOT = 4, -- * dying.level
+        ONE_SHOT = 4 -- * dying.level
     },
     xavier = {
-        LEADERSHIP = 1, -- * ally level 
+        LEADERSHIP = 1, -- * ally level
         Y_FORMATION = 4, -- * def level
         I_FORMATION = 5, -- * def level
-        A_FORMATION = 5, -- + atk level
+        A_FORMATION = 5 -- + atk level
     }
 }
 
@@ -47,36 +48,35 @@ local exp_functions = {
 -- Funtion called on every unit fighting
 function exp_functions.global.combat(atk, def)
     local rymor = wesnoth.get_unit("rymor")
-    if rymor and #(wesnoth.get_units {
-        id = "rymor",
-        side = def.side,
-        T.filter_adjacent {
-            id = def.id,
-        }
-    }) > 0 then -- defender is ally and next to rymor
+    if rymor and rymor:matches {
+                side = def.side,
+                T.filter_adjacent {
+                    id = def.id
+                }
+            }
+     then -- defender is ally and next to rymor
         rymor.variables.xp = rymor.variables.xp + atk.level + V.rymor.ADJ_NEXT -- def next to rymor
     end
     local xavier = wesnoth.get_unit("xavier")
     if xavier then
-        if #(wesnoth.get_units {
-            id = "xavier",
-            side = atk.side,
-            T.filter_adjacent {
-                id = atk.id,
+        if xavier:matches {
+                side = atk.side,
+                T.filter_adjacent {
+                    id = atk.id
+                }
             }
-        }) > 0 then -- atker is ally and next to xavier
-            xavier.variables.xp = xavier.variables.xp + atk.level + V.xavier.LEADERSHIP 
-        elseif #(wesnoth.get_units {
-            id = "xavier",
-            side = def.side,
-            T.filter_adjacent {
-                id = def.id,
+         then -- atker is ally and next to xavier
+            xavier.variables.xp = xavier.variables.xp + atk.level + V.xavier.LEADERSHIP
+         elseif xavier:matches {
+                side = def.side,
+                T.filter_adjacent {
+                    id = def.id
+                }
             }
-        }) > 0 then
-            xavier.variables.xp = xavier.variables.xp + def.level + V.xavier.LEADERSHIP 
+         then
+            xavier.variables.xp = xavier.variables.xp + def.level + V.xavier.LEADERSHIP
         end
     end
-
 end
 
 -- Functions called only when the given hero is fighting
@@ -118,7 +118,7 @@ end
 function exp_functions.sword_spirit.combat(atk, def)
     if atk.id == "sword_spirit" then
         local u = wesnoth.get_units {id = "vranken"}[1]
-        u.variables.xp = u.variables.xp +  V.sword_spirit.ATK * def.__cfg.level --attaque
+        u.variables.xp = u.variables.xp + V.sword_spirit.ATK * def.__cfg.level --attaque
     elseif def.id == "sword_spirit" then
         local u = wesnoth.get_units {id = "vranken"}[1]
         u.variables.xp = u.variables.xp + atk.__cfg.level + V.sword_spirit.DEF --defense
@@ -143,7 +143,7 @@ end
 
 function exp_functions.brinx.kill(kil, dyi)
     if kil.id == "brinx" and dyi.race == "muspell" then
-        kil.variables.xp = kil.variables.xp  + dyi.__cfg.level * V.brinx.KILL_MUSPELL --brinx kills muspell
+        kil.variables.xp = kil.variables.xp + dyi.__cfg.level * V.brinx.KILL_MUSPELL --brinx kills muspell
     end
 end
 
@@ -172,7 +172,7 @@ function exp_functions.drumar.combat(atk, def)
          then
             atk.variables.xp = atk.variables.xp + arrondi(def.__cfg.level * V.drumar.ATK_SNARE) --attaque snare
         end
-        if weapon.name == "chilling touch" then 
+        if weapon.name == "chilling touch" then
             atk.variables.xp = atk.variables.xp + arrondi(def.__cfg.level * V.drumar.ATK_CHILLING_TOUCH) --attaque chilling touch
         end
     end
