@@ -5,6 +5,7 @@
 
 local info = {}
 
+-- TODO: A implémenter
 info["bunshop"] = {}
 info["rymor"] = {}
 
@@ -16,8 +17,10 @@ info["drumar"] = {
 				"<span  font_weight ='bold' >slows</span>, <span  font_weight ='bold' >snares</span> or " ..
 					" <span  font_weight ='bold' >chilling</span> states to her targets, " ..
 						"as well as using <span  font_weight ='bold' >cold</span> attacks.",
-	help_ratios = _ "(<span weight ='bold' >x 1</span> per cold attack, <span weight ='bold' >x 1.5</span> " ..
-		"per slow, <span weight ='bold' >x 2</span> per snare, <span weight ='bold' >x 2.5</span> per chilling state)",
+	help_ratios = fmt(_ "(<span weight ='bold' >+ %.1f</span> per cold attack, <span weight ='bold' >x %.1f</span> " ..
+		"per slow, <span weight ='bold' >x %.1f</span> per snare, <span weight ='bold' >x %.1f</span> per chilling state)",
+					EXP.values.drumar.ATK_COLD, EXP.values.drumar.ATK_SLOW, 
+					EXP.values.drumar.ATK_SNARE, EXP.values.drumar.ATK_CHILLING_TOUCH),
 	{
 		img = "comp_spe/iceball_red.png",
 		max_lvl = 3,
@@ -77,8 +80,10 @@ info["vranken"] = {
 	help_des = _ "Vranken has a familly link with his sword. " ..
 		"Every time <span  font_weight ='bold' >Göndhul fights</span>, Vranken earn points " ..
 			"(scaling with opponents level).",
-	help_ratios = _ "(<span weight ='bold'>x 1</span> per defense, <span weight ='bold'>x 2 </span>per attack, " ..
-		"<span weight ='bold' >x 3</span> per kill, <span weight ='bold' >10</span> per level up)",
+	help_ratios = fmt(_ "(<span weight ='bold'>+ %.1f</span> per defense, <span weight ='bold'>x %.1f</span>per attack, " ..
+		"<span weight ='bold' >x %.1f</span> per kill, <span weight ='bold' >%d</span> per level up)",
+					EXP.values.sword_spirit.DEF, EXP.values.sword_spirit.ATK,
+					EXP.values.sword_spirit.KILL, EXP.values.sword_spirit.LEVEL_UP),
 	{
 		img = "comp_spe/leeches_cac.png",
 		max_lvl = 3,
@@ -130,8 +135,10 @@ info["brinx"] = {
 	help_des = _ "Brinx seeks to avenge Jödumur's death. Every time he " ..
 		"<span  font_weight ='bold' >fights against muspellians</span>, " ..
 			"Brinx earn points (scaling with opponents level).",
-	help_ratios = _ "(<span   font_weight ='bold' >x 1</span> per defense, " ..
-		"<span  font_weight ='bold'>x 3 </span>per attack, <span  font_weight ='bold' >x 5</span> per kill)",
+	help_ratios = fmt(_ "(<span font_weight ='bold'>+ %d</span> per defense, " ..
+		"<span font_weight ='bold'>x %.1f</span>per attack, <span font_weight ='bold'>x %.1f</span> per kill)",
+					EXP.values.brinx.DEF_MUSPELL, EXP.values.brinx.ATK_MUSPELL,
+					EXP.values.brinx.KILL_MUSPELL),
 	{
 		img = "icons/armor_leather.png",
 		max_lvl = 3,
@@ -178,4 +185,28 @@ info["brinx"] = {
 	muspell_rage = function(lvl) return 10 * lvl end
  }
 
-return info
+-- XAVIER
+info["xavier"] = {
+	help_des = _ "Xavier thrives in battefield strategy. Every time Xavier <span font_weight='bold'>" ..
+	"helps allies</span>, he builds confidence with them (scaling with ally level). This will eventually make Xavier stronger, when " ..
+	"fighting in precise formations.",
+	help_ratios = fmt(_ "(<span font_weight ='bold'>x %.1f</span> per lead, <span font_weight ='bold'>x %.1f</span> per Y-formation, " ..
+	"<span font_weight ='bold'>x %.1f</span> per I-formation and <span font_weight ='bold'>+ %d</span> per A-formation)",
+					EXP.values.xavier.LEADERSHIP, EXP.values.xavier.Y_FORMATION,
+					EXP.values.xavier.I_FORMATION, EXP.values.xavier.A_FORMATION),
+	{
+		img = "icons/armor_leather.png",
+		max_lvl = 3,
+		name = "def_muspell",
+		color = "#4575AE",
+		name_aff = _ "Muspell Equilibrium : ",
+		require_lvl = 4,
+		desc = _ "Gives Brinx %s%% defense bonus against muspellians ",
+		costs = {50,20,30}
+	},
+	def_muspell = function(lvl) return 5 + lvl * 5 end,
+}
+
+
+
+ return info

@@ -19,13 +19,19 @@ local V = {
         DEF_COLD = 1, -- + atk.level
         DEF_SLOW = 1.45, -- * atk.level
         ATK_COLD = 2, -- + def.level
-        ATK_SLOW = 1.5, -- * def.level
+        ATK_SLOW = 1.45, -- * def.level
         ATK_SNARE = 2, -- * def.level
         ATK_CHILLING_TOUCH = 2.4, -- * def.level
     },
     bunshop = {
         ATK_BACKSTAB = 2, -- * def.level
         ONE_SHOT = 4, -- * dying.level
+    },
+    xavier = {
+        LEADERSHIP = 1, -- * ally level 
+        Y_FORMATION = 4, -- * def level
+        I_FORMATION = 5, -- * def level
+        A_FORMATION = 5, -- + atk level
     }
 }
 
@@ -38,18 +44,42 @@ local exp_functions = {
     global = {}
 }
 
+-- Funtion called on every unit fighting
 function exp_functions.global.combat(atk, def)
     local rymor = wesnoth.get_unit("rymor")
-    if #(wesnoth.get_units {
+    if rymor and #(wesnoth.get_units {
         id = "rymor",
         side = def.side,
         T.filter_adjacent {
             id = def.id,
         }
-    }) then -- defender is ally and next to rymor
+    }) > 0 then -- defender is ally and next to rymor
         rymor.variables.xp = rymor.variables.xp + atk.level + V.rymor.ADJ_NEXT -- def next to rymor
     end
+    local xavier = wesnoth.get_unit("xavier")
+    if xavier then
+        if #(wesnoth.get_units {
+            id = "xavier",
+            side = atk.side,
+            T.filter_adjacent {
+                id = atk.id,
+            }
+        }) > 0 then -- atker is ally and next to xavier
+            xavier.variables.xp = xavier.variables.xp + atk.level + V.xavier.LEADERSHIP 
+        elseif #(wesnoth.get_units {
+            id = "xavier",
+            side = def.side,
+            T.filter_adjacent {
+                id = def.id,
+            }
+        }) > 0 then
+            xavier.variables.xp = xavier.variables.xp + def.level + V.xavier.LEADERSHIP 
+        end
+    end
+
 end
+
+-- Functions called only when the given hero is fighting
 
 -- ---------------------- Bunshop ----------------------
 function exp_functions.bunshop.combat(atk, def)
@@ -150,6 +180,8 @@ end
 
 -- Top level
 EXP = {}
+EXP.values = V
+
 function EXP.adv()
     local unit = get_pri()
     if exp_functions[unit.id] and exp_functions[unit.id].adv then

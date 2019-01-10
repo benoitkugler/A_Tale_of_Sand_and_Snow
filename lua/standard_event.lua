@@ -27,7 +27,7 @@ local Standard_event = {
     },
     {id = "turn_end", first_time_only = false, name = "turn end", T.lua {code = " EC.fin_tour () "}},
     {id = "select", first_time_only = false, name = "select", T.lua {code = "AB.select()"}},
-    {id = "moveto", first_time_only = false, name = "moveto", T.lua {code = "AB.allies_defense()"}},
+    {id = "moveto", first_time_only = false, name = "moveto", T.lua {code = "AB.on_moveto()"}},
     {id = "post_advance", first_time_only = false, name = "post advance", T.lua {code = "AM.adv() ; EXP.adv()"}},
     {
         id = "pre_advance",
