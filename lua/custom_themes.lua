@@ -111,7 +111,7 @@ function wesnoth.theme_items.unit_traits()
         element = v[2]
         local trt, a = tostring(element.help):gsub("traits_", "")
         if trt then
-            local objet = obj_DB[trt]
+            local objet = DB.OBJETS[trt]
             if objet then
                 local str = (objet.code and objet.code(u)) or objet.description
                 element.text = objet.name .. " "

@@ -17,21 +17,17 @@ function table.keys(t)
 end
 
 -- round
-function arrondi(f)
-    return math.floor(0.5 + f)
-end
+function arrondi(f) return math.floor(0.5 + f) end
 
 
 --Récupére l'unité primaire ou secondaire d'un event
 function get_pri()
-    return wesnoth.get_units {x = wesnoth.current.event_context.x1, y = wesnoth.current.event_context.y1}[1]
+    return wesnoth.get_unit(wesnoth.current.event_context.x1, wesnoth.current.event_context.y1)
 end
 
 function get_snd()
-    return wesnoth.get_units {x = wesnoth.current.event_context.x2, y = wesnoth.current.event_context.y2}[1]
+    return wesnoth.get_unit(wesnoth.current.event_context.x2, wesnoth.current.event_context.y2)
 end
-
-
 
 -- Return the field _level of the abilities with id id_ability
 function get_ability(u, id_ability, ability_name)
@@ -129,6 +125,12 @@ function popup(title, message)
     end
     wesnoth.show_dialog(dialog, preshow)
 end
+
+
+
+
+
+
 
 
 

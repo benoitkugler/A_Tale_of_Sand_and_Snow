@@ -1,4 +1,4 @@
-DB_AMLAS.brinx = {
+local brinx = {
 	_default_border="#1EF113",
 	_default_background="68 154 42",
 	{
@@ -325,3 +325,4 @@ DB_AMLAS.brinx = {
 		unpack(standard_amla_heal(5))
 	}
 }
+return brinx

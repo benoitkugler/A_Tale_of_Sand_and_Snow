@@ -1,4 +1,4 @@
-DB_AMLAS.vranken = {
+vranken = {
 	_default_border = "#1C71CD",
 	_default_background = "66 65 193",
 	{
@@ -399,3 +399,4 @@ DB_AMLAS.vranken = {
 		unpack(standard_amla_heal(5))
 	}
 }
+return vranken

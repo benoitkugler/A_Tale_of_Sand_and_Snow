@@ -1,6 +1,4 @@
-SPECIAL_SKILLS = wesnoth.require("~add-ons/A_Tale_of_Sand_and_Snow/lua/DB/special_skills.lua")
-
-MCS = {}
+local MCS = {}
 
 local LVL_0_DESC = _ "<span style='italic'>Skill not learned yet</span>"
 local MAX_LVL_REACHED = _ "<span style='italic'>Max level reached </span>"
@@ -183,7 +181,7 @@ function MCS.preshow(unit)
 
         MCS.unit_specials_skills = unit.variables["special_skills"]
         MCS.u_lvl = unit.level
-        MCS.skills_table = SPECIAL_SKILLS.info[unit.id]
+        MCS.skills_table = DB.SPECIAL_SKILLS[unit.id]
         MCS.xp_total = unit.variables.xp
         MCS.xp_dispo = unit.variables.xp
 
@@ -280,7 +278,7 @@ function MCS.preshow(unit)
             local comp = MCS.skills_table[i]
             local newlvl = unit.variables["special_skills." .. comp.name] + 1
             unit.variables["special_skills." .. comp.name] = newlvl
-            SPECIAL_SKILLS.apply[comp.name](newlvl, unit)
+            SPECIAL_SKILLS[comp.name](newlvl, unit)
             AM.update_lvl(unit) -- needed not to loose extras LVL, removed by u:remove_modifications
             MCS.init()
         else
@@ -293,3 +291,4 @@ function MCS.preshow(unit)
     wesnoth.set_dialog_callback(selectl, "lcomp")
     wesnoth.set_dialog_callback(select_lvlup, "lvl_up")
 end
+return MCS

@@ -3,7 +3,7 @@
 ST = {}
 
 local Standard_event = {
-    {id = "prestart_menus", name = "prestart", T.lua {code = "ST.menus()"}},
+    {id = "prestart_menus", first_time_only = false, name = "prestart", T.lua {code = "MI.setup_menus()"}},
     {id = "new_turn", first_time_only = false, name = "new turn", T.lua {code = "CS.debut_tour()"}},
     {id = "attack", first_time_only = false, name = "attack", T.lua {code = "EXP.atk (); ES.atk (); EC.combat (0)"}},
     {
@@ -28,52 +28,20 @@ local Standard_event = {
     {id = "turn_end", first_time_only = false, name = "turn end", T.lua {code = " EC.fin_tour () "}},
     {id = "select", first_time_only = false, name = "select", T.lua {code = "AB.select()"}},
     {id = "moveto", first_time_only = false, name = "moveto", T.lua {code = "AB.on_moveto()"}},
-    {id = "post_advance", first_time_only = false, name = "post advance", T.lua {code = "AM.adv() ; EXP.adv()"}},
+    {id = "post_advance", first_time_only = false, name = "post advance", T.lua {code = "AMLA.adv() ; EXP.adv()"}},
     {
         id = "pre_advance",
         first_time_only = false,
         name = "pre advance",
         T.filter {role = "hero", advances_to = ""},
-        T.lua {code = "AM.pre_advance()"}
+        T.lua {code = "AMLA.pre_advance()"}
     }
 }
 
 -- Commons events for all scenarios
-for i, v in pairs(Standard_event) do
+for __, v in pairs(Standard_event) do
     wesnoth.remove_event_handler(v.id)
     wesnoth.add_event_handler(v)
-end
-
-function ST.menus()
-    -- Setup of menus items
-    wesnoth.fire(
-        "set_menu_item",
-        {
-            id = "comp_spe",
-            description = _ "Special Ability",
-            T.show_if {T.have_unit {x = "$x1", y = "$y1", T.filter_wml {T.variables {comp_spe = true}}}},
-            T.command {T.lua {code = "CS.comp_spe()"}}
-        }
-    )
-
-    wesnoth.fire(
-        "set_menu_item",
-        {
-            id = "skills_advances",
-            description = _ "Skills",
-            T.show_if {T.have_unit {x = "$x1", y = "$y1", role = "hero"}},
-            T.command {T.lua {code = "MI.skills_advances()"}}
-        }
-    )
-
-    wesnoth.fire(
-        "set_menu_item",
-        {
-            id = "objets",
-            description = _ "Objects",
-            T.command {T.lua {code = "O.menuObj()"}}
-        }
-    )
 end
 
 -- Heroes last breath

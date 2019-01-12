@@ -1,375 +1,253 @@
-local info = wesnoth.require("~add-ons/A_Tale_of_Sand_and_Snow/lua/DB/special_skills_meta.lua")
+-- Metadata for specials skills (implementation is in special_skills)
+-- In descriptions, %s will be replace by the computed value, in color.
+-- Name of skills we be in color as well
+-- Function which compute the values are directly accesible to be used in event_combat.
 
--- Implementation of special skills (trigered when choosing to a skill in menu item.)
--- Each special skill is coded in WML has an object with id skill_idoftheskill
--- An attribut _level maybe added to abilities and specials when needed
--- Upgrading a skill should remove the old level and create a new one.
+local V = wesnoth.require("special_exp_gain")
 
-local apply = {}
+local info = {}
 
-local function _get_ids(lvl, skill_name)
-	local id, old_id = "skill_" .. skill_name .. lvl, "skill_" .. skill_name .. tostring(lvl - 1)
-	return id, old_id
-end
+-- TODO: A implémenter
+info["bunshop"] = {}
+info["rymor"] = {}
 
--- ---------------------------------- Vranken ----------------------------------
-function apply.leeches_cac(lvl, unit)
-	local id, old_id = _get_ids(lvl, "leeches_cac")
-	unit:remove_modifications({id = old_id}, "object")
+-- DRUMAR
+info["drumar"] = {
+	help_des = _ "Several years of battles in Vranken company have made Frä Drümar more warlike than any other Frä. " ..
+		"She excels at slowing enemies and taking advantage of their delayed reactions. " ..
+			"\nShe will earn experience (scaling with enemies level) when applying " ..
+				"<span  font_weight ='bold' >slows</span>, <span  font_weight ='bold' >snares</span> or " ..
+					" <span  font_weight ='bold' >chilling</span> states to her targets, " ..
+						"as well as using <span  font_weight ='bold' >cold</span> attacks.",
+	help_ratios = fmt(
+		_ "(<span weight ='bold' >+ %.1f</span> per cold attack, <span weight ='bold' >x %.1f</span> " ..
+			"per slow, <span weight ='bold' >x %.1f</span> per snare, <span weight ='bold' >x %.1f</span> per chilling state)",
+		V.drumar.ATK_COLD,
+		V.drumar.ATK_SLOW,
+		V.drumar.ATK_SNARE,
+		V.drumar.ATK_CHILLING_TOUCH
+	),
+	{
+		img = "comp_spe/iceball_red.png",
+		max_lvl = 3,
+		name = "wave_dmg",
+		color = "#D02300",
+		name_aff = _ "Cold Strengh :",
+		require_lvl = 4,
+		desc = _ "Grants %s%% additionnal bonus damage and %s bonus attack on the chilling wave.",
+		costs = {50, 50, 60}
+	},
+	wave_dmg = function(lvl)
+		return lvl == 3 and {15, 1} or {10, 0}
+	end,
+	{
+		img = "comp_spe/forecast.png",
+		max_lvl = 3,
+		name = "forecast_defense",
+		color = "#265690",
+		name_aff = _ "Forecast :",
+		require_lvl = 4,
+		desc = _ "Ennemies struggle to hit : %s%% additional bonus defense.",
+		costs = {70, 70, 70}
+	},
+	forecast_defense = function(lvl)
+		return 7
+	end,
+	{
+		img = "comp_spe/slow_zone.png",
+		max_lvl = 1,
+		name = "slow_zone",
+		color = "#00A8A2",
+		name_aff = _ "Slowing field :",
+		require_avancement = {
+			id = "toile_atk",
+			des = _ "Requires <span weight='bold' color='#919191'>faster entangle</span> "
+		},
+		require_lvl = 4,
+		desc = _ "Entangle now <span color='#00A8A2'>permanetly slows all enemies</span> near the target. Intensity : %s%%",
+		costs = {150, 100}
+	},
+	slow_zone = function(lvl)
+		return 10 + (10 * lvl)
+	end,
+	{
+		img = "attacks/chilling_touch_master.png",
+		max_lvl = 3,
+		name = "bonus_cold_mistress",
+		color = "#1ED9D0",
+		name_aff = _ "Cold Expert :",
+		require_avancement = {
+			id = "attack_chilled",
+			des = _ "Requires <span weight='bold' color='#1ED9D0'>Chilling touch</span> object"
+		},
+		require_lvl = 6,
+		desc = _ "Increases Chilling bonus damage to %s%% and %s turns duration.",
+		costs = {40, 40, 60}
+	},
+	bonus_cold_mistress = function(lvl)
+		return lvl == 3 and {60, 3} or {30 + 10 * lvl, 2}
+	end
+}
 
-	local value = info[unit.id].leeches_cac(lvl)
-	local desc =
-		string.format(
-		tostring(_ "Regenerates %d%% of the damage dealt in offense and defense. Also works against undead"),
-		value
-	)
-	unit:add_modification(
-		"object",
-		{
-			id = id,
-			T.effect {
-				apply_to = "attack",
-				range = "melee",
-				T.set_specials {
-					mode = "append",
-					T.isHere {
-						id = "leeches",
-						_level = lvl,
-						name = _ "leeches",
-						description = desc
-					}
-				}
-			}
-		}
-	)
-end
+-- VRANKEN
+info["vranken"] = {
+	help_des = _ "Vranken has a familly link with his sword. " ..
+		"Every time <span  font_weight ='bold' >Göndhul fights</span>, Vranken earn points " ..
+			"(scaling with opponents level).",
+	help_ratios = fmt(
+		_ "(<span weight ='bold'>+ %.1f</span> per defense, <span weight ='bold'>x %.1f</span>per attack, " ..
+			"<span weight ='bold' >x %.1f</span> per kill, <span weight ='bold' >%d</span> per level up)",
+		V.sword_spirit.DEF,
+		V.sword_spirit.ATK,
+		V.sword_spirit.KILL,
+		V.sword_spirit.LEVEL_UP
+	),
+	{
+		img = "comp_spe/leeches_cac.png",
+		max_lvl = 3,
+		name = "leeches_cac",
+		color = "#24BE13",
+		name_aff = _ "Leeches :",
+		require_lvl = 4,
+		desc = _ "Leeches %s%% of damage dealt with swords ",
+		costs = {40, 35, 40}
+	},
+	leeches_cac = function(lvl)
+		return 5 + lvl * 5
+	end,
+	{
+		img = "comp_spe/drain.png",
+		max_lvl = 3,
+		name = "drain_cac",
+		color = "#24BE13",
+		name_aff = _ "Drain :",
+		require_lvl = 4,
+		desc = _ "Drains %s%% of damage dealt with swords, if Göndhul is at most <span weight ='bold'>%s</span> hexes away from Vranken",
+		costs = {50, 35, 35}
+	},
+	drain_cac = function(lvl)
+		return {20 + lvl * 10, 2 ^ (lvl + 1)}
+	end,
+	{
+		img = "attacks/atk_brut.png",
+		max_lvl = 3,
+		name = "atk_brut",
+		color = "#e7cfa9",
+		name_aff = _ "Lightning sword :",
+		require_lvl = 5,
+		desc = _ "Grants a sword which deals <span color='#e7cfa9'>true damage</span>, but deals %s%% of your usual sword damage ",
+		costs = {100, 50, 50}
+	},
+	atk_brut = function(lvl)
+		return 65 + (lvl * 15)
+	end,
+	{
+		img = "comp_spe/transposition.png",
+		max_lvl = 2,
+		name = "transposition",
+		color = "#9E25C7",
+		name_aff = _ "<span style='italic'>War link</span>",
+		require_lvl = 6,
+		desc = _ "Enables Vranken and Göndhul to <span color='#9E25C7'>switch position</span>. Cooldown : <span weight='bold'>%s</span> turns.",
+		costs = {150, 100}
+	},
+	transposition = function(lvl)
+		return 3 - lvl
+	end
+}
 
-function apply.drain_cac(lvl, unit)
-	local id, old_id = _get_ids(lvl, "drain_cac")
-	unit:remove_modifications({id = old_id}, "object")
+-- BRINX
+info["brinx"] = {
+	help_des = _ "Brinx seeks to avenge Jödumur's death. Every time he " ..
+		"<span  font_weight ='bold' >fights against muspellians</span>, " ..
+			"Brinx earn points (scaling with opponents level).",
+	help_ratios = fmt(
+		_ "(<span font_weight ='bold'>+ %d</span> per defense, " ..
+			"<span font_weight ='bold'>x %.1f</span>per attack, <span font_weight ='bold'>x %.1f</span> per kill)",
+		V.brinx.DEF_MUSPELL,
+		V.brinx.ATK_MUSPELL,
+		V.brinx.KILL_MUSPELL
+	),
+	{
+		img = "icons/armor_leather.png",
+		max_lvl = 3,
+		name = "def_muspell",
+		color = "#4575AE",
+		name_aff = _ "Muspell Equilibrium : ",
+		require_lvl = 4,
+		desc = _ "Gives Brinx %s%% defense bonus against muspellians ",
+		costs = {50, 20, 30}
+	},
+	def_muspell = function(lvl)
+		return 5 + lvl * 5
+	end,
+	{
+		img = "icons/crossed_sword_and_hammer.png",
+		max_lvl = 3,
+		name = "dmg_muspell",
+		color = "#D02300",
+		name_aff = _ "Muspell Terror : ",
+		require_lvl = 4,
+		desc = _ "Gives Brinx %s%% bonus damage against Muspell troops ",
+		costs = {40, 35, 45}
+	},
+	dmg_muspell = function(lvl)
+		return lvl * 10
+	end,
+	{
+		img = "icons/potion_red_medium.png",
+		max_lvl = 3,
+		name = "fresh_blood_musp",
+		color = "#24BE13",
+		name_aff = _ "Muspell Strength : ",
+		require_lvl = 5,
+		desc = _ "Regenerates %s when killing a muspellian unit",
+		costs = {70, 50, 65}
+	},
+	fresh_blood_musp = function(lvl)
+		return 2 + 6 * lvl
+	end,
+	{
+		img = "comp_spe/bloody_sword.png",
+		max_lvl = 2,
+		name = "muspell_rage",
+		color = "#D02300",
+		name_aff = _ "<span style='italic' >Revenge </span>",
+		require_lvl = 6,
+		desc = _ "If a muspellian is at his sides, Brinx will take and deal %s%% bonus damage against all enemies ",
+		costs = {200, 100}
+	},
+	muspell_rage = function(lvl)
+		return 10 * lvl
+	end
+}
 
-	local values = info[unit.id].drain_cac(lvl)
-	local dmg, radius = values[1], values[2]
-	local desc =
-		string.format(tostring(_ "Regenerates %d%% of the damage dealt in offense and defense. Doesn't apply to undead"), dmg)
-	unit:add_modification(
-		"object",
-		{
-			id = id,
-			T.effect {
-				apply_to = "attack",
-				range = "melee",
-				T.set_specials {
-					mode = "append",
-					T.drains {
-						id = "drain_cac",
-						_level = lvl,
-						name = _ "drains",
-						value = dmg,
-						description = desc,
-						description_inactive = _ "Göndhul is too far away from Vranken.",
-						T.filter_self {
-							T.filter_location {
-								radius = radius,
-								T.filter {id = "sword_spirit"}
-							}
-						}
-					}
-				}
-			}
-		}
-	)
-end
+-- XAVIER
+info["xavier"] = {
+	help_des = _ "Xavier thrives in battefield strategy. Every time Xavier <span font_weight='bold'>" ..
+		"helps allies</span>, he builds confidence with them (scaling level). This will eventually make Xavier stronger, when " ..
+			"fighting in precise formations.",
+	help_ratios = fmt(
+		_ "(<span font_weight ='bold'>x %.1f</span> per lead, <span font_weight ='bold'>x %.1f</span> per Y-formation, " ..
+			"<span font_weight ='bold'>x %.1f</span> per I-formation and <span font_weight ='bold'>+ %d</span> per A-formation)",
+		V.xavier.LEADERSHIP,
+		V.xavier.Y_FORMATION,
+		V.xavier.I_FORMATION,
+		V.xavier.A_FORMATION
+	),
+	{
+		img = "icons/armor_leather.png",
+		max_lvl = 3,
+		name = "def_muspell",
+		color = "#4575AE",
+		name_aff = _ "Muspell Equilibrium : ",
+		require_lvl = 4,
+		desc = _ "Gives Brinx %s%% defense bonus against muspellians ",
+		costs = {50, 20, 30}
+	},
+	def_muspell = function(lvl)
+		return 5 + lvl * 5
+	end
+}
 
-function apply.atk_brut(lvl, unit)
-	local id, old_id = _get_ids(lvl, "atk_brut")
-	unit:remove_modifications({id = old_id}, "object")
-
-	local ratio = info[unit.id].atk_brut(lvl)
-
-	local atk = unit.attacks.sword
-	local new_attack = {
-		apply_to = "new_attack",
-		name = "sword",
-		range = "melee",
-		type = "brut",
-		damage = atk.damage * ratio / 100,
-		number = atk.number,
-		description = _ "ether sword",
-		icon = "attacks/atk_brut.png"
-	}
-
-	unit:add_modification(
-		"object",
-		{
-			id = id,
-			{"effect", new_attack}
-		}
-	)
-end
-
-function apply.transposition(lvl, unit)
-	local id, old_id = _get_ids(lvl, "transposition")
-	unit:remove_modifications({id = old_id}, "object")
-
-	unit.variables.comp_spe = true
-	unit:add_modification(
-		"object",
-		{
-			id = id,
-			T.effect {
-				apply_to = "new_ability",
-				T.abilities {
-					T.isHere {
-						id = "transposition",
-						_level = lvl,
-						name = _ "War link",
-						description = _ "Vranken senses its sword spirit and may switch position with Göndhul, no matter the distance between them. \n<span color='green'>Available now </span>"
-					}
-				}
-			}
-		}
-	)
-end
-
--- ----------------------------------- Brinx -----------------------------------
-function apply.def_muspell(lvl, unit)
-	local id, old_id = _get_ids(lvl, "def_muspell")
-	unit:remove_modifications({id = old_id}, "object")
-
-	local value = info[unit.id].def_muspell(lvl)
-	local desc =
-		string.format(tostring(_ "Brinx learned how to better dodge muspellian attacks : %d%% bonus defense."), value)
-	unit:add_modification(
-		"object",
-		{
-			id = id,
-			T.effect {
-				apply_to = "new_ability",
-				T.abilities {
-					T.isHere {
-						id = id,
-						name = _ "Muspell Equilibrium",
-						description = desc
-					}
-				}
-			},
-			T.effect {
-				apply_to = "attack",
-				T.set_specials {
-					mode = "append",
-					T.chance_to_hit {
-						id = "def_muspell",
-						_level = lvl,
-						name = "",
-						description = "",
-						sub = value,
-						apply_to = "opponent",
-						T.filter_opponent {race = "muspell"}
-					}
-				}
-			}
-		}
-	)
-end
-
-function apply.dmg_muspell(lvl, unit)
-	local id, old_id = _get_ids(lvl, "dmg_muspell")
-	unit:remove_modifications({id = old_id}, "object")
-
-	local value = info[unit.id].dmg_muspell(lvl)
-	local desc = string.format(tostring(_ "Brinx deals %d%% bonus damage when facing a muspellian opponent."), value)
-	unit:add_modification(
-		"object",
-		{
-			id = id,
-			T.effect {
-				apply_to = "new_ability",
-				T.abilities {
-					T.isHere {
-						id = "dmg_muspell",
-						_level = lvl,
-						name = _ "Muspell Terror",
-						description = desc
-					}
-				}
-			},
-			T.effect {
-				apply_to = "attack",
-				T.set_specials {
-					mode = "append",
-					T.damage {
-						id = "def_muspell",
-						_level = lvl,
-						name = "",
-						description = "",
-						multiply = 1 + value / 100,
-						T.filter_opponent {race = "muspell"}
-					}
-				}
-			}
-		}
-	)
-end
-
-function apply.fresh_blood_musp(lvl, unit)
-	local id, old_id = _get_ids(lvl, "fresh_blood_musp")
-	unit:remove_modifications({id = old_id}, "object")
-
-	local value = info[unit.id].fresh_blood_musp(lvl)
-	local desc = string.format(tostring(_ "Brinx heals himself for %d HP when killing a muspellian"), value)
-	unit:add_modification(
-		"object",
-		{
-			id = id,
-			T.effect {
-				apply_to = "new_ability",
-				T.abilities {
-					T.isHere {
-						id = "fresh_blood_musp",
-						_level = lvl,
-						name = _ "Muspell strength",
-						description = desc
-					}
-				}
-			}
-		}
-	)
-end
-
-function apply.muspell_rage(lvl, unit)
-	local id, old_id = _get_ids(lvl, "muspell_rage")
-	unit:remove_modifications({id = old_id}, "object")
-
-	local value = info[unit.id].muspell_rage(lvl)
-	local desc = string.format(tostring(_ "Brinx deals and takes %d%% bonus damage."), value)
-	unit:add_modification(
-		"object",
-		{
-			id = id,
-			T.effect {
-				apply_to = "new_ability",
-				T.abilities {
-					T.isHere {
-						id = "muspell_rage",
-						_level = lvl,
-						name = _ "Revenge",
-						description = desc,
-						description_inactive = _ "There is no muspellian friend to anger Brinx.",
-						T.filter {T.filter_side {T.has_unit {race = "muspell"}}}
-					}
-				}
-			},
-			T.effect {
-				apply_to = "attack",
-				T.set_specials {
-					mode = "append",
-					T.damage {
-						id = "muspell_rage",
-						_level = lvl,
-						name = "",
-						apply_to = "both",
-						description = "",
-						multiply = 1 + value / 100,
-						T.filter {T.filter_side {T.has_unit {race = "muspell"}}}
-					}
-				}
-			}
-		}
-	)
-end
-
--- ----------------------------------- Drumar ----------------------------------- --
-function apply.wave_dmg(lvl, unit)
-	local id, old_id = _get_ids(lvl, "wave_dmg")
-	unit:remove_modifications({id = old_id}, "object")
-
-	local values = info[unit.id].wave_dmg(lvl)
-	local dmg, nb_atk = values[1], values[2]
-
-	unit:add_modification(
-		"object",
-		{
-			id = id,
-			T.effect {
-				apply_to = "attack",
-				name = "chill wave",
-				increase_damage = tostring(dmg) .. "%",
-				increase_attacks = nb_atk
-			}
-		}
-	)
-end
-
-function apply.forecast_defense(lvl, unit)
-	local id, old_id = _get_ids(lvl, "forecast_defense")
-	unit:remove_modifications({id = old_id}, "object")
-
-	local def = info[unit.id].forecast_defense(lvl)
-	unit:add_modification(
-		"object",
-		{
-			id = id,
-			add_defenses(def)
-		}
-	)
-end
-
-function apply.slow_zone(lvl, unit)
-	local id, old_id = _get_ids(lvl, "slow_zone")
-	unit:remove_modifications({id = old_id}, "object")
-
-	local intensity = info[unit.id].slow_zone(lvl)
-	local desc = string.format(tostring(_ "Decrease adjacent ennemies damages and movements by %d%%"), intensity)
-	unit:add_modification(
-		"object",
-		{
-			id = id,
-			T.effect {
-				apply_to = "attack",
-				name = "entangle",
-				T.set_specials {
-					mode = "append",
-					T.isHere {
-						id = "slow_zone",
-						_level = lvl,
-						name = _ "slowing field",
-						description = desc
-					}
-				}
-			}
-		}
-	)
-end
-
-function apply.bonus_cold_mistress(lvl, unit)
-	local id, old_id = _get_ids(lvl, "bonus_cold_mistress")
-	unit:remove_modifications({id = old_id}, "object")
-
-	local values = info[unit.id].bonus_cold_mistress(lvl)
-	local dmg, nb_turn = values[1], values[2]
-	local desc = string.format(tostring(_ "Target takes <span weight='bold'>%d%%</span> bonus damage, when hit by cold attacks. Last <span weight='bold'>%d</span> turns."), dmg, nb_turn)
-	unit:add_modification(
-		"object",
-		{
-			id = id,
-			T.effect {
-				apply_to = "attack",
-				name = "chilling touch",
-				remove_specials = "status_chilled",
-				T.set_specials {
-					mode = "append",
-					T.isHere {
-						id = "status_chilled",
-						_level = lvl + 1,
-						name = _ "chilling",
-						description = desc
-					}
-				}
-			}
-		}
-	)
-end
-
-local DB = {apply = apply, info = info}
-return DB
+return info

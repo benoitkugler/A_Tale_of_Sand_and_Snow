@@ -1,5 +1,8 @@
 AB = {}
-local location_set = wesnoth.require "lua/location_set.lua"
+local LS = wesnoth.require "lua/location_set.lua"
+
+local FORMATION_LABEL = _ "Formation"
+local TARGET_LABEL = _ "Target"
 
 -- Allied defense (Xavier). Called on move event
 -- We first remove passed defense bonus
@@ -22,7 +25,7 @@ local function allies_defense()
         T.filter_adjacent {id = "xavier"},
         T.filter_side {T.allied_with {side = xavier.side}}
     }
-    local bonus_def = DB_AMLAS.xavier.values.ALLIES_DEFENSE_RATIO * lvl
+    local bonus_def = DB.AMLAS.xavier.values.ALLIES_DEFENSE_RATIO * lvl
     for i, u in pairs(adj_xavier) do
         u:add_modification(
             "trait",
@@ -50,8 +53,8 @@ local function next_to(unit, x, y)
 end
 
 local function tiles_bloque(unit)
-    local pourrait = location_set.of_pairs(wesnoth.find_reach(unit, {ignore_units = true}))
-    local peut = location_set.of_pairs(wesnoth.find_reach(unit))
+    local pourrait = LS.of_pairs(wesnoth.find_reach(unit, {ignore_units = true}))
+    local peut = LS.of_pairs(wesnoth.find_reach(unit))
     local bloque =
         pourrait:filter(
         function(x, y, v)
@@ -62,8 +65,8 @@ local function tiles_bloque(unit)
 end
 
 local function pourrait(unit)
-    local pourrait = location_set.of_pairs(wesnoth.find_reach(unit, {ignore_units = true}))
-    local peut = location_set.of_pairs(wesnoth.find_reach(unit))
+    local pourrait = LS.of_pairs(wesnoth.find_reach(unit, {ignore_units = true}))
+    local peut = LS.of_pairs(wesnoth.find_reach(unit))
     pourrait =
         pourrait:filter(
         function(x, y, v)
@@ -132,7 +135,7 @@ local function Y_position(center)
         local front = wesnoth.map.rotate_right_around_center(center, c, 3) -- in front of xavier
         local Y_1 = wesnoth.map.rotate_right_around_center(front, c, 1)
         local Y_2 = wesnoth.map.rotate_right_around_center(front, c, -1)
-        table.insert(formations, {center, Y_1, Y_2})
+        table.insert(formations, {target = c, center, Y_1, Y_2})
     end
     return formations
 end
@@ -152,7 +155,8 @@ local function I_position(center)
     local formations = {}
     for __, c in ipairs({c1, c2, c3, c4, c5, c6}) do
         local behind = wesnoth.map.rotate_right_around_center(center, c, 3)
-        table.insert(formations, {center, c, behind})
+        local target = wesnoth.map.rotate_right_around_center(c, center, 3)
+        table.insert(formations, {target = target, center, c, behind})
     end
     return formations
 end
@@ -178,7 +182,7 @@ local function O_position(center)
                 end
             end
             if is_encerclement then
-                table.insert(formations, {d1, d2, d3, d4, d5, d6})
+                table.insert(formations, {target = c, d1, d2, d3, d4, d5, d6})
             end
         end
     end
@@ -197,54 +201,60 @@ local function _check_formation(xavier, formation)
     return true
 end
 
--- Update abilities related to Formations,
--- and display active ones
-local function xavier_formation()
-    local xavier = wesnoth.get_unit("xavier")
-    if xavier == nil then return end
-    local active_formations = AB.show_formations(xavier)
-    for i, __ in pairs(active_formations) do
-        wesnoth.message(i)
-    end
-end
-
-function AB.show_formations(xavier)
-    local show = location_set.create()
+function AB.get_active_formations(xavier)
+    local tiles_ally = LS.create()
+    local tiles_target = LS.create()
     local active_formations = {}
 
     for __, pos in ipairs(Y_position {xavier.x, xavier.y}) do
         if _check_formation(xavier, pos) then
-            show:of_pairs(pos)
-            active_formations.Y = true
+            tiles_ally:of_pairs(pos)
+            active_formations.Y = pos.target
+            tiles_target:insert(pos.target[1], pos.target[2])
         end
     end
     for __, pos in ipairs(I_position {xavier.x, xavier.y}) do
         if _check_formation(xavier, pos) then
-            show:of_pairs(pos)
-            active_formations.I = true
+            tiles_ally:of_pairs(pos)
+            active_formations.I = pos.target
+            tiles_target:insert(pos.target[1], pos.target[2])
         end
     end
     for __, pos in ipairs(A_position {xavier.x, xavier.y}) do
         if _check_formation(xavier, pos) then
-            show:of_pairs(pos)
+            tiles_ally:of_pairs(pos)
             active_formations.A = true
         end
     end
     for __, pos in ipairs(O_position {xavier.x, xavier.y}) do
         if _check_formation(xavier, pos) then
-            show:of_pairs(pos)
-            active_formations.O = true
+            tiles_ally:of_pairs(pos)
+            active_formations.O = pos.target
+            tiles_target:insert(pos.target[1], pos.target[2])
         end
     end
-    ANIM.hover_tiles(show:to_pairs(), "Formation")
-    return active_formations
+    return active_formations, tiles_ally, tiles_target
 end
+
+-- Update abilities related to Formations,
+-- and display active ones
+local function update_xavier_formation()
+    local xavier = wesnoth.get_unit("xavier")
+    if xavier == nil then return end
+    local active_formations, tiles, targets = AB.get_active_formations(xavier)
+    ANIM.hover_tiles(tiles:to_pairs(), FORMATION_LABEL, nil, targets:to_pairs(), TARGET_LABEL, 50)
+    for i, __ in pairs(active_formations) do
+        wesnoth.message(i)
+    end
+end
+
 
 -- -------------------------- Event handler --------------------------
 function AB.on_moveto()
     allies_defense()
-    xavier_formation()
+    update_xavier_formation()
 end
+
 
 --Appelée sur sélection d'une unité
 function AB.select()
@@ -259,6 +269,7 @@ function AB.select()
     end
 
     if u.id == "xavier" then
-        AB.show_formations(u)
+        local __, tiles, targets = AB.get_active_formations(u)
+        ANIM.hover_tiles(tiles:to_pairs(), FORMATION_LABEL, 15, targets:to_pairs(), TARGET_LABEL, 50)
     end
 end

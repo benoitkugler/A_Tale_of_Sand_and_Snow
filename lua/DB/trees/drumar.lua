@@ -1,4 +1,4 @@
-DB_AMLAS.drumar = {
+drumar = {
 	_default_border="#00FFF5",
 	_defaultf_background="0 168 162",
 	{
@@ -299,3 +299,4 @@ DB_AMLAS.drumar = {
 		unpack(standard_amla_heal(5))
 	}
 }
+return drumar

@@ -1,7 +1,44 @@
-wesnoth.dofile("~add-ons/A_Tale_of_Sand_and_Snow/lua/menus/special_skills.lua")
-wesnoth.dofile("~add-ons/A_Tale_of_Sand_and_Snow/lua/menus/arbre.lua")
+local A = wesnoth.require("tree")
+local MCS = wesnoth.require("~add-ons/A_Tale_of_Sand_and_Snow/lua/menus/special_skills")
+
 
 MI = {}
+
+function MI.setup_menus()
+    -- Setup of menus items
+    wesnoth.fire(
+        "set_menu_item",
+        {
+            id = "comp_spe",
+            description = _ "Special Ability",
+            T.show_if {T.have_unit {x = "$x1", y = "$y1", T.filter_wml {T.variables {comp_spe = true}}}},
+            T.command {T.lua {code = "CS.comp_spe()"}}
+        }
+    )
+
+    wesnoth.fire(
+        "set_menu_item",
+        {
+            id = "skills_advances",
+            description = _ "Skills",
+            T.show_if {T.have_unit {x = "$x1", y = "$y1", role = "hero"}},
+            T.command {T.lua {code = "MI.skills_advances()"}},
+            T.default_hotkey { key = "s", shift = true}
+
+        }
+    )
+
+    wesnoth.fire(
+        "set_menu_item",
+        {
+            id = "objets",
+            description = _ "Objects",
+            T.command {T.lua {code = "O.menuObj()"}}
+        }
+    )
+end
+
+
 
 --MENU MOUVEMENT INVOQUÉ PAR LES ABILITIES ELUSIVE ET WAR JUMP
 local function isIn(l, x, y)
@@ -184,8 +221,6 @@ function MI.skills_advances()
     local u = get_pri()
     wesnoth.show_dialog(
         dialog,
-        function()
-            preshow(u)
-        end
+        function() preshow(u) end
     )
 end

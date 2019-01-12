@@ -1,5 +1,7 @@
 -- Menu Object and function to add and remove objects
 
+
+-- TODO: Refactor (using DB.OBJETS)
 -- Librairie Objets
 
 O = {}
@@ -25,7 +27,7 @@ end
 -- Apply an object to the given unit (unit modification and owner)
 function O.apply(unit_id, objet_id)
     local u = wesnoth.get_units {id = unit_id}[1]
-    local obj = obj_DB[objet_id]
+    local obj = DB.OBJETS[objet_id]
     local modif_object = {
         id = objet_id,
         {"effect", obj.effect}
@@ -207,7 +209,7 @@ local function preshow()
 
     local function onSelect_objet()
         local obj_id = O.position_objets[wesnoth.get_dialog_value("lobjets")]
-        local objet = obj_DB[obj_id]
+        local objet = DB.OBJETS[obj_id]
 
         wesnoth.set_dialog_active(true, "equip")
         if O.is_unfolded then
@@ -317,15 +319,15 @@ local function preshow()
         O.min_length_description = 100000
         for i, v in pairs(O.objets) do
             O.min_length_description =
-                (O.min_length_description > string.len(tostring(obj_DB[i]["description"])) and
-                string.len(tostring(obj_DB[i]["description"]))) or
+                (O.min_length_description > string.len(tostring(DB.OBJETS[i]["description"])) and
+                string.len(tostring(DB.OBJETS[i]["description"]))) or
                 O.min_length_description
         end
 
         for k, i in ipairs(sorted_keys(O.objets)) do
             local v = O.objets[i]
             table.insert(O.position_objets, i)
-            local objet = obj_DB[i]
+            local objet = DB.OBJETS[i]
             wesnoth.set_dialog_value(objet.image .. "mini.png", "lobjets", #(O.position_objets), "icone")
             if v == 0 then
                 wesnoth.set_dialog_value(objet.name, "lobjets", #(O.position_objets), "name")

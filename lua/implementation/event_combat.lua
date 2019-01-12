@@ -1,6 +1,8 @@
 -- Implementation of special effect during figth.
 EC = {}
 
+-- TODO: Use values defined in DB
+
 local COLOR_MAGIC_RES_SHRED = "#B95C43"
 local COLOR_ARMOR_SHRED = "#104d00"
 local COLOR_DEFENSE_SHRED = "#994d00"
@@ -236,7 +238,7 @@ function apply.armor_shred(event, pri, snd, dmg)
     if event == "attacker_hits" then
         local lvl = get_special(H.get_child(wesnoth.current.event_context, "weapon"), "armor_shred")
         if lvl then
-            local value = DB_AMLAS.xavier.values.REDUCE_DEFENSE * lvl
+            local value = DB.AMLAS.xavier.values.REDUCE_DEFENSE * lvl
             wesnoth.add_modification(
                 snd,
                 "object",
@@ -252,7 +254,7 @@ function apply.defense_shred(event, pri, snd, dmg)
     if event == "attacker_hits" then
         local lvl = get_special(H.get_child(wesnoth.current.event_context, "weapon"), "defense_shred")
         if lvl then
-            local shred_per_hit = DB_AMLAS[pri.id].values.REDUCE_DEFENSE * lvl
+            local shred_per_hit = DB.AMLAS[pri.id].values.REDUCE_DEFENSE * lvl
             snd:add_modification(
                 "trait",
                 {

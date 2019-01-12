@@ -1,8 +1,8 @@
- 
+-- TODO: Refactor
 
 --Base de données des objets
 
-obj_DB = {}
+local obj_DB = {}
 
 obj_DB["ring_haste"] = {
 	name = _ "Ring of haste",
@@ -57,3 +57,4 @@ obj_DB["cloak_speed"] = {
 	presentation = _ "<span color='yellow'>Cloak of <span font_weight = 'bold'>celerity </span></span>",
 	effect = {apply_to = "attack", increase_attacks = 2},
 }
+return obj_DB

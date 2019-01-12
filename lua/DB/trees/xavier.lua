@@ -12,7 +12,7 @@ local V = {
 }
 
 local ROMANS = {"I", "II", "III", "IV", "V", "VI"}
-DB_AMLAS.xavier = {
+xavier = {
 	_default_border = "#a99508",
 	_default_background = "181 167 71", -- rgb
 	values = V,
@@ -307,3 +307,4 @@ Adjacent own units of equal or higher level will do %d%% more damage. ]],
 		unpack(standard_amla_heal(5))
 	}
 }
+return xavier
