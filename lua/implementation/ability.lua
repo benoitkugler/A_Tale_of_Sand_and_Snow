@@ -39,8 +39,6 @@ local function allies_defense()
     end
 end
 
-
-
 -- Renvoie true si la case x,y est à coté d'un ennemi de unit
 local function next_to(unit, x, y)
     local s = false
@@ -75,8 +73,6 @@ local function pourrait(unit)
     )
     return pourrait:to_pairs()
 end
-
-
 
 function AB.war_jump(unit)
     local bloque = tiles_bloque(unit)
@@ -236,25 +232,132 @@ function AB.get_active_formations(xavier)
     return active_formations, tiles_ally, tiles_target
 end
 
+-- Application of ablities when a formation is active
+local formations_abilities = {}
+function formations_abilities.Y(xavier, target)
+    local lvl = get_ability(xavier, "Y_formation")
+    if lvl then
+        local value = DB.SPECIAL_SKILLS.xavier.Y_formation(lvl)
+        local x, y = target[1], target[2]
+        xavier:add_modification(
+            "trait",
+            {
+                id = "_formation_Y",
+                T.effect {
+                    apply_to = "attack",
+                    T.set_specials {
+                        mode = "append",
+                        T.attacks {
+                            add = value,
+                            name = _ "Back formation",
+                            active_on = "offense",
+                            T.filter_opponent {
+                                x = x,
+                                y = y
+                            }
+                        }
+                    }
+                }
+            }
+        )
+    end
+end
+
+function formations_abilities.A(xavier)
+    local lvl = get_ability(xavier, "A_formation")
+    if lvl then
+        local value = DB.SPECIAL_SKILLS.xavier.A_formation(lvl)
+        xavier:add_modification(
+            "trait",
+            {
+                id = "_formation_A",
+                add_defenses(value)
+            }
+        )
+    end
+end
+
+function formations_abilities.I(xavier, target)
+    local lvl = get_ability(xavier, "I_formation")
+    if lvl then
+        local value = DB.SPECIAL_SKILLS.xavier.I_formation(lvl)
+        local x, y = target[1], target[2]
+        xavier:add_modification(
+            "trait",
+            {
+                id = "_formation_I",
+                T.effect {
+                    apply_to = "attack",
+                    T.set_specials {
+                        mode = "append",
+                        T.damage {
+                            add = value,
+                            name = _ "Spear formation",
+                            active_on = "offense",
+                            T.filter_opponent {
+                                x = x,
+                                y = y
+                            }
+                        }
+                    }
+                }
+            }
+        )
+    end
+end
+
+function formations_abilities.O(xavier, target)
+    wesnoth.fire("clear_menu_item", { id = "union_debuf"}) -- removing then rebuilding
+    local lvl = get_ability(xavier, "I_formation")
+    if lvl and target then
+        local x, y = target[1], target[2]
+        wesnoth.fire(
+            "set_menu_item",
+            {
+                id = "union_debuf",
+                description = _ "Xavier's union debuf !",
+                image = "menu/ellusive.png",
+                T.show_if {
+                    T.have_location {
+                        x = "$x1",
+                        y = "$y1",
+                        {"and", {x = x, y = y}}
+                    }
+                },
+                T.command {T.lua {code = string.format("AB.union_debuf(%d, %d)", x, y)}}
+            }
+        )
+    end
+end
+
+-- TODO: A implémenter
+function AB.union_debuf(x,y)
+    wesnoth.message(x,y)
+end
+
 -- Update abilities related to Formations,
 -- and display active ones
 local function update_xavier_formation()
     local xavier = wesnoth.get_unit("xavier")
-    if xavier == nil then return end
+    if xavier == nil then
+        return
+    end
+    for _, name in pairs({"A", "I", "Y"}) do -- remove potential old ability
+        xavier:remove_modifications({id = "_formation_" .. name}, "trait")
+    end
     local active_formations, tiles, targets = AB.get_active_formations(xavier)
     ANIM.hover_tiles(tiles:to_pairs(), FORMATION_LABEL, nil, targets:to_pairs(), TARGET_LABEL, 50)
-    for i, __ in pairs(active_formations) do
-        wesnoth.message(i)
+    for name, target in pairs(active_formations) do
+        if not (name ==  "O") then formations_abilities[name](xavier, target) end 
     end
+    formations_abilities.O(xavier, active_formations.O) -- always called, to remove menu item if needed
 end
-
 
 -- -------------------------- Event handler --------------------------
 function AB.on_moveto()
     allies_defense()
     update_xavier_formation()
 end
-
 
 --Appelée sur sélection d'une unité
 function AB.select()

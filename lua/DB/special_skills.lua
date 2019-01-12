@@ -1,5 +1,6 @@
--- Metadata for specials skills (implementation is in special_skills)
+-- Metadata for specials skills.
 -- In descriptions, %s will be replace by the computed value, in color.
+-- Warning, %d or %f won't work (since the the value will be surronded by HTML tags beforehand)
 -- Name of skills we be in color as well
 -- Function which compute the values are directly accesible to be used in event_combat.
 
@@ -238,16 +239,48 @@ info["xavier"] = {
 	{
 		img = "icons/armor_leather.png",
 		max_lvl = 3,
-		name = "def_muspell",
+		name = "Y_formation",
 		color = "#4575AE",
-		name_aff = _ "Muspell Equilibrium : ",
+		name_aff = _ "Back formation : ",
 		require_lvl = 4,
-		desc = _ "Gives Brinx %s%% defense bonus against muspellians ",
+		desc = _ "Xavier gains %s bonus attack(s) when attacking in Y",
 		costs = {50, 20, 30}
 	},
-	def_muspell = function(lvl)
-		return 5 + lvl * 5
-	end
+	Y_formation = function(lvl) return tonumber(lvl) end,
+	{
+		img = "icons/armor_leather.png",
+		max_lvl = 3,
+		name = "A_formation",
+		color = "#4575AE",
+		name_aff = _ "Wedge formation : ",
+		require_lvl = 4,
+		desc = _ "Xavier gains %s%% defense when fighting in A",
+		costs = {70, 40, 40}
+	},
+	A_formation = function(lvl) return lvl * 5 end,
+	{
+		img = "icons/armor_leather.png",
+		max_lvl = 3,
+		name = "I_formation",
+		color = "#4575AE",
+		name_aff = _ "Spear formation : ",
+		require_lvl = 5,
+		desc = _ "Xavier deals %s bonus damage when attacking in I",
+		costs = {50, 20, 30}
+	},
+	I_formation = function(lvl) return 1 + lvl * 3 end,
+	{
+		img = "icons/armor_leather.png",
+		max_lvl = 1,
+		name = "O_formation",
+		color = "#4575AE",
+		name_aff = _ "Union formation : ",
+		require_lvl = 6,
+		desc = _ "When attacking in O, Xavier may launch a powerful strike which removes all abilities and " ..
+				"weapons specials of its target (%s turn(s) cooldown)",
+		costs = {200, 100}
+	},
+	O_formation = function(lvl) return 3 - lvl end,
 }
 
 return info

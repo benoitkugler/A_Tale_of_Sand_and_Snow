@@ -1,5 +1,5 @@
 -- Implementation of special skills (trigered when choosing to a skill in menu item.)
--- Each special skill is coded in WML has an object with id skill_idoftheskill
+-- Each special skill is coded in WML object with id skill_idoftheskill
 -- An attribut _level maybe added to abilities and specials when needed
 -- Upgrading a skill should remove the old level and create a new one.
 -- Some peculiar skills we also be implemented in Event combat or Abilities
@@ -363,6 +363,105 @@ function SPECIAL_SKILLS.bonus_cold_mistress(lvl, unit)
 						_level = lvl + 1,
 						name = _ "chilling",
 						description = desc
+					}
+				}
+			}
+		}
+	)
+end
+
+-- ------------------------------------ Xavier ------------------------------------
+function SPECIAL_SKILLS.Y_formation(lvl, unit)
+	local id, old_id = _get_ids(lvl, "Y_formation")
+	unit:remove_modifications({id = old_id}, "object")
+	local value = DB.SPECIAL_SKILLS.xavier.Y_formation(lvl)
+	unit:add_modification(
+		"object",
+		{
+			id = id,
+			T.effect {
+				apply_to = "new_ability",
+				T.abilities {
+					T.isHere {
+						id = "Y_formation",
+						_level = lvl,
+						name = _ "Back formation",
+						description = fmt(_ "Xavier sends its friends to distract the ennemy. When attacking in Y, " ..
+						"he has the time to perform <b>%d</b> additionnal attacks", value)
+					}
+				}
+			}
+		}
+	)
+end
+
+function SPECIAL_SKILLS.A_formation(lvl, unit)
+	local id, old_id = _get_ids(lvl, "A_formation")
+	unit:remove_modifications({id = old_id}, "object")
+	local value = DB.SPECIAL_SKILLS.xavier.A_formation(lvl)
+	unit:add_modification(
+		"object",
+		{
+			id = id,
+			T.effect {
+				apply_to = "new_ability",
+				T.abilities {
+					T.isHere {
+						id = "A_formation",
+						_level = lvl,
+						name = _ "Wedge formation",
+						description = fmt(_ "Xavier is transcendanted by his friends. When fighting in A, " ..
+						"he will gain <b>%d%% defense</b>.", value)
+					}
+				}
+			}
+		}
+	)
+end
+
+function SPECIAL_SKILLS.I_formation(lvl, unit)
+	local id, old_id = _get_ids(lvl, "I_formation")
+	unit:remove_modifications({id = old_id}, "object")
+	local value = DB.SPECIAL_SKILLS.xavier.I_formation(lvl)
+	unit:add_modification(
+		"object",
+		{
+			id = id,
+			T.effect {
+				apply_to = "new_ability",
+				T.abilities {
+					T.isHere {
+						id = "I_formation",
+						_level = lvl,
+						name = _ "Spear formation",
+						description = fmt(_ "Xavier is transcendanted by his friends. When attacking in I, " ..
+						"he will gain <b>%d damages</b>.", value)
+					}
+				}
+			}
+		}
+	)
+end
+
+function SPECIAL_SKILLS.O_formation(lvl, unit)
+	local id, old_id = _get_ids(lvl, "O_formation")
+	unit:remove_modifications({id = old_id}, "object")
+
+	unit.variables.comp_spe = true
+	local value = DB.SPECIAL_SKILLS.xavier.O_formation(lvl)
+	unit:add_modification(
+		"object",
+		{
+			id = id,
+			T.effect {
+				apply_to = "new_ability",
+				T.abilities {
+					T.isHere {
+						id = "O_formation",
+						_level = lvl,
+						name = _ "Union formation",
+						description = fmt(_ "When grouping as 6, Xavier may disarm its opponent, removing its abilities " ..
+								"and weapon specials (<b>%d</b> turn(s) cooldown).", value)
 					}
 				}
 			}

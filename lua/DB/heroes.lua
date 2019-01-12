@@ -65,7 +65,7 @@ heroes.sword_spirit.color = "#A00E27"
 heroes["xavier"] = {variables = {}}
 heroes.brinx.variables.xp = 0
 heroes.xavier.variables.bloodlust = false
-heroes.xavier.variables.special_skills = {def_muspell = 0}
+heroes.xavier.variables.special_skills = {Y_formation = 0}
 heroes.xavier.variables.comp_spe = false
 heroes.xavier.color = "#a99508"
 

@@ -23,7 +23,6 @@ end
 
 -- Gestion du menu
 function MCS.postshow()
-    MCS.unit_specials_skills = nil
     MCS.u_lvl = nil
     MCS.skills_table = nil
     MCS.xp_total = nil
@@ -140,7 +139,7 @@ function MCS.preshow(unit)
         affiche_pres(false)
 
         local comp = MCS.skills_table[i]
-        local lvl = tonumber(MCS.unit_specials_skills[comp["name"]])
+        local lvl = unit.variables["special_skills"][comp["name"]] or 0
         if lvl == comp.max_lvl then
             wesnoth.set_dialog_value(MAX_LVL_REACHED, "text_pres_suiv")
             wesnoth.set_dialog_value("", "titre_pres")
@@ -179,7 +178,6 @@ function MCS.preshow(unit)
         affiche_pres("hidden")
         wesnoth.set_dialog_active(false, "lvl_up")
 
-        MCS.unit_specials_skills = unit.variables["special_skills"]
         MCS.u_lvl = unit.level
         MCS.skills_table = DB.SPECIAL_SKILLS[unit.id]
         MCS.xp_total = unit.variables.xp
@@ -195,7 +193,7 @@ function MCS.preshow(unit)
         --         ecriture de la liste des competences et mise à jour de l'xp
         for i, v in ipairs(MCS.skills_table) do
             local max_lvl = v["max_lvl"]
-            local lvl = tonumber(MCS.unit_specials_skills[v["name"]])
+            local lvl = unit.variables["special_skills"][v["name"]] or 0
             for j = 1, lvl, 1 do
                 MCS.xp_dispo = MCS.xp_dispo - v.costs[j]
             end
@@ -276,10 +274,10 @@ function MCS.preshow(unit)
         if MCS.to_valid then
             local i = wesnoth.get_dialog_value("lcomp")
             local comp = MCS.skills_table[i]
-            local newlvl = unit.variables["special_skills." .. comp.name] + 1
+            local newlvl = (unit.variables["special_skills." .. comp.name] or 0) + 1
             unit.variables["special_skills." .. comp.name] = newlvl
             SPECIAL_SKILLS[comp.name](newlvl, unit)
-            AM.update_lvl(unit) -- needed not to loose extras LVL, removed by u:remove_modifications
+            AMLA.update_lvl(unit) -- needed not to loose extras LVL, removed by u:remove_modifications
             MCS.init()
         else
             wesnoth.set_dialog_value(_ "Confirm ?", "lvl_up")
