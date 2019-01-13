@@ -24,7 +24,7 @@ end
 
 -- TODO: Better icon
 function UI.setup_menu_debuf(x, y, lua_code)
-    _set_menu_item("union_debuf",_ "Xavier's union debuf !","menu/ellusive.png",
+    _set_menu_item("union_debuf",_ "Xavier's union debuf !","menu/union_debuf.png",
                     x,y,lua_code)
 end
 

@@ -450,7 +450,7 @@ function SPECIAL_SKILLS.O_formation(lvl, unit)
 	unit:remove_modifications({id = old_id}, "object")
 
 	local value = DB.SPECIAL_SKILLS.xavier.O_formation(lvl)
-	unit.variables.special_skill_cd = value
+	unit.variables.special_skill_cd = 0
 	unit:add_modification(
 		"object",
 		{
