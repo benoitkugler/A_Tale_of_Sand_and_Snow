@@ -208,7 +208,7 @@ function MCS.preshow(unit)
                     end
                     wesnoth.set_dialog_value(formatted_title .. "\n" .. formatted_desc, "lcomp", i, "text_comp")
                     wesnoth.set_dialog_value(v.img, "lcomp", i, "img_comp")
-                    wesnoth.set_dialog_value("comp_spe/" .. max_lvl .. "-" .. lvl .. ".png", "lcomp", i, "img_lvl")
+                    wesnoth.set_dialog_value("special_skills/" .. max_lvl .. "-" .. lvl .. ".png", "lcomp", i, "img_lvl")
                     MCS.select_functions[i] = active_selectl
                 else
                     wesnoth.set_dialog_value(
@@ -252,7 +252,7 @@ function MCS.preshow(unit)
     end
 
     local function show_help()
-        if MI.skills_help then
+        if UI.skills_help then
             wesnoth.set_dialog_visible(false, "help")
             wesnoth.set_dialog_visible(true, "help")
 
@@ -261,11 +261,11 @@ function MCS.preshow(unit)
                 "help"
             )
             wesnoth.set_dialog_value(_ "Hide info", "help_button")
-            MI.skills_help = false
+            UI.skills_help = false
         else
             wesnoth.set_dialog_visible(false, "help")
             wesnoth.set_dialog_value("", "help")
-            MI.skills_help = true
+            UI.skills_help = true
             wesnoth.set_dialog_value(_ "Show info", "help_button")
         end
     end

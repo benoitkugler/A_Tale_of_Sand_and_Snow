@@ -1,6 +1,19 @@
 local COLOR_SHIELD = "#ADA5BB"
+local COLOR_CHILLED = "#1ED9D0"
+local IMAGE_SPECIAL_SKILL = "special_skills/star.png"
 
 --Customs status
+local function _show_special_skill_cd(unit)
+    local cd = unit.variables.special_skill_cd or 0
+    local tooltip
+    if cd > 0 then
+        tooltip = fmt(_ "Special skill cooldown : <b>%d</b> turn%s", cd, cd == 1 and "" or "s")
+    else
+        tooltip = _ "Special skill <b>ready</b> !"
+    end
+    return T.element {image = IMAGE_SPECIAL_SKILL, tooltip = tooltip}
+end
+
 local old_unit_status = wesnoth.theme_items.unit_status
 function wesnoth.theme_items.unit_status()
     local u = wesnoth.get_displayed_unit()
@@ -14,14 +27,12 @@ function wesnoth.theme_items.unit_status()
         table.insert(
             s,
             {
-                "element",
-                {
+                T.element {
                     image = "menu/chilled.png",
-                    tooltip = string.format(
-                        tostring(
-                            _ "chilled: This unit is infoged by Cold Mistress. It will take <span color='#1ED9D0'>%d%%</span> bonus damage when hit by cold attacks. " ..
-                                "<span style='italic'>Last %d turn(s).</span>"
-                        ),
+                    tooltip = fmt(
+                        _ "chilled: This unit is infoged by Cold Mistress. It will take <span color='%s'>%d%%</span> bonus damage when hit by cold attacks. " ..
+                            "<span style='italic'>Last %d turn(s).</span>",
+                        COLOR_CHILLED,
                         bonus_dmg,
                         cd
                     )
@@ -55,23 +66,28 @@ function wesnoth.theme_items.unit_status()
             )
         end
     end
-    if wesnoth.eval_conditional {
+    if u.id == "xavier" then
+        table.insert(s, _show_special_skill_cd(u))
+    end
+    if
+        wesnoth.eval_conditional {
             T.have_unit {
                 id = "sword_spirit",
                 T.filter_adjacent {id = u.id},
                 T.fiter_side {T.allied_with {side = u.side}}
             }
-    } then
-    table.insert(
-        s,
-        {
-            "element",
-            {
-                image = "menu/fear_of_love.png",
-                tooltip = _ "endangered: Resistances reduces by <span color='red'>100%</span> !"
-            }
         }
-    )
+     then
+        table.insert(
+            s,
+            {
+                "element",
+                {
+                    image = "menu/fear_of_love.png",
+                    tooltip = _ "endangered: Resistances reduces by <span color='red'>100%</span> !"
+                }
+            }
+        )
     end
     return s
 end
@@ -87,7 +103,7 @@ function wesnoth.theme_items.unit_hp()
     if u.status.shielded then
         local sh = u.variables.status_shielded_hp
         local desc =
-        _ "%s's shield will absorb <span color='%s'>%d</span> damage (active in combat). Only last for the current turn."
+            _ "%s's shield will absorb <span color='%s'>%d</span> damage (active in combat). Only last for the current turn."
         table.insert(
             s,
             T.element {

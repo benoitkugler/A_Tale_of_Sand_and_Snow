@@ -18,6 +18,6 @@ wesnoth.require "implementation/event_combat"
 wesnoth.require "implementation/amla"
 wesnoth.require "implementation/special_skills"
 
-wesnoth.require "menus/objets"
-wesnoth.require "menus/items"
+wesnoth.require "ui/objets"
+wesnoth.require "ui/menus"
 wesnoth.require "standard_event" --event setup

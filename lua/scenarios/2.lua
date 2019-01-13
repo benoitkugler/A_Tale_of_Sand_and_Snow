@@ -73,9 +73,9 @@ function ES.prestart()
                 {
                     xp = "",
                     bloodlust = "",
-                    comp_spe = "",
-                    comp_spe_lvl = "",
-                    comp_spe_cd = "",
+                    special_skills = "",
+                    special_skills_lvl = "",
+                    special_skills_cd = "",
                     T.special_skills {}
                 }
             }
@@ -133,7 +133,7 @@ function ES.turn1()
             role = "hero",
             {
                 "variables",
-                {xp = "", bloodlust = "", comp_spe = "", comp_spe_lvl = "", comp_spe_cd = "", T.special_skills {}}
+                {xp = "", bloodlust = "", special_skills = "", special_skills_lvl = "", special_skills_cd = "", T.special_skills {}}
             }
         },
         x,
@@ -152,7 +152,7 @@ function ES.turn1()
             role = "hero",
             {
                 "variables",
-                {xp = "", bloodlust = "", comp_spe = "", comp_spe_lvl = "", comp_spe_cd = "", T.special_skills {}}
+                {xp = "", bloodlust = "", special_skills = "", special_skills_lvl = "", special_skills_cd = "", T.special_skills {}}
             }
         },
         x,
@@ -175,7 +175,7 @@ function ES.turn1()
             role = "hero",
             {
                 "variables",
-                {xp = "", bloodlust = "", comp_spe = "", comp_spe_lvl = "", comp_spe_cd = "", T.special_skills {}}
+                {xp = "", bloodlust = "", special_skills = "", special_skills_lvl = "", special_skills_cd = "", T.special_skills {}}
             }
         },
         x,
@@ -251,7 +251,7 @@ function ES.see_ennemy()
             id = "sword_spirit",
             name = "Göndhul",
             role = "hero",
-            {"variables", {bloodlust = "", T.special_skills {}, comp_spe = ""}}
+            {"variables", {bloodlust = "", T.special_skills {}, special_skills = ""}}
         },
         1
     )

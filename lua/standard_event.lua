@@ -3,8 +3,8 @@
 ST = {}
 
 local Standard_event = {
-    {id = "prestart_menus", first_time_only = false, name = "prestart", T.lua {code = "MI.setup_menus()"}},
-    {id = "new_turn", first_time_only = false, name = "new turn", T.lua {code = "CS.debut_tour()"}},
+    {id = "prestart_menus", first_time_only = false, name = "prestart", T.lua {code = "UI.setup_menus()"}},
+    {id = "new_turn", first_time_only = false, name = "new turn", T.lua {code = "AB.turn_start()"}},
     {id = "attack", first_time_only = false, name = "attack", T.lua {code = "EXP.atk (); ES.atk (); EC.combat (0)"}},
     {
         id = "attacker_hits",

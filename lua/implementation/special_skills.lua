@@ -111,7 +111,7 @@ function SPECIAL_SKILLS.transposition(lvl, unit)
 	local id, old_id = _get_ids(lvl, "transposition")
 	unit:remove_modifications({id = old_id}, "object")
 
-	unit.variables.comp_spe = true
+	unit.variables.special_skills = true
 	unit:add_modification(
 		"object",
 		{
@@ -447,8 +447,8 @@ function SPECIAL_SKILLS.O_formation(lvl, unit)
 	local id, old_id = _get_ids(lvl, "O_formation")
 	unit:remove_modifications({id = old_id}, "object")
 
-	unit.variables.comp_spe = true
 	local value = DB.SPECIAL_SKILLS.xavier.O_formation(lvl)
+	unit.variables.special_skill_cd = value
 	unit:add_modification(
 		"object",
 		{

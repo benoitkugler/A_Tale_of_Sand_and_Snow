@@ -475,315 +475,315 @@ msgstr ""
 msgid "chilled: This unit is tagged by  Cold Mastress. It will take <span color='#1ED9D0'>"
 msgstr ""
 
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:17
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:17
 msgid "<span color='#873D42'  >Leeches :</span>"
 msgstr ""
 
 #. [lua]: apply.transposition
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:17
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:22
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:34
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:112
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:118
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:130
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:17
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:22
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:34
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:112
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:118
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:130
 msgid "<span style='italic'>Skill not learned yet </span>"
 msgstr ""
 
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:18
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:18
 msgid "Leeches 10% of damage dealt with swords "
 msgstr ""
 
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:19
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:19
 msgid "Leeches 15% of damage dealt with swords "
 msgstr ""
 
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:20
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:20
 msgid "Leeches 20% of damage dealt with swords "
 msgstr ""
 
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:22
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:22
 msgid "<span color='#873D42' >Drain :</span>"
 msgstr ""
 
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:23
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:23
 msgid "Drains 30% of damage dealt with swords, if Göndhul is at most 4 hexes away from Vranken "
 msgstr ""
 
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:24
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:24
 msgid "Drains 40% of damage dealt with swords, if Göndhul is at most 8 hexes away from Vranken "
 msgstr ""
 
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:25
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:25
 msgid "Drains 50% of damage dealt with swords, if Göndhul is at most 16 hexes away from Vranken "
 msgstr ""
 
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:27
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:27
 msgid "<span color='#e7cfa9' >Lightning sword :</span>"
 msgstr ""
 
 #. [lua]: apply.transposition
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:28
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:124
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:28
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:124
 msgid "<span style='italic'>Skill not learned yet</span> "
 msgstr ""
 
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:29
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:29
 msgid "Grants a sword which deals true damage, but deals 70% of your usual sword damage "
 msgstr ""
 
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:30
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:30
 msgid "Now deals 85% of your usual sword damage "
 msgstr ""
 
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:31
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:31
 msgid "Now deals 100% of your usual sword damage "
 msgstr ""
 
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:33
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:33
 msgid "<span color='#62902b' style='italic' >War link</span>"
 msgstr ""
 
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:35
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:35
 msgid "Enables Vranken and Göndhul to switch position. Cooldown : 2 turns"
 msgstr ""
 
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:36
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:36
 msgid "Cooldown decreases to 1 turn "
 msgstr ""
 
 #. [lua]: apply.leeches_cac
 #. [isHere]: id=leeches3
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:46
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:46
 #: A_Tale_of_Sand_and_Snow/utils/abilities.cfg:144
 msgid "leeches"
 msgstr ""
 
 #. [lua]: apply.leeches_cac
 #. [lua]: apply.drain_cac
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:46
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:58
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:46
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:58
 msgid "Regenerates "
 msgstr ""
 
 #. [lua]: apply.drain_cac
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:58
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:58
 msgid "drains"
 msgstr ""
 
 #. [lua]: apply.drain_cac
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:58
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:58
 msgid "Göndhul is too far away from Vranken."
 msgstr ""
 
 #. [lua]: apply.atk_brut
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:78
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:78
 msgid "ether sword"
 msgstr ""
 
 #. [lua]: apply.transposition
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:100
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:100
 msgid "War link"
 msgstr ""
 
 #. [lua]: apply.transposition
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:100
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:100
 msgid "Vranken senses its sword spirit and may switch position with Göndhul, no matter the distance between them. \n<span color='green'>Available now </span>"
 msgstr ""
 
 #. [lua]: apply.transposition
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:112
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:112
 msgid "<span color='#4575AE'  >Nimble :</span>"
 msgstr ""
 
 #. [lua]: apply.transposition
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:113
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:113
 msgid "Gives Brinx 10% defense bonus against muspellians "
 msgstr ""
 
 #. [lua]: apply.transposition
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:114
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:114
 msgid "Gives Brinx 15% defense bonus against muspellians "
 msgstr ""
 
 #. [lua]: apply.transposition
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:115
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:115
 msgid "Gives Brinx 20% defense bonus against muspellians "
 msgstr ""
 
 #. [lua]: apply.transposition
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:117
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:117
 msgid "<span color='#873D42' >Muspell Terror :</span>"
 msgstr ""
 
 #. [lua]: apply.transposition
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:119
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:119
 msgid "Gives Brinx 10% bonus damage against Muspell troops "
 msgstr ""
 
 #. [lua]: apply.transposition
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:120
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:120
 msgid "Gives Brinx 20% bonus damage against Muspell troops "
 msgstr ""
 
 #. [lua]: apply.transposition
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:121
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:121
 msgid "Gives Brinx 30% bonus damage against Muspell troops "
 msgstr ""
 
 #. [lua]: apply.transposition
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:123
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:123
 msgid "<span color='#873D42' >Muspell strengh : </span>"
 msgstr ""
 
 #. [lua]: apply.transposition
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:125
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:125
 msgid "Regenerates 8 HP when killing a muspellian unit "
 msgstr ""
 
 #. [lua]: apply.transposition
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:126
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:126
 msgid "Regenerates 13 HP when killing a muspellian unit "
 msgstr ""
 
 #. [lua]: apply.transposition
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:127
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:127
 msgid "Regenerates 20 HP when killing a muspellian unit "
 msgstr ""
 
 #. [lua]: apply.transposition
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:129
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:129
 msgid "<span color='#873D42' style='italic' >Revenge</span>"
 msgstr ""
 
 #. [lua]: apply.transposition
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:131
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:131
 msgid "If a muspellian is at his sides, Brinx will take and deal +10% bonus damage against all ennemies "
 msgstr ""
 
 #. [lua]: apply.transposition
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:132
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:132
 msgid "Bonus increased to 20% "
 msgstr ""
 
 #. [lua]: apply.def_muspell
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:140
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:140
 msgid "Nimble"
 msgstr ""
 
 #. [lua]: apply.def_muspell
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:140
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:140
 msgid "Brinx learned how to better dodge muspellian attacks : +"
 msgstr ""
 
 #. [lua]: apply.dmg_muspell
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:153
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:153
 msgid "Muspell Terror"
 msgstr ""
 
 #. [lua]: apply.dmg_muspell
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:153
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:153
 msgid "Brinx deals "
 msgstr ""
 
 #. [lua]: apply.fresh_blood_musp
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:166
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:166
 msgid "Muspell strengh"
 msgstr ""
 
 #. [lua]: apply.fresh_blood_musp
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:166
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:166
 msgid "Brinx heals himself for "
 msgstr ""
 
 #. [lua]: apply.muspell_rage
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:178
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:178
 msgid "Revenge"
 msgstr ""
 
 #. [lua]: apply.muspell_rage
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:178
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:178
 msgid "Brinx deals and takes "
 msgstr ""
 
 #. [lua]: apply.muspell_rage
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:178
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:178
 msgid "There is no muspellian friend to anger Brinx."
 msgstr ""
 
 #. [lua]: MCS.menu
 #. [lua]: show_help
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:220
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:298
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:220
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:298
 msgid "Show infos"
 msgstr ""
 
 #. [lua]: MCS.menu
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:228
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:228
 msgid "Level up skill"
 msgstr ""
 
 #. [lua]: MCS.menu
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:245
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:245
 msgid "Confirm"
 msgstr ""
 
 #. [lua]: MCS.menu
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:245
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:245
 msgid "Exit"
 msgstr ""
 
 #. [lua]: MCS.preshow
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:268
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:268
 msgid "<span style='italic'>   Require level "
 msgstr ""
 
 #. [lua]: MCS.preshow
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:281
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:281
 msgid "<span font_size = 'large' font_weight ='bold' ><span  color ='#BFA63F' >Skills of your unit </span>"
 msgstr ""
 
 #. [lua]: MCS.preshow
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:283
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:283
 msgid " <span font_style='italic' ><span color ='#BFA63F'  >Points available :  </span><span font_weight ='bold' >"
 msgstr ""
 
 #. [lua]: MCS.preshow
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:284
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:284
 msgid " <span font_style='italic'  color ='#BFA63F'  >Total points:  "
 msgstr ""
 
 #. [lua]: show_help
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:292
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:292
 msgid "Hide infos"
 msgstr ""
 
 #. [lua]: select_lvlup
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:309
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:309
 msgid "Confirm ?"
 msgstr ""
 
 #. [lua]: selectl
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:325
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:325
 msgid "Max level reached "
 msgstr ""
 
 #. [lua]: selectl
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:336
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:336
 msgid "<span style='italic' color ='#BFA63F'>Next level : </span>"
 msgstr ""
 
 #. [lua]: selectl
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:339
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:339
 msgid "Level up : "
 msgstr ""
 
 #. [lua]: selectl
-#: A_Tale_of_Sand_and_Snow/lua/menu_comp_spe.lua:341
+#: A_Tale_of_Sand_and_Snow/lua/menu_special_skills.lua:341
 msgid "Points needed : "
 msgstr ""
 
-#. [lua]: MI.war_jump
-#. [lua]: MI.elusive
+#. [lua]: UI.war_jump
+#. [lua]: UI.elusive
 #: A_Tale_of_Sand_and_Snow/lua/menu_items.lua:22
 #: A_Tale_of_Sand_and_Snow/lua/menu_items.lua:27
 #: A_Tale_of_Sand_and_Snow/lua/menu_items.lua:42
@@ -791,12 +791,12 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
-#. [lua]: MI.war_jump
+#. [lua]: UI.war_jump
 #: A_Tale_of_Sand_and_Snow/lua/menu_items.lua:22
 msgid "This unit can't <span color='red'>War Jump </span> now. Please <span weight='bold'>select</span> it again."
 msgstr ""
 
-#. [lua]: MI.elusive
+#. [lua]: UI.elusive
 #: A_Tale_of_Sand_and_Snow/lua/menu_items.lua:42
 msgid "This unit can't be <span color='green'>Elusive</span> right now. Please <span weight='bold'>select</span> it again."
 msgstr ""

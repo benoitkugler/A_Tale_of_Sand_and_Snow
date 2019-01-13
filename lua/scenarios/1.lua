@@ -78,7 +78,7 @@ function ES.prestart()
 	DB.HEROES.init("brinx")
 
 	--Suppression temporaire du menu skill
-	wesnoth.fire("clear_menu_item", {id = "menu_comp_spe"})
+	wesnoth.fire("clear_menu_item", {id = "menu_special_skills"})
 
 	--Ecriture sur la map des labels
 
@@ -142,18 +142,8 @@ function ES.turn2()
 	wesnoth.delay(500)
 end
 
-local function thunder()
-	local function color_adjust(r, g, b)
-		wesnoth.fire("color_adjust", {red = r, green = g, blue = b})
-	end
-	color_adjust(67, 67, 67)
-	color_adjust(100, 100, 100)
-	color_adjust(33, 33, 33)
-	color_adjust(0, 0, 0)
-end
-
 function ES.explo_mur()
-	thunder()
+	ANIM.thunder()
 
 	wesnoth.fire("message", {speaker = "brinx", message = _ "What just happened ?! "})
 	wesnoth.scroll_to_tile(26, 26)

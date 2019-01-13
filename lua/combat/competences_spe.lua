@@ -3,7 +3,7 @@ CS = {}
 local l = {vranken = "transposition"}
 
 local fonc = {}
-function CS.comp_spe()
+function CS.special_skills()
 	local u = get_pri()
 	fonc[l[u.id]]()
 end
@@ -34,11 +34,11 @@ local function update_ab(ab_id, unit)
 			des = _ "" .. string.sub(tostring(i.description), 1, fin - 1)
 		end
 	end
-	if unit.variables.comp_spe_cd > 1 then
-		des = des .. "\n" .. "<span color='orange'>Available in " .. unit.variables.comp_spe_cd .. " turns </span>"
-	elseif unit.variables.comp_spe_cd == 1 then
-		des = des .. "\n" .. "<span color='orange'>Available in " .. unit.variables.comp_spe_cd .. " turn</span>"
-	elseif unit.variables.comp_spe_cd == 0 then
+	if unit.variables.special_skills_cd > 1 then
+		des = des .. "\n" .. "<span color='orange'>Available in " .. unit.variables.special_skills_cd .. " turns </span>"
+	elseif unit.variables.special_skills_cd == 1 then
+		des = des .. "\n" .. "<span color='orange'>Available in " .. unit.variables.special_skills_cd .. " turn</span>"
+	elseif unit.variables.special_skills_cd == 0 then
 		des = des .. "\n" .. "<span color='green'>Available now</span>"
 	end
 
@@ -51,7 +51,7 @@ end
 function fonc.transposition()
 	local vr = wesnoth.get_units {id = "vranken"}[1]
 
-	if vr.variables.comp_spe_cd == 0 then
+	if vr.variables.special_skills_cd == 0 then
 		local sword_spirit = wesnoth.get_units {id = "sword_spirit"}[1]
 		wesnoth.fire(
 			"animate_unit",
@@ -61,7 +61,7 @@ function fonc.transposition()
 				{"animate", {flag = "transposition_in", {"filter", {id = "sword_spirit"}}}}
 			}
 		)
-		vr.variables.comp_spe_cd = 3 - vr.variables.comp_spe_lvl
+		vr.variables.special_skills_cd = 3 - vr.variables.special_skills_lvl
 		wesnoth.extract_unit(vr)
 		wesnoth.extract_unit(sword_spirit)
 		local x, y = vr.x, vr.y
@@ -77,12 +77,12 @@ function fonc.transposition()
 				{"animate", {flag = "transposition_out", {"filter", {id = "sword_spirit"}}}}
 			}
 		)
-		update_ab("transposition" .. tostring(vr.variables.comp_spe_lvl), vr)
+		update_ab("transposition" .. tostring(vr.variables.special_skills_lvl), vr)
 	else
 		wesnoth.fire(
 			"print",
 			{
-				text = _ "This ability isn't ready yet ! (" .. vr.variables.comp_spe_cd .. " turn(s) left)",
+				text = _ "This ability isn't ready yet ! (" .. vr.variables.special_skills_cd .. " turn(s) left)",
 				size = 40,
 				red = 150,
 				green = 20,
@@ -96,14 +96,14 @@ end
 function CS.debut_tour()
 	local lhero = wesnoth.get_units {role = "hero"}
 	for i, v in pairs(lhero) do
-		if v.variables.comp_spe then
-			local comp_id = l[v.id] .. tostring(v.variables.comp_spe_lvl)
-			if v.variables.comp_spe_cd > 2 then
-				v.variables.comp_spe_cd = v.variables.comp_spe_cd - 1
-			elseif v.variables.comp_spe_cd == 2 then
-				v.variables.comp_spe_cd = 1
-			elseif v.variables.comp_spe_cd == 1 then
-				v.variables.comp_spe_cd = 0
+		if v.variables.special_skills then
+			local comp_id = l[v.id] .. tostring(v.variables.special_skills_lvl)
+			if v.variables.special_skills_cd > 2 then
+				v.variables.special_skills_cd = v.variables.special_skills_cd - 1
+			elseif v.variables.special_skills_cd == 2 then
+				v.variables.special_skills_cd = 1
+			elseif v.variables.special_skills_cd == 1 then
+				v.variables.special_skills_cd = 0
 			end
 
 			update_ab(comp_id, v)

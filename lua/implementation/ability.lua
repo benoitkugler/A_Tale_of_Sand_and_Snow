@@ -91,7 +91,7 @@ function AB.war_jump(unit)
             description = _ "War jump here with " .. unit.name .. " !",
             image = "menu/war_jump.png",
             {"show_if", {{"have_location", {x = "$x1", y = "$y1", {"and", {x = listx, y = listy}}}}}},
-            {"command", {{"lua", {code = 'MI.war_jump("' .. unit.id .. '",' .. unit.x .. "," .. unit.y .. ")"}}}}
+            {"command", {{"lua", {code = 'UI.war_jump("' .. unit.id .. '",' .. unit.x .. "," .. unit.y .. ")"}}}}
         }
     )
 
@@ -113,7 +113,7 @@ function AB.elusive(unit)
             description = _ "Sneak here with " .. unit.name .. " !",
             image = "menu/elusive.png",
             {"show_if", {{"have_location", {x = "$x1", y = "$y1", {"and", {x = listx, y = listy}}}}}},
-            {"command", {{"lua", {code = 'MI.elusive("' .. unit.id .. '",' .. unit.x .. "," .. unit.y .. ")"}}}}
+            {"command", {{"lua", {code = 'UI.elusive("' .. unit.id .. '",' .. unit.x .. "," .. unit.y .. ")"}}}}
         }
     )
 
@@ -124,7 +124,7 @@ end
 -- A formation is defined by a function taking the center tile, ie xaviers'tile, and returning
 -- a table of table of tiles, (an inner table being a possible formation)
 
-local function Y_position(center)
+local function Y_formation(center)
     local c1, c2, c3, c4, c5, c6 = wesnoth.map.get_adjacent_tiles(center)
     local formations = {}
     for __, c in ipairs({c1, c2, c3, c4, c5, c6}) do
@@ -136,7 +136,7 @@ local function Y_position(center)
     return formations
 end
 
-local function A_position(center)
+local function A_formation(center)
     local c1, c2, c3, c4, c5, c6 = wesnoth.map.get_adjacent_tiles(center)
     local formations = {}
     for __, c in ipairs({c1, c2, c3, c4, c5, c6}) do
@@ -146,7 +146,7 @@ local function A_position(center)
     return formations
 end
 
-local function I_position(center)
+local function I_formation(center)
     local c1, c2, c3, c4, c5, c6 = wesnoth.map.get_adjacent_tiles(center)
     local formations = {}
     for __, c in ipairs({c1, c2, c3, c4, c5, c6}) do
@@ -157,10 +157,10 @@ local function I_position(center)
     return formations
 end
 
-local function O_position(center)
+local function O_formation(center)
     local xavier = wesnoth.get_unit(center[1], center[2])
     if xavier == nil or not (xavier.id == "xavier") then
-        wesnoth.message("O_position should be called on Xavier's tile only !")
+        wesnoth.message("O_formation should be called on Xavier's tile only !")
         return {}
     end
     local c1, c2, c3, c4, c5, c6 = wesnoth.map.get_adjacent_tiles(center)
@@ -197,36 +197,44 @@ local function _check_formation(xavier, formation)
     return true
 end
 
+-- Returns the active formations (xavier need to have the ability corresponding)
 function AB.get_active_formations(xavier)
     local tiles_ally = LS.create()
     local tiles_target = LS.create()
     local active_formations = {}
-
-    for __, pos in ipairs(Y_position {xavier.x, xavier.y}) do
-        if _check_formation(xavier, pos) then
-            tiles_ally:of_pairs(pos)
-            active_formations.Y = pos.target
-            tiles_target:insert(pos.target[1], pos.target[2])
+    if get_ability(xavier, "Y_formation") then
+        for __, pos in ipairs(Y_formation {xavier.x, xavier.y}) do
+            if _check_formation(xavier, pos) then
+                tiles_ally:of_pairs(pos)
+                active_formations.Y = pos.target
+                tiles_target:insert(pos.target[1], pos.target[2])
+            end
         end
     end
-    for __, pos in ipairs(I_position {xavier.x, xavier.y}) do
-        if _check_formation(xavier, pos) then
-            tiles_ally:of_pairs(pos)
-            active_formations.I = pos.target
-            tiles_target:insert(pos.target[1], pos.target[2])
+    if get_ability(xavier, "I_formation") then
+        for __, pos in ipairs(I_formation {xavier.x, xavier.y}) do
+            if _check_formation(xavier, pos) then
+                tiles_ally:of_pairs(pos)
+                active_formations.I = pos.target
+                tiles_target:insert(pos.target[1], pos.target[2])
+            end
         end
     end
-    for __, pos in ipairs(A_position {xavier.x, xavier.y}) do
-        if _check_formation(xavier, pos) then
-            tiles_ally:of_pairs(pos)
-            active_formations.A = true
+    if get_ability(xavier, "A_formation") then
+        for __, pos in ipairs(A_formation {xavier.x, xavier.y}) do
+            if _check_formation(xavier, pos) then
+                tiles_ally:of_pairs(pos)
+                active_formations.A = true
+            end
         end
     end
-    for __, pos in ipairs(O_position {xavier.x, xavier.y}) do
-        if _check_formation(xavier, pos) then
-            tiles_ally:of_pairs(pos)
-            active_formations.O = pos.target
-            tiles_target:insert(pos.target[1], pos.target[2])
+    if get_ability(xavier, "O_formation") then
+        for __, pos in ipairs(O_formation {xavier.x, xavier.y}) do
+            if _check_formation(xavier, pos) then
+                tiles_ally:of_pairs(pos)
+                active_formations.O = pos.target
+                tiles_target:insert(pos.target[1], pos.target[2])
+            end
         end
     end
     return active_formations, tiles_ally, tiles_target
@@ -307,32 +315,43 @@ function formations_abilities.I(xavier, target)
 end
 
 function formations_abilities.O(xavier, target)
-    wesnoth.fire("clear_menu_item", { id = "union_debuf"}) -- removing then rebuilding
-    local lvl = get_ability(xavier, "I_formation")
-    if lvl and target then
+    wesnoth.fire("clear_menu_item", {id = "union_debuf"}) -- removing then rebuilding
+    local lvl = get_ability(xavier, "O_formation")
+    local cd = xavier.variables.special_skill_cd or 0
+    if lvl and target and (cd == 0) then
         local x, y = target[1], target[2]
-        wesnoth.fire(
-            "set_menu_item",
-            {
-                id = "union_debuf",
-                description = _ "Xavier's union debuf !",
-                image = "menu/ellusive.png",
-                T.show_if {
-                    T.have_location {
-                        x = "$x1",
-                        y = "$y1",
-                        {"and", {x = x, y = y}}
-                    }
-                },
-                T.command {T.lua {code = string.format("AB.union_debuf(%d, %d)", x, y)}}
-            }
-        )
+        local lua_code = string.format("AB.union_debuf(%d, %d)", x, y)
+        UI.setup_menu_debuf(x, y, lua_code)
     end
 end
 
--- TODO: A implémenter
-function AB.union_debuf(x,y)
-    wesnoth.message(x,y)
+function AB.union_debuf(x, y)
+    local target = wesnoth.get_unit(x, y)
+    local xavier = wesnoth.get_unit("xavier")
+    local lvl = get_ability(xavier,"O_formation")
+    local cd = DB.SPECIAL_SKILLS.xavier.O_formation(lvl)
+    wesnoth.message(cd)
+    if target == nil or xavier == nil then
+        wesnoth.message(_ "Union debuf not possible here ! ")
+    else
+        ANIM.quake()
+        local list_abilities = H.get_child(target.__cfg, "abilities") or {}
+        target:add_modification(
+            "trait",
+            {
+                T.effect {
+                    apply_to = "remove_ability",
+                    T.abilities(list_abilities)
+                },
+                T.effect {
+                    apply_to = "attack",
+                    T.set_specials {} -- remove all specials
+                }
+            }
+        )
+        wesnoth.float_label(x, y, _ "Disabled !")
+        xavier.variables.special_skill_cd = cd
+    end
 end
 
 -- Update abilities related to Formations,
@@ -348,7 +367,9 @@ local function update_xavier_formation()
     local active_formations, tiles, targets = AB.get_active_formations(xavier)
     ANIM.hover_tiles(tiles:to_pairs(), FORMATION_LABEL, nil, targets:to_pairs(), TARGET_LABEL, 50)
     for name, target in pairs(active_formations) do
-        if not (name ==  "O") then formations_abilities[name](xavier, target) end 
+        if not (name == "O") then
+            formations_abilities[name](xavier, target)
+        end
     end
     formations_abilities.O(xavier, active_formations.O) -- always called, to remove menu item if needed
 end
@@ -375,4 +396,15 @@ function AB.select()
         local __, tiles, targets = AB.get_active_formations(u)
         ANIM.hover_tiles(tiles:to_pairs(), FORMATION_LABEL, 15, targets:to_pairs(), TARGET_LABEL, 50)
     end
+end
+
+-- Should decrease special skill CDs
+function AB.turn_start()
+	local lhero = wesnoth.get_units {role = "hero"}
+	for __, v in pairs(lhero) do
+        local current_cd = v.variables.special_skill_cd or 0
+        if current_cd > 0 then
+            v.variables.special_skill_cd = current_cd - 1
+        end
+	end
 end

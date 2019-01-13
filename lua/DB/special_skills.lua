@@ -29,7 +29,7 @@ info["drumar"] = {
 		V.drumar.ATK_CHILLING_TOUCH
 	),
 	{
-		img = "comp_spe/iceball_red.png",
+		img = "special_skills/iceball_red.png",
 		max_lvl = 3,
 		name = "wave_dmg",
 		color = "#D02300",
@@ -42,7 +42,7 @@ info["drumar"] = {
 		return lvl == 3 and {15, 1} or {10, 0}
 	end,
 	{
-		img = "comp_spe/forecast.png",
+		img = "special_skills/forecast.png",
 		max_lvl = 3,
 		name = "forecast_defense",
 		color = "#265690",
@@ -55,7 +55,7 @@ info["drumar"] = {
 		return 7
 	end,
 	{
-		img = "comp_spe/slow_zone.png",
+		img = "special_skills/slow_zone.png",
 		max_lvl = 1,
 		name = "slow_zone",
 		color = "#00A8A2",
@@ -104,7 +104,7 @@ info["vranken"] = {
 		V.sword_spirit.LEVEL_UP
 	),
 	{
-		img = "comp_spe/leeches_cac.png",
+		img = "special_skills/leeches_cac.png",
 		max_lvl = 3,
 		name = "leeches_cac",
 		color = "#24BE13",
@@ -117,7 +117,7 @@ info["vranken"] = {
 		return 5 + lvl * 5
 	end,
 	{
-		img = "comp_spe/drain.png",
+		img = "special_skills/drain.png",
 		max_lvl = 3,
 		name = "drain_cac",
 		color = "#24BE13",
@@ -143,7 +143,7 @@ info["vranken"] = {
 		return 65 + (lvl * 15)
 	end,
 	{
-		img = "comp_spe/transposition.png",
+		img = "special_skills/transposition.png",
 		max_lvl = 2,
 		name = "transposition",
 		color = "#9E25C7",
@@ -209,7 +209,7 @@ info["brinx"] = {
 		return 2 + 6 * lvl
 	end,
 	{
-		img = "comp_spe/bloody_sword.png",
+		img = "special_skills/bloody_sword.png",
 		max_lvl = 2,
 		name = "muspell_rage",
 		color = "#D02300",
@@ -237,10 +237,10 @@ info["xavier"] = {
 		V.xavier.A_FORMATION
 	),
 	{
-		img = "icons/armor_leather.png",
+		img = "special_skills/Y_formation.png",
 		max_lvl = 3,
 		name = "Y_formation",
-		color = "#4575AE",
+		color = "#f36e0a",
 		name_aff = _ "Back formation : ",
 		require_lvl = 4,
 		desc = _ "Xavier gains %s bonus attack(s) when attacking in Y",
@@ -248,10 +248,10 @@ info["xavier"] = {
 	},
 	Y_formation = function(lvl) return tonumber(lvl) end,
 	{
-		img = "icons/armor_leather.png",
+		img = "special_skills/A_formation.png",
 		max_lvl = 3,
 		name = "A_formation",
-		color = "#4575AE",
+		color = "#7c9f0f",
 		name_aff = _ "Wedge formation : ",
 		require_lvl = 4,
 		desc = _ "Xavier gains %s%% defense when fighting in A",
@@ -259,10 +259,10 @@ info["xavier"] = {
 	},
 	A_formation = function(lvl) return lvl * 5 end,
 	{
-		img = "icons/armor_leather.png",
+		img = "special_skills/I_formation.png",
 		max_lvl = 3,
 		name = "I_formation",
-		color = "#4575AE",
+		color = "#edad06",
 		name_aff = _ "Spear formation : ",
 		require_lvl = 5,
 		desc = _ "Xavier deals %s bonus damage when attacking in I",
@@ -270,10 +270,10 @@ info["xavier"] = {
 	},
 	I_formation = function(lvl) return 1 + lvl * 3 end,
 	{
-		img = "icons/armor_leather.png",
+		img = "special_skills/O_formation.png",
 		max_lvl = 1,
 		name = "O_formation",
-		color = "#4575AE",
+		color = "#c09d1b",
 		name_aff = _ "Union formation : ",
 		require_lvl = 6,
 		desc = _ "When attacking in O, Xavier may launch a powerful strike which removes all abilities and " ..
