@@ -158,6 +158,18 @@ end
 local fms = wesnoth.require("xavier_formations")
 local formations_def, formations_abilities = fms.def, fms.abs
 
+-- Returns true if all tiles of the formation are allied (and occupied)
+local function _check_formation(xavier, formation)
+    local side = xavier.side
+    for __, tile in ipairs(formation) do
+        local u = wesnoth.get_unit(tile[1], tile[2])
+        if u == nil or wesnoth.is_enemy(side, u.side) then
+            return false
+        end
+    end
+    return true
+end
+
 -- Returns the active formations (xavier need to have the ability corresponding)
 function AB.get_active_formations(xavier)
     local tiles_ally = LS.create()
