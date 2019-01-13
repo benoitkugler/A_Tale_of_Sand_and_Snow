@@ -17,6 +17,7 @@ local label_pri, label_snd = "", "" -- custom labels
 local delay = 0
 
 function EC.combat(dmg_dealt)
+    wesnoth.message("a")
     delay = 0
     local type_event = wesnoth.current.event_context.name
     local u1, u2 = get_pri(), get_snd()

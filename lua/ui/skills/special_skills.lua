@@ -139,7 +139,7 @@ function MCS.preshow(unit)
         affiche_pres(false)
 
         local comp = MCS.skills_table[i]
-        local lvl = unit.variables["special_skills"][comp["name"]] or 0
+        local lvl = unit.variables.special_skills[comp["name"]] or 0
         if lvl == comp.max_lvl then
             wesnoth.set_dialog_value(MAX_LVL_REACHED, "text_pres_suiv")
             wesnoth.set_dialog_value("", "titre_pres")
@@ -193,7 +193,7 @@ function MCS.preshow(unit)
         --         ecriture de la liste des competences et mise à jour de l'xp
         for i, v in ipairs(MCS.skills_table) do
             local max_lvl = v["max_lvl"]
-            local lvl = unit.variables["special_skills"][v["name"]] or 0
+            local lvl = unit.variables.special_skills[v["name"]] or 0
             for j = 1, lvl, 1 do
                 MCS.xp_dispo = MCS.xp_dispo - v.costs[j]
             end
@@ -274,8 +274,8 @@ function MCS.preshow(unit)
         if MCS.to_valid then
             local i = wesnoth.get_dialog_value("lcomp")
             local comp = MCS.skills_table[i]
-            local newlvl = (unit.variables["special_skills." .. comp.name] or 0) + 1
-            unit.variables["special_skills." .. comp.name] = newlvl
+            local newlvl = (unit.variables.special_skills[comp.name] or 0) + 1
+            unit.variables.special_skills[comp.name] = newlvl
             SPECIAL_SKILLS[comp.name](newlvl, unit)
             AMLA.update_lvl(unit) -- needed not to loose extras LVL, removed by u:remove_modifications
             MCS.init()

@@ -1,6 +1,7 @@
 local COLOR_SHIELD = "#ADA5BB"
 local COLOR_CHILLED = "#1ED9D0"
 local IMAGE_SPECIAL_SKILL = "special_skills/star.png"
+local IMAGE_FEAR_OF_LOVE = "menu/fear_of_love.png"
 
 --Customs status
 local function _show_special_skill_cd(unit)
@@ -14,12 +15,22 @@ local function _show_special_skill_cd(unit)
     return T.element {image = IMAGE_SPECIAL_SKILL, tooltip = tooltip}
 end
 
+local function _show_fear_of_love(unit)
+    if unit.id == "sword_spirit" and unit:ability("fearlove_self") then
+        tooltip = _ "endangered: Resistances reduces by <span color='red'>50%</span> !"
+    elseif unit:ability("fearlove") then
+        tooltip = _ "endangered: Resistances reduces by <span color='red'>100%</span> !"
+    else
+        return
+    end
+    return T.element {image = IMAGE_FEAR_OF_LOVE, tooltip = tooltip}
+end
+
 local old_unit_status = wesnoth.theme_items.unit_status
 function wesnoth.theme_items.unit_status()
     local u = wesnoth.get_displayed_unit()
-    if not u then
-        return {}
-    end
+    if not u then return {} end
+
     local s = old_unit_status()
     if u.status.chilled then
         local lvl, cd = u.variables.status_chilled_lvl, u.variables.status_chilled_cd
@@ -52,43 +63,13 @@ function wesnoth.theme_items.unit_status()
             }
         )
     end
-    if u.id == "sword_spirit" then
-        if wesnoth.eval_conditional {T.have_unit {id = "sword_spirit", T.filter_adjacent {is_enemy = false}}} then
-            table.insert(
-                s,
-                {
-                    "element",
-                    {
-                        image = "menu/fear_of_love.png",
-                        tooltip = _ "endangered: Resistances reduces by <span color='red'>50%</span> !"
-                    }
-                }
-            )
-        end
-    end
-    if u.id == "xavier" then
+    local el = _show_fear_of_love(u)
+    if not (el == nil) then table.insert(s, el) end
+
+    if u.id == "xavier" or u.id == "vranken" then
         table.insert(s, _show_special_skill_cd(u))
     end
-    if
-        wesnoth.eval_conditional {
-            T.have_unit {
-                id = "sword_spirit",
-                T.filter_adjacent {id = u.id},
-                T.fiter_side {T.allied_with {side = u.side}}
-            }
-        }
-     then
-        table.insert(
-            s,
-            {
-                "element",
-                {
-                    image = "menu/fear_of_love.png",
-                    tooltip = _ "endangered: Resistances reduces by <span color='red'>100%</span> !"
-                }
-            }
-        )
-    end
+
     return s
 end
 

@@ -10,8 +10,6 @@ wesnoth.require "animations"
 wesnoth.require "DB/init"
 wesnoth.require "custom_themes"
 
-wesnoth.require "combat/competences_spe"
-
 wesnoth.require "implementation/ability"
 wesnoth.require "implementation/special_exp_gain"
 wesnoth.require "implementation/event_combat"

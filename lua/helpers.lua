@@ -35,7 +35,7 @@ function get_ability(u, id_ability, ability_name)
     local list_abilities = H.get_child(u.__cfg, "abilities") or {}
     for ab in H.child_range(list_abilities, ability_name) do
         if ab.id == id_ability then
-            return ab._level
+            return ab._level or 0
         end
     end
 end
@@ -92,11 +92,12 @@ end
 
 
 function table_skills(u)
-    local table_skill = {} -- build table {id_skill = lvl }
+    local table_amlas = {} -- build table {id_skill = lvl }
     for __, adv in pairs(u.advancements) do
-        table_skill[adv.id] = (table_skill[adv.id] or 0) + 1
+        table_amlas[adv.id] = (table_amlas[adv.id] or 0) + 1
     end
-    return table_skill
+    table_amlas.amla_dummy = nil
+    return table_amlas
 end
 
 
@@ -274,7 +275,7 @@ function supp(tab, myType)
 end
 
 function is_empty(x, y)
-    return wesnoth.get_units {x = x, y = y}[1] == nil
+    return wesnoth.get_unit(x,y) == nil
 end
 
 --Renvoie la location de la case derriere la case 2 (pour la case 1)

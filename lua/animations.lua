@@ -69,3 +69,16 @@ function ANIM.quake()
 	scroll(0,-10)
 	scroll(0,5)
 end
+
+-- Transposition
+function ANIM.transposition(id_source, id_target, is_first_pass)
+	local flag = is_first_pass and "transposition_in" or "transposition_out"
+	wesnoth.fire(
+		"animate_unit",
+		{
+			flag = flag,
+			T.filter {id = id_source},
+			T.animate {flag = flag, T.filter {id = id_target}}
+		}
+	)
+end

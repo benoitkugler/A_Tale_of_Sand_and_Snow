@@ -4,8 +4,8 @@ ST = {}
 
 local Standard_event = {
     {id = "prestart_menus", first_time_only = false, name = "prestart", T.lua {code = "UI.setup_menus()"}},
-    {id = "new_turn", first_time_only = false, name = "new turn", T.lua {code = "AB.turn_start()"}},
-    {id = "attack", first_time_only = false, name = "attack", T.lua {code = "EXP.atk (); ES.atk (); EC.combat (0)"}},
+    {id = "new_turn", first_time_only = false, name = "new turn", T.lua {code = "AB.turn_start(); UI.turn_start()"}},
+    {id = "attack", first_time_only = false, name = "attack", T.lua {code = "EXP.atk (); ES.atk (); EC.combat(0)"}},
     {
         id = "attacker_hits",
         first_time_only = false,
@@ -23,7 +23,7 @@ local Standard_event = {
         id = "die",
         first_time_only = false,
         name = "die",
-        T.lua {code = "EC.combat () ;EXP.kill();ES.kill();ST.kill()"}
+        T.lua {code = "EC.combat(); EXP.kill(); ES.kill(); ST.kill()"}
     },
     {id = "turn_end", first_time_only = false, name = "turn end", T.lua {code = " EC.fin_tour () "}},
     {id = "select", first_time_only = false, name = "select", T.lua {code = "AB.select()"}},

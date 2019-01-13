@@ -2,13 +2,14 @@ UI = {}
 
 UI.show_skills = wesnoth.require("skills/init")
 
-function UI.setup_menu_debuf(x, y, lua_code)
+
+local function _set_menu_item(id, desc, image, x, y, lua_code)
     wesnoth.fire(
         "set_menu_item",
         {
-            id = "union_debuf",
-            description = _ "Xavier's union debuf !",
-            image = "menu/ellusive.png",
+            id = id,
+            description = desc,
+            image = image,
             T.show_if {
                 T.have_location {
                     x = "$x1",
@@ -21,7 +22,49 @@ function UI.setup_menu_debuf(x, y, lua_code)
     )
 end
 
+-- TODO: Better icon
+function UI.setup_menu_debuf(x, y, lua_code)
+    _set_menu_item("union_debuf",_ "Xavier's union debuf !","menu/ellusive.png",
+                    x,y,lua_code)
+end
 
+function UI.setup_menu_warjump(x, y, lua_code)
+    _set_menu_item("warjump",_ "War jump here with Gondhül !","menu/war_jump.png",
+                    x,y,lua_code)
+end
+
+function UI.setup_menu_elusive(x, y, lua_code)
+    _set_menu_item("elusive", _ "Sneak here with Brinx", "menu/ellusive.png",
+                    x,y, lua_code)
+end
+
+-- Setup menu needed by abilities with cooldown
+local MENUS_SPECIAL_SKILLS = {
+    vranken = {_ "Transposition", "AB.transposition()"}
+}
+function UI.turn_start()
+    for unit_id, datas in pairs(MENUS_SPECIAL_SKILLS) do
+        local label, lua_code = datas[1], datas[2]
+        local id_menu = unit_id .. "_special_skill"
+        wesnoth.fire("clear_menu_item", {id = id_menu})
+        local hero = wesnoth.get_unit(unit_id)
+        if hero then
+            local cd = hero.variables.special_skill_cd
+            if cd and cd == 0 then
+                wesnoth.message('set')
+                wesnoth.fire(
+                    "set_menu_item",
+                    {
+                        id = id_menu,
+                        description = label,
+                        T.show_if {T.have_unit {x = "$x1", y = "$y1", id = unit_id}},
+                        T.command {T.lua {code = lua_code}}
+                    }
+                )
+            end
+        end
+    end
+end
 
 function UI.setup_menus()
     -- Setup of menus items
@@ -42,8 +85,7 @@ function UI.setup_menus()
             description = _ "Skills",
             T.show_if {T.have_unit {x = "$x1", y = "$y1", role = "hero"}},
             T.command {T.lua {code = "UI.show_skills()"}},
-            T.default_hotkey { key = "s", shift = true}
-
+            T.default_hotkey {key = "s", shift = true}
         }
     )
 
@@ -55,75 +97,6 @@ function UI.setup_menus()
             T.command {T.lua {code = "O.menuObj()"}}
         }
     )
-end
-
-
-
---MENU MOUVEMENT INVOQUÉ PAR LES ABILITIES ELUSIVE ET WAR JUMP
-local function isIn(l, x, y)
-    local bo = false
-    local mv = 0
-    for i, v in pairs(l) do
-        if (v[1] == x and v[2] == y) then
-            bo = true
-            mv = v[3]
-        end
-    end
-    return bo, mv
-end
-
-function UI.war_jump(id, x, y)
-    local u = wesnoth.get_units {id = id}[1]
-    local tox, toy = get_loc()
-    if u == nil then
-        popup(
-            _ "Error",
-            _ "This unit can't <span color='red'>War Jump </span> now. Please <span weight='bold'>select</span> it again."
-        )
-    else
-        local loc = wesnoth.find_reach(u, {ignore_units = true})
-        local b, moves_left = isIn(loc, tox, toy)
-        if u.x ~= x or u.y ~= y or not has_ab(u, "war_jump") or not b or not is_empty(tox, toy) then
-            popup(
-                _ "Error",
-                _ "" ..
-                    tostring(u.name) ..
-                        " can't <span color='red'>War Jump </span> right now. Please <span weight='bold'>select</span> it again."
-            )
-        else
-            wesnoth.fire("teleport", {{"filter", {id = id}}, x = tox, y = toy, animate = true})
-            u.moves = 0
-        end
-    end
-    wesnoth.fire("clear_menu_item", {id = "movement"})
-end
-
-function UI.elusive(id, x, y)
-    local u = wesnoth.get_units {id = id}[1]
-    local tox, toy = get_loc()
-
-    if u == nil then
-        popup(
-            _ "Error",
-            _ "This unit can't be <span color='green'>Elusive</span> right now. Please <span weight='bold'>select</span> it again."
-        )
-    else
-        local loc = wesnoth.find_reach(u, {ignore_units = true})
-        local b, moves_left = isIn(loc, tox, toy)
-
-        if u.x ~= x or u.y ~= y or not has_ab(u, "elusive") or not b or not is_empty(tox, toy) then
-            popup(
-                _ "Error",
-                _ "" ..
-                    tostring(u.name) ..
-                        "  can't be <span color='green'>Elusive</span> right now. Please <span weight='bold'>select</span> it again."
-            )
-        else
-            wesnoth.fire("move_unit", {id = id, to_x = tox, to_y = toy, fire_event = true})
-            u.moves = moves_left
-        end
-    end
-    wesnoth.fire("clear_menu_item", {id = "movement"})
 end
 
 

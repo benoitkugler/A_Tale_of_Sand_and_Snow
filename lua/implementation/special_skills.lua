@@ -111,7 +111,8 @@ function SPECIAL_SKILLS.transposition(lvl, unit)
 	local id, old_id = _get_ids(lvl, "transposition")
 	unit:remove_modifications({id = old_id}, "object")
 
-	unit.variables.special_skills = true
+	local cd = DB.SPECIAL_SKILLS.vranken.transposition(lvl)
+	unit.variables.special_skill_cd = 0
 	unit:add_modification(
 		"object",
 		{
@@ -123,7 +124,8 @@ function SPECIAL_SKILLS.transposition(lvl, unit)
 						id = "transposition",
 						_level = lvl,
 						name = _ "War link",
-						description = _ "Vranken senses its sword spirit and may switch position with Göndhul, no matter the distance between them. \n<span color='green'>Available now </span>"
+						description = fmt(_ "Vranken senses its sword spirit and may switch position with Göndhul, " ..
+						"no matter the distance between them. \n<b>%d</b> turn%s cooldown.", cd, cd > 1 and "s" or "")
 					}
 				}
 			}
