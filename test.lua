@@ -14,8 +14,20 @@ function ES.atk()
    
 end
 
+-- Put all units in their recall lists, except Morgane, and the Otchigins
+-- Apply a custom l_imbe_recall status to be able to recall them afterwards
+function _units_to_recall()
+    for u in wesnoth.get_units() do
+        if not (u.id == "morgane" or u.type == "Otchigins") then
+            u.status._limbe_recall = true
+            u:to_recall()
+        end
+    end
+end
+
+
 function test()
-    ES.dump_amla()
+    -- ES.dump_amla()
 
 end
 

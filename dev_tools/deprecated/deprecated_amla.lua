@@ -129,7 +129,6 @@ end
 --     end
 -- end
 
--- TODO: Encoder les amla en lua (dynamique)
 
 
 function AM.adv()
