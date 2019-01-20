@@ -4,6 +4,7 @@ local LIMBE_FLOOR = "Yli"
 local LIMBE_WALL = "Wli"
 local LIMBE_WIDTH = 10
 local LIMBE_HEIGHT = 10
+local LIMBE_TERRAIN_VARIABLE = "lt" -- short to "compress" saves
 
 VAR.objets_joueur = {ceinture_geant = "brinx", bottes_celerite = 0, ring_haste = "vranken", shield_myrom = "drumar"}
 wesnoth.set_variable("heros_joueur", "brinx,vranken,drumar")
@@ -44,37 +45,49 @@ end
 -- Saves the current terrain information in variable array limbe_terrains
 -- and apply limbe terrain
 function _set_limbe_terrain()
-    local width, height, __ = wesnoth.get_map_size()
+    local width, height, border  = wesnoth.get_map_size()
     local xstart = (width - LIMBE_WIDTH) // 2
+    if xstart % 2 == 0 then xstart = xstart + 1 end  -- wall better looking
     local xstop = (width + LIMBE_WIDTH) // 2
     local ystart = (height - LIMBE_HEIGHT) // 2
     local ystop = (height + LIMBE_HEIGHT) // 2
 
     local var = {}
 
-    for x = xstart, xstop do 
-        for y = ystart, ystop do 
+    for x = 0, width + border do
+        for y = 0, height + border do
+            local new_terrain
+            if (y == ystart and (x == xstart or x == xstop)) then
+                new_terrain = LIMBE_FLOOR
+            elseif ((x == xstart or x == xstop) and (ystart <= y and y <= ystop)) or 
+                    ((y == ystart or y == ystop) and (xstart <= x and x <= xstop))  then   
+                new_terrain = LIMBE_WALL
+            else
+                new_terrain = LIMBE_FLOOR
+            end
             local terrain = wesnoth.get_terrain(x, y)
-            table.insert(var, {x = x, y = y, terrain = terrain})
-            wesnoth.set_terrain(x, y, LIMBE_FLOOR)
+            table.insert(var, {x = x, y = y, t = terrain})
+            wesnoth.set_terrain(x, y, new_terrain)
         end
     end
 
-    H.set_variable_array("limbe_terrains", var)
+    
+
+    H.set_variable_array(LIMBE_TERRAIN_VARIABLE, var)
 
     -- wesnoth.set_terrain(10,10, LIMBE_FLOOR)
     -- wesnoth.set_terrain(10,11, LIMBE_WALL)
 end
 
 function _remove_limbe_terrain()
-    for __, v in ipairs(H.get_variable_array("limbe_terrains")) do
-        wesnoth.set_terrain(v.x, v.y, v.terrain)
+    for __, v in ipairs(H.get_variable_array(LIMBE_TERRAIN_VARIABLE)) do
+        wesnoth.set_terrain(v.x, v.y, v.t)
     end
 end
 
 function test(x, y)
-    _set_limbe_terrain()
-    -- _remove_limbe_terrain()
+    -- _set_limbe_terrain()
+    _remove_limbe_terrain()
     -- ES.dump_amla()
     -- _in_limbe()
     -- _out_limbe()
