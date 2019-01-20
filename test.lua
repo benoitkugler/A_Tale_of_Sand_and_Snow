@@ -18,7 +18,8 @@ end
 -- Apply a custom l_imbe_recall status to be able to recall them afterwards
 function _units_to_recall()
     for u in wesnoth.get_units() do
-        if not (u.id == "morgane" or u.type == "Otchigins") then
+        if not (u.id == "morgane" or u.type == "otchigin1"
+                or u.type == "otchigin2" or u.type == "otchigin3") then
             u.status._limbe_recall = true
             u:to_recall()
         end
