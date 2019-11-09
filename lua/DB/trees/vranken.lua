@@ -1,4 +1,4 @@
-vranken = {
+local vranken = {
 	_default_border = "#1C71CD",
 	_default_background = "66 65 193",
 	{
@@ -26,7 +26,7 @@ vranken = {
 				}
 			}
 		},
-		unpack(standard_amla_heal(10))
+		 table.unpack(standard_amla_heal(10))
 	},
 	{
 		id = "bow_slow",
@@ -50,7 +50,7 @@ vranken = {
 				}
 			}
 		},
-		unpack(standard_amla_heal(10))
+		 table.unpack(standard_amla_heal(10))
 	},
 	{
 		id = "sword_atk",
@@ -65,7 +65,7 @@ vranken = {
 			name = "sword",
 			increase_attacks = 1
 		},
-		unpack(standard_amla_heal(10))
+		 table.unpack(standard_amla_heal(10))
 	},
 	{
 		id = "sword_precis",
@@ -96,7 +96,7 @@ vranken = {
 			remove_specials = "marksman",
 			name = "sword"
 		},
-		unpack(standard_amla_heal(10))
+		 table.unpack(standard_amla_heal(10))
 	},
 	{
 		id = "sword_bow_atk",
@@ -116,7 +116,7 @@ vranken = {
 			name = "bow",
 			increase_attacks = 1
 		},
-		unpack(standard_amla_heal(10))
+		 table.unpack(standard_amla_heal(10))
 	},
 	{
 		id = "sword_bow",
@@ -135,7 +135,7 @@ vranken = {
 			increase_damage = 1,
 			name = "bow"
 		},
-		unpack(standard_amla_heal(5))
+		 table.unpack(standard_amla_heal(5))
 	},
 	{
 		id = "sand",
@@ -160,7 +160,7 @@ vranken = {
 				sand = 40
 			}
 		},
-		unpack(standard_amla_heal(10))
+		 table.unpack(standard_amla_heal(10))
 	},
 	{
 		id = "snow",
@@ -184,7 +184,7 @@ vranken = {
 				frozen = 40
 			}
 		},
-		unpack(standard_amla_heal(10))
+		 table.unpack(standard_amla_heal(10))
 	},
 	{
 		id = "though",
@@ -205,7 +205,7 @@ vranken = {
 				fire = -5
 			}
 		},
-		unpack(standard_amla_heal(7))
+		 table.unpack(standard_amla_heal(7))
 	},
 	{
 		id = "bow",
@@ -220,7 +220,7 @@ vranken = {
 			increase_damage = 2,
 			name = "bow"
 		},
-		unpack(standard_amla_heal(5))
+		 table.unpack(standard_amla_heal(5))
 	},
 	{
 		id = "regen20",
@@ -250,7 +250,7 @@ vranken = {
 				}
 			}
 		},
-		unpack(standard_amla_heal(10))
+		 table.unpack(standard_amla_heal(10))
 	},
 	{
 		id = "regen10",
@@ -270,7 +270,7 @@ vranken = {
 				}
 			}
 		},
-		unpack(standard_amla_heal(5))
+		 table.unpack(standard_amla_heal(5))
 	},
 	{
 		id = "bow_mayhem",
@@ -294,7 +294,7 @@ vranken = {
 				}
 			}
 		},
-		unpack(standard_amla_heal(15))
+		 table.unpack(standard_amla_heal(15))
 	},
 	{
 		id = "sword",
@@ -310,7 +310,7 @@ vranken = {
 			increase_damage = 2,
 			name = "sword"
 		},
-		unpack(standard_amla_heal(5))
+		 table.unpack(standard_amla_heal(5))
 	},
 	{
 		id = "bow_atk",
@@ -325,7 +325,7 @@ vranken = {
 			name = "bow",
 			increase_attacks = 1
 		},
-		unpack(standard_amla_heal(10))
+		 table.unpack(standard_amla_heal(10))
 	},
 	{
 		id = "pm",
@@ -338,7 +338,7 @@ vranken = {
 			increase = 1,
 			apply_to = "movement"
 		},
-		unpack(standard_amla_heal(5))
+		 table.unpack(standard_amla_heal(5))
 	},
 	{
 		id = "bow_firststrike",
@@ -360,7 +360,7 @@ vranken = {
 				}
 			}
 		},
-		unpack(standard_amla_heal(15))
+		 table.unpack(standard_amla_heal(15))
 	},
 	{
 		id = "sword_cleave",
@@ -384,7 +384,7 @@ vranken = {
 				}
 			}
 		},
-		unpack(standard_amla_heal(15))
+		 table.unpack(standard_amla_heal(15))
 	},
 	{
 		max_times = -1,
@@ -396,7 +396,7 @@ vranken = {
 			increase_total = 1,
 			apply_to = "hitpoints"
 		},
-		unpack(standard_amla_heal(5))
+		 table.unpack(standard_amla_heal(5))
 	}
 }
 return vranken

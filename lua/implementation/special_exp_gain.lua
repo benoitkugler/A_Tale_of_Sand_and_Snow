@@ -54,7 +54,7 @@ end
 -- ---------------------- Bunshop ----------------------
 function exp_functions.bunshop.combat(atk, def)
     if atk.id == "bunshop" then
-        bunshop_atk_unit_full = (def.hitpoints == def.max_hitpoints) -- Storing for event kill
+        Bunshop_atk_unit_full = (def.hitpoints == def.max_hitpoints) -- Storing for event kill
 
         local c = wesnoth.map.rotate_right_around_center({atk.x, atk.y}, {def.x, def.y}, 3) -- behind defender
         local u = wesnoth.get_unit(c[1], c[2])
@@ -66,7 +66,7 @@ end
 
 function exp_functions.bunshop.kill(kil, dyi)
     if kil.id == "bunshop" then
-        if bunshop_atk_unit_full then
+        if Bunshop_atk_unit_full then
             kil.variables.xp = kil.variables.xp + dyi.level * V.bunshop.ONE_SHOT -- one shot
         end
     end

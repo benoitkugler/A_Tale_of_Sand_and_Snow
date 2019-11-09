@@ -16,6 +16,7 @@ local function _show_special_skill_cd(unit)
 end
 
 local function _show_fear_of_love(unit)
+    local tooltip
     if unit.id == "sword_spirit" and unit:ability("fearlove_self") then
         tooltip = _ "endangered: Resistances reduces by <span color='red'>50%</span> !"
     elseif unit:ability("fearlove") then
@@ -104,15 +105,15 @@ function wesnoth.theme_items.unit_traits()
         return {}
     end
     local traits = old_unit_traits()
-    for i, v in ipairs(traits) do
-        element = v[2]
-        local trt, a = tostring(element.help):gsub("traits_", "")
+    for _, v in ipairs(traits) do
+        local element = v[2]
+        local trt, _ = tostring(element.help):gsub("traits_", "")
         if trt then
             local objet = DB.OBJETS[trt]
             if objet then
                 local str = (objet.code and objet.code(u)) or objet.description
                 element.text = objet.name .. " "
-                element.tooltip = fmt(_ "Artifact : <b>%s</b>\n %s", object.name, str)
+                element.tooltip = fmt(_ "Artifact : <b>%s</b>\n %s", objet.name, str)
             end
         end
     end

@@ -12,7 +12,7 @@ local V = {
 }
 
 local ROMANS = {"I", "II", "III", "IV", "V", "VI"}
-xavier = {
+local xavier = {
 	_default_border = "#a99508",
 	_default_background = "181 167 71", -- rgb
 	values = V,
@@ -55,7 +55,7 @@ Adjacent own units of equal or higher level will do %d%% more damage. ]],
 				}
 			}
 		end,
-		unpack(standard_amla_heal(5))
+		 table.unpack(standard_amla_heal(5))
 	},
 	{
 		id = "defense_shred",
@@ -84,7 +84,7 @@ Adjacent own units of equal or higher level will do %d%% more damage. ]],
 				}
 			}
 		end,
-		unpack(standard_amla_heal(10))
+		 table.unpack(standard_amla_heal(10))
 	},
 	{
 		id = "defense",
@@ -117,7 +117,7 @@ Adjacent own units of equal or higher level will do %d%% more damage. ]],
 				}
 			}
 		end,
-		unpack(standard_amla_heal(10))
+		 table.unpack(standard_amla_heal(10))
 	},
 	{
 		id = "crossbow",
@@ -131,7 +131,7 @@ Adjacent own units of equal or higher level will do %d%% more damage. ]],
 			increase_damage = V.CROSSBOW_BONUS_DAMAGE,
 			name = "crossbow"
 		},
-		unpack(standard_amla_heal(5))
+		 table.unpack(standard_amla_heal(5))
 	},
 	{
 		id = "armor_shred",
@@ -161,7 +161,7 @@ Adjacent own units of equal or higher level will do %d%% more damage. ]],
 				}
 			}
 		end,
-		unpack(standard_amla_heal(10))
+		 table.unpack(standard_amla_heal(10))
 	},
 	{
 		id = "crossbow_marksman",
@@ -188,7 +188,7 @@ Adjacent own units of equal or higher level will do %d%% more damage. ]],
 				}
 			}
 		},
-		unpack(standard_amla_heal(10))
+		 table.unpack(standard_amla_heal(10))
 	},
 	{
 		id = "sword_marksman",
@@ -216,7 +216,7 @@ Adjacent own units of equal or higher level will do %d%% more damage. ]],
 				}
 			}
 		},
-		unpack(standard_amla_heal(10))
+		 table.unpack(standard_amla_heal(10))
 	},
 	{
 		id = "crossbow_atk",
@@ -231,7 +231,7 @@ Adjacent own units of equal or higher level will do %d%% more damage. ]],
 			name = "crossbow",
 			increase_attacks = V.CROSSBOW_BONUS_ATK
 		},
-		unpack(standard_amla_heal(10))
+		 table.unpack(standard_amla_heal(10))
 	},
 	{
 		id = "sword",
@@ -245,7 +245,7 @@ Adjacent own units of equal or higher level will do %d%% more damage. ]],
 			increase_damage = V.SWORD_BONUS_DAMAGE,
 			name = "sword"
 		},
-		unpack(standard_amla_heal(5))
+		 table.unpack(standard_amla_heal(5))
 	},
 	{
 		id = "sword_atk2",
@@ -260,7 +260,7 @@ Adjacent own units of equal or higher level will do %d%% more damage. ]],
 			name = "sword",
 			increase_attacks = V.SWORD2_BONUS_ATK
 		},
-		unpack(standard_amla_heal(10))
+		 table.unpack(standard_amla_heal(10))
 	},
 	{
 		id = "sword_precis",
@@ -293,7 +293,7 @@ Adjacent own units of equal or higher level will do %d%% more damage. ]],
 			remove_specials = "marksman",
 			name = "sword"
 		},
-		unpack(standard_amla_heal(10))
+		 table.unpack(standard_amla_heal(10))
 	},
 	{
 		id = "default",
@@ -304,7 +304,7 @@ Adjacent own units of equal or higher level will do %d%% more damage. ]],
 			increase_total = 3,
 			apply_to = "hitpoints"
 		},
-		unpack(standard_amla_heal(5))
+		 table.unpack(standard_amla_heal(5))
 	}
 }
 return xavier

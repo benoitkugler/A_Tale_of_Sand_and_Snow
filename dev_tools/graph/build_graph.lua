@@ -89,8 +89,8 @@ local function relie(n1, n2, is_bonus)
 end
 
 local function lienparents(arb)
-    t = {}
-    for i, v in pairs(arb) do
+    local t = {}
+    for _, v in pairs(arb) do
         t[v.id] = v.max_level
     end
     return t
@@ -100,22 +100,22 @@ local function aux(arb)
     local liens = lienparents(arb)
     local codegraphe = ""
     for i, noeud in pairs(arb) do
-        table.insert(l_layers, noeud.id)
+        table.insert(Layers, noeud.id)
         if noeud["couleur"] ~= nil then
             local r, g, b = noeud.couleur[1], noeud.couleur[2], noeud.couleur[3]
             if noeud.max_level > 1 then
-                table.insert(liste_afaire, {noeud.id, r, g, b, 1, noeud.max_level})
+                table.insert(Liste_todo, {noeud.id, r, g, b, 1, noeud.max_level})
                 codegraphe = codegraphe .. block_texte_chiffre(noeud.txt, noeud.img, noeud.id, noeud.max_level)
             else
-                table.insert(liste_afaire, {noeud.id, r, g, b, 1, 0})
+                table.insert(Liste_todo, {noeud.id, r, g, b, 1, 0})
                 codegraphe = codegraphe .. block_texte(noeud.txt, noeud.img, noeud.id, noeud.max_level)
             end
         else
             if noeud.max_level > 1 then
-                table.insert(liste_afaire, {noeud.id, 0, 0, 0, 0, noeud.max_level})
+                table.insert(Liste_todo, {noeud.id, 0, 0, 0, 0, noeud.max_level})
                 codegraphe = codegraphe .. block_chiffre(noeud.txt, noeud.img, noeud.id, noeud.max_level)
             else
-                table.insert(liste_afaire, {noeud.id, 0, 0, 0, 0, 0})
+                table.insert(Liste_todo, {noeud.id, 0, 0, 0, 0, 0})
                 codegraphe = codegraphe .. block_simple(noeud.txt, noeud.img, noeud.id, noeud.max_level)
             end
         end
@@ -165,7 +165,7 @@ local function export(layers)
 end
 
 local function write_dot_tree(inArbre)
-    l_layers = {"layer_fleche"}
+    Layers = {"layer_fleche"}
     local code = aux(inArbre)
     local code = header_dot .. code .. "}"
 
@@ -173,7 +173,7 @@ local function write_dot_tree(inArbre)
     file:write(code)
     file:close(file)
 
-    export(l_layers)
+    export(Layers)
 end
 
 -- Building amla tree from wesnoth lua source
@@ -205,9 +205,9 @@ local function compute_arbre_froms_amla(unit_id)
                 levelbonus = amla._level_bonus,
                 parents = {}
             }
-            require_amla = amla.require_amla
+            local require_amla = amla.require_amla
             if not (require_amla == nil) then
-                crible_parents = {} -- to avoid duplicates
+                local crible_parents = {} -- to avoid duplicates
                 amla.require_amla:gsub(
                     "([^,]+)",
                     function(ra)
@@ -229,16 +229,16 @@ end
 local path = AMLAS_PATH .. unit_id .. ".lua"
 dofile(path)
 
-tree, BORDER_COLOR, color_background = compute_arbre_froms_amla(unit_id)
+Tree, BORDER_COLOR, Color_background = compute_arbre_froms_amla(unit_id)
 
 
-liste_afaire = {}
-write_dot_tree(tree)
+Liste_todo = {}
+write_dot_tree(Tree)
 
 local sortie = ""
-for i, v in pairs(liste_afaire) do
+for i, v in pairs(Liste_todo) do
     sortie = sortie .. ";" .. v[1] .. ":" .. v[2] .. ":" .. v[3] .. ":" .. v[4] .. ":" .. v[5] .. ":" .. v[6]
 end
 sortie = sortie:sub(2)
-sortie = sortie .. " " .. color_background
+sortie = sortie .. " " .. Color_background
 print(sortie)

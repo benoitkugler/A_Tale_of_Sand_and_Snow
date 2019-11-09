@@ -49,7 +49,7 @@ function AMLA.pre_advance()
 			T.effect {
 				apply_to = "new_advancement",
 				replace = true,
-				unpack(table_amlas)
+				 table.unpack(table_amlas)
 			}
 		}
 	)

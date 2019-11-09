@@ -2,7 +2,6 @@ UI = {}
 
 UI.show_skills = wesnoth.require("skills/init")
 
-
 local function _set_menu_item(id, desc, image, x, y, lua_code)
     wesnoth.fire(
         "set_menu_item",
@@ -24,34 +23,35 @@ end
 
 -- TODO: Better icon
 function UI.setup_menu_debuf(x, y, lua_code)
-    _set_menu_item("union_debuf",_ "Xavier's union debuf !","menu/union_debuf.png",
-                    x,y,lua_code)
+    _set_menu_item("union_debuf", _ "Xavier's union debuf !", "menu/union_debuf.png", x, y, lua_code)
 end
 
 function UI.setup_menu_warjump(x, y, lua_code)
-    _set_menu_item("warjump",_ "War jump here with Gondhül !","menu/war_jump.png",
-                    x,y,lua_code)
+    _set_menu_item("warjump", _ "War jump here with Gondhül !", "menu/war_jump.png", x, y, lua_code)
 end
 
 function UI.setup_menu_elusive(x, y, lua_code)
-    _set_menu_item("elusive", _ "Sneak here with Brinx", "menu/ellusive.png",
-                    x,y, lua_code)
+    _set_menu_item("elusive", _ "Sneak here with Brinx", "menu/ellusive.png", x, y, lua_code)
 end
 
 -- Setup menu needed by abilities with cooldown
 local MENUS_SPECIAL_SKILLS = {
     vranken = {_ "Transposition", "AB.transposition()"}
 }
+local _showed_menus = {} -- keep in memory which menu are shown to avoid warnings
 function UI.turn_start()
     for unit_id, datas in pairs(MENUS_SPECIAL_SKILLS) do
         local label, lua_code = datas[1], datas[2]
         local id_menu = unit_id .. "_special_skill"
-        wesnoth.fire("clear_menu_item", {id = id_menu})
+        if _showed_menus[id_menu] then
+            wesnoth.fire("clear_menu_item", {id = id_menu})
+            _showed_menus[id_menu] = nil
+        end
         local hero = wesnoth.get_unit(unit_id)
         if hero then
             local cd = hero.variables.special_skill_cd
             if cd and cd == 0 then
-                wesnoth.message('set')
+                wesnoth.message("set")
                 wesnoth.fire(
                     "set_menu_item",
                     {
@@ -61,6 +61,7 @@ function UI.turn_start()
                         T.command {T.lua {code = lua_code}}
                     }
                 )
+                _showed_menus[id_menu] = true
             end
         end
     end
@@ -98,6 +99,3 @@ function UI.setup_menus()
         }
     )
 end
-
-
-

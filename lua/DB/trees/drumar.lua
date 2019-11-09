@@ -1,4 +1,4 @@
-drumar = {
+local drumar = {
 	_default_border="#00FFF5",
 	_defaultf_background="0 168 162",
 	{
@@ -17,7 +17,7 @@ drumar = {
 				arcane = -7
 			}
 		},
-		unpack(standard_amla_heal(5))
+		 table.unpack(standard_amla_heal(5))
 	},
 	{
 		id = "wave",
@@ -31,7 +31,7 @@ drumar = {
 			increase_damage = 2,
 			name = "chill wave"
 		},
-		unpack(standard_amla_heal(5))
+		 table.unpack(standard_amla_heal(5))
 	},
 	{
 		id = "toile_snare",
@@ -57,7 +57,7 @@ drumar = {
 				}
 			}
 		},
-		unpack(standard_amla_heal(10))
+		 table.unpack(standard_amla_heal(10))
 	},
 	{
 		id = "toile",
@@ -71,7 +71,7 @@ drumar = {
 			increase_damage = 2,
 			name = "entangle"
 		},
-		unpack(standard_amla_heal(5))
+		 table.unpack(standard_amla_heal(5))
 	},
 	{
 		id = "wave_weaker_slow2",
@@ -101,7 +101,7 @@ drumar = {
 			remove_specials = "weaker_slow",
 			name = "chill wave"
 		},
-		unpack(standard_amla_heal(10))
+		 table.unpack(standard_amla_heal(10))
 	},
 	{
 		id = "attack_chilled",
@@ -131,7 +131,7 @@ drumar = {
 				}
 			}
 		},
-		unpack(standard_amla_heal(15))
+		 table.unpack(standard_amla_heal(15))
 	},
 	{
 		id = "hp",
@@ -144,7 +144,7 @@ drumar = {
 			increase_total = 7,
 			apply_to = "hitpoints"
 		},
-		unpack(standard_amla_heal(5))
+		 table.unpack(standard_amla_heal(5))
 	},
 	{
 		id = "toile_atk",
@@ -159,7 +159,7 @@ drumar = {
 			name = "entangle",
 			increase_attacks = 1
 		},
-		unpack(standard_amla_heal(7))
+		 table.unpack(standard_amla_heal(7))
 	},
 	{
 		id = "wave_atk",
@@ -174,7 +174,7 @@ drumar = {
 			name = "chill wave",
 			increase_attacks = 1
 		},
-		unpack(standard_amla_heal(5))
+		 table.unpack(standard_amla_heal(5))
 	},
 	{
 		id = "wave_res2",
@@ -204,7 +204,7 @@ drumar = {
 			remove_specials = "res_magic",
 			name = "chill wave"
 		},
-		unpack(standard_amla_heal(10))
+		 table.unpack(standard_amla_heal(10))
 	},
 	{
 		id = "wave_weaker_slow1",
@@ -229,7 +229,7 @@ drumar = {
 				}
 			}
 		},
-		unpack(standard_amla_heal(10))
+		 table.unpack(standard_amla_heal(10))
 	},
 	{
 		id = "wave_arch_magical",
@@ -261,7 +261,7 @@ drumar = {
 			remove_specials = "magical",
 			name = "chill wave"
 		},
-		unpack(standard_amla_heal(10))
+		 table.unpack(standard_amla_heal(10))
 	},
 	{
 		id = "wave_res1",
@@ -286,7 +286,7 @@ drumar = {
 				}
 			}
 		},
-		unpack(standard_amla_heal(10))
+		 table.unpack(standard_amla_heal(10))
 	},
 	{
 		max_times = -1,
@@ -296,7 +296,7 @@ drumar = {
 			increase_total = 1,
 			apply_to = "hitpoints"
 		},
-		unpack(standard_amla_heal(5))
+		 table.unpack(standard_amla_heal(5))
 	}
 }
 return drumar

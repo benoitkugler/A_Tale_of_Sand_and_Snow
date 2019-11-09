@@ -14,7 +14,7 @@ local function format_description(lvl, callable, description, str_color)
         for i, v in ipairs(value) do
             table.insert(coloreds, string.format("<span color='%s'>%d</span>", str_color, v))
         end
-        return string.format(description, unpack(coloreds))
+        return string.format(description,  table.unpack(coloreds))
     else
         local colored = string.format("<span color='%s'>%d</span>", str_color, value)
         return string.format(description, colored)

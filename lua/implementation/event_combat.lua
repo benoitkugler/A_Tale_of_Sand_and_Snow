@@ -56,7 +56,7 @@ function EC.combat(dmg_dealt)
 end
 
 function EC.fin_tour()
-    lhero = wesnoth.get_units {role = "hero"}
+    local lhero = wesnoth.get_units {role = "hero"}
     for i, v in pairs(lhero) do
         v.variables.bloodlust = false
     end
@@ -385,7 +385,7 @@ end
 
 
 function apply.shield(event, pri, snd, dmg)
-    function _init_shield(unit)
+    local function _init_shield(unit)
         local shield = unit.variables.status_shielded_hp
         unit.hitpoints = unit.hitpoints + shield
         return fmt(_"<span color='%s'> +%d shield points</span>\n", COLOR_SHIELDED, shield)
@@ -397,13 +397,13 @@ function apply.shield(event, pri, snd, dmg)
             label_pri = label_pri .. l
         end
         if snd.status.shielded then
-            _init_shield(snd)
+            local l = _init_shield(snd)
             label_snd = label_snd .. l
         end
         delay = 50
     end
 
-    function _update_shield(unit)
+    local function _update_shield(unit)
         local sh = unit.variables.status_shielded_hp
         if dmg >= sh then -- no more shield
             unit.variables.status_shielded_hp = nil
@@ -420,7 +420,7 @@ function apply.shield(event, pri, snd, dmg)
         _update_shield(pri)
     end
 
-    function _remove_over(unit)
+    local function _remove_over(unit)
         unit.hitpoints = unit.hitpoints - unit.variables.status_shielded_hp
     end
 

@@ -13,7 +13,7 @@ local brinx = {
 			increase_damage = 1,
 			name = "sword"
 		},
-		unpack(standard_amla_heal(5))
+		 table.unpack(standard_amla_heal(5))
 	},
 	{
 		id = "though",
@@ -34,7 +34,7 @@ local brinx = {
 				fire = -5
 			}
 		},
-		unpack(standard_amla_heal(7))
+		 table.unpack(standard_amla_heal(7))
 	},
 	{
 		id = "bow_fire",
@@ -60,7 +60,7 @@ local brinx = {
 			}
 			return effect
 		end,
-		unpack(standard_amla_heal(15))
+		 table.unpack(standard_amla_heal(15))
 	},
 	{
 		id = "pm",
@@ -73,7 +73,7 @@ local brinx = {
 			increase = 1,
 			apply_to = "movement"
 		},
-		unpack(standard_amla_heal(5))
+		 table.unpack(standard_amla_heal(5))
 	},
 	{
 		id = "bow_focus",
@@ -105,7 +105,7 @@ local brinx = {
 			remove_specials = "marksman,precis",
 			name = "bow"
 		},
-		unpack(standard_amla_heal(10))
+		 table.unpack(standard_amla_heal(10))
 	},
 	{
 		id = "bow2",
@@ -120,7 +120,7 @@ local brinx = {
 			increase_damage = 2,
 			name = "bow"
 		},
-		unpack(standard_amla_heal(5))
+		 table.unpack(standard_amla_heal(5))
 	},
 	{
 		id = "bow_pierce",
@@ -143,7 +143,7 @@ local brinx = {
 				}
 			}
 		},
-		unpack(standard_amla_heal(15))
+		 table.unpack(standard_amla_heal(15))
 	},
 	{
 		id = "movement",
@@ -162,7 +162,7 @@ local brinx = {
 				sand = 1
 			}
 		},
-		unpack(standard_amla_heal(10))
+		 table.unpack(standard_amla_heal(10))
 	},
 	{
 		id = "bow_precis",
@@ -194,7 +194,7 @@ local brinx = {
 			remove_specials = "marksman",
 			name = "bow"
 		},
-		unpack(standard_amla_heal(10))
+		 table.unpack(standard_amla_heal(10))
 	},
 	{
 		id = "skirmisher",
@@ -216,7 +216,7 @@ local brinx = {
 				}
 			}
 		},
-		unpack(standard_amla_heal(10))
+		 table.unpack(standard_amla_heal(10))
 	},
 	{
 		id = "bow_atk",
@@ -231,7 +231,7 @@ local brinx = {
 			name = "bow",
 			increase_attacks = 1
 		},
-		unpack(standard_amla_heal(10))
+		 table.unpack(standard_amla_heal(10))
 	},
 	{
 		id = "sword_atk",
@@ -246,7 +246,7 @@ local brinx = {
 			name = "sword",
 			increase_attacks = 1
 		},
-		unpack(standard_amla_heal(10))
+		 table.unpack(standard_amla_heal(10))
 	},
 	{
 		id = "bloodlust",
@@ -268,7 +268,7 @@ local brinx = {
 				}
 			}
 		},
-		unpack(standard_amla_heal(15))
+		 table.unpack(standard_amla_heal(15))
 	},
 	{
 		id = "hp",
@@ -281,7 +281,7 @@ local brinx = {
 			increase_total = 5,
 			apply_to = "hitpoints"
 		},
-		unpack(standard_amla_heal(5))
+		 table.unpack(standard_amla_heal(5))
 	},
 	{
 		id = "bow_atk2",
@@ -296,7 +296,7 @@ local brinx = {
 			name = "bow",
 			increase_attacks = 1
 		},
-		unpack(standard_amla_heal(10))
+		 table.unpack(standard_amla_heal(10))
 	},
 	{
 		id = "bow",
@@ -310,7 +310,7 @@ local brinx = {
 			increase_damage = 2,
 			name = "bow"
 		},
-		unpack(standard_amla_heal(5))
+		 table.unpack(standard_amla_heal(5))
 	},
 	{
 		max_times = -1,
@@ -322,7 +322,7 @@ local brinx = {
 			increase_total = 1,
 			apply_to = "hitpoints"
 		},
-		unpack(standard_amla_heal(5))
+		 table.unpack(standard_amla_heal(5))
 	}
 }
 return brinx
