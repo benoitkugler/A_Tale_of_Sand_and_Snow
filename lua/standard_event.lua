@@ -46,8 +46,8 @@ end
 
 -- Heroes last breath
 function ST.kill()
-    local killer = get_snd()
-    local dying = get_pri()
+    local killer = SecondaryUnit()
+    local dying = PrimaryUnit()
     if dying.id == "rymor" then
         wesnoth.fire("message", {speaker = "rymor", message = _ "I fall ? Is this even possible ..."})
         wesnoth.fire("message", {speaker = "vranken", message = _ "No ! Rymor ! "})

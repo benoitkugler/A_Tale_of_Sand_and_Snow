@@ -1,7 +1,7 @@
 -- Misc. helpers
 
 -- Format a translatable string
-function fmt(translatable_str, ...)
+function Fmt(translatable_str, ...)
     return string.format(tostring(translatable_str), ...)
 end
 
@@ -17,15 +17,15 @@ function table.keys(t)
 end
 
 -- round
-function arrondi(f) return math.floor(0.5 + f) end
+function Round(f) return math.floor(0.5 + f) end
 
 
 --Récupére l'unité primaire ou secondaire d'un event
-function get_pri()
+function PrimaryUnit()
     return wesnoth.get_unit(wesnoth.current.event_context.x1, wesnoth.current.event_context.y1)
 end
 
-function get_snd()
+function SecondaryUnit()
     return wesnoth.get_unit(wesnoth.current.event_context.x2, wesnoth.current.event_context.y2)
 end
 
@@ -86,13 +86,13 @@ function add_defenses(def)
 end
 
 
-function get_loc()
+function GetLocation()
     return wesnoth.current.event_context.x1, wesnoth.current.event_context.y1
 end
 
-
-function table_skills(u)
-    local table_amlas = {} -- build table {id_skill = lvl }
+-- Returns the table id_skill = lvl
+function TableSkills(u)
+    local table_amlas = {}
     for __, adv in pairs(u.advancements) do
         table_amlas[adv.id] = (table_amlas[adv.id] or 0) + 1
     end
@@ -101,8 +101,8 @@ function table_skills(u)
 end
 
 
--- Boite d'information avec chain translatable
-function popup(title, message)
+-- Popup window with translatable string
+function Popup(title, message)
     local dialog = {
         T.tooltip {id = "tooltip_large"},
         T.helptip {id = "tooltip_large"},
@@ -135,7 +135,7 @@ end
 
 
 
--- TODO: Cleanup 
+-- TODO: Cleanup
 function table.val_to_str(v)
     if "string" == type(v) then
         v = string.gsub(v, "\n", "\\n")

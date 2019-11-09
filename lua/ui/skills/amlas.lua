@@ -16,7 +16,7 @@ end
 
 function A.preshow(u)
     wesnoth.set_dialog_value(1, "pages")
-    local table_skill = table_skills(u)
+    local table_skill = TableSkills(u)
     if wesnoth.have_file("~add-ons/A_Tale_of_Sand_and_Snow/images/arbres/" .. u.id .. "/layer_fond.png") then
         local im = construit_img(table_skill, u.id)
         wesnoth.set_dialog_value(im, "img1")

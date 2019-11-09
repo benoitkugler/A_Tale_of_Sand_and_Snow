@@ -8,7 +8,7 @@ local function _show_special_skill_cd(unit)
     local cd = unit.variables.special_skill_cd or 0
     local tooltip
     if cd > 0 then
-        tooltip = fmt(_ "Special skill cooldown : <b>%d</b> turn%s", cd, cd == 1 and "" or "s")
+        tooltip = Fmt(_ "Special skill cooldown : <b>%d</b> turn%s", cd, cd == 1 and "" or "s")
     else
         tooltip = _ "Special skill <b>ready</b> !"
     end
@@ -41,7 +41,7 @@ function wesnoth.theme_items.unit_status()
             {
                 T.element {
                     image = "menu/chilled.png",
-                    tooltip = fmt(
+                    tooltip = Fmt(
                         _ "chilled: This unit is infoged by Cold Mistress. It will take <span color='%s'>%d%%</span> bonus damage when hit by cold attacks. " ..
                             "<span style='italic'>Last %d turn(s).</span>",
                         COLOR_CHILLED,
@@ -89,8 +89,8 @@ function wesnoth.theme_items.unit_hp()
         table.insert(
             s,
             T.element {
-                text = fmt("  <span color='%s'>+<b>%d</b></span>", COLOR_SHIELD, sh),
-                tooltip = fmt(desc, u.name, COLOR_SHIELD, sh)
+                text = Fmt("  <span color='%s'>+<b>%d</b></span>", COLOR_SHIELD, sh),
+                tooltip = Fmt(desc, u.name, COLOR_SHIELD, sh)
             }
         )
     end
@@ -113,7 +113,7 @@ function wesnoth.theme_items.unit_traits()
             if objet then
                 local str = (objet.code and objet.code(u)) or objet.description
                 element.text = objet.name .. " "
-                element.tooltip = fmt(_ "Artifact : <b>%s</b>\n %s", objet.name, str)
+                element.tooltip = Fmt(_ "Artifact : <b>%s</b>\n %s", objet.name, str)
             end
         end
     end

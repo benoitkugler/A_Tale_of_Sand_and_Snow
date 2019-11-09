@@ -22,7 +22,7 @@ local xavier = {
 		image = "misc/laurel.png",
 		max_times = 3,
 		always_display = 1,
-		description = fmt(_ "Grants additionnal %d%% bonus damage for higher level allies.", V.BETTER_LEADERSHIP_RATIO),
+		description = Fmt(_ "Grants additionnal %d%% bonus damage for higher level allies.", V.BETTER_LEADERSHIP_RATIO),
 		T.effect {
 			apply_to = "remove_ability",
 			T.abilities {
@@ -43,7 +43,7 @@ local xavier = {
 						_level = current_lvl + 1,
 						value = value,
 						affect_self = false,
-						description = fmt(
+						description = Fmt(
 							_ [[
 Even more experienced units are impressed by Xavier's skills !
 Adjacent own units of equal or higher level will do %d%% more damage. ]],
@@ -79,7 +79,7 @@ Adjacent own units of equal or higher level will do %d%% more damage. ]],
 						_level = current_lvl + 1,
 						active_on = "offense",
 						name = _ "destabilize",
-						description = fmt(_ "Decreses defense by %d%% per hit",shred_on_hit)
+						description = Fmt(_ "Decreses defense by %d%% per hit",shred_on_hit)
 					}
 				}
 			}
@@ -93,7 +93,7 @@ Adjacent own units of equal or higher level will do %d%% more damage. ]],
 		image = "icons/dress_silk_green.png",
 		max_times = 3,
 		always_display = 1,
-		description = fmt(_ "Adjacent allies gain additionnal %d%% defense", V.ALLIES_DEFENSE_RATIO),
+		description = Fmt(_ "Adjacent allies gain additionnal %d%% defense", V.ALLIES_DEFENSE_RATIO),
 		T.effect {
 			apply_to = "remove_ability",
 			T.abilities {
@@ -112,7 +112,7 @@ Adjacent own units of equal or higher level will do %d%% more damage. ]],
 						id = "allies_defense",
 						_level = current_lvl + 1,
 						name = _ "Defense-" .. ROMANS[current_lvl + 1],
-						description = fmt(_ "Adjacent allies gain %d%% defense", value)
+						description = Fmt(_ "Adjacent allies gain %d%% defense", value)
 					}
 				}
 			}
@@ -121,7 +121,7 @@ Adjacent own units of equal or higher level will do %d%% more damage. ]],
 	},
 	{
 		id = "crossbow",
-		_short_desc = fmt("Crossbow <BR /> <B> +%d </B> dmg",V.CROSSBOW_BONUS_DAMAGE),
+		_short_desc = Fmt("Crossbow <BR /> <B> +%d </B> dmg",V.CROSSBOW_BONUS_DAMAGE),
 		image = "attacks/crossbow-human.png",
 		max_times = 2,
 		always_display = 1,
@@ -156,7 +156,7 @@ Adjacent own units of equal or higher level will do %d%% more damage. ]],
 						_level = current_lvl + 1,
 						active_on = "offense",
 						name = _ "shreds",
-						description = fmt(_ "Decreses physical resistances by %d%% per hit",shred_on_hit)
+						description = Fmt(_ "Decreses physical resistances by %d%% per hit",shred_on_hit)
 					}
 				}
 			}
@@ -220,7 +220,7 @@ Adjacent own units of equal or higher level will do %d%% more damage. ]],
 	},
 	{
 		id = "crossbow_atk",
-		_short_desc = fmt("Crossbow <BR /> <B>+%d</B> str.", V.CROSSBOW_BONUS_ATK),
+		_short_desc = Fmt("Crossbow <BR /> <B>+%d</B> str.", V.CROSSBOW_BONUS_ATK),
 		require_amla = "crossbow,crossbow",
 		image = "attacks/crossbow-human.png",
 		max_times = 2,
@@ -235,7 +235,7 @@ Adjacent own units of equal or higher level will do %d%% more damage. ]],
 	},
 	{
 		id = "sword",
-		_short_desc = fmt("Sword <BR /> <B>+%d</B> dmg", V.SWORD_BONUS_DAMAGE),
+		_short_desc = Fmt("Sword <BR /> <B>+%d</B> dmg", V.SWORD_BONUS_DAMAGE),
 		image = "attacks/sword-elven.png",
 		max_times = 2,
 		always_display = 1,
@@ -249,7 +249,7 @@ Adjacent own units of equal or higher level will do %d%% more damage. ]],
 	},
 	{
 		id = "sword_atk2",
-		_short_desc = fmt("Sword <BR /> <B>+%d</B> str", V.SWORD2_BONUS_ATK),
+		_short_desc = Fmt("Sword <BR /> <B>+%d</B> str", V.SWORD2_BONUS_ATK),
 		require_amla = "sword_marksman",
 		image = "attacks/sword-elven.png",
 		max_times = 2,

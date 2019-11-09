@@ -198,7 +198,7 @@ function MCS.preshow(unit)
                 MCS.xp_dispo = MCS.xp_dispo - v.costs[j]
             end
             if MCS.u_lvl >= v.require_lvl then
-                if not v.require_avancement or (table_skills(unit)[v.require_avancement.id] ~= nil) then
+                if not v.require_avancement or (TableSkills(unit)[v.require_avancement.id] ~= nil) then
                     local formatted_title = string.format("<span color='%s'>%s</span>", v.color, v.name_aff)
                     local formatted_desc
                     if lvl == 0 then

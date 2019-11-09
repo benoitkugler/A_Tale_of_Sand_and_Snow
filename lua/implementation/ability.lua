@@ -56,16 +56,16 @@ end
 local function show_war_jump(unit)
     local blocked = tiles_behind(unit)
     local listx, listy = blocked:to_zip_pairs()
-    local lua_code = fmt("AB.war_jump(%q,%d,%d)",unit.id,unit.x,unit.y)
+    local lua_code = Fmt("AB.war_jump(%q,%d,%d)",unit.id,unit.x,unit.y)
     UI.setup_menu_warjump(listx, listy, lua_code)
     ANIM.hover_tiles(blocked:to_pairs(), "Right-click here")
 end
 
 function AB.war_jump(unit_id, x, y)
     local u = wesnoth.get_unit(unit_id)
-    local tox, toy = get_loc()
+    local tox, toy = GetLocation()
     if u == nil then
-        popup(
+        Popup(
             _ "Error",
             _ "Can't <span color='red'>War Jump </span> now. Please <span weight='bold'>select</span> me again."
         )
@@ -73,7 +73,7 @@ function AB.war_jump(unit_id, x, y)
         local locs = LS.of_pairs(wesnoth.find_reach(u, {ignore_units = true}))
         local moves_left = locs:get(tox, toy)
         if u.x ~= x or u.y ~= y or not get_ability(u, "war_jump") or not moves_left or not is_empty(tox, toy) then
-            popup(
+            Popup(
                 _ "Error",
                 _"Can't <span color='red'>War Jump </span> right now. Please <span weight='bold'>select</span> me again."
             )
@@ -89,16 +89,16 @@ end
 local function show_elusive(unit)
     local blocked = available_tiles(unit)
     local listx, listy = blocked:to_zip_pairs()
-    local lua_code = fmt("AB.elusive(%q,%d,%d)", unit.id, unit.x, unit.y)    
+    local lua_code = Fmt("AB.elusive(%q,%d,%d)", unit.id, unit.x, unit.y)    
     UI.setup_menu_elusive(listx, listy, lua_code)
     ANIM.hover_tiles(blocked:to_pairs(), "Right-click here")
 end
 
 function AB.elusive(unit_id, x, y)
     local u = wesnoth.get_unit(unit_id)
-    local tox, toy = get_loc()
+    local tox, toy = GetLocation()
     if u == nil then
-        popup(
+        Popup(
             _ "Error",
             _ "Can't be <span color='green'>Elusive</span> right now. Please <span weight='bold'>select</span> me again."
         )
@@ -106,7 +106,7 @@ function AB.elusive(unit_id, x, y)
         local locs = LS.of_pairs(wesnoth.find_reach(u, {ignore_units = true}))
         local moves_left = locs:get(tox, toy)
         if u.x ~= x or u.y ~= y or not get_ability(u, "elusive") or not moves_left or not is_empty(tox, toy) then
-            popup(
+            Popup(
                 _ "Error",
                 _ "Can't be <span color='green'>Elusive</span> right now. Please <span weight='bold'>select</span> me again."
             )
@@ -147,7 +147,7 @@ local function update_xavier_defense()
             {
                 id = trait_id,
                 name = _ "Xavier's defense",
-                description = fmt(_ "Xavier is so strong! He grants us <b>%d%%</b> bonus defense", bonus_def),
+                description = Fmt(_ "Xavier is so strong! He grants us <b>%d%%</b> bonus defense", bonus_def),
                 add_defenses(bonus_def)
             }
         )
@@ -288,7 +288,7 @@ end
 
 -- -------------------------- Event handler --------------------------
 function AB.on_moveto()
-    local u = get_pri()
+    local u = PrimaryUnit()
     local xavier = wesnoth.get_unit("xavier")
     if not wesnoth.is_enemy(u.side, xavier.side) then
         update_xavier_defense()
@@ -300,7 +300,7 @@ end
 function AB.select()
     wesnoth.fire("clear_menu_item", {id = "elusive"})
     wesnoth.fire("clear_menu_item", {id = "war_jump"})
-    local u = get_pri()
+    local u = PrimaryUnit()
     if get_ability(u, "war_jump") and u.moves > 0 then
         show_war_jump(u)
     end

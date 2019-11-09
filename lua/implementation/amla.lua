@@ -29,13 +29,13 @@ function AMLA.update_lvl(unit)
 end
 
 function AMLA.adv()
-	local u = get_pri()
+	local u = PrimaryUnit()
 	u:remove_modifications({id = "current_amlas"}, "trait")
 	AMLA.update_lvl(u)
 end
 
 function AMLA.pre_advance()
-	local u = get_pri()
+	local u = PrimaryUnit()
 	local table_amlas = DB.AMLAS[u.id] -- loading custom amlas
 	if (table_amlas == nil) or #(u.advances_to) > 0 then
 		return

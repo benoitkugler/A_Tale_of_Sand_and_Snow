@@ -20,7 +20,7 @@ function EC.combat(dmg_dealt)
     wesnoth.message("a")
     delay = 0
     local type_event = wesnoth.current.event_context.name
-    local u1, u2 = get_pri(), get_snd()
+    local u1, u2 = PrimaryUnit(), SecondaryUnit()
     label_pri, label_snd = "", ""
     local x1, y1, x2, y2 = u1 and u1.x, u1 and u1.y, u2 and u2.x, u2 and u2.y
 
@@ -161,7 +161,7 @@ function apply.leeches(event, pri, snd, dmg)
         if u.hitpoints < u.max_hitpoints then
             wesnoth.fire(
                 "heal_unit",
-                {T.filter {id = u.id}, animate = true, amount = arrondi(dmg * (0.05 + 0.05 * lvl))}
+                {T.filter {id = u.id}, animate = true, amount = Round(dmg * (0.05 + 0.05 * lvl))}
             ) --toujours
         end
     end
@@ -179,7 +179,7 @@ function apply.weapon_pierce(event, pri, snd, dmg)
                 annimate = true,
                 fire_event = true,
                 damage_type = weapon.type,
-                amount = arrondi(dmg * 0.5)
+                amount = Round(dmg * 0.5)
             }
         ) --atker hit
     end
@@ -211,7 +211,7 @@ function apply.cleave(event, pri, snd, dmg)
                     fire_event = true,
                     annimate = true,
                     damage_type = att.type,
-                    amount = arrondi(dmg * 0.75)
+                    amount = Round(dmg * 0.75)
                 }
             ) --atker hit
         end
@@ -230,7 +230,7 @@ function apply.res_magic(event, pri, snd, dmg)
                 false
             )
             label_snd =
-                label_snd .. fmt(_ "<span color='%s'>-%d%% magic resistances</span>\n", COLOR_MAGIC_RES_SHRED, value)
+                label_snd .. Fmt(_ "<span color='%s'>-%d%% magic resistances</span>\n", COLOR_MAGIC_RES_SHRED, value)
         end
     end
 end
@@ -246,7 +246,7 @@ function apply.armor_shred(event, pri, snd, dmg)
                 {T.effect {apply_to = "resistance", {"resistance", {blade = value, pierce = value, impact = value}}}},
                 false
             )
-            label_snd = label_snd .. fmt(_ "<span color='%s'>-%d%% armor</span>\n", COLOR_ARMOR_SHRED, value)
+            label_snd = label_snd .. Fmt(_ "<span color='%s'>-%d%% armor</span>\n", COLOR_ARMOR_SHRED, value)
         end
     end
 end
@@ -264,7 +264,7 @@ function apply.defense_shred(event, pri, snd, dmg)
                 false
             )
             label_snd =
-                label_snd .. fmt(_ "<span color='%s'>-%d%% defense</span>\n", COLOR_DEFENSE_SHRED, shred_per_hit)
+                label_snd .. Fmt(_ "<span color='%s'>-%d%% defense</span>\n", COLOR_DEFENSE_SHRED, shred_per_hit)
         end
     end
 end
@@ -331,7 +331,7 @@ function apply.chilled_dmg(event, pri, snd, dmg)
         local att = H.get_child(wesnoth.current.event_context, "weapon")
         local values = SPECIAL_SKILLS.info.drumar.bonus_cold_mistress(special_lvl - 1)
         local percent_bonus = values[1]
-        local bonus_dmg = arrondi(dmg * percent_bonus / 100)
+        local bonus_dmg = Round(dmg * percent_bonus / 100)
         if att.type == "cold" then
             local dmg_display
             if snd.hitpoints - bonus_dmg > 0 then
@@ -388,7 +388,7 @@ function apply.shield(event, pri, snd, dmg)
     local function _init_shield(unit)
         local shield = unit.variables.status_shielded_hp
         unit.hitpoints = unit.hitpoints + shield
-        return fmt(_"<span color='%s'> +%d shield points</span>\n", COLOR_SHIELDED, shield)
+        return Fmt(_"<span color='%s'> +%d shield points</span>\n", COLOR_SHIELDED, shield)
     end 
 
     if event == "attack" then -- applying inital shield

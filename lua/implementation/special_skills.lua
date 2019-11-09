@@ -124,7 +124,7 @@ function SPECIAL_SKILLS.transposition(lvl, unit)
 						id = "transposition",
 						_level = lvl,
 						name = _ "War link",
-						description = fmt(_ "Vranken senses its sword spirit and may switch position with Göndhul, " ..
+						description = Fmt(_ "Vranken senses its sword spirit and may switch position with Göndhul, " ..
 						"no matter the distance between them. \n<b>%d</b> turn%s cooldown.", cd, cd > 1 and "s" or "")
 					}
 				}
@@ -388,7 +388,7 @@ function SPECIAL_SKILLS.Y_formation(lvl, unit)
 						id = "Y_formation",
 						_level = lvl,
 						name = _ "Back formation",
-						description = fmt(_ "Xavier sends its friends to distract the ennemy. When attacking in Y, " ..
+						description = Fmt(_ "Xavier sends its friends to distract the ennemy. When attacking in Y, " ..
 						"he has the time to perform <b>%d</b> additionnal attacks", value)
 					}
 				}
@@ -412,7 +412,7 @@ function SPECIAL_SKILLS.A_formation(lvl, unit)
 						id = "A_formation",
 						_level = lvl,
 						name = _ "Wedge formation",
-						description = fmt(_ "Xavier is transcendanted by his friends. When fighting in A, " ..
+						description = Fmt(_ "Xavier is transcendanted by his friends. When fighting in A, " ..
 						"he will gain <b>%d%% defense</b>.", value)
 					}
 				}
@@ -436,7 +436,7 @@ function SPECIAL_SKILLS.I_formation(lvl, unit)
 						id = "I_formation",
 						_level = lvl,
 						name = _ "Spear formation",
-						description = fmt(_ "Xavier is transcendanted by his friends. When attacking in I, " ..
+						description = Fmt(_ "Xavier is transcendanted by his friends. When attacking in I, " ..
 						"he will gain <b>%d damages</b>.", value)
 					}
 				}
@@ -462,7 +462,7 @@ function SPECIAL_SKILLS.O_formation(lvl, unit)
 						id = "O_formation",
 						_level = lvl,
 						name = _ "Union formation",
-						description = fmt(_ "When grouping as 6, Xavier may disarm its opponent, removing its abilities " ..
+						description = Fmt(_ "When grouping as 6, Xavier may disarm its opponent, removing its abilities " ..
 								"and weapon specials (<b>%d</b> turn(s) cooldown).", value)
 					}
 				}

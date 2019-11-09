@@ -30,8 +30,8 @@ function ES.atk()
 end
 
 function ES.kill()
-    local killer = get_snd()
-    local dying = get_pri()
+    local killer = SecondaryUnit()
+    local dying = PrimaryUnit()
     if dying.id == "leader" then
         wesnoth.fire(
             "message",
@@ -92,7 +92,7 @@ function ES.prestart()
 end
 
 local function presentation()
-    popup(
+    Popup(
         _ "New heroes",
         _ "\tYou now have three new heroes : " ..
             "<span color='" ..
@@ -193,7 +193,7 @@ function ES.turn1()
     -- Présentation
 
     presentation()
-    popup(
+    Popup(
         _ "Note",
         _ "As you might have guessed, this campaign is not about war strategy, " ..
             "manipulating a lot of units, but rather about training and mastering your heroes." ..
@@ -203,7 +203,7 @@ function ES.turn1()
 end
 
 local function note_gondhul()
-    popup(
+    Popup(
         _ "New hero",
         _ "\tThis is <span color='" ..
             DB.HEROES.get_color("sword_spirit") ..

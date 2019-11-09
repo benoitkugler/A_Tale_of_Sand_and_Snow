@@ -53,11 +53,11 @@ function ES.atk()
 end
 
 function ES.kill()
-	local u = get_pri()
+	local u = PrimaryUnit()
 	if u.id == "jod" then
 		wesnoth.fire("message", {speaker = "jod", message = _ "Argh... I fell... The council must now about this att..."})
 		wesnoth.fire("message", {speaker = "brinx", message = _ "Nooo ! Bloody muspellians !"})
-		popup(
+		Popup(
 			_ "Welcome",
 			_ "\tHello friend, and welcome to this campaign." ..
 				"Let me introduce you to your first hero : <span color='" ..
@@ -178,7 +178,7 @@ function ES.turn12()
 		}
 	)
 	if wesnoth.get_units {id = "jod"}[1] ~= nil then
-		popup(
+		Popup(
 			_ "Welcome",
 			_ "\tHello friend, and welcome to this campaign." "Let me introduce you to your first hero : <span color='" ..
 				brinx_color ..

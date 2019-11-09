@@ -366,7 +366,7 @@ end
 function O.menuObj()
     local obj_poss = wesnoth.get_variable("objets_joueur")
     if next(obj_poss) == nil then
-        popup(_ "Note", _ "You still have to collect artifacts...")
+        Popup(_ "Note", _ "You still have to collect artifacts...")
     else
         wesnoth.show_dialog(dialog, preshow, postshow)
     end

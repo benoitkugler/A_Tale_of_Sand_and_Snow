@@ -113,7 +113,7 @@ end
 
 
 local function show_skills()
-    local u = get_pri()
+    local u = PrimaryUnit()
     wesnoth.show_dialog(
         dialog,
         function() preshow(u) end

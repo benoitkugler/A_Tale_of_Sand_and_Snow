@@ -125,7 +125,7 @@ function exp_functions.drumar.combat(atk, def)
             def.variables.xp = def.variables.xp + atk.level + V.drumar.DEF_COLD --defense cold
         end
         if H.get_child(weapon, "specials") ~= nil and H.get_child(H.get_child(weapon, "specials"), "slow") ~= nil then
-            def.variables.xp = def.variables.xp + arrondi(atk.level * V.drumar.DEF_SLOW) --defense slow
+            def.variables.xp = def.variables.xp + Round(atk.level * V.drumar.DEF_SLOW) --defense slow
         end
     elseif atk.id == "drumar" then
         local weapon = H.get_child(wesnoth.current.event_context, "weapon")
@@ -134,16 +134,16 @@ function exp_functions.drumar.combat(atk, def)
         --attaque cold
         end
         if H.get_child(weapon, "specials") ~= nil and H.get_child(H.get_child(weapon, "specials"), "slow") ~= nil then
-            atk.variables.xp = atk.variables.xp + arrondi(def.level * V.drumar.ATK_SLOW) --attaque slow
+            atk.variables.xp = atk.variables.xp + Round(def.level * V.drumar.ATK_SLOW) --attaque slow
         end
         if
             H.get_child(weapon, "specials") ~= nil and
                 H.get_child(H.get_child(weapon, "specials"), "isHere", "snare") ~= nil
          then
-            atk.variables.xp = atk.variables.xp + arrondi(def.level * V.drumar.ATK_SNARE) --attaque snare
+            atk.variables.xp = atk.variables.xp + Round(def.level * V.drumar.ATK_SNARE) --attaque snare
         end
         if weapon.name == "chilling touch" then
-            atk.variables.xp = atk.variables.xp + arrondi(def.level * V.drumar.ATK_CHILLING_TOUCH) --attaque chilling touch
+            atk.variables.xp = atk.variables.xp + Round(def.level * V.drumar.ATK_CHILLING_TOUCH) --attaque chilling touch
         end
     end
 end
@@ -154,10 +154,10 @@ function exp_functions.xavier.combat(atk, def)
         local active_formations, __ = AB.get_active_formations(atk)
         local fY, fI = active_formations.Y, active_formations.I
         if not (fY == nil) and def.x == fY[1] and def.y == fY[2] then
-            atk.variables.xp = atk.variables.xp + arrondi(def.level * V.xavier.Y_FORMATION)
+            atk.variables.xp = atk.variables.xp + Round(def.level * V.xavier.Y_FORMATION)
         end
         if not (fI == nil) and def.x == fI[1] and def.y == fI[2] then
-            atk.variables.xp = atk.variables.xp + arrondi(def.level * V.xavier.I_FORMATION)
+            atk.variables.xp = atk.variables.xp + Round(def.level * V.xavier.I_FORMATION)
         end
     elseif def.id == "xavier" then
         local active_formations, __ = AB.get_active_formations(atk)
@@ -172,15 +172,15 @@ EXP = {}
 EXP.values = V
 
 function EXP.adv()
-    local unit = get_pri()
+    local unit = PrimaryUnit()
     if exp_functions[unit.id] and exp_functions[unit.id].adv then
         exp_functions[unit.id].adv(unit)
     end
 end
 
 function EXP.atk()
-    local atker = get_pri()
-    local defer = get_snd()
+    local atker = PrimaryUnit()
+    local defer = SecondaryUnit()
     if exp_functions[atker.id] and exp_functions[atker.id].combat then
         exp_functions[atker.id].combat(atker, defer)
     end
@@ -191,8 +191,8 @@ function EXP.atk()
 end
 
 function EXP.kill()
-    local dying = get_pri()
-    local killer = get_snd()
+    local dying = PrimaryUnit()
+    local killer = SecondaryUnit()
     if exp_functions[dying.id] and exp_functions[dying.id].kill then
         exp_functions[dying.id].kill(killer, dying)
     end
