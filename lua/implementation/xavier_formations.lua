@@ -71,27 +71,21 @@ function formations_abilities.Y(xavier, target)
     if lvl then
         local value = DB.SPECIAL_SKILLS.xavier.Y_formation(lvl)
         local x, y = target[1], target[2]
-        xavier:add_modification(
-            "trait",
-            {
-                id = "_formation_Y",
-                T.effect {
-                    apply_to = "attack",
-                    T.set_specials {
-                        mode = "append",
-                        T.attacks {
-                            add = value,
-                            name = _ "Back formation",
-                            active_on = "offense",
-                            T.filter_opponent {
-                                x = x,
-                                y = y
-                            }
-                        }
+        xavier:add_modification("trait", {
+            id = "_formation_Y",
+            T.effect{
+                apply_to = "attack",
+                T.set_specials{
+                    mode = "append",
+                    T.attacks{
+                        add = value,
+                        name = _ "Back formation",
+                        active_on = "offense",
+                        T.filter_opponent{x = x, y = y}
                     }
                 }
             }
-        )
+        })
     end
 end
 
@@ -99,13 +93,8 @@ function formations_abilities.A(xavier)
     local lvl = get_ability(xavier, "A_formation")
     if lvl then
         local value = DB.SPECIAL_SKILLS.xavier.A_formation(lvl)
-        xavier:add_modification(
-            "trait",
-            {
-                id = "_formation_A",
-                add_defenses(value)
-            }
-        )
+        xavier:add_modification("trait",
+                                {id = "_formation_A", add_defenses(value)})
     end
 end
 
@@ -114,32 +103,26 @@ function formations_abilities.I(xavier, target)
     if lvl then
         local value = DB.SPECIAL_SKILLS.xavier.I_formation(lvl)
         local x, y = target[1], target[2]
-        xavier:add_modification(
-            "trait",
-            {
-                id = "_formation_I",
-                T.effect {
-                    apply_to = "attack",
-                    T.set_specials {
-                        mode = "append",
-                        T.damage {
-                            add = value,
-                            name = _ "Spear formation",
-                            active_on = "offense",
-                            T.filter_opponent {
-                                x = x,
-                                y = y
-                            }
-                        }
+        xavier:add_modification("trait", {
+            id = "_formation_I",
+            T.effect{
+                apply_to = "attack",
+                T.set_specials{
+                    mode = "append",
+                    T.damage{
+                        add = value,
+                        name = _ "Spear formation",
+                        active_on = "offense",
+                        T.filter_opponent{x = x, y = y}
                     }
                 }
             }
-        )
+        })
     end
 end
 
 function formations_abilities.O(xavier, target)
-    wesnoth.fire("clear_menu_item", {id = "union_debuf"}) -- removing then rebuilding
+    UI.clear_menu_item("union_debuf") -- removing then rebuilding
     local lvl = get_ability(xavier, "O_formation")
     local cd = xavier.variables.special_skill_cd or 0
     if lvl and target and (cd == 0) then
@@ -148,6 +131,5 @@ function formations_abilities.O(xavier, target)
         UI.setup_menu_debuf(x, y, lua_code)
     end
 end
-
 
 return {def = formations_def, abs = formations_abilities}

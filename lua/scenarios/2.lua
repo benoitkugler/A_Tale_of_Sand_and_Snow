@@ -111,9 +111,9 @@ local function presentation()
 
     local u = wesnoth.get_unit("rymor")
     u.variables["special_skills"] = {skill1 = 0}
-    local u = wesnoth.get_unit("bunshop")
+    u = wesnoth.get_unit("bunshop")
     u.variables["special_skills"] = {skill1 = 0}
-    local u = wesnoth.get_unit("drumar")
+    u = wesnoth.get_unit("drumar")
     u.variables["special_skills"] = {skill1 = 0}
 end
 

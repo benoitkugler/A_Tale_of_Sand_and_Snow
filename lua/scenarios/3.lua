@@ -1,5 +1,3 @@
-
-
 ES = {}
 
 local Scenario_event={
@@ -7,9 +5,8 @@ local Scenario_event={
 	{id="turn1",name="turn_1",T.lua{code="ES.turn1()"}}
 }
 
-for i,v in pairs(Scenario_event) do
-    --    wesnoth.remove_event_handler(v.id)
-        wesnoth.add_event_handler(v)
+for _,v in pairs(Scenario_event) do
+    wesnoth.add_event_handler(v)
 end
 
 -- Ces 2 fonctions sont toujours appelés par la macro STANDARD_EVENT
