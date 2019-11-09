@@ -72,6 +72,16 @@ function UI.turn_start()
     end
 end
 
+function UI.set_menu_skills()
+    UI.set_menu_item({
+        id = "show_skills",
+        description = _ "Skills",
+        T.show_if{T.have_unit{x = "$x1", y = "$y1", role = "hero"}},
+        T.command{T.lua{code = "UI.show_skills()"}},
+        T.default_hotkey{key = "s", shift = true}
+    })
+end
+
 function UI.setup_menus()
     -- Setup of menus items
     UI.set_menu_item({
@@ -87,13 +97,7 @@ function UI.setup_menus()
         T.command{T.lua{code = "CS.special_skills()"}}
     })
 
-    UI.set_menu_item({
-        id = "show_skills",
-        description = _ "Skills",
-        T.show_if{T.have_unit{x = "$x1", y = "$y1", role = "hero"}},
-        T.command{T.lua{code = "UI.show_skills()"}},
-        T.default_hotkey{key = "s", shift = true}
-    })
+    UI.set_menu_skills()
 
     UI.set_menu_item({
         id = "objets",

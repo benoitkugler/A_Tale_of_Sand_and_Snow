@@ -1,12 +1,6 @@
 -- Scenario events of 1 - Prologue
 ES = {}
 
-local explain_brinx_skill =
-    _ " <span weight='bold'>Fighting muspellians</span> will eventually unlock unique " ..
-        "skills for Brinx." ..
-        '\n\tYou can access more information in the <span style=\'italic\'>"Skills"</span> menu, ' ..
-        "by right-clicking on Brinx."
-
 local mess = {
     _ "With me soldiers of Nifhell !",
     _ "Stand still ! Protect the facility at all costs !"
@@ -63,6 +57,27 @@ function ES.atk()
     end
 end
 
+local function presente_brinx(is_jod_dead)
+    local s
+    if is_jod_dead then
+        s =
+            _ "As he has lost his revered Lieutenant, Brinx is feeling hatred towards muspellians, " ..
+                "and this hatred will make him stronger."
+    else
+        s =
+            _ "As he was struck by the savage muspellian raid on Dead Island, Brinx is feeling" ..
+                "hatred towards muspellians, and this hatred will make him stronger."
+    end
+    Popup(_ "Welcome", _ "\tHello friend, and welcome to this campaign. " ..
+              "Let me introduce you to your first hero : <span color='" ..
+              brinx_color .. "' weight='bold'> Brinx</span>. " .. s ..
+              _ " <span weight='bold'>Fighting muspellians</span> will eventually unlock unique " ..
+              "skills for Brinx." ..
+              '\n\tYou can access more information in the <span style=\'italic\'>"Skills"</span> menu, ' ..
+              "by right-clicking on Brinx.")
+    UI.set_menu_skills()
+end
+
 function ES.kill()
     local u = PrimaryUnit()
     if u.id == "jod" then
@@ -74,12 +89,7 @@ function ES.kill()
             speaker = "brinx",
             message = _ "Nooo ! Bloody muspellians !"
         })
-        Popup(_ "Welcome", _ "\tHello friend, and welcome to this campaign." ..
-                  "Let me introduce you to your first hero : <span color='" ..
-                  brinx_color .. "' weight='bold'> Brinx</span>. " ..
-                  "As he has lost his revered Lieutenant, Brinx is feeling hatred towards muspellians, " ..
-                  "and this hatred will make him stronger." ..
-                  explain_brinx_skill)
+        presente_brinx(true)
     elseif u.id == "brinx" then
         wesnoth.fire("message", {
             speaker = "brinx",
@@ -202,7 +212,7 @@ end
 
 function ES.turn12()
     local ennemy_chief = wesnoth.get_units{id = "rand"}[1]
-    for i = 1, 10 do
+    for _ = 1, 10 do
         local x, y = wesnoth.find_vacant_tile(ennemy_chief.x, ennemy_chief.y)
         wesnoth.put_unit({type = "Dune Blademaster_muspell", side = 3}, x, y)
     end
@@ -210,13 +220,6 @@ function ES.turn12()
         speaker = "rand",
         message = _ "Halt soldiers, enough blood for today. We are in control of the White Arks facility, that's the point. Put in jail the remaining Nifhellians, and alert the Khan about the success of our mission !"
     })
-    if wesnoth.get_units{id = "jod"}[1] ~= nil then
-        Popup(_ "Welcome",
-              _ "\tHello friend, and welcome to this campaign." "Let me introduce you to your first hero : <span color='" ..
-                  brinx_color .. "' weight='bold'> Brinx</span>" ..
-                  "As he was struck by the savage muspellian raid on Dead Island, Brinx is feeling" ..
-                  "hatred towards muspellians, and this hatred will make him stronger." ..
-                  explain_brinx_skill)
-    end
-    wesnoth.fire("endlevel", {result = "victory", side = 1})
+    if wesnoth.get_units{id = "jod"}[1] ~= nil then presente_brinx(false) end
+    Victory()
 end

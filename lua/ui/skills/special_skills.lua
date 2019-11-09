@@ -302,7 +302,7 @@ function MCS.preshow(unit)
             unit.variables.special_skills = ss
             SPECIAL_SKILLS[comp.name](newlvl, unit)
             AMLA.update_lvl(unit) -- needed not to loose extras LVL, removed by u:remove_modifications
-            MCS.init()
+            MCS.init() -- reset graphics
         else
             wesnoth.set_dialog_value(_ "Confirm ?", "lvl_up")
             MCS.to_valid = true

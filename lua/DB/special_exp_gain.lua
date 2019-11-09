@@ -35,4 +35,4 @@ local V = {
         A_FORMATION = 5 -- + atk level
     }
 }
-return V
+DB.EXP_GAIN = V

@@ -23,6 +23,8 @@ local function _next_to_ennemy(unit, x, y)
     return false
 end
 
+local function is_empty(x, y) return wesnoth.get_unit(x, y) == nil end
+
 -- Return a set of tiles behin ennemy lines
 local function tiles_behind(unit)
     local available_tiles = LS.of_pairs(wesnoth.find_reach(unit, {
@@ -273,6 +275,7 @@ end
 function AB.on_moveto()
     local u = PrimaryUnit()
     local xavier = wesnoth.get_unit("xavier")
+    if not xavier then return end
     if not wesnoth.is_enemy(u.side, xavier.side) then
         update_xavier_defense()
         update_xavier_formation() -- only when necessary, to avoid slows
