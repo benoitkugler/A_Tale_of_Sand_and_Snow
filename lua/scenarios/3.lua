@@ -1,4 +1,4 @@
- 
+
 
 ES = {}
 
@@ -75,30 +75,30 @@ function ES.prestart()
 end
 
 
-function ES.turn1()     
+function ES.turn1()
 	wesnoth.fire("move_unit",{id="vranken",to_x = 10, to_y=7})
-	
+
 	wesnoth.fire("message", {speaker = "egil", message = _"Captain Xaintrailles, please have a sit !"})
-	
+
 	wesnoth.fire("message", {speaker = "ran", message = _"You're here because of worrying news from Dead Island. Its garrison seems under attack. Our magi received this message yesterday, send through the White Arks by Jödumur, commanding Dead Island company."})
-	
+
 	wesnoth.fire("message", {speaker = "narrator", message = _ "<i>(projection)</i> Communication Mage for Dead Island here ! We are under attack from Muspell. They outnumber us by far ! We request immediate help ! They have already broke our first line and ... "})
-	
+
 	wesnoth.fire("message", {speaker = "harbar", message = _"The message stops here, so we fear muspellians have already taken the White Arks facility.."})
-	
+
 	wesnoth.fire("message", {speaker = "urvi", message = _"<i>(thumping the table)</i> What an arrogance from Muspell ! " ..
 					"They openly dare to attack the Federation ! They will pay for this insult !"})
-	
+
 	wesnoth.fire("message", {speaker = "bragi", message = _"The Council share Herjar's opinion. Your mission, Vranken, is to lead Nifhell forces and take back Dead Island !"})
-	
+
 	wesnoth.fire("message", {speaker = "vranken", message = _"<i>(Thinking for a while)</i> It's rather strange to me that Muspell attacks Dead Island. We have always letting them use the White Arks. What's would be the point ?"})
-	
+
 	wesnoth.fire("message", {speaker = "egil", message = _"That doesn't matter. We have to stop Muspell invasion !"})
-	
+
 	wesnoth.fire("message", {speaker = "harbar", message = _"We omitted a detail : the muspellian troops are displaying Octopus flag !"})
 
-	wesnoth.fire("message", {speaker = "narrator", message = _ "Vranken thrilled. Octopus was the best general of Muspell. " .. 
-					"He quickly earned his reputation by defeating Nifhell in small skirmishes during the last two years. " .. 
+	wesnoth.fire("message", {speaker = "narrator", message = _ "Vranken thrilled. Octopus was the best general of Muspell. " ..
+					"He quickly earned his reputation by defeating Nifhell in small skirmishes during the last two years. " ..
 					"His name came from he ability to move his troops like tentacles, thus winning already lost battles."})
 
 	wesnoth.fire("message", {speaker = "vranken", message = _ "That's not a detail ! When should we head towards the White Arks ?"})
