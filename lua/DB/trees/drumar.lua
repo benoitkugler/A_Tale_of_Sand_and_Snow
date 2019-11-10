@@ -1,6 +1,6 @@
 local drumar = {
     _default_border = "#00FFF5",
-    _defaultf_background = "0 168 162",
+    _default_background = "0 168 162",
     {
         id = "though",
         _short_desc = "Magic resistances <BR/>  <B> +7 </B> %",

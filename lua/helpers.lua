@@ -49,21 +49,31 @@ function get_ability(u, id_ability, ability_name)
     return ab._level
 end
 
--- Returns the level of the id_special on the atk.
+---Returns the level of given special for current weapon
+---@param id_special string
+---@return integer|nil
+function GetSpe(id_special)
+    return get_special(H.get_child(wesnoth.current.event_context, "weapon"),
+                       id_special)._level
+end
+
+-- Returns the special with `id_special` on the atk.
 -- Atk is a unit.attack proxy or a weapon child
+---@return table
 function get_special(atk, id_special, special_name)
     special_name = special_name or "isHere"
-    if atk == nil then return end
+    if atk == nil then return {} end
     local list_specials
     if type(atk) == "userdata" then
         list_specials = atk.specials or {}
     else
         list_specials = H.get_child(atk, "specials")
     end
-    if not list_specials then return end
+    if not list_specials then return {} end
     for spe in H.child_range(list_specials, special_name) do
-        if spe.id == id_special then return spe._level end
+        if spe.id == id_special then return spe end
     end
+    return {}
 end
 
 -- Return an effect wml table augmenting all defenses by given number (positive is better)
@@ -105,7 +115,9 @@ function TableSkills(u)
     return table_amlas
 end
 
--- Popup window with translatable string
+---Popup window with translatable string
+---@param title string
+---@param message string
 function Popup(title, message)
     local dialog = {
         T.tooltip{id = "tooltip_large"}, T.helptip{id = "tooltip_large"},

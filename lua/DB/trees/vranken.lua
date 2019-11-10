@@ -152,7 +152,7 @@ local vranken = {
     },
     {
         id = "though",
-        _short_desc = "Resistances <BR/>  <B> +7 </B> %",
+        _short_desc = "Resistances <BR/>  <B> +5 </B> %",
         require_amla = "regen10,regen20",
         image = "icons/cuirass_leather_studded.png",
         max_times = 2,

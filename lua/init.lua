@@ -9,6 +9,8 @@ wesnoth.require "helpers_events"
 wesnoth.require "animations"
 wesnoth.require "DB/init"
 
+wesnoth.require "limbes"
+
 wesnoth.require "implementation/ability"
 wesnoth.require "implementation/special_exp_gain"
 wesnoth.require "implementation/event_combat"

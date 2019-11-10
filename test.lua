@@ -90,10 +90,15 @@ function start()
     wesnoth.put_unit({type = "otchigin3", side = 2}, 6, 6)
 end
 
+local in_limbe = false
+
 function test(x, y)
-
-    -- ES.dump_amla()
-
+    if in_limbe then
+        Limbes.close()
+    else
+        Limbes.enter()
+    end
+    in_limbe = not in_limbe
 end
 
 local function _table_to_string(tab)

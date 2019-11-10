@@ -15,6 +15,8 @@ local apply = {} -- combat event
 local label_pri, label_snd = "", "" -- custom labels
 local delay = 0
 
+local keys
+
 function EC.combat(dmg_dealt)
     delay = 0
     local type_event = wesnoth.current.event_context.name
@@ -22,9 +24,7 @@ function EC.combat(dmg_dealt)
     label_pri, label_snd = "", ""
     local x1, y1, x2, y2 = u1 and u1.x, u1 and u1.y, u2 and u2.x, u2 and u2.y
 
-    local keys = table.keys(apply)
-    table.sort(keys) -- deterministic order
-    for __, i in ipairs(keys) do
+    for _, i in ipairs(keys) do
         if u1 and u1.valid and u2 and u2.valid then
             apply[i](type_event, u1, u2, dmg_dealt)
         end
@@ -45,8 +45,8 @@ end
 
 function EC.fin_tour()
     local lhero = wesnoth.get_units{role = "hero"}
-    for i, v in pairs(lhero) do v.variables.bloodlust = false end
-    for i, v in pairs(endturn) do v() end
+    for _, v in pairs(lhero) do v.variables.bloodlust = false end
+    for _, v in pairs(endturn) do v() end
 end
 
 -- ABILITIES GENERIQUES
@@ -136,18 +136,38 @@ function apply.fresh_blood_musp(event, pri, snd, dmg)
     end
 end
 
+-- Deflect 
+function apply.deflect(event, _, snd, dmg)
+    if event == "attacker_hits" and GetAbility(snd, "deflect") then
+        snd.hitpoints = snd.hitpoints + Round(dmg / 2)
+        local enemies = wesnoth.get_units{
+            T.filter_adjacent{id = snd.id}, {"not", {side = snd.side}}
+        }
+        local amount = Round(dmg / 2 / #(enemies))
+        local att = H.get_child(wesnoth.current.event_context, "weapon")
+        wesnoth.fire("harm_unit", {
+            T.filter_second{id = snd.id},
+            experience = true,
+            T.filter{T.filter_adjacent{id = snd.id}, {"not", {side = snd.side}}},
+            fire_event = true,
+            annimate = true,
+            damage_type = att.type,
+            amount = amount
+        })
+    end
+end
+
 -- WEAPON SPECIAL
 
 -- Leeches
 function apply.leeches(event, pri, snd, dmg)
     local lvl, u
     if event == "attacker_hits" then
-        lvl = get_special(H.get_child(wesnoth.current.event_context, "weapon"),
-                          "leeches")
+        lvl = GetSpe("leeches")
         u = pri
     elseif event == "defender_hits" then
         lvl = get_special(H.get_child(wesnoth.current.event_context,
-                                      "second_weapon"), "leeches")
+                                      "second_weapon"), "leeches")._level
         u = snd
     end
     if lvl then
@@ -167,9 +187,7 @@ end
 
 -- Pierce
 function apply.weapon_pierce(event, pri, snd, dmg)
-    if event == "attacker_hits" and
-        get_special(H.get_child(wesnoth.current.event_context, "weapon"),
-                    "weapon_pierce") then
+    if event == "attacker_hits" and GetSpe("weapon_pierce") then
         local loc = case_derriere(pri.x, pri.y, snd.x, snd.y)
         local weapon = H.get_child(wesnoth.current.event_context, "weapon")
         wesnoth.fire("harm_unit", {
@@ -184,9 +202,7 @@ end
 
 -- Mayhem
 function apply.mayhem(event, pri, snd, dmg)
-    if event == "attacker_hits" and
-        get_special(H.get_child(wesnoth.current.event_context, "weapon"),
-                    "mayhem") then
+    if event == "attacker_hits" and GetSpe("mayhem") then
         wesnoth.add_modification(snd, "object", {
             T.effect{apply_to = "attack", increase_damage = -1}
         }, false) -- atker hit
@@ -195,9 +211,7 @@ end
 
 -- Cleave
 function apply.cleave(event, pri, snd, dmg)
-    if event == "attacker_hits" and
-        get_special(H.get_child(wesnoth.current.event_context, "weapon"),
-                    "cleave") then
+    if event == "attacker_hits" and GetSpe("cleave") then
         local l = wesnoth.get_locations{
             T.filter_adjacent_location{x = pri.x, y = pri.y},
             T.filter_adjacent_location{x = snd.x, y = snd.y}
@@ -219,8 +233,7 @@ end
 
 function apply.res_magic(event, pri, snd, dmg)
     if event == "attacker_hits" then
-        local lvl = get_special(H.get_child(wesnoth.current.event_context,
-                                            "weapon"), "res_magic")
+        local lvl = GetSpe("res_magic")
         if lvl then
             local value = 3 + 2 * lvl -- atker hit
             wesnoth.add_modification(snd, "object", {
@@ -239,8 +252,7 @@ end
 
 function apply.armor_shred(event, pri, snd, dmg)
     if event == "attacker_hits" then
-        local lvl = get_special(H.get_child(wesnoth.current.event_context,
-                                            "weapon"), "armor_shred")
+        local lvl = GetSpe("armor_shred")
         if lvl then
             local value = DB.AMLAS.xavier.values.REDUCE_DEFENSE * lvl
             wesnoth.add_modification(snd, "object", {
@@ -261,8 +273,7 @@ end
 
 function apply.defense_shred(event, pri, snd, dmg)
     if event == "attacker_hits" then
-        local lvl = get_special(H.get_child(wesnoth.current.event_context,
-                                            "weapon"), "defense_shred")
+        local lvl = GetSpe("defense_shred")
         if lvl then
             local shred_per_hit = DB.AMLAS[pri.id].values.REDUCE_DEFENSE * lvl
             snd:add_modification("trait", {add_defenses(-shred_per_hit)}, false)
@@ -275,8 +286,7 @@ end
 
 function apply.weaker_slow(event, pri, snd, dmg)
     if event == "attacker_hits" then
-        local lvl = get_special(H.get_child(wesnoth.current.event_context,
-                                            "weapon"), "weaker_slow")
+        local lvl = GetSpe("weaker_slow")
         if lvl then
             local value = 5 + 5 * lvl -- atker hit
             wesnoth.add_modification(snd, "object", {
@@ -293,9 +303,7 @@ function apply.weaker_slow(event, pri, snd, dmg)
 end
 
 function apply.snare(event, pri, snd, dmg)
-    if event == "attacker_hits" and
-        get_special(H.get_child(wesnoth.current.event_context, "weapon"),
-                    "snare") then
+    if event == "attacker_hits" and GetSpe("snare") then
         wesnoth.add_modification(snd, "object", {
             duration = "turn_end",
             T.effect{apply_to = "movement", set = 0}
@@ -304,10 +312,22 @@ function apply.snare(event, pri, snd, dmg)
     end
 end
 
+function apply.transfusion(event, pri, snd, _)
+    if event == "attacker_hits" then
+        local lvl = GetSpe("transfusion")
+        if not lvl then return end
+        local heal = lvl * 3
+        wesnoth.fire("heal_unit", {
+            T.filter{T.filter_adjacent{id = snd.id}, side = pri.side},
+            T.filter_second{id = pri.id},
+            amount = heal,
+            animate = true
+        })
+    end
+end
+
 function apply.slow_zone(event, pri, snd, dmg)
-    local lvl = get_special(
-                    H.get_child(wesnoth.current.event_context, "weapon"),
-                    "slow_zone")
+    local lvl = GetSpe("slow_zone")
     if event == "attacker_hits" and lvl then
         local intensity = SPECIAL_SKILLS.info[pri.id].slow_zone(lvl)
         local targets = wesnoth.get_units{
@@ -371,8 +391,7 @@ end
 -- table_status_chilled has id with _ instead of - as keys, and a 2 char string lvl cd
 function apply.put_status_chilled(event, pri, snd, dmg)
     if event == "attacker_hits" and snd then
-        local lvl = get_special(H.get_child(wesnoth.current.event_context,
-                                            "weapon"), "status_chilled")
+        local lvl = GetSpe("status_chilled")
         if lvl and not snd.status.chilled then
             local values = SPECIAL_SKILLS.info.drumar.bonus_cold_mistress(
                                lvl - 1)
@@ -457,3 +476,6 @@ function endturn.status_shielded()
         v.variables.status_shielded_hp = nil
     end
 end
+
+keys = table.keys(apply)
+table.sort(keys) -- deterministic

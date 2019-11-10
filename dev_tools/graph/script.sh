@@ -45,12 +45,12 @@ echo "Lancer la création du graphe et des layers ? (Poursuivre : Entree)"
 read
 fi;
 
-dot -Tpng ${ADDON_DATA_PATH}dev_tools/graph/tree.dot -o ${ADDON_DATA_PATH}dev_tools/graph/images/tree.png -Gimagepath=${ADDON_DATA_PATH}images:${WESNOTH_PATH}/data/core/images;
+dot -q -Tpng ${ADDON_DATA_PATH}dev_tools/graph/tree.dot -o ${ADDON_DATA_PATH}dev_tools/graph/images/tree.png -Gimagepath=${ADDON_DATA_PATH}images:${WESNOTH_PATH}/data/core/images;
 cd ${ADDON_DATA_PATH}dev_tools/graph/layers;
 
 for i in *
 do
-    dot -Tpng $i -o $i"-1.png" -Gimagepath=${ADDON_DATA_PATH}images:${WESNOTH_PATH}/data/core/images;
+    dot -q -Tpng $i -o $i"-1.png" -Gimagepath=${ADDON_DATA_PATH}images:${WESNOTH_PATH}/data/core/images;
     rm $i
 done &&
 echo "Création des layers réussie !";

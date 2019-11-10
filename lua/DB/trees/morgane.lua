@@ -147,6 +147,123 @@ local morgane = {
             }
         },
         table.unpack(standard_amla_heal(10))
+    },
+    {
+        id = "lightbeam",
+        _short_desc = "Lightbeam <BR /> <B> +2</B> dmg",
+        image = "attacks/lightbeam.png",
+        max_times = 3,
+        always_display = 1,
+        description = _ "Stronger with lightbeam",
+        T.effect{apply_to = "attack", name = "lightbeam", increase_damage = 2},
+        table.unpack(standard_amla_heal(5))
+    },
+    {
+        id = "fast_lightbeam",
+        _level_bonus = true,
+        require_amla = "lightbeam,lightbeam,lightbeam",
+        _short_desc = "Faster with lightbeam <BR /> <B> +1</B> str",
+        image = "attacks/lightbeam.png",
+        max_times = 1,
+        always_display = 1,
+        description = _ "Faster with lightbeam",
+        T.effect{apply_to = "attack", name = "lightbeam", increase_attacks = 1},
+        table.unpack(standard_amla_heal(7))
+    },
+    {
+        id = "transfusion",
+        _short_desc = "<B>Heal allies</B> <BR /> on hit",
+        -- _color = {211, 224, 238},
+        require_amla = "fast_lightbeam",
+        image = "attacks/transfusion.png",
+        max_times = 2,
+        always_display = 1,
+        description = _ "On hit, allies adjacents to the target are healed.",
+        T.effect{
+            apply_to = "attack",
+            remove_specials = "transfusion",
+            name = "lightbeam"
+        },
+        function(unit)
+            local next_lvl =
+                (get_special(unit.attacks.lightbeam, "transfusion")._level or 0) +
+                    1
+            return T.effect{
+                set_icon = "attacks/transfusion.png",
+                apply_to = "attack",
+                name = "lightbeam",
+                T.set_specials{
+                    mode = "append",
+                    T.isHere{
+                        id = "transfusion",
+                        _level = next_lvl,
+                        description = Fmt(
+                            _ "On each hit, allies adjacent to the target are healed by %d.",
+                            next_lvl * 3),
+                        active_on = "offense",
+                        cumulative = false,
+                        name = "transfusion " .. ROMANS[next_lvl]
+                    }
+                }
+            }
+        end,
+        table.unpack(standard_amla_heal(10))
+    },
+    {
+        id = "fast_lightbeam2",
+        require_amla = "transfusion",
+        _short_desc = "Faster with lightbeam <BR /> <B> +1</B> str",
+        image = "attacks/lightbeam.png",
+        max_times = 2,
+        always_display = 1,
+        description = _ "Even faster with lightbeam",
+        T.effect{apply_to = "attack", name = "lightbeam", increase_attacks = 1},
+        table.unpack(standard_amla_heal(7))
+    },
+    {
+        id = "though",
+        _short_desc = "Resistances <BR/>  <B> +7 </B> %",
+        require_amla = "better_heal1,fast_lightbeam",
+        image = "icons/cuirass_leather_studded.png",
+        max_times = 3,
+        always_display = 1,
+        description = _ "Limbes strengh makes Morgan tougher: + 7% resistances",
+        T.effect{
+            apply_to = "resistance",
+            T.resistance{
+                impact = -7,
+                blade = -7,
+                arcane = -7,
+                cold = -7,
+                pierce = -7,
+                fire = -7
+            }
+        },
+        table.unpack(standard_amla_heal(7))
+    },
+    {
+        id = "deflect",
+        _short_desc = "<B> Deflection </B>",
+        _level_bonus = true,
+        _color = {47, 74, 71},
+        require_amla = "though,though,though,fast_lightbeam2",
+        image = "icons/deflect.png",
+        max_times = 1,
+        always_display = 1,
+        description = _ "Morgane is able to deflect 50% of the damage to nearby ennemy units.",
+        T.effect{
+            apply_to = "new_ability",
+            T.abilities{
+                T.isHere{
+                    id = "deflect",
+                    description = _ [[
+    Travelling into the Limbes taught Morgane how to switch from a world to another.
+    She is now able to deflect 50% of the damage received to ennemy units ]],
+                    name = "Deflection"
+                }
+            }
+        },
+        table.unpack(standard_amla_heal(12))
     }
 }
 DB.AMLAS.morgane = morgane

@@ -5,6 +5,7 @@
 ---@field x integer
 ---@field y integer
 ---@field id string
+---@field type string
 local _
 
 ---@class Ability

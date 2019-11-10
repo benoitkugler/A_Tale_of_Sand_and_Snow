@@ -66,7 +66,7 @@ Adjacent own units of equal or higher level will do %d%% more damage. ]], value)
         description = _ "In offense, reduces ennemies defense on hit, both with sword and crossbow.",
         function(unit)
             local current_lvl =
-                get_special(unit.attacks.sword, "defense_shred") or 0
+                get_special(unit.attacks.sword, "defense_shred")._level or 0
             local shred_on_hit = V.REDUCE_DEFENSE * (current_lvl + 1)
             return T.effect{
                 apply_to = "attack",
@@ -144,7 +144,7 @@ Adjacent own units of equal or higher level will do %d%% more damage. ]], value)
         description = _ "Reduces ennemies armor on hit, with sword or crossbow.",
         function(unit)
             local current_lvl =
-                get_special(unit.attacks.sword, "armor_shred") or 0
+                get_special(unit.attacks.sword, "armor_shred")._level or 0
             local shred_on_hit = V.REDUCE_ARMOR * (current_lvl + 1)
             return T.effect{
                 apply_to = "attack",
