@@ -4,6 +4,8 @@ function Fmt(translatable_str, ...)
     return string.format(tostring(translatable_str), ...)
 end
 
+ROMANS = {"I", "II", "III", "IV", "V", "VI"}
+
 -- Return string keys
 function table.keys(t)
     local s = {}
@@ -12,6 +14,7 @@ function table.keys(t)
 end
 
 -- round
+---@return integer
 function Round(f) return math.floor(0.5 + f) end
 
 -- Récupére l'unité primaire ou secondaire d'un event
@@ -34,15 +37,16 @@ function GetAbility(u, id_ability, ability_name)
     for ab in H.child_range(list_abilities, ability_name) do
         if ab.id == id_ability then return ab end
     end
+    return {}
 end
 
 ---Return the field '_level' of the abilities with id 'id_ability'.
 ---'ability_name' defaut to "isHere"
 ---@param u Unit
----@return integer
+---@return integer|nil
 function get_ability(u, id_ability, ability_name)
     local ab = GetAbility(u, id_ability, ability_name)
-    if ab then return ab._level or 0 end
+    return ab._level
 end
 
 -- Returns the level of the id_special on the atk.

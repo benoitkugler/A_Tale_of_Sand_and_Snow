@@ -13,6 +13,7 @@ local __
 ---@field fire fun(event:string, data:table):void
 ---@field get_unit fun(id:string):Unit
 ---@field get_units fun(filter:table):Unit[]
+---@field is_enemy fun(side1:integer, side2:integer):boolean
 local _
 
 ---@type wesnothClass

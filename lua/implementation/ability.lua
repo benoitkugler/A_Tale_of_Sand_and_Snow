@@ -287,12 +287,13 @@ function AB.select()
     UI.clear_menu_item("elusive")
     UI.clear_menu_item("war_jump")
     local u = PrimaryUnit()
+
     if get_ability(u, "war_jump") and u.moves > 0 then show_war_jump(u) end
 
     if get_ability(u, "elusive") and u.moves > 0 then show_elusive(u) end
 
     if u.id == "xavier" then
-        local __, tiles, targets = AB.get_active_formations(u)
+        local _, tiles, targets = AB.get_active_formations(u)
         ANIM.hover_tiles(tiles:to_pairs(), FORMATION_LABEL, 15,
                          targets:to_pairs(), TARGET_LABEL, 50)
     end
@@ -305,20 +306,16 @@ local function long_heal(healer)
     if not level_long_heal then return end
     local value_heal = GetAbility(healer, "better_heal", "heals").value
     local candidates = wesnoth.get_units{
-        T.filter_location{
-            x = healer.x,
-            y = healer.y,
-            T.filter_side{T.allied_with{side = healer.side}},
-            radius = 3
-        }
+        T.filter_location{x = healer.x, y = healer.y, radius = 3}
     }
     local ratio = DB.AMLAS.morgane.values.LONG_HEAL_RATIO
     for _, u in pairs(candidates) do
         local d = wesnoth.map.distance_between({u.x, u.y}, {healer.x, healer.y})
-        if d == 2 or d == 3 then -- other units will be healed by the standard heal
-            local amount = ratio * level_long_heal * value_heal / d
+        if not wesnoth.is_enemy(healer.side, u.side) and (d == 2 or d == 3) then -- other units will be healed by the standard heal
+            local amount = Round(ratio * level_long_heal * value_heal / d)
             wesnoth.fire("heal_unit", {
                 T.filter{x = u.x, y = u.y},
+                T.filter_second{id = "morgane"},
                 amount = amount,
                 animate = true
             })

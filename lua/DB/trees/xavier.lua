@@ -11,7 +11,6 @@ local V = {
     CROSSBOW_BONUS_ATK = 1 -- per amla
 }
 
-local ROMANS = {"I", "II", "III", "IV", "V", "VI"}
 local xavier = {
     _default_border = "#a99508",
     _default_background = "181 167 71", -- rgb

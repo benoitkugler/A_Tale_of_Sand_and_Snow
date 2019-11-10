@@ -4,11 +4,12 @@ local IMAGE_SPECIAL_SKILL = "special_skills/star.png"
 local IMAGE_FEAR_OF_LOVE = "menu/fear_of_love.png"
 
 -- Customs status
+---@param unit Unit
 local function _show_special_skill_cd(unit)
     local skill_data = DB.HEROES.actif_skills[unit.id]
     if not skill_data then return end
     local skill_name = skill_data[1]
-    local level = unit.variables.special_skills[skill_name]
+    local level = (unit.variables.special_skills or {})[skill_name]
     if not level then return end
     local cd = unit.variables.special_skill_cd or 0
     local tooltip
