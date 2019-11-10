@@ -298,13 +298,44 @@ function AB.select()
     end
 end
 
+---Implements the long heal ability (called on each turn)
+---@param healer Unit
+local function long_heal(healer)
+    local level_long_heal = GetAbility(healer, "long_heal")._level
+    if not level_long_heal then return end
+    local value_heal = GetAbility(healer, "better_heal", "heals").value
+    local candidates = wesnoth.get_units{
+        T.filter_location{
+            x = healer.x,
+            y = healer.y,
+            T.filter_side{T.allied_with{side = healer.side}},
+            radius = 3
+        }
+    }
+    local ratio = DB.AMLAS.morgane.values.LONG_HEAL_RATIO
+    for _, u in pairs(candidates) do
+        local d = wesnoth.map.distance_between({u.x, u.y}, {healer.x, healer.y})
+        if d == 2 or d == 3 then -- other units will be healed by the standard heal
+            local amount = ratio * level_long_heal * value_heal / d
+            wesnoth.fire("heal_unit", {
+                T.filter{x = u.x, y = u.y},
+                amount = amount,
+                animate = true
+            })
+        end
+    end
+end
+
 -- Should decrease special skill CDs
 function AB.turn_start()
     local lhero = wesnoth.get_units{role = "hero"}
-    for __, v in pairs(lhero) do
+    for _, v in pairs(lhero) do
         local current_cd = v.variables.special_skill_cd or 0
         if current_cd > 0 then
             v.variables.special_skill_cd = current_cd - 1
         end
     end
+
+    local morg = wesnoth.get_unit("morgane")
+    if morg then long_heal(morg) end
 end

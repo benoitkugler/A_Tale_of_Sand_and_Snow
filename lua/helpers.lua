@@ -25,13 +25,24 @@ function SecondaryUnit()
                             wesnoth.current.event_context.y2)
 end
 
--- Return the field _level of the abilities with id id_ability
-function get_ability(u, id_ability, ability_name)
+---Return the ability with id 'id_ability'.
+---'ability_name' defaut to "isHere"
+---@param u Unit
+function GetAbility(u, id_ability, ability_name)
     ability_name = ability_name or "isHere"
     local list_abilities = H.get_child(u.__cfg, "abilities") or {}
     for ab in H.child_range(list_abilities, ability_name) do
-        if ab.id == id_ability then return ab._level or 0 end
+        if ab.id == id_ability then return ab end
     end
+end
+
+---Return the field '_level' of the abilities with id 'id_ability'.
+---'ability_name' defaut to "isHere"
+---@param u Unit
+---@return integer
+function get_ability(u, id_ability, ability_name)
+    local ab = GetAbility(u, id_ability, ability_name)
+    if ab then return ab._level or 0 end
 end
 
 -- Returns the level of the id_special on the atk.

@@ -5,4 +5,10 @@
 ---@field x integer
 ---@field y integer
 ---@field id string
-local r
+local _
+
+---@class Ability
+---@field id string 
+---@field _level integer
+---@field value integer
+local _

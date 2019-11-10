@@ -10,7 +10,7 @@ local Standard_event = {
     }, {
         id = "new_turn",
         first_time_only = false,
-        name = "new turn",
+        name = "side_1_turn",
         T.lua{code = "AB.turn_start(); UI.turn_start()"}
     }, {
         id = "attack",
