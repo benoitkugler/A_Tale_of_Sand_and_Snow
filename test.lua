@@ -84,7 +84,7 @@ function start()
         role = "hero",
         side = 1
     }, 6, 5)
-
+    DB.HEROES.init("morgane")
     wesnoth.put_unit({type = "otchigin1", side = 2}, 5, 6)
     wesnoth.put_unit({type = "otchigin2", side = 2}, 5, 7)
     wesnoth.put_unit({type = "otchigin3", side = 2}, 6, 6)

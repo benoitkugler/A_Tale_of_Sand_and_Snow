@@ -8,11 +8,11 @@ local V = DB.EXP_GAIN
 local info = {}
 
 -- TODO: A implémenter
-info["bunshop"] = {}
-info["rymor"] = {}
+info.bunshop = {}
+info.rymor = {}
 
 -- DRUMAR
-info["drumar"] = {
+info.drumar = {
     help_des = _ "Several years of battles in Vranken company have made Frä Drümar more warlike than any other Frä. " ..
         "She excels at slowing enemies and taking advantage of their delayed reactions. " ..
         "\nShe will earn experience (scaling with enemies level) when applying " ..
@@ -81,7 +81,7 @@ info["drumar"] = {
 }
 
 -- VRANKEN
-info["vranken"] = {
+info.vranken = {
     help_des = _ "Vranken has a familly link with his sword. " ..
         "Every time <span  font_weight ='bold' >Göndhul fights</span>, Vranken earn points " ..
         "(scaling with opponents level).",
@@ -137,7 +137,7 @@ info["vranken"] = {
 }
 
 -- BRINX
-info["brinx"] = {
+info.brinx = {
     help_des = _ "Brinx seeks to avenge Jödumur's death. Every time he " ..
         "<span  font_weight ='bold' >fights against muspellians</span>, " ..
         "Brinx earn points (scaling with opponents level).",
@@ -192,7 +192,7 @@ info["brinx"] = {
 }
 
 -- XAVIER
-info["xavier"] = {
+info.xavier = {
     help_des = _ "Xavier thrives in battefield strategy. Every time Xavier <span font_weight='bold'>" ..
         "helps allies</span>, he builds confidence with them (scaling level). This will eventually make Xavier stronger, when " ..
         "fighting in precise formations.",
@@ -246,6 +246,61 @@ info["xavier"] = {
         costs = {200, 100}
     },
     O_formation = function(lvl) return 3 - lvl end
+}
+
+-- MORGANE
+info.morgane = {
+    help_des = _ [[
+Walking and fighting into the Limbes deeply changes the way Morgane see our world. With a little training, she will be able to build bridges between the two dimensions, modifying her movement and defense abilities. Her experience may also inspire his allies when fighting into the Limbes.
+Every time Morgane or one of her allies fight into the Limbes, she earns points (scaling with opponents level).]],
+    help_ratios = Fmt(
+        _ [[(<span font_weight ='bold'>+ %d</span> per defense,<span font_weight ='bold'>x %.1f</span> per attack, <span font_weight ='bold'>x %.1f</span> per kill)]],
+        V.morgane.DEF, V.morgane.ATK, V.morgane.KILL),
+    {
+        img = "icons/boots_elven.png",
+        max_lvl = 2,
+        name = "moves",
+        color = "#f36e0a",
+        name_aff = _ "Faster : ",
+        require_lvl = 3,
+        desc = _ "Morgane moves faster on all terrains.",
+        costs = {50, 20}
+    },
+    moves = function(lvl) return tonumber(lvl) end,
+    {
+        img = "icons/tunic_elven.png",
+        max_lvl = 3,
+        name = "defense",
+        color = "#f36e0a",
+        name_aff = _ "Nimble : ",
+        require_lvl = 3,
+        desc = _ "Morgane gains %s%% defense on all terrains.",
+        costs = {60, 40, 40}
+    },
+    defense = function(lvl) return tonumber(lvl * 7) end
+    -- {
+    --     img = "special_skills/I_formation.png",
+    --     max_lvl = 3,
+    --     name = "I_formation",
+    --     color = "#edad06",
+    --     name_aff = _ "Spear formation : ",
+    --     require_lvl = 5,
+    --     desc = _ "Xavier deals %s bonus damage when attacking in I",
+    --     costs = {50, 20, 30}
+    -- },
+    -- I_formation = function(lvl) return 1 + lvl * 3 end,
+    -- {
+    --     img = "special_skills/O_formation.png",
+    --     max_lvl = 1,
+    --     name = "O_formation",
+    --     color = "#c09d1b",
+    --     name_aff = _ "Union formation : ",
+    --     require_lvl = 6,
+    --     desc = _ "When attacking in O, Xavier may launch a powerful strike which removes all abilities and " ..
+    --         "weapons specials of its target (%s turn(s) cooldown)",
+    --     costs = {200, 100}
+    -- },
+    -- O_formation = function(lvl) return 3 - lvl end
 }
 
 DB.SPECIAL_SKILLS = info

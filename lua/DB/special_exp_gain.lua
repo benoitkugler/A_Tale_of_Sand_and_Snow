@@ -5,7 +5,7 @@ local V = {
         DEF = 2 -- * atk.level
     },
     brinx = {
-        DEF_MUSPELL = 1, -- + ath.level
+        DEF_MUSPELL = 1, -- + atk.level
         ATK_MUSPELL = 3, -- * def.level
         KILL_MUSPELL = 5 -- * dying.level
     },
@@ -13,7 +13,7 @@ local V = {
         -- xp goes to vranken
         LEVEL_UP = 60, -- on level up
         ATK = 2, -- * def.level
-        DEF = 1, -- + def.level
+        DEF = 1, -- + atk.level
         KILL = 3 -- * dying.level
     },
     drumar = {
@@ -33,6 +33,11 @@ local V = {
         Y_FORMATION = 4, -- * def level
         I_FORMATION = 5, -- * def level
         A_FORMATION = 5 -- + atk level
+    },
+    morgane = {
+        ATK = 10, -- * def.level
+        DEF = 5, -- + atk.level
+        KILL = 20 -- * dying.level
     }
 }
 DB.EXP_GAIN = V

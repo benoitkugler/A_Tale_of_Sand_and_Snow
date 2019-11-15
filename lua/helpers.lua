@@ -77,6 +77,8 @@ function get_special(atk, id_special, special_name)
 end
 
 -- Return an effect wml table augmenting all defenses by given number (positive is better)
+---@param def integer
+---@return table
 function add_defenses(def)
     return T.effect{
         apply_to = "defense",
@@ -108,7 +110,8 @@ end
 -- Returns the table id_skill = lvl
 function TableSkills(u)
     local table_amlas = {}
-    for __, adv in pairs(u.advancements) do
+    for adv in H.child_range(H.get_child(u.__cfg, "modifications"),
+                             "advancement") do
         table_amlas[adv.id] = (table_amlas[adv.id] or 0) + 1
     end
     table_amlas.amla_dummy = nil
