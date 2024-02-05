@@ -7,6 +7,7 @@ local LIMBE_WIDTH = 10
 local LIMBE_HEIGHT = 10
 local LIMBE_TERRAIN_VARIABLE = "lt" -- short to "compress" saves
 
+---@return integer, integer, integer, integer, integer, integer, integer
 local function _limbes_geoms()
     local width, height, border = wesnoth.get_map_size()
     local xstart = (width - LIMBE_WIDTH) // 2
@@ -23,6 +24,7 @@ local function limbe_actor(u)
         u.id == "morgane" or u.type == "otchigin1" or u.type == "otchigin2" or
             u.type == "otchigin3"
 end
+
 -- Put all units in their recall lists, except Morgane, and the Otchigins
 -- Apply a custom limbe_recall status to be able to recall them afterwards
 -- Store the location, which will be erased on save/load otherwise.

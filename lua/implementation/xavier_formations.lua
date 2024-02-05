@@ -3,6 +3,8 @@
 -- a table of table of tiles, (an inner table being a possible formation)
 local formations_def = {}
 
+---@param center 
+---@return table[]
 function formations_def.Y(center)
     local c1, c2, c3, c4, c5, c6 = wesnoth.map.get_adjacent_tiles(center)
     local formations = {}
@@ -15,6 +17,7 @@ function formations_def.Y(center)
     return formations
 end
 
+---@return table[]
 function formations_def.A(center)
     local c1, c2, c3, c4, c5, c6 = wesnoth.map.get_adjacent_tiles(center)
     local formations = {}
@@ -25,6 +28,7 @@ function formations_def.A(center)
     return formations
 end
 
+---@return table[]
 function formations_def.I(center)
     local c1, c2, c3, c4, c5, c6 = wesnoth.map.get_adjacent_tiles(center)
     local formations = {}
@@ -36,6 +40,7 @@ function formations_def.I(center)
     return formations
 end
 
+---@return table[]
 function formations_def.O(center)
     local xavier = wesnoth.get_unit(center[1], center[2])
     if xavier == nil or not (xavier.id == "xavier") then
