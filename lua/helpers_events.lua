@@ -1,6 +1,3 @@
----@type wml
-local wml = wml
-
 ---@param id_speaker string
 ---@param message string
 function Message(id_speaker, message)

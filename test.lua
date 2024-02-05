@@ -1,3 +1,5 @@
+--- DEV file, included in debug scenarios
+
 ES = {}
 
 VAR.objets_joueur = {
@@ -13,6 +15,7 @@ wesnoth.set_variable("heros_joueur", "brinx,vranken,drumar")
 -- br.status.shielded = true
 
 function ES.kill() end
+
 function ES.atk() end
 
 function start()
@@ -22,7 +25,7 @@ function start()
         name = "Brinx",
         role = "hero",
         moves = 10,
-        {"abilities", {{"isHere", {id = "elusive", name = "Elusive"}}}}
+        { "abilities", { { "isHere", { id = "elusive", name = "Elusive" } } } }
     }
     wesnoth.put_unit(u, 15, 16)
     DB.HEROES.init("brinx")
@@ -57,7 +60,7 @@ function start()
     wesnoth.put_unit(u, 18, 18)
     DB.HEROES.init("bunshop")
 
-    local u = {type = "xavier4", id = "xavier", name = "Xavier", role = "hero"}
+    local u = { type = "xavier4", id = "xavier", name = "Xavier", role = "hero" }
     wesnoth.put_unit(u, 19, 18)
     DB.HEROES.init("xavier")
     local u = wesnoth.get_unit("xavier")
@@ -76,7 +79,7 @@ function start()
     local u = wesnoth.get_unit("vranken")
     local u = wesnoth.get_unit("brinx")
 
-    wesnoth.put_unit({type = "Sergeant", side = 2}, 15, 15)
+    wesnoth.put_unit({ type = "Sergeant", side = 2 }, 15, 15)
 
     wesnoth.put_unit({
         type = "morgane1",
@@ -85,20 +88,25 @@ function start()
         side = 1
     }, 6, 5)
     DB.HEROES.init("morgane")
-    wesnoth.put_unit({type = "otchigin1", side = 2}, 5, 6)
-    wesnoth.put_unit({type = "otchigin2", side = 2}, 5, 7)
-    wesnoth.put_unit({type = "otchigin3", side = 2}, 6, 6)
+    wesnoth.put_unit({ type = "otchigin1", side = 2 }, 5, 6)
+    wesnoth.put_unit({ type = "otchigin2", side = 2 }, 5, 7)
+    wesnoth.put_unit({ type = "otchigin3", side = 2 }, 6, 6)
 end
 
 local in_limbe = false
-
-function test(x, y)
+local function switch_limbes()
     if in_limbe then
         Limbes.close()
     else
         Limbes.enter()
     end
     in_limbe = not in_limbe
+end
+
+-- entry point on the right click menu
+function test(x, y)
+    Popup("test", "test")
+    -- switch_limbes()
 end
 
 local function _table_to_string(tab)
@@ -124,10 +132,10 @@ local function _table_to_string(tab)
 end
 
 function ES.dump_amla()
-    local types = {"amla_vranken", "amla_brinx", "amla_drumar", "amla_xavier"}
+    local types = { "amla_vranken", "amla_brinx", "amla_drumar", "amla_xavier" }
     local s = ""
     for i, t in pairs(types) do
-        local u = wesnoth.create_unit{type = t}
+        local u = wesnoth.create_unit { type = t }
         s = s .. "\n \n" .. t .. " = { \n"
         for adv in H.child_range(u.__cfg, "advancement") do
             s = s .. "\n { \n " .. _table_to_string(adv) .. "\n },"
@@ -143,4 +151,5 @@ function wesnoth.theme_items.edit_left_button_function()
     wesnoth.message(wesnoth.debug(r))
     return r
 end
+
 --     wesnoth.add_modification(u,"object",{{"effect",{apply_to="attack",{"set_specials", { {"isHere",{id="slow_zone",name="test"} }  }}  }}},false)

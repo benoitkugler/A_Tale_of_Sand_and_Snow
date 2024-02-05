@@ -23,11 +23,11 @@ wesnoth.require "ui/menus"
 wesnoth.require "standard_event" -- event setup
 
 function Set_hp()
-    for _, u in pairs(wesnoth.get_units({side = 2})) do u.hitpoints = 1 end
+    for _, u in pairs(wesnoth.units.find_on_map({ side = 2 })) do u.hitpoints = 1 end
 end
 
 UI.set_menu_item({
     id = "debug",
     description = _ "Hp to 1",
-    T.command{T.lua{code = "Set_hp()"}}
+    T.command { T.lua { code = "Set_hp()" } }
 })

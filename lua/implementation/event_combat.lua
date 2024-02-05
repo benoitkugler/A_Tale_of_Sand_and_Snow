@@ -9,8 +9,8 @@ local COLOR_DEFENSE_SHRED = "#994d00"
 local COLOR_SHIELDED = "#4A4257"
 
 -- Table of event handlers
-local endturn = {} -- end of turn event
-local apply = {} -- combat event
+local endturn = {}                  -- end of turn event
+local apply = {}                    -- combat event
 
 local label_pri, label_snd = "", "" -- custom labels
 local delay = 0
@@ -44,7 +44,7 @@ function EC.combat(dmg_dealt)
 end
 
 function EC.fin_tour()
-    local lhero = wesnoth.get_units{role = "hero"}
+    local lhero = wesnoth.get_units { role = "hero" }
     for _, v in pairs(lhero) do v.variables.bloodlust = false end
     for _, v in pairs(endturn) do v() end
 end
@@ -55,15 +55,15 @@ end
 -- TODO:Object : to refactor.
 function apply.shield_flat(event, pri, snd, dmg)
     local s1, s2 = pri.level * 2, snd.level * 2 -- shields
-    if event == "attack" then -- adding shield value to avoid temporary death.
-        if get_ability(pri, "shield_flat") then
+    if event == "attack" then                   -- adding shield value to avoid temporary death.
+        if GetAbilityLevel(pri, "shield_flat") then
             pri.hitpoints = pri.hitpoints + s1
         end
-        if get_ability(snd, "shield_flat") then
+        if GetAbilityLevel(snd, "shield_flat") then
             snd.hitpoints = snd.hitpoints + s2
         end
     elseif event == "attacker_hits" then
-        if get_ability(snd, "shield_flat") then
+        if GetAbilityLevel(snd, "shield_flat") then
             if dmg < s2 then
                 snd.hitpoints = snd.hitpoints + dmg
             elseif snd.hitpoints > 0 then
@@ -71,10 +71,10 @@ function apply.shield_flat(event, pri, snd, dmg)
             end
             label_snd =
                 label_snd .. "<span color='#4A4257'>" .. _ " shield : " .. s2 ..
-                    " hitpoints" .. "</span>\n"
+                " hitpoints" .. "</span>\n"
         end
     elseif event == "defender_hits" then
-        if get_ability(pri, "shield_flat") then
+        if GetAbilityLevel(pri, "shield_flat") then
             if dmg < s1 then
                 pri.hitpoints = pri.hitpoints + dmg
             elseif pri.hitpoints > 0 then
@@ -82,13 +82,13 @@ function apply.shield_flat(event, pri, snd, dmg)
             end
             label_pri =
                 label_pri .. "<span color='#4A4257'>" .. _ " shield : " .. s1 ..
-                    " hitpoints" .. "</span>\n"
+                " hitpoints" .. "</span>\n"
         end
     elseif event == "attack_end" then
-        if get_ability(pri, "shield_flat") then
+        if GetAbilityLevel(pri, "shield_flat") then
             pri.hitpoints = pri.hitpoints - s1
         end
-        if get_ability(snd, "shield_flat") then
+        if GetAbilityLevel(snd, "shield_flat") then
             snd.hitpoints = snd.hitpoints - s2
         end
     end
@@ -98,10 +98,10 @@ end
 
 function apply.war_leeches(event, pri, snd, dmg)
     if event == "attacker_hits" then
-        local lvl = get_ability(snd, "war_leeches")
+        local lvl = GetAbilityLevel(snd, "war_leeches")
         if lvl then
             wesnoth.fire("heal_unit", {
-                T.filter{id = snd.id},
+                T.filter { id = snd.id },
                 animate = true,
                 amount = 2 * lvl
             }) -- def is hit
@@ -112,7 +112,7 @@ end
 -- ABILITY SPECIAL de BRINX
 function apply.bloodlust(event, pri, snd, dmg)
     if event == "die" then
-        if get_ability(snd, "bloodlust") then
+        if GetAbilityLevel(snd, "bloodlust") then
             if snd.variables and not snd.variables.bloodlust then
                 snd.variables.bloodlust = true
                 snd.moves = 4 -- on kill
@@ -124,31 +124,31 @@ end
 
 function apply.fresh_blood_musp(event, pri, snd, dmg)
     if event == "die" then
-        local lvl = get_ability(snd, "fresh_blood_musp")
+        local lvl = GetAbilityLevel(snd, "fresh_blood_musp")
         if not lvl then return end
         if pri.__cfg.race == "muspell" then
             wesnoth.fire("heal_unit", {
                 animate = (snd.hitpoints ~= snd.max_hitpoints),
-                T.filter{id = snd.id},
+                T.filter { id = snd.id },
                 amount = 2 + 6 * lvl
             }) -- on kill
         end
     end
 end
 
--- Deflect 
+-- Deflect
 function apply.deflect(event, _, snd, dmg)
     if event == "attacker_hits" and GetAbility(snd, "deflect") then
         snd.hitpoints = snd.hitpoints + Round(dmg / 2)
-        local enemies = wesnoth.get_units{
-            T.filter_adjacent{id = snd.id}, {"not", {side = snd.side}}
+        local enemies = wesnoth.get_units {
+            T.filter_adjacent { id = snd.id }, { "not", { side = snd.side } }
         }
         local amount = Round(dmg / 2 / #(enemies))
         local att = H.get_child(wesnoth.current.event_context, "weapon")
         wesnoth.fire("harm_unit", {
-            T.filter_second{id = snd.id},
+            T.filter_second { id = snd.id },
             experience = true,
-            T.filter{T.filter_adjacent{id = snd.id}, {"not", {side = snd.side}}},
+            T.filter { T.filter_adjacent { id = snd.id }, { "not", { side = snd.side } } },
             fire_event = true,
             annimate = true,
             damage_type = att.type,
@@ -166,14 +166,14 @@ function apply.leeches(event, pri, snd, dmg)
         lvl = GetSpe("leeches")
         u = pri
     elseif event == "defender_hits" then
-        lvl = get_special(H.get_child(wesnoth.current.event_context,
-                                      "second_weapon"), "leeches")._level
+        lvl = GetSpecial(wesnoth.current.event_context.second_weapon,
+            "leeches")._level
         u = snd
     end
     if lvl then
         if u.hitpoints < u.max_hitpoints then
             wesnoth.fire("heal_unit", {
-                T.filter{id = u.id},
+                T.filter { id = u.id },
                 animate = true,
                 amount = Round(dmg * (0.05 + 0.05 * lvl))
             }) -- toujours
@@ -182,7 +182,7 @@ function apply.leeches(event, pri, snd, dmg)
 end
 
 local function case_derriere(x1, y1, x2, y2)
-    return wesnoth.map.rotate_right_around_center({x1, y1}, {x2, y2}, 3)
+    return wesnoth.map.rotate_right_around_center({ x1, y1 }, { x2, y2 }, 3)
 end
 
 -- Pierce
@@ -191,7 +191,7 @@ function apply.weapon_pierce(event, pri, snd, dmg)
         local loc = case_derriere(pri.x, pri.y, snd.x, snd.y)
         local weapon = H.get_child(wesnoth.current.event_context, "weapon")
         wesnoth.fire("harm_unit", {
-            T.filter{x = loc[1], y = loc[2], {"not", {side = pri.side}}},
+            T.filter { x = loc[1], y = loc[2], { "not", { side = pri.side } } },
             annimate = true,
             fire_event = true,
             damage_type = weapon.type,
@@ -204,7 +204,7 @@ end
 function apply.mayhem(event, pri, snd, dmg)
     if event == "attacker_hits" and GetSpe("mayhem") then
         wesnoth.add_modification(snd, "object", {
-            T.effect{apply_to = "attack", increase_damage = -1}
+            T.effect { apply_to = "attack", increase_damage = -1 }
         }, false) -- atker hit
     end
 end
@@ -212,16 +212,16 @@ end
 -- Cleave
 function apply.cleave(event, pri, snd, dmg)
     if event == "attacker_hits" and GetSpe("cleave") then
-        local l = wesnoth.get_locations{
-            T.filter_adjacent_location{x = pri.x, y = pri.y},
-            T.filter_adjacent_location{x = snd.x, y = snd.y}
+        local l = wesnoth.get_locations {
+            T.filter_adjacent_location { x = pri.x, y = pri.y },
+            T.filter_adjacent_location { x = snd.x, y = snd.y }
         }
         local att = H.get_child(wesnoth.current.event_context, "weapon")
         for i, v in pairs(l) do
             wesnoth.fire("harm_unit", {
-                T.filter_second{id = pri.id},
+                T.filter_second { id = pri.id },
                 experience = true,
-                T.filter{x = v[1], y = v[2], {"not", {side = pri.side}}},
+                T.filter { x = v[1], y = v[2], { "not", { side = pri.side } } },
                 fire_event = true,
                 annimate = true,
                 damage_type = att.type,
@@ -237,15 +237,15 @@ function apply.res_magic(event, pri, snd, dmg)
         if lvl then
             local value = 3 + 2 * lvl -- atker hit
             wesnoth.add_modification(snd, "object", {
-                T.effect{
+                T.effect {
                     apply_to = "resistance",
-                    {"resistance", {fire = value, cold = value, arcane = value}}
+                    { "resistance", { fire = value, cold = value, arcane = value } }
                 }
             }, false)
             label_snd = label_snd ..
-                            Fmt(
-                                _ "<span color='%s'>-%d%% magic resistances</span>\n",
-                                COLOR_MAGIC_RES_SHRED, value)
+                Fmt(
+                    _ "<span color='%s'>-%d%% magic resistances</span>\n",
+                    COLOR_MAGIC_RES_SHRED, value)
         end
     end
 end
@@ -256,17 +256,17 @@ function apply.armor_shred(event, pri, snd, dmg)
         if lvl then
             local value = DB.AMLAS.xavier.values.REDUCE_DEFENSE * lvl
             wesnoth.add_modification(snd, "object", {
-                T.effect{
+                T.effect {
                     apply_to = "resistance",
                     {
                         "resistance",
-                        {blade = value, pierce = value, impact = value}
+                        { blade = value, pierce = value, impact = value }
                     }
                 }
             }, false)
             label_snd = label_snd ..
-                            Fmt(_ "<span color='%s'>-%d%% armor</span>\n",
-                                COLOR_ARMOR_SHRED, value)
+                Fmt(_ "<span color='%s'>-%d%% armor</span>\n",
+                    COLOR_ARMOR_SHRED, value)
         end
     end
 end
@@ -276,10 +276,10 @@ function apply.defense_shred(event, pri, snd, dmg)
         local lvl = GetSpe("defense_shred")
         if lvl then
             local shred_per_hit = DB.AMLAS[pri.id].values.REDUCE_DEFENSE * lvl
-            snd:add_modification("trait", {add_defenses(-shred_per_hit)}, false)
+            snd:add_modification("trait", { AddDefenses(-shred_per_hit) }, false)
             label_snd = label_snd ..
-                            Fmt(_ "<span color='%s'>-%d%% defense</span>\n",
-                                COLOR_DEFENSE_SHRED, shred_per_hit)
+                Fmt(_ "<span color='%s'>-%d%% defense</span>\n",
+                    COLOR_DEFENSE_SHRED, shred_per_hit)
         end
     end
 end
@@ -291,13 +291,13 @@ function apply.weaker_slow(event, pri, snd, dmg)
             local value = 5 + 5 * lvl -- atker hit
             wesnoth.add_modification(snd, "object", {
                 duration = "turn_end",
-                T.effect{
+                T.effect {
                     apply_to = "attack",
                     increase_damage = "-" .. value .. "%"
                 }
             }, true)
             label_snd = label_snd .. _ "<span color='#919191'>-" .. value ..
-                            "% damage</span>\n"
+                "% damage</span>\n"
         end
     end
 end
@@ -306,7 +306,7 @@ function apply.snare(event, pri, snd, dmg)
     if event == "attacker_hits" and GetSpe("snare") then
         wesnoth.add_modification(snd, "object", {
             duration = "turn_end",
-            T.effect{apply_to = "movement", set = 0}
+            T.effect { apply_to = "movement", set = 0 }
         }, true)
         label_snd = label_snd .. _ "<span color='#1CDC3F'>Snared</span>\n"
     end
@@ -318,8 +318,8 @@ function apply.transfusion(event, pri, snd, _)
         if not lvl then return end
         local heal = lvl * 3
         wesnoth.fire("heal_unit", {
-            T.filter{T.filter_adjacent{id = snd.id}, side = pri.side},
-            T.filter_second{id = pri.id},
+            T.filter { T.filter_adjacent { id = snd.id }, side = pri.side },
+            T.filter_second { id = pri.id },
             amount = heal,
             animate = true
         })
@@ -330,24 +330,24 @@ function apply.slow_zone(event, pri, snd, dmg)
     local lvl = GetSpe("slow_zone")
     if event == "attacker_hits" and lvl then
         local intensity = SPECIAL_SKILLS.info[pri.id].slow_zone(lvl)
-        local targets = wesnoth.get_units{
-            T.filter_adjacent{id = snd.id, is_enemy = false}
+        local targets = wesnoth.get_units {
+            T.filter_adjacent { id = snd.id, is_enemy = false }
         }
         for i, v in pairs(targets) do
             if not v.status._zone_slowed then
                 v.status._zone_slowed = true
                 v:add_modification("trait", {
-                    T.effect{
+                    T.effect {
                         apply_to = "attack",
                         increase_damage = tostring(-intensity) .. "%"
                     },
-                    T.effect{
+                    T.effect {
                         apply_to = "movement",
                         increase = tostring(-intensity) .. "%"
                     }
                 })
                 wesnoth.float_label(v.x, v.y,
-                                    _ "<span color='#00A8A2'>Slowed !</span>")
+                    _ "<span color='#00A8A2'>Slowed !</span>")
             end
         end
     end
@@ -359,7 +359,7 @@ function apply.chilled_dmg(event, pri, snd, dmg)
         local special_lvl = snd.variables.status_chilled_lvl
         local att = H.get_child(wesnoth.current.event_context, "weapon")
         local values = SPECIAL_SKILLS.info.drumar.bonus_cold_mistress(
-                           special_lvl - 1)
+            special_lvl - 1)
         local percent_bonus = values[1]
         local bonus_dmg = Round(dmg * percent_bonus / 100)
         if att.type == "cold" then
@@ -376,13 +376,13 @@ function apply.chilled_dmg(event, pri, snd, dmg)
                 end
                 wesnoth.fire("kill", {
                     id = snd.id,
-                    {"second_unit", {id = pri.id}},
+                    { "second_unit", { id = pri.id } },
                     animate = true,
                     fire_event = true
                 })
             end
             label_snd = label_snd .. "<span color='#1ED9D0'>" .. dmg_display ..
-                            "</span>\n"
+                "</span>\n"
         end
     end
 end
@@ -394,23 +394,23 @@ function apply.put_status_chilled(event, pri, snd, dmg)
         local lvl = GetSpe("status_chilled")
         if lvl and not snd.status.chilled then
             local values = SPECIAL_SKILLS.info.drumar.bonus_cold_mistress(
-                               lvl - 1)
+                lvl - 1)
             local cd = values[2]
             snd.variables.status_chilled_lvl = lvl
             snd.variables.status_chilled_cd = cd
             snd.status.chilled = true
             label_snd = label_snd ..
-                            _ "<span color='#1ED9D0'>Chilled !</span>\n"
+                _ "<span color='#1ED9D0'>Chilled !</span>\n"
         end
     end
 end
 
 -- Mise à jour des status chilled
 function endturn.status_chilled()
-    local us = wesnoth.get_units{status = "chilled"}
+    local us = wesnoth.get_units { status = "chilled" }
     for id, u in ipairs(us) do
         local lvl, cd = u.variables.status_chilled_lvl,
-                        u.variables.status_chilled_cd
+            u.variables.status_chilled_cd
         wesnoth.message(id .. lvl .. cd)
         if cd == 1 then
             u.status.chilled = nil
@@ -427,7 +427,7 @@ function apply.shield(event, pri, snd, dmg)
         local shield = unit.variables.status_shielded_hp
         unit.hitpoints = unit.hitpoints + shield
         return Fmt(_ "<span color='%s'> +%d shield points</span>\n",
-                   COLOR_SHIELDED, shield)
+            COLOR_SHIELDED, shield)
     end
 
     if event == "attack" then -- applying inital shield
@@ -470,7 +470,7 @@ function apply.shield(event, pri, snd, dmg)
 end
 
 function endturn.status_shielded()
-    local l_status = wesnoth.get_units{status = "shielded"}
+    local l_status = wesnoth.get_units { status = "shielded" }
     for __, v in ipairs(l_status) do
         v.status.shielded = nil
         v.variables.status_shielded_hp = nil

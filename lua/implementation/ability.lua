@@ -70,7 +70,7 @@ function AB.war_jump(unit_id, x, y)
     else
         local locs = LS.of_pairs(wesnoth.find_reach(u, { ignore_units = true }))
         local moves_left = locs:get(tox, toy)
-        if u.x ~= x or u.y ~= y or not get_ability(u, "war_jump") or
+        if u.x ~= x or u.y ~= y or not GetAbilityLevel(u, "war_jump") or
             not moves_left or not is_empty(tox, toy) then
             Popup(_ "Error",
                 _ "Can't <span color='red'>War Jump </span> right now. Please <span weight='bold'>select</span> me again.")
@@ -104,7 +104,7 @@ function AB.elusive(unit_id, x, y)
     else
         local locs = LS.of_pairs(wesnoth.find_reach(u, { ignore_units = true }))
         local moves_left = locs:get(tox, toy)
-        if u.x ~= x or u.y ~= y or not get_ability(u, "elusive") or
+        if u.x ~= x or u.y ~= y or not GetAbilityLevel(u, "elusive") or
             not moves_left or not is_empty(tox, toy) then
             Popup(_ "Error",
                 _ "Can't be <span color='green'>Elusive</span> right now. Please <span weight='bold'>select</span> me again.")
@@ -128,7 +128,7 @@ end
 -- Then we apply a trait modification with id _tmp_allies_defense_bonus
 local function update_xavier_defense()
     local xavier = wesnoth.get_unit("xavier")
-    local lvl = get_ability(xavier, "allies_defense")
+    local lvl = GetAbilityLevel(xavier, "allies_defense")
     if not lvl then return end
 
     local trait_id = "_tmp_allies_defense_bonus"
@@ -146,7 +146,7 @@ local function update_xavier_defense()
             description = Fmt(
                 _ "Xavier is so strong! He grants us <b>%d%%</b> bonus defense",
                 bonus_def),
-            add_defenses(bonus_def)
+            AddDefenses(bonus_def)
         })
     end
 end
@@ -172,7 +172,7 @@ function AB.get_active_formations(xavier)
     local tiles_ally = LS.create()
     local tiles_target = LS.create()
     local active_formations = {}
-    if get_ability(xavier, "Y_formation") then
+    if GetAbilityLevel(xavier, "Y_formation") then
         for __, pos in ipairs(formations_def.Y { xavier.x, xavier.y }) do
             if _check_formation(xavier, pos) then
                 tiles_ally:of_pairs(pos)
@@ -181,7 +181,7 @@ function AB.get_active_formations(xavier)
             end
         end
     end
-    if get_ability(xavier, "I_formation") then
+    if GetAbilityLevel(xavier, "I_formation") then
         for __, pos in ipairs(formations_def.I { xavier.x, xavier.y }) do
             if _check_formation(xavier, pos) then
                 tiles_ally:of_pairs(pos)
@@ -190,7 +190,7 @@ function AB.get_active_formations(xavier)
             end
         end
     end
-    if get_ability(xavier, "A_formation") then
+    if GetAbilityLevel(xavier, "A_formation") then
         for __, pos in ipairs(formations_def.A { xavier.x, xavier.y }) do
             if _check_formation(xavier, pos) then
                 tiles_ally:of_pairs(pos)
@@ -198,7 +198,7 @@ function AB.get_active_formations(xavier)
             end
         end
     end
-    if get_ability(xavier, "O_formation") then
+    if GetAbilityLevel(xavier, "O_formation") then
         for __, pos in ipairs(formations_def.O { xavier.x, xavier.y }) do
             if _check_formation(xavier, pos) then
                 tiles_ally:of_pairs(pos)
@@ -292,9 +292,9 @@ function AB.select()
     UI.clear_menu_item("war_jump")
     local u = PrimaryUnit()
 
-    if get_ability(u, "war_jump") and u.moves > 0 then show_war_jump(u) end
+    if GetAbilityLevel(u, "war_jump") and u.moves > 0 then show_war_jump(u) end
 
-    if get_ability(u, "elusive") and u.moves > 0 then show_elusive(u) end
+    if GetAbilityLevel(u, "elusive") and u.moves > 0 then show_elusive(u) end
 
     if u.id == "xavier" then
         local _, tiles, targets = AB.get_active_formations(u)

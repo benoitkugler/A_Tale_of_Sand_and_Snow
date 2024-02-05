@@ -1,12 +1,5 @@
 ANIM = {}
 
----@type wesnoth
-local wesnoth = wesnoth
----@type wml
-local wml = wml
-
-
-
 local HOVER_IMAGE = "terrain/hover_hex.png"
 
 -- Highlight zaap/arch position

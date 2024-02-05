@@ -1,6 +1,8 @@
 AMLA = {}
 
 -- Process an amla tree by computing effect given by a function
+---@param amlas_table table
+---@param unit unit
 local function _process_amlas(amlas_table, unit)
     local computed_table = {}
     for i, amla in ipairs(amlas_table) do
@@ -8,7 +10,7 @@ local function _process_amlas(amlas_table, unit)
         for j, value in pairs(amla) do
             if type(value) == "function" then -- executing function with unit as argument
                 computed_amla[j] = value(unit)
-            else -- just copy
+            else                              -- just copy
                 computed_amla[j] = value
             end
         end
@@ -21,7 +23,7 @@ end
 function AMLA.update_lvl(unit)
     local base_lvl = wesnoth.unit_types[unit.type].level
     for amla in H.child_range(H.get_child(unit.__cfg, "modifications") or {},
-                              "advancement") do
+        "advancement") do
         if amla._level_bonus then base_lvl = base_lvl + 1 end
     end
     unit.level = base_lvl
@@ -29,7 +31,7 @@ end
 
 function AMLA.adv()
     local u = PrimaryUnit()
-    u:remove_modifications({id = "current_amlas"}, "trait")
+    u:remove_modifications({ id = "current_amlas" }, "trait")
     AMLA.update_lvl(u)
 end
 
@@ -42,7 +44,7 @@ function AMLA.pre_advance()
     table_amlas = _process_amlas(table_amlas, u)
     u:add_modification("trait", {
         id = "current_amlas",
-        T.effect{
+        T.effect {
             apply_to = "new_advancement",
             replace = true,
             table.unpack(table_amlas)

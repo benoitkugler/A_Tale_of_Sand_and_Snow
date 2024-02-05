@@ -9,7 +9,8 @@ local LIMBE_TERRAIN_VARIABLE = "lt" -- short to "compress" saves
 
 ---@return integer, integer, integer, integer, integer, integer, integer
 local function _limbes_geoms()
-    local width, height, border = wesnoth.get_map_size()
+    local m = wesnoth.current.map
+    local width, height, border = m.playable_width, m.playable_height, m.border_size
     local xstart = (width - LIMBE_WIDTH) // 2
     if xstart % 2 == 0 then xstart = xstart + 1 end -- wall better looking
     local xstop = (width + LIMBE_WIDTH) // 2
@@ -18,11 +19,11 @@ local function _limbes_geoms()
     return width, height, border, xstart, ystart, xstop, ystop
 end
 
----@param u Unit
-local function limbe_actor(u)
+---@param u unit
+local function is_limbe_actor(u)
     return
         u.id == "morgane" or u.type == "otchigin1" or u.type == "otchigin2" or
-            u.type == "otchigin3"
+        u.type == "otchigin3"
 end
 
 -- Put all units in their recall lists, except Morgane, and the Otchigins
@@ -34,16 +35,16 @@ local function _in_limbe_units()
     ystart = ystart + 2
     xstop = xstop - 1
     ystop = ystop - 1
-    for __, u in pairs(wesnoth.get_units()) do
+    for __, u in pairs(wesnoth.units.find_on_map({})) do
         u.variables.x = u.x
         u.variables.y = u.y
-        if limbe_actor(u) then
+        if is_limbe_actor(u) then
             u.status._limbe = true
             u.canrecruit = true
-            if wesnoth.is_enemy(u.side, 1) then
-                u.x, u.y = wesnoth.find_vacant_tile(xstart, ystart)
+            if wesnoth.sides.is_enemy(u.side, 1) then
+                u.x, u.y = wesnoth.paths.find_vacant_hex(xstart, ystart)
             else
-                u.x, u.y = wesnoth.find_vacant_tile(xstop, ystop)
+                u.x, u.y = wesnoth.paths.find_vacant_hex(xstop, ystop)
             end
         else
             u.status._limbe_recall = true
@@ -53,23 +54,26 @@ local function _in_limbe_units()
 end
 
 local function _out_limbe_units()
-    for __, u in pairs(wesnoth.get_units()) do
-        u.x = u.variables.x -- restore original positions
-        u.y = u.variables.y -- restore original positions
+    for __, u in pairs(wesnoth.units.find_on_map({})) do
+        -- restore original positions
+        u.x = u.variables.x --[[@as integer]]
+        u.y = u.variables.y --[[@as integer]]
         u.status._limbe = nil
         u.canrecruit = false
     end
-    for __, u in pairs(wesnoth.get_recall_units{status = "_limbe_recall"}) do
-        u:to_map(u.variables.x, u.variables.y)
+    for __, u in pairs(wesnoth.units.find_on_recall { status = "_limbe_recall" }) do
+        local x, y = u.variables.x, u.variables.y
+        u:to_map(x --[[@as integer]], y --[[@as integer]])
     end
 end
 
 -- Saves the current terrain information in variable array limbe_terrains
 -- and apply limbe terrain
 local function _set_limbe_terrain()
+    local map = wesnoth.current.map;
     local width, height, border, xstart, ystart, xstop, ystop = _limbes_geoms()
 
-    local var = {}
+    local current_terrains = {}
 
     for x = 0, width + border do
         for y = 0, height + border do
@@ -82,27 +86,26 @@ local function _set_limbe_terrain()
             else
                 new_terrain = LIMBE_FLOOR
             end
-            local terrain = wesnoth.get_terrain(x, y)
-            table.insert(var, {x = x, y = y, t = terrain})
-            wesnoth.set_terrain(x, y, new_terrain)
+            ---@type string
+            local terrain = map[{ x, y }]
+            table.insert(current_terrains, { x = x, y = y, t = terrain })
+            map[{ x, y }] = new_terrain
         end
     end
 
-    H.set_variable_array(LIMBE_TERRAIN_VARIABLE, var)
-
-    -- wesnoth.set_terrain(10,10, LIMBE_FLOOR)
-    -- wesnoth.set_terrain(10,11, LIMBE_WALL)
+    wml.array_access.set(LIMBE_TERRAIN_VARIABLE, current_terrains)
 end
 
 local function _remove_limbe_terrain()
-    for __, v in ipairs(H.get_variable_array(LIMBE_TERRAIN_VARIABLE)) do
-        wesnoth.set_terrain(v.x, v.y, v.t)
+    local map = wesnoth.current.map;
+    for __, v in ipairs(wml.array_access.get(LIMBE_TERRAIN_VARIABLE)) do
+        map[{ v.x, v.y }] = v.t
     end
 end
 
 local function _has_limbe_ennemies()
-    for _, u in pairs(wesnoth.get_units()) do
-        if u.side ~= 1 and limbe_actor(u) then return true end
+    for _, u in pairs(wesnoth.units.find_on_map({})) do
+        if u.side ~= 1 and is_limbe_actor(u) then return true end
     end
     return false
 end
@@ -110,7 +113,7 @@ end
 function Limbes.enter()
     if not _has_limbe_ennemies() then
         Popup("No ennemies",
-              _ "You can't fight in the Limbes since, <b>no ennemy</b> is able to follow you...")
+            _ "You can't fight in the Limbes since <b>no ennemy</b> is able to follow you...")
         return
     end
     _set_limbe_terrain()

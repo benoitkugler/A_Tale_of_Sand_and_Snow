@@ -1,6 +1,6 @@
-local V = { -- numerical values
+local V = {                -- numerical values
     LONG_HEAL_RATIO = 0.8, -- * lvl / distance
-    BETTER_HEAL = 10 -- bonus per level
+    BETTER_HEAL = 10       -- bonus per level
 }
 local morgane = {
     _default_border = "#ddebe0",
@@ -13,27 +13,27 @@ local morgane = {
         max_times = 3,
         always_display = 1,
         description = Fmt(_ "Better at healing : +%d additional heal",
-                          V.BETTER_HEAL),
-        T.effect{
+            V.BETTER_HEAL),
+        T.effect {
             apply_to = "remove_ability",
-            T.abilities{T.heals{id = "curing"}}
+            T.abilities { T.heals { id = "curing" } }
         },
-        T.effect{
+        T.effect {
             apply_to = "remove_ability",
-            T.abilities{T.heals{id = "healing"}}
+            T.abilities { T.heals { id = "healing" } }
         },
-        T.effect{
+        T.effect {
             apply_to = "remove_ability",
-            T.abilities{T.heals{id = "better_heal"}}
+            T.abilities { T.heals { id = "better_heal" } }
         },
         function(unit)
             local current_lvl =
                 GetAbility(unit, "better_heal", "heals")._level or 0
             local value = 8 + V.BETTER_HEAL * (current_lvl + 1)
-            return T.effect{
+            return T.effect {
                 apply_to = "new_ability",
-                T.abilities{
-                    T.heals{
+                T.abilities {
+                    T.heals {
                         cumulative = true,
                         id = "better_heal",
                         _level = current_lvl + 1,
@@ -41,7 +41,7 @@ local morgane = {
                         poison = "cured",
                         affect_self = false,
                         affect_allies = true,
-                        T.affect_adjacent{},
+                        T.affect_adjacent {},
                         description = Fmt(
                             _ [[
     Morgane talents for healing are ever growing !
@@ -62,17 +62,17 @@ local morgane = {
         max_times = 1,
         always_display = 1,
         description = _ "Able to heal non adjacent units",
-        T.effect{
+        T.effect {
             apply_to = "new_ability",
-            T.abilities{
-                T.isHere{
+            T.abilities {
+                T.isHere {
                     id = "long_heal",
                     _level = 1,
                     description = Fmt(_ [[
     Harnessing the Limbes power, Morgane is able to heal distant allies.
     (<b>%d%%</b> and <b>%d%%</b> for distance 2 and 3) ]],
-                                      Round(V.LONG_HEAL_RATIO * 100 / 2),
-                                      Round(V.LONG_HEAL_RATIO * 100 / 3)),
+                        Round(V.LONG_HEAL_RATIO * 100 / 2),
+                        Round(V.LONG_HEAL_RATIO * 100 / 3)),
                     name = "Distant healer " .. ROMANS[1]
                 }
             }
@@ -87,19 +87,19 @@ local morgane = {
         always_display = 1,
         require_amla = "long_heal1",
         description = Fmt(_ "Even better at healing : +%d additional heal",
-                          V.BETTER_HEAL),
-        T.effect{
+            V.BETTER_HEAL),
+        T.effect {
             apply_to = "remove_ability",
-            T.abilities{T.heals{id = "better_heal"}}
+            T.abilities { T.heals { id = "better_heal" } }
         },
         function(unit)
             local current_lvl =
                 GetAbility(unit, "better_heal", "heals")._level or 0
             local value = 8 + V.BETTER_HEAL * (current_lvl + 1)
-            return T.effect{
+            return T.effect {
                 apply_to = "new_ability",
-                T.abilities{
-                    T.heals{
+                T.abilities {
+                    T.heals {
                         cumulative = true,
                         id = "better_heal",
                         _level = current_lvl + 1,
@@ -107,7 +107,7 @@ local morgane = {
                         poison = "cured",
                         affect_self = false,
                         affect_allies = true,
-                        T.affect_adjacent{},
+                        T.affect_adjacent {},
                         description = Fmt(
                             _ [[
     Morgane talents for healing are still growing !
@@ -127,21 +127,21 @@ local morgane = {
         max_times = 1,
         always_display = 1,
         description = _ "Able to better heal non adjacent units",
-        T.effect{
+        T.effect {
             apply_to = "remove_ability",
-            T.abilities{T.isHere{id = "long_heal"}}
+            T.abilities { T.isHere { id = "long_heal" } }
         },
-        T.effect{
+        T.effect {
             apply_to = "new_ability",
-            T.abilities{
-                T.isHere{
+            T.abilities {
+                T.isHere {
                     id = "long_heal",
                     _level = 2,
                     description = Fmt(_ [[
     Harnessing the Limbes power, Morgane is able to heal distant allies.
     (<b>%d%%</b> and <b>%d%%</b> for distance 2 and 3) ]],
-                                      Round(V.LONG_HEAL_RATIO * 2 * 100 / 2),
-                                      Round(V.LONG_HEAL_RATIO * 2 * 100 / 3)),
+                        Round(V.LONG_HEAL_RATIO * 2 * 100 / 2),
+                        Round(V.LONG_HEAL_RATIO * 2 * 100 / 3)),
                     name = "Distant healer " .. ROMANS[2]
                 }
             }
@@ -155,7 +155,7 @@ local morgane = {
         max_times = 3,
         always_display = 1,
         description = _ "Stronger with lightbeam",
-        T.effect{apply_to = "attack", name = "lightbeam", increase_damage = 2},
+        T.effect { apply_to = "attack", name = "lightbeam", increase_damage = 2 },
         table.unpack(standard_amla_heal(5))
     },
     {
@@ -167,7 +167,7 @@ local morgane = {
         max_times = 1,
         always_display = 1,
         description = _ "Faster with lightbeam",
-        T.effect{apply_to = "attack", name = "lightbeam", increase_attacks = 1},
+        T.effect { apply_to = "attack", name = "lightbeam", increase_attacks = 1 },
         table.unpack(standard_amla_heal(7))
     },
     {
@@ -179,22 +179,23 @@ local morgane = {
         max_times = 2,
         always_display = 1,
         description = _ "On hit, allies adjacents to the target are healed.",
-        T.effect{
+        T.effect {
             apply_to = "attack",
             remove_specials = "transfusion",
             name = "lightbeam"
         },
+        ---@param unit unit
         function(unit)
             local next_lvl =
-                (get_special(unit.attacks.lightbeam, "transfusion")._level or 0) +
-                    1
-            return T.effect{
+                (GetSpecial(unit.attacks.lightbeam, "transfusion")._level or 0) +
+                1
+            return T.effect {
                 set_icon = "attacks/transfusion.png",
                 apply_to = "attack",
                 name = "lightbeam",
-                T.set_specials{
+                T.set_specials {
                     mode = "append",
-                    T.isHere{
+                    T.isHere {
                         id = "transfusion",
                         _level = next_lvl,
                         description = Fmt(
@@ -217,7 +218,7 @@ local morgane = {
         max_times = 2,
         always_display = 1,
         description = _ "Even faster with lightbeam",
-        T.effect{apply_to = "attack", name = "lightbeam", increase_attacks = 1},
+        T.effect { apply_to = "attack", name = "lightbeam", increase_attacks = 1 },
         table.unpack(standard_amla_heal(7))
     },
     {
@@ -228,9 +229,9 @@ local morgane = {
         max_times = 3,
         always_display = 1,
         description = _ "Limbes strengh makes Morgan tougher: + 7% resistances",
-        T.effect{
+        T.effect {
             apply_to = "resistance",
-            T.resistance{
+            T.resistance {
                 impact = -7,
                 blade = -7,
                 arcane = -7,
@@ -245,16 +246,16 @@ local morgane = {
         id = "deflect",
         _short_desc = "<B> Deflection </B>",
         _level_bonus = true,
-        _color = {47, 74, 71},
+        _color = { 47, 74, 71 },
         require_amla = "though,though,though,fast_lightbeam2",
         image = "icons/deflect.png",
         max_times = 1,
         always_display = 1,
         description = _ "Morgane is able to deflect 50% of the damage to nearby ennemy units.",
-        T.effect{
+        T.effect {
             apply_to = "new_ability",
-            T.abilities{
-                T.isHere{
+            T.abilities {
+                T.isHere {
                     id = "deflect",
                     description = _ [[
     Travelling into the Limbes taught Morgane how to switch from a world to another.

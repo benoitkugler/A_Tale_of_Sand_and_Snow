@@ -21,21 +21,21 @@ local DOT_PARAMS = {
 }
 
 local header_dot = string.format(
-                       "digraph simple_hierarchy { \n splines=ortho;" ..
-                           'size="%d,%d";rankdir=LR;nodesep=%f;ranksep=%f;' ..
-                           "bgcolor=%s;node [shape=%s] \n", DOT_PARAMS.size_x,
-                       DOT_PARAMS.size_y, DOT_PARAMS.nodesep,
-                       DOT_PARAMS.ranksep, DOT_PARAMS.bgcolor,
-                       DOT_PARAMS.node_shape)
+    "digraph simple_hierarchy { \n splines=ortho;" ..
+    'size="%d,%d";rankdir=LR;nodesep=%f;ranksep=%f;' ..
+    "bgcolor=%s;node [shape=%s] \n", DOT_PARAMS.size_x,
+    DOT_PARAMS.size_y, DOT_PARAMS.nodesep,
+    DOT_PARAMS.ranksep, DOT_PARAMS.bgcolor,
+    DOT_PARAMS.node_shape)
 
 local function format_node(id, img, cell_chiffres, cell_desc)
     return string.format(
-               [[ %s [ layer=%q , label=<<TABLE COLOR=%q STYLE="ROUNDED" CELLSPACING="0" BORDER=%q>
+        [[ %s [ layer=%q , label=<<TABLE COLOR=%q STYLE="ROUNDED" CELLSPACING="0" BORDER=%q>
             <TR><TD BORDER="0"><IMG SRC=%q/></TD>
             %s</TR>
-            <TR>%s</TR> 
+            <TR>%s</TR>
             </TABLE>> ] ]], id, id, BORDER_COLOR, DOT_PARAMS.cell_border_size,
-               img, cell_chiffres, cell_desc)
+        img, cell_chiffres, cell_desc)
 end
 
 -- <TD COLSPAN="2" BORDER="0" COLOR="#000000">
@@ -51,8 +51,8 @@ end
 
 local function format_description(desc)
     return string.format(
-               '<FONT POINT-SIZE=%q FACE="Monotype Corsiva">%s</FONT>',
-               tostring(DOT_PARAMS.desc_font_size), desc)
+        '<FONT POINT-SIZE=%q FACE="Monotype Corsiva">%s</FONT>',
+        tostring(DOT_PARAMS.desc_font_size), desc)
 end
 
 -- format(id, id, couleur_bordure, img, body)
@@ -63,25 +63,25 @@ local function cell_chiffres(with_border, max_level)
         s = string.format('BORDER="1" COLOR=%q', DOT_PARAMS.basic_border_color)
     end
     return string.format(
-               [[ <TD CELLPADDING=%q BORDER="0"><TABLE CELLSPACING="0" BORDER="0"><TR><TD FIXEDSIZE="true" WIDTH="100" HEIGHT="40" CELLSPACING="0" %s>
+        [[ <TD CELLPADDING=%q BORDER="0"><TABLE CELLSPACING="0" BORDER="0"><TR><TD FIXEDSIZE="true" WIDTH="100" HEIGHT="40" CELLSPACING="0" %s>
                             <FONT COLOR=%q FACE="Monotype Corsiva" POINT-SIZE=%q > <B> 1/%d </B></FONT>
                             </TD></TR></TABLE></TD> ]],
-               DOT_PARAMS.chiffre_cell_paddind, s, DOT_PARAMS.number_color,
-               DOT_PARAMS.number_font_size, max_level)
+        DOT_PARAMS.chiffre_cell_paddind, s, DOT_PARAMS.number_color,
+        DOT_PARAMS.number_font_size, max_level)
 end
 
 local function format_text_with_border(desc)
     return string.format([[ <TD BORDER="0" COLSPAN="2" CELLPADDING="3">
                     <TABLE BORDER="0" CELLSPACING="0">
                     <TR><TD  BORDER="1"  COLOR=%q > ]],
-                         DOT_PARAMS.basic_border_color) ..
-               format_description(desc) .. "</TD></TR></TABLE> </TD>"
+            DOT_PARAMS.basic_border_color) ..
+        format_description(desc) .. "</TD></TR></TABLE> </TD>"
 end
 
 local function block_simple(desc, img, id, max_level)
     local cc = cell_chiffres(false, max_level)
     local cd = '<TD BORDER="0" COLSPAN="2">' .. format_description(desc) ..
-                   "</TD>"
+        "</TD>"
     return format_node(id, img, cc, cd)
 end
 
@@ -94,7 +94,7 @@ end
 local function block_chiffre(desc, img, id, max_level)
     local cc = cell_chiffres(true, max_level)
     local cd = '<TD BORDER="0" COLSPAN="2">' .. format_description(desc) ..
-                   "</TD>"
+        "</TD>"
     return format_node(id, img, cc, cd)
 end
 
@@ -107,10 +107,10 @@ end
 ---@return string
 local function relie(n1, n2, is_bonus)
     local color = is_bonus and DOT_PARAMS.bonus_arrow_color or
-                      DOT_PARAMS.arrow_color
+        DOT_PARAMS.arrow_color
     return string.format(
-               '%s -> %s [layer="layer_fleche",penwidth="7",color=%q, arrowsize="1.5"]; \n',
-               n1, n2, color)
+        '%s -> %s [layer="layer_fleche",penwidth="7",color=%q, arrowsize="1.5"]; \n',
+        n1, n2, color)
 end
 
 local function aux(arb)
@@ -121,27 +121,27 @@ local function aux(arb)
         if noeud["couleur"] ~= nil then
             local r, g, b = noeud.couleur[1], noeud.couleur[2], noeud.couleur[3]
             if noeud.max_level > 1 then
-                table.insert(Liste_todo, {noeud.id, r, g, b, 1, noeud.max_level})
+                table.insert(Liste_todo, { noeud.id, r, g, b, 1, noeud.max_level })
                 codegraphe = codegraphe ..
-                                 block_texte_chiffre(noeud.txt, noeud.img,
-                                                     noeud.id, noeud.max_level)
+                    block_texte_chiffre(noeud.txt, noeud.img,
+                        noeud.id, noeud.max_level)
             else
-                table.insert(Liste_todo, {noeud.id, r, g, b, 1, 0})
+                table.insert(Liste_todo, { noeud.id, r, g, b, 1, 0 })
                 codegraphe = codegraphe ..
-                                 block_texte(noeud.txt, noeud.img, noeud.id,
-                                             noeud.max_level)
+                    block_texte(noeud.txt, noeud.img, noeud.id,
+                        noeud.max_level)
             end
         else
             if noeud.max_level > 1 then
-                table.insert(Liste_todo, {noeud.id, 0, 0, 0, 0, noeud.max_level})
+                table.insert(Liste_todo, { noeud.id, 0, 0, 0, 0, noeud.max_level })
                 codegraphe = codegraphe ..
-                                 block_chiffre(noeud.txt, noeud.img, noeud.id,
-                                               noeud.max_level)
+                    block_chiffre(noeud.txt, noeud.img, noeud.id,
+                        noeud.max_level)
             else
-                table.insert(Liste_todo, {noeud.id, 0, 0, 0, 0, 0})
+                table.insert(Liste_todo, { noeud.id, 0, 0, 0, 0, 0 })
                 codegraphe = codegraphe ..
-                                 block_simple(noeud.txt, noeud.img, noeud.id,
-                                              noeud.max_level)
+                    block_simple(noeud.txt, noeud.img, noeud.id,
+                        noeud.max_level)
             end
         end
 
@@ -185,7 +185,7 @@ local function export(layers)
 end
 
 local function write_dot_tree(inArbre)
-    Layers = {"layer_fleche"}
+    Layers = { "layer_fleche" }
     local code = aux(inArbre)
     local code = header_dot .. code .. "}"
 
@@ -200,14 +200,14 @@ end
 -- setup globals needed by amlas.
 _ = function(s) return s end
 standard_amla_heal = function(s) return {} end
-Fmt = string.format
+Fmt = function(s) return string.format(s) end
 T = {}
-DB = {AMLAS = {}}
+DB = { AMLAS = {} }
 Round = function(s) return s end
-ROMANS = {"I", "II", "III", "IV", "V", "VI"}
+ROMANS = { "I", "II", "III", "IV", "V", "VI" }
 
 setmetatable(T,
-             {__index = function(k, t) return function(...) return ... end end})
+    { __index = function(k, t) return function(...) return ... end end })
 
 local function compute_arbre_froms_amla(unit_id)
     local color_border = DB.AMLAS[unit_id]._default_border
@@ -254,7 +254,7 @@ local sortie = ""
 for i, v in pairs(Liste_todo) do
     sortie =
         sortie .. ";" .. v[1] .. ":" .. v[2] .. ":" .. v[3] .. ":" .. v[4] ..
-            ":" .. v[5] .. ":" .. v[6]
+        ":" .. v[5] .. ":" .. v[6]
 end
 sortie = sortie:sub(2)
 sortie = sortie .. " " .. Color_background
