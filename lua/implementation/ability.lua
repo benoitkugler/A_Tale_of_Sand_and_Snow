@@ -1,13 +1,15 @@
 AB = {}
-local LS = wesnoth.require "lua/location_set.lua"
+local LS = wesnoth.require "location_set"
 
 local FORMATION_LABEL = _ "Formation"
 local TARGET_LABEL = _ "Target"
 
-local LS_methods = getmetatable(LS.create()).__index
-function LS_methods:to_zip_pairs()
+
+---@param set LocationSet
+local function to_zip_pairs(set)
+    ---@type integer[], integer[]
     local listx, listy = {}, {}
-    for __, v in ipairs(self:to_pairs()) do
+    for __, v in ipairs(set:to_pairs()) do
         table.insert(listx, v[1])
         table.insert(listy, v[2])
     end
@@ -32,9 +34,9 @@ local function tiles_behind(unit)
     }))
     local true_reachable = LS.of_pairs(wesnoth.find_reach(unit))
     local tiles = available_tiles:filter(
-                      function(x, y, v)
+        function(x, y, v)
             return (is_empty(x, y) and _next_to_ennemy(unit, x, y) and
-                       (true_reachable:get(x, y) == nil))
+                (true_reachable:get(x, y) == nil))
         end)
     return tiles
 end
@@ -43,7 +45,7 @@ end
 -- ennemy units weren't blocking the path.
 local function available_tiles(unit)
     local reachable = LS.of_pairs(
-                          wesnoth.find_reach(unit, {ignore_units = true}))
+        wesnoth.find_reach(unit, { ignore_units = true }))
     local true_reachable = LS.of_pairs(wesnoth.find_reach(unit))
     local tiles = reachable:filter(function(x, y, v)
         return (is_empty(x, y) and (true_reachable:get(x, y) == nil))
@@ -53,7 +55,7 @@ end
 
 local function show_war_jump(unit)
     local blocked = tiles_behind(unit)
-    local listx, listy = blocked:to_zip_pairs()
+    local listx, listy = to_zip_pairs(blocked)
     local lua_code = Fmt("AB.war_jump(%q,%d,%d)", unit.id, unit.x, unit.y)
     UI.setup_menu_warjump(listx, listy, lua_code)
     ANIM.hover_tiles(blocked:to_pairs(), "Right-click here")
@@ -64,17 +66,17 @@ function AB.war_jump(unit_id, x, y)
     local tox, toy = GetLocation()
     if u == nil then
         Popup(_ "Error",
-              _ "Can't <span color='red'>War Jump </span> now. Please <span weight='bold'>select</span> me again.")
+            _ "Can't <span color='red'>War Jump </span> now. Please <span weight='bold'>select</span> me again.")
     else
-        local locs = LS.of_pairs(wesnoth.find_reach(u, {ignore_units = true}))
+        local locs = LS.of_pairs(wesnoth.find_reach(u, { ignore_units = true }))
         local moves_left = locs:get(tox, toy)
         if u.x ~= x or u.y ~= y or not get_ability(u, "war_jump") or
             not moves_left or not is_empty(tox, toy) then
             Popup(_ "Error",
-                  _ "Can't <span color='red'>War Jump </span> right now. Please <span weight='bold'>select</span> me again.")
+                _ "Can't <span color='red'>War Jump </span> right now. Please <span weight='bold'>select</span> me again.")
         else
             wesnoth.fire("teleport", {
-                T.filter{id = unit_id},
+                T.filter { id = unit_id },
                 x = tox,
                 y = toy,
                 animate = true
@@ -87,7 +89,7 @@ end
 
 local function show_elusive(unit)
     local blocked = available_tiles(unit)
-    local listx, listy = blocked:to_zip_pairs()
+    local listx, listy = to_zip_pairs(blocked)
     local lua_code = Fmt("AB.elusive(%q,%d,%d)", unit.id, unit.x, unit.y)
     UI.setup_menu_elusive(listx, listy, lua_code)
     ANIM.hover_tiles(blocked:to_pairs(), "Right-click here")
@@ -98,14 +100,14 @@ function AB.elusive(unit_id, x, y)
     local tox, toy = GetLocation()
     if u == nil then
         Popup(_ "Error",
-              _ "Can't be <span color='green'>Elusive</span> right now. Please <span weight='bold'>select</span> me again.")
+            _ "Can't be <span color='green'>Elusive</span> right now. Please <span weight='bold'>select</span> me again.")
     else
-        local locs = LS.of_pairs(wesnoth.find_reach(u, {ignore_units = true}))
+        local locs = LS.of_pairs(wesnoth.find_reach(u, { ignore_units = true }))
         local moves_left = locs:get(tox, toy)
         if u.x ~= x or u.y ~= y or not get_ability(u, "elusive") or
             not moves_left or not is_empty(tox, toy) then
             Popup(_ "Error",
-                  _ "Can't be <span color='green'>Elusive</span> right now. Please <span weight='bold'>select</span> me again.")
+                _ "Can't be <span color='green'>Elusive</span> right now. Please <span weight='bold'>select</span> me again.")
         else
             wesnoth.fire("move_unit", {
                 id = unit_id,
@@ -130,11 +132,11 @@ local function update_xavier_defense()
     if not lvl then return end
 
     local trait_id = "_tmp_allies_defense_bonus"
-    local us = wesnoth.get_units{trait = trait_id}
-    for i, u in pairs(us) do u:remove_modifications({id = trait_id}, "trait") end
-    local adj_xavier = wesnoth.get_units{
-        T.filter_adjacent{id = "xavier"},
-        T.filter_side{T.allied_with{side = xavier.side}}
+    local us = wesnoth.get_units { trait = trait_id }
+    for i, u in pairs(us) do u:remove_modifications({ id = trait_id }, "trait") end
+    local adj_xavier = wesnoth.get_units {
+        T.filter_adjacent { id = "xavier" },
+        T.filter_side { T.allied_with { side = xavier.side } }
     }
     local bonus_def = DB.AMLAS.xavier.values.ALLIES_DEFENSE_RATIO * lvl
     for i, u in pairs(adj_xavier) do
@@ -169,7 +171,7 @@ function AB.get_active_formations(xavier)
     local tiles_target = LS.create()
     local active_formations = {}
     if get_ability(xavier, "Y_formation") then
-        for __, pos in ipairs(formations_def.Y{xavier.x, xavier.y}) do
+        for __, pos in ipairs(formations_def.Y { xavier.x, xavier.y }) do
             if _check_formation(xavier, pos) then
                 tiles_ally:of_pairs(pos)
                 active_formations.Y = pos.target
@@ -178,7 +180,7 @@ function AB.get_active_formations(xavier)
         end
     end
     if get_ability(xavier, "I_formation") then
-        for __, pos in ipairs(formations_def.I{xavier.x, xavier.y}) do
+        for __, pos in ipairs(formations_def.I { xavier.x, xavier.y }) do
             if _check_formation(xavier, pos) then
                 tiles_ally:of_pairs(pos)
                 active_formations.I = pos.target
@@ -187,7 +189,7 @@ function AB.get_active_formations(xavier)
         end
     end
     if get_ability(xavier, "A_formation") then
-        for __, pos in ipairs(formations_def.A{xavier.x, xavier.y}) do
+        for __, pos in ipairs(formations_def.A { xavier.x, xavier.y }) do
             if _check_formation(xavier, pos) then
                 tiles_ally:of_pairs(pos)
                 active_formations.A = true
@@ -195,7 +197,7 @@ function AB.get_active_formations(xavier)
         end
     end
     if get_ability(xavier, "O_formation") then
-        for __, pos in ipairs(formations_def.O{xavier.x, xavier.y}) do
+        for __, pos in ipairs(formations_def.O { xavier.x, xavier.y }) do
             if _check_formation(xavier, pos) then
                 tiles_ally:of_pairs(pos)
                 active_formations.O = pos.target
@@ -211,12 +213,12 @@ end
 local function update_xavier_formation()
     local xavier = wesnoth.get_unit("xavier")
     if xavier == nil then return end
-    for _, name in pairs({"A", "I", "Y"}) do -- remove potential old ability
-        xavier:remove_modifications({id = "_formation_" .. name}, "trait")
+    for _, name in pairs({ "A", "I", "Y" }) do -- remove potential old ability
+        xavier:remove_modifications({ id = "_formation_" .. name }, "trait")
     end
     local active_formations, tiles, targets = AB.get_active_formations(xavier)
     ANIM.hover_tiles(tiles:to_pairs(), FORMATION_LABEL, nil, targets:to_pairs(),
-                     TARGET_LABEL, 50)
+        TARGET_LABEL, 50)
     for name, target in pairs(active_formations) do
         if not (name == "O") then
             formations_abilities[name](xavier, target)
@@ -261,10 +263,10 @@ function AB.union_debuf(x, y)
     ANIM.quake()
     local list_abilities = H.get_child(target.__cfg, "abilities") or {}
     target:add_modification("trait", {
-        T.effect{apply_to = "remove_ability", T.abilities(list_abilities)},
-        T.effect{
+        T.effect { apply_to = "remove_ability", T.abilities(list_abilities) },
+        T.effect {
             apply_to = "attack",
-            T.set_specials{} -- remove all specials
+            T.set_specials {} -- remove all specials
         }
     })
     wesnoth.float_label(x, y, _ "Disabled !")
@@ -295,7 +297,7 @@ function AB.select()
     if u.id == "xavier" then
         local _, tiles, targets = AB.get_active_formations(u)
         ANIM.hover_tiles(tiles:to_pairs(), FORMATION_LABEL, 15,
-                         targets:to_pairs(), TARGET_LABEL, 50)
+            targets:to_pairs(), TARGET_LABEL, 50)
     end
 end
 
@@ -305,17 +307,17 @@ local function long_heal(healer)
     local level_long_heal = GetAbility(healer, "long_heal")._level
     if not level_long_heal then return end
     local value_heal = GetAbility(healer, "better_heal", "heals").value
-    local candidates = wesnoth.get_units{
-        T.filter_location{x = healer.x, y = healer.y, radius = 3}
+    local candidates = wesnoth.get_units {
+        T.filter_location { x = healer.x, y = healer.y, radius = 3 }
     }
     local ratio = DB.AMLAS.morgane.values.LONG_HEAL_RATIO
     for _, u in pairs(candidates) do
-        local d = wesnoth.map.distance_between({u.x, u.y}, {healer.x, healer.y})
+        local d = wesnoth.map.distance_between({ u.x, u.y }, { healer.x, healer.y })
         if not wesnoth.is_enemy(healer.side, u.side) and (d == 2 or d == 3) then -- other units will be healed by the standard heal
             local amount = Round(ratio * level_long_heal * value_heal / d)
             wesnoth.fire("heal_unit", {
-                T.filter{x = u.x, y = u.y},
-                T.filter_second{id = "morgane"},
+                T.filter { x = u.x, y = u.y },
+                T.filter_second { id = "morgane" },
                 amount = amount,
                 animate = true
             })
@@ -325,7 +327,7 @@ end
 
 -- Should decrease special skill CDs
 function AB.turn_start()
-    local lhero = wesnoth.get_units{role = "hero"}
+    local lhero = wesnoth.get_units { role = "hero" }
     for _, v in pairs(lhero) do
         local current_cd = v.variables.special_skill_cd or 0
         if current_cd > 0 then
