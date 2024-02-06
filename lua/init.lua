@@ -1,5 +1,5 @@
 -- Load all the lua modules (excepted Scenario)
-H = wesnoth.require "lua/helper.lua"
+-- H = wesnoth.require "lua/helper.lua"
 T = wml.tag
 VAR = wml.variables
 _ = wesnoth.textdomain "wesnoth-A_Tale_of_Sand_and_Snow"

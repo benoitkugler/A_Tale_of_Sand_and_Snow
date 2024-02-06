@@ -3,10 +3,10 @@
 -- a table of table of tiles, (an inner table being a possible formation)
 local formations_def = {}
 
----@param center
+---@param center location
 ---@return table[]
 function formations_def.Y(center)
-    local c1, c2, c3, c4, c5, c6 = wesnoth.map.get_adjacent_tiles(center)
+    local c1, c2, c3, c4, c5, c6 = wesnoth.map.get_adjacent_hexes(center)
     local formations = {}
     for __, c in ipairs({ c1, c2, c3, c4, c5, c6 }) do
         local front = wesnoth.map.rotate_right_around_center(center, c, 3) -- in front of xavier
@@ -19,7 +19,7 @@ end
 
 ---@return table[]
 function formations_def.A(center)
-    local c1, c2, c3, c4, c5, c6 = wesnoth.map.get_adjacent_tiles(center)
+    local c1, c2, c3, c4, c5, c6 = wesnoth.map.get_adjacent_hexes(center)
     local formations = {}
     for __, c in ipairs({ c1, c2, c3, c4, c5, c6 }) do
         local adj = wesnoth.map.rotate_right_around_center(c, center, 2)
@@ -30,7 +30,7 @@ end
 
 ---@return table[]
 function formations_def.I(center)
-    local c1, c2, c3, c4, c5, c6 = wesnoth.map.get_adjacent_tiles(center)
+    local c1, c2, c3, c4, c5, c6 = wesnoth.map.get_adjacent_hexes(center)
     local formations = {}
     for __, c in ipairs({ c1, c2, c3, c4, c5, c6 }) do
         local behind = wesnoth.map.rotate_right_around_center(center, c, 3)
@@ -47,13 +47,13 @@ function formations_def.O(center)
         wesnoth.message("O_formation should be called on Xavier's tile only !")
         return {}
     end
-    local c1, c2, c3, c4, c5, c6 = wesnoth.map.get_adjacent_tiles(center)
+    local c1, c2, c3, c4, c5, c6 = wesnoth.map.get_adjacent_hexes(center)
     local formations = {}
     for __, c in ipairs({ c1, c2, c3, c4, c5, c6 }) do
         local is_encerclement = true
         local u = wesnoth.get_unit(c[1], c[2])
         if not (u == nil) and wesnoth.is_enemy(u.side, xavier.side) then
-            local d1, d2, d3, d4, d5, d6 = wesnoth.map.get_adjacent_tiles(c)
+            local d1, d2, d3, d4, d5, d6 = wesnoth.map.get_adjacent_hexes(c)
             for __, d in ipairs({ d1, d2, d3, d4, d5, d6 }) do
                 local ud = wesnoth.get_unit(d[1], d[2])
                 if ud == nil or wesnoth.is_enemy(ud.side, xavier.side) then -- no encerclement

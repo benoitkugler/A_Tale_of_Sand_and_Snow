@@ -1,11 +1,12 @@
 AB = {}
-local LS = wesnoth.require "location_set"
+---@type location_set
+local LocSet = wesnoth.require "location_set"
 
 local FORMATION_LABEL = _ "Formation"
 local TARGET_LABEL = _ "Target"
 
 
----@param set LocationSet
+---@param set loc_set
 local function to_zip_pairs(set)
     ---@type integer[], integer[]
     local listx, listy = {}, {}
@@ -17,25 +18,32 @@ local function to_zip_pairs(set)
 end
 
 -- Return true if x,y is adjacent to one ennemy of unit
-local function _next_to_ennemy(unit, x, y)
-    for a, b in H.adjacent_tiles(x, y) do
-        local u = wesnoth.get_unit(a, b)
-        if u and wesnoth.is_enemy(u.side, unit.side) then return true end
+---@param unit unit
+---@param x integer
+---@param y integer
+local function next_to_ennemy(unit, x, y)
+    local c1, c2, c3, c4, c5, c6 = wesnoth.map.get_adjacent_hexes({ x = x, y = y })
+    for _, loc in ipairs({ c1, c2, c3, c4, c5, c6 }) do
+        local u = wesnoth.units.get(loc.x, loc.y)
+        if u and wesnoth.sides.is_enemy(u.side, unit.side) then return true end
     end
     return false
 end
 
-local function is_empty(x, y) return wesnoth.get_unit(x, y) == nil end
+---@param x integer
+---@param y integer
+local function is_empty(x, y) return wesnoth.units.get(x, y) == nil end
 
--- Return a set of tiles behin ennemy lines
+-- Return a set of tiles behind ennemy lines
+---@param unit unit
 local function tiles_behind(unit)
-    local available_tiles = LS.of_pairs(wesnoth.find_reach(unit, {
-        ignore_units = true
+    local available_tiles = LocSet.of_pairs(wesnoth.paths.find_reach(unit, {
+        ignore_units = true,
     }))
-    local true_reachable = LS.of_pairs(wesnoth.find_reach(unit))
+    local true_reachable = LocSet.of_pairs(wesnoth.paths.find_reach(unit))
     local tiles = available_tiles:filter(
         function(x, y, v)
-            return (is_empty(x, y) and _next_to_ennemy(unit, x, y) and
+            return (is_empty(x, y) and next_to_ennemy(unit, x, y) and
                 (true_reachable:get(x, y) == nil))
         end)
     return tiles
@@ -44,9 +52,9 @@ end
 -- Return a set of location where the unit may go if
 -- ennemy units weren't blocking the path.
 local function available_tiles(unit)
-    local reachable = LS.of_pairs(
+    local reachable = LocSet.of_pairs(
         wesnoth.find_reach(unit, { ignore_units = true }))
-    local true_reachable = LS.of_pairs(wesnoth.find_reach(unit))
+    local true_reachable = LocSet.of_pairs(wesnoth.find_reach(unit))
     local tiles = reachable:filter(function(x, y, v)
         return (is_empty(x, y) and (true_reachable:get(x, y) == nil))
     end)
@@ -68,7 +76,7 @@ function AB.war_jump(unit_id, x, y)
         Popup(_ "Error",
             _ "Can't <span color='red'>War Jump </span> now. Please <span weight='bold'>select</span> me again.")
     else
-        local locs = LS.of_pairs(wesnoth.find_reach(u, { ignore_units = true }))
+        local locs = LocSet.of_pairs(wesnoth.find_reach(u, { ignore_units = true }))
         local moves_left = locs:get(tox, toy)
         if u.x ~= x or u.y ~= y or not GetAbilityLevel(u, "war_jump") or
             not moves_left or not is_empty(tox, toy) then
@@ -102,7 +110,7 @@ function AB.elusive(unit_id, x, y)
         Popup(_ "Error",
             _ "Can't be <span color='green'>Elusive</span> right now. Please <span weight='bold'>select</span> me again.")
     else
-        local locs = LS.of_pairs(wesnoth.find_reach(u, { ignore_units = true }))
+        local locs = LocSet.of_pairs(wesnoth.find_reach(u, { ignore_units = true }))
         local moves_left = locs:get(tox, toy)
         if u.x ~= x or u.y ~= y or not GetAbilityLevel(u, "elusive") or
             not moves_left or not is_empty(tox, toy) then
@@ -169,8 +177,8 @@ end
 -- Returns the active formations (xavier need to have the ability corresponding)
 ---@param xavier Unit
 function AB.get_active_formations(xavier)
-    local tiles_ally = LS.create()
-    local tiles_target = LS.create()
+    local tiles_ally = LocSet.create()
+    local tiles_target = LocSet.create()
     local active_formations = {}
     if GetAbilityLevel(xavier, "Y_formation") then
         for __, pos in ipairs(formations_def.Y { xavier.x, xavier.y }) do
