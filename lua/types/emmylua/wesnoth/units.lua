@@ -55,7 +55,7 @@
 ---@field __cfg WMLTable
 
 ---Defines an individual unit
----@class unit : wesnoth.units, location
+---@class unit : wesnoth.units, location1
 ---@field valid "'map'"|"'recall'"|"'private'"|nil
 ---@field loc? location
 ---@field id? string
@@ -256,7 +256,6 @@ function wesnoth.units.create(cfg) end
 ---@param context? location|unit A second unit for the filter, or a reference location
 ---@return unit[]
 function wesnoth.units.find_on_map(filter, context) end
-
 
 ---Find all matching units on recall lists
 ---@param filter WML The filter to match

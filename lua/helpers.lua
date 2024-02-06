@@ -36,10 +36,13 @@ end
 ---Return the ability with id 'id_ability'.
 ---'ability_name' defaut to "isHere"
 ---@param u unit
+---@param id_ability string
+---@param ability_name string?
+---@return WMLTable
 function GetAbility(u, id_ability, ability_name)
     ability_name = ability_name or "isHere"
-    local list_abilities = H.get_child(u.__cfg, "abilities") or {}
-    for ab in H.child_range(list_abilities, ability_name) do
+    local list_abilities = wml.get_child(u.__cfg, "abilities") or {}
+    for ab in wml.child_range(list_abilities, ability_name) do
         if ab.id == id_ability then return ab end
     end
     return {}
@@ -48,10 +51,12 @@ end
 ---Return the field '_level' of the abilities with id 'id_ability'.
 ---'ability_name' defaut to "isHere"
 ---@param u unit
+---@param id_ability string
+---@param ability_name string?
 ---@return integer|nil
 function GetAbilityLevel(u, id_ability, ability_name)
     local ab = GetAbility(u, id_ability, ability_name)
-    return ab._level
+    return ab._level --[[@as integer|nil]]
 end
 
 ---Returns the level of given special for current weapon
@@ -66,7 +71,7 @@ end
 -- Atk is a unit.attack proxy or a weapon child
 ---@param atk unit_weapon|WMLTable
 ---@param id_special string
----@param special_name? string
+---@param special_name? string # default to isHere
 ---@return table
 function GetSpecial(atk, id_special, special_name)
     special_name = special_name or "isHere"
@@ -118,9 +123,11 @@ function GetLocation()
 end
 
 -- Returns the table id_skill = lvl
+---@param u unit
+---@return table
 function TableSkills(u)
     local table_amlas = {}
-    for adv in H.child_range(H.get_child(u.__cfg, "modifications"),
+    for adv in wml.child_range(wml.get_child(u.__cfg, "modifications") or {},
         "advancement") do
         table_amlas[adv.id] = (table_amlas[adv.id] or 0) + 1
     end
@@ -162,9 +169,7 @@ function Popup(title, message)
 end
 
 ---@param id string
----@return unit?
+---@return unit
 function GetRecallUnit(id)
-    for _, u in pairs(wesnoth.units.find_on_recall({})) do
-        if u.id == id then return u end
-    end
+    return wesnoth.units.find_on_recall({ id = id })[1]
 end

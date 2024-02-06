@@ -18,14 +18,18 @@
 
 ---A WML tag is a two-element array.
 ---The first element is a string and the second element is a WML
----@class WMLTag
----@field tag string
----@field contents WML
+---@alias WMLTag  { [1]: string, [2]: WML}
+
+-- -@class WMLTag
+-- -@field tag string
+-- -@field contents WML
+
 
 ---@class wml
 ---@field all_variables WMLTable
----@field tag { [string]: fun(cfg: WMLTable): WMLTable}
----@field variables {[string]: WMLTable}
+---@field tag { [string]: fun(cfg: WMLTable): WMLTag}
+---@field variables table<string, WML>
+---@field variables_proxy table<string, WMLVariableProxy>
 ---@field array_access table
 wml = {}
 
@@ -180,11 +184,20 @@ function wml.fire(name, cfg) end
 ---returns a table containing all the variables (starting at index 1).
 ---@param var string
 ---@param context any?
----@return table
+---@return WML[] #A table containing all the variables (starting at index 1).
 function wml.array_access.get(var, context) end
 
 ---Puts all the elements of table t inside a WML container with name var.
 ---@param var string
----@param t table
+---@param t WML[] An array of WML tables
 ---@param context any?
 function wml.array_access.set(var, t, context) end
+
+-- Creates proxies for all the WML container variables with name var.
+-- This is similar to wml.array_access.get, except that the elements
+-- can be used for writing too.
+---@param var string Name of the variable to fetch
+---@return WMLVariableProxy[] #A table containing all the variable proxies (starting at index 1).
+function wml.array_access.get_proxy(var) end
+
+---@alias WMLVariableProxy table<string, string|number|boolean|WMLTable>

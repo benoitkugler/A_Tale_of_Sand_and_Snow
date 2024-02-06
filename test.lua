@@ -105,6 +105,8 @@ end
 
 -- entry point on the right click menu
 function test(x, y)
+    local location = wesnoth.map.rotate_right_around_center({ 2, 2 }, { 2, 3 }, 2)
+    wesnoth.interface.add_chat_message(tostring(location))
     Popup("test", "test")
     -- switch_limbes()
 end
@@ -152,4 +154,4 @@ function wesnoth.theme_items.edit_left_button_function()
     return r
 end
 
---     wesnoth.add_modification(u,"object",{{"effect",{apply_to="attack",{"set_specials", { {"isHere",{id="slow_zone",name="test"} }  }}  }}},false)
+--     wesnoth.units.add_modification(u,"object",{{"effect",{apply_to="attack",{"set_specials", { {"isHere",{id="slow_zone",name="test"} }  }}  }}},false)

@@ -4,7 +4,7 @@ local IMAGE_SPECIAL_SKILL = "special_skills/star.png"
 local IMAGE_FEAR_OF_LOVE = "menu/fear_of_love.png"
 
 -- Customs status
----@param unit Unit
+---@param unit unit
 local function _show_special_skill_cd(unit)
     local skill_data = DB.HEROES.actif_skills[unit.id]
     if not skill_data then return end
@@ -15,11 +15,11 @@ local function _show_special_skill_cd(unit)
     local tooltip
     if cd > 0 then
         tooltip = Fmt(_ "Special skill cooldown : <b>%d</b> turn%s", cd,
-                      cd == 1 and "" or "s")
+            cd == 1 and "" or "s")
     else
         tooltip = _ "Special skill <b>ready</b> !"
     end
-    return T.element{image = IMAGE_SPECIAL_SKILL, tooltip = tooltip}
+    return T.element { image = IMAGE_SPECIAL_SKILL, tooltip = tooltip }
 end
 
 local function _show_fear_of_love(unit)
@@ -33,7 +33,7 @@ local function _show_fear_of_love(unit)
     else
         return
     end
-    return T.element{image = IMAGE_FEAR_OF_LOVE, tooltip = tooltip}
+    return T.element { image = IMAGE_FEAR_OF_LOVE, tooltip = tooltip }
 end
 
 local old_unit_status = wesnoth.theme_items.unit_status
@@ -44,15 +44,15 @@ function wesnoth.theme_items.unit_status()
     local s = old_unit_status()
     if u.status.chilled then
         local lvl, cd = u.variables.status_chilled_lvl,
-                        u.variables.status_chilled_cd
+            u.variables.status_chilled_cd
         local bonus_dmg = SPECIAL_SKILLS.info.drumar
-                              .bonus_cold_mistress(lvl - 1)[1]
+            .bonus_cold_mistress(lvl - 1)[1]
         table.insert(s, {
-            T.element{
+            T.element {
                 image = "menu/chilled.png",
                 tooltip = Fmt(
                     _ "chilled: This unit is infoged by Cold Mistress. It will take <span color='%s'>%d%%</span> bonus damage when hit by cold attacks. " ..
-                        "<span style='italic'>Last %d turn(s).</span>",
+                    "<span style='italic'>Last %d turn(s).</span>",
                     COLOR_CHILLED, bonus_dmg, cd)
             }
         })
@@ -60,9 +60,9 @@ function wesnoth.theme_items.unit_status()
     if u.status._zone_slowed then
         table.insert(s, {
             "element", {
-                image = "menu/chilled.png",
-                tooltip = _ "slowing field: This unit was hit by a slowing field."
-            }
+            image = "menu/chilled.png",
+            tooltip = _ "slowing field: This unit was hit by a slowing field."
+        }
         })
     end
     local el = _show_fear_of_love(u)
@@ -84,7 +84,7 @@ function wesnoth.theme_items.unit_hp()
         local sh = u.variables.status_shielded_hp
         local desc =
             _ "%s's shield will absorb <span color='%s'>%d</span> damage (active in combat). Only last for the current turn."
-        table.insert(s, T.element{
+        table.insert(s, T.element {
             text = Fmt("  <span color='%s'>+<b>%d</b></span>", COLOR_SHIELD, sh),
             tooltip = Fmt(desc, u.name, COLOR_SHIELD, sh)
         })
@@ -107,7 +107,7 @@ function wesnoth.theme_items.unit_traits()
                 local str = (objet.code and objet.code(u)) or objet.description
                 element.text = objet.name .. " "
                 element.tooltip = Fmt(_ "Artifact : <b>%s</b>\n %s", objet.name,
-                                      str)
+                    str)
             end
         end
     end

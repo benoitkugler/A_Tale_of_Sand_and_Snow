@@ -15,10 +15,10 @@ end
 
 -- Remove effect of given objet, and set its owner to 0
 function O.remove(unit_id, object_id)
-    local u = wesnoth.get_units {id = unit_id}[1]
+    local u = wesnoth.units.get(unit_id)
 
-    u:remove_modifications({id = object_id}, "object")
-    u:remove_modifications({id = object_id}, "trait")
+    u:remove_modifications({ id = object_id }, "object")
+    u:remove_modifications({ id = object_id }, "trait")
     AMLA.update_lvl(u) -- remove_modification may delete extra lvls
 
     VAR.objets_joueur[object_id] = 0
@@ -26,22 +26,22 @@ end
 
 -- Apply an object to the given unit (unit modification and owner)
 function O.apply(unit_id, objet_id)
-    local u = wesnoth.get_units {id = unit_id}[1]
+    local u = wesnoth.units.get(unit_id)
     local obj = DB.OBJETS[objet_id]
     local modif_object = {
         id = objet_id,
-        {"effect", obj.effect}
+        { "effect", obj.effect }
     }
 
     local modif_trait = {
         id = objet_id,
         name = obj.name,
         description = obj.description,
-        {"effect", {}}
+        { "effect", {} }
     }
 
-    wesnoth.add_modification(u, "object", modif_object, false)
-    wesnoth.add_modification(u, "trait", modif_trait)
+    wesnoth.units.add_modification(u, "object", modif_object, false)
+    wesnoth.units.add_modification(u, "trait", modif_trait)
 
     VAR.objets_joueur[objet_id] = unit_id
 end
@@ -80,11 +80,11 @@ local function sorted_keys(myTable)
 end
 
 local dialog = {
-    T.tooltip {id = "tooltip"},
-    T.helptip {id = "tooltip_large"},
+    T.tooltip { id = "tooltip" },
+    T.helptip { id = "tooltip_large" },
     T.grid {
-        T.row {T.column {T.label {tooltip = _ "Equipped artefacts are shown in red font", id = "titre"}}},
-        T.row {T.column {T.spacer {id = "space", height = 10}}},
+        T.row { T.column { T.label { tooltip = _ "Equipped artefacts are shown in red font", id = "titre" } } },
+        T.row { T.column { T.spacer { id = "space", height = 10 } } },
         T.row {
             T.column {
                 T.horizontal_listbox {
@@ -95,12 +95,12 @@ local dialog = {
                             T.column {
                                 T.toggle_panel {
                                     T.grid {
-                                        T.row {T.column {border_size = 5, border = "all", T.image {id = "icone"}}},
+                                        T.row { T.column { border_size = 5, border = "all", T.image { id = "icone" } } },
                                         T.row {
                                             T.column {
                                                 border_size = 5,
                                                 border = "left,right,bottom",
-                                                T.label {id = "name"}
+                                                T.label { id = "name" }
                                             }
                                         }
                                     }
@@ -111,41 +111,41 @@ local dialog = {
                 }
             }
         },
-        T.row {T.column {T.spacer {id = "space2", height = 10}}},
+        T.row { T.column { T.spacer { id = "space2", height = 10 } } },
         T.row {
             T.column {
                 T.grid {
                     T.row {
                         T.column {
                             T.grid {
-                                T.row {T.column {T.image {id = "owner_img"}}},
-                                T.row {T.column {T.label {id = "owner_name"}}}
+                                T.row { T.column { T.image { id = "owner_img" } } },
+                                T.row { T.column { T.label { id = "owner_name" } } }
                             }
                         },
-                        T.column {T.spacer {id = "space3", width = 10}},
+                        T.column { T.spacer { id = "space3", width = 10 } },
                         T.column {
                             T.grid {
-                                T.row {T.column {T.label {id = "objet_pres"}}},
-                                T.row {T.column {T.image {id = "objet_img"}}},
+                                T.row { T.column { T.label { id = "objet_pres" } } },
+                                T.row { T.column { T.image { id = "objet_img" } } },
                                 T.row {
                                     T.column {
                                         border_size = 5,
                                         border = "all",
-                                        T.label {characters_per_line = 80, id = "objet_des"}
+                                        T.label { characters_per_line = 80, id = "objet_des" }
                                     }
                                 }
                             }
                         },
                         T.column {
-                            T.button {id = "equip", tooltip = _ "Click to change the object's owner", label = _ "Equip"}
+                            T.button { id = "equip", tooltip = _ "Click to change the object's owner", label = _ "Equip" }
                         }
                     }
                 }
             }
         },
-        T.row {T.column {T.spacer {height = 7}}},
-        T.row {T.column {T.label {id = "titre_heroes"}}},
-        T.row {T.column {T.spacer {height = 5}}},
+        T.row { T.column { T.spacer { height = 7 } } },
+        T.row { T.column { T.label { id = "titre_heroes" } } },
+        T.row { T.column { T.spacer { height = 5 } } },
         T.row {
             T.column {
                 T.horizontal_listbox {
@@ -156,12 +156,12 @@ local dialog = {
                             T.column {
                                 T.toggle_panel {
                                     T.grid {
-                                        T.row {T.column {border_size = 5, border = "all", T.image {id = "icone"}}},
+                                        T.row { T.column { border_size = 5, border = "all", T.image { id = "icone" } } },
                                         T.row {
                                             T.column {
                                                 border_size = 5,
                                                 border = "left,right,bottom",
-                                                T.label {id = "name"}
+                                                T.label { id = "name" }
                                             }
                                         }
                                     }
@@ -172,8 +172,8 @@ local dialog = {
                 }
             }
         },
-        T.row {T.column {T.spacer {id = "space4", height = 10}}},
-        T.row {T.column {T.button {id = "ok", label = _ "Return"}}}
+        T.row { T.column { T.spacer { id = "space4", height = 10 } } },
+        T.row { T.column { T.button { id = "ok", label = _ "Return" } } }
     }
 }
 
@@ -320,7 +320,7 @@ local function preshow()
         for i, v in pairs(O.objets) do
             O.min_length_description =
                 (O.min_length_description > string.len(tostring(DB.OBJETS[i]["description"])) and
-                string.len(tostring(DB.OBJETS[i]["description"]))) or
+                    string.len(tostring(DB.OBJETS[i]["description"]))) or
                 O.min_length_description
         end
 

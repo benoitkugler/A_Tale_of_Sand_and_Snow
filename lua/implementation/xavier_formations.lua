@@ -17,6 +17,7 @@ function formations_def.Y(center)
     return formations
 end
 
+---@param center location
 ---@return table[]
 function formations_def.A(center)
     local c1, c2, c3, c4, c5, c6 = wesnoth.map.get_adjacent_hexes(center)
@@ -28,6 +29,7 @@ function formations_def.A(center)
     return formations
 end
 
+---@param center location
 ---@return table[]
 function formations_def.I(center)
     local c1, c2, c3, c4, c5, c6 = wesnoth.map.get_adjacent_hexes(center)
@@ -40,23 +42,24 @@ function formations_def.I(center)
     return formations
 end
 
+---@param center location
 ---@return table[]
 function formations_def.O(center)
-    local xavier = wesnoth.get_unit(center[1], center[2])
+    local xavier = wesnoth.units.get(center[1], center[2])
     if xavier == nil or not (xavier.id == "xavier") then
-        wesnoth.message("O_formation should be called on Xavier's tile only !")
+        wesnoth.interface.add_chat_message("O_formation should be called on Xavier's tile only !")
         return {}
     end
     local c1, c2, c3, c4, c5, c6 = wesnoth.map.get_adjacent_hexes(center)
     local formations = {}
     for __, c in ipairs({ c1, c2, c3, c4, c5, c6 }) do
         local is_encerclement = true
-        local u = wesnoth.get_unit(c[1], c[2])
-        if not (u == nil) and wesnoth.is_enemy(u.side, xavier.side) then
+        local u = wesnoth.units.get(c[1], c[2])
+        if not (u == nil) and wesnoth.sides.is_enemy(u.side, xavier.side) then
             local d1, d2, d3, d4, d5, d6 = wesnoth.map.get_adjacent_hexes(c)
             for __, d in ipairs({ d1, d2, d3, d4, d5, d6 }) do
-                local ud = wesnoth.get_unit(d[1], d[2])
-                if ud == nil or wesnoth.is_enemy(ud.side, xavier.side) then -- no encerclement
+                local ud = wesnoth.units.get(d[1], d[2])
+                if ud == nil or wesnoth.sides.is_enemy(ud.side, xavier.side) then -- no encerclement
                     is_encerclement = false
                     break
                 end
@@ -128,7 +131,7 @@ end
 
 function formations_abilities.O(xavier, target)
     UI.clear_menu_item("union_debuf") -- removing then rebuilding
-    local lvl = get_ability(xavier, "O_formation")
+    local lvl = GetAbility(xavier, "O_formation")
     local cd = xavier.variables.special_skill_cd or 0
     if lvl and target and (cd == 0) then
         local x, y = target[1], target[2]

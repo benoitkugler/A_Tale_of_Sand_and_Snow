@@ -22,7 +22,7 @@ end
 -- Add bonus levels based on AMLAs the unit currently has
 function AMLA.update_lvl(unit)
     local base_lvl = wesnoth.unit_types[unit.type].level
-    for amla in H.child_range(H.get_child(unit.__cfg, "modifications") or {},
+    for amla in wml.child_range(wml.get_child(unit.__cfg, "modifications") or {},
         "advancement") do
         if amla._level_bonus then base_lvl = base_lvl + 1 end
     end

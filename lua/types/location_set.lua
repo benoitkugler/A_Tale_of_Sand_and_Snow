@@ -1,6 +1,5 @@
 ---@meta
 
----@alias Point integer[]
 
 
 ---@class location_set
@@ -20,21 +19,15 @@ function methods:size() end
 
 function methods:clear() end
 
--- function methods:get(...)
---     local loc = wesnoth.map.read_location(...)
---     if loc ~= nil then
---         return self.values[index(loc.x, loc.y)]
---     end
---     return nil
--- end
+---@param x integer
+---@param y integer
+---@return any
+function methods:get(x, y) end
 
--- function methods:insert(...)
---     local loc, n = wesnoth.map.read_location(...)
---     if loc ~= nil then
---         local v = select(n + 1, ...)
---         self.values[index(loc.x, loc.y)] = v or true
---     end
--- end
+---@param x integer
+---@param y integer
+---@param value any?
+function methods:insert(x, y, value) end
 
 -- function methods:remove(...)
 --     local loc = wesnoth.map.read_location(...)
@@ -50,14 +43,14 @@ function methods:clone() end
 function methods:union(s) end
 
 ---@param s loc_set
----@param f fun(x:integer, y:integer, Point, Point):Point
+---@param f fun(x:integer, y:integer, l1:location,l2: location):location
 function methods:union_merge(s, f) end
 
 ---@param s loc_set
 function methods:inter(s) end
 
 ---@param s loc_set
----@param f fun(x:integer, y:integer, Point, Point): Point
+---@param f fun(x:integer, y:integer, l1:location,l2: location):location
 function methods:inter_merge(s, f) end
 
 ---@param s loc_set
@@ -66,7 +59,7 @@ function methods:diff(s) end
 ---@param s loc_set
 function methods:symm(s) end
 
----@param f fun(x:integer, y:integer, v:Point): boolean
+---@param f fun(x:integer, y:integer, v:location): boolean
 ---@return loc_set
 function methods:filter(f) end
 
@@ -101,7 +94,7 @@ function methods:filter(f) end
 --     end
 -- end
 
----@param t (Point|location)[]
+---@param t location[]
 function methods:of_pairs(t) end
 
 -- function methods:of_wml_var(name)
@@ -114,22 +107,17 @@ function methods:of_pairs(t) end
 --     end
 -- end
 
--- function methods:of_triples(t)
---     -- Create a location set from a table of 3-element tables
---     -- Elements 1 and 2 are x,y coordinates, #3 is value to be inserted
---     for k, v in pairs(t) do
---         self:insert(v[1], v[2], v[3])
---     end
--- end
+---@param t location_triple[]
+function methods:of_triples(t) end
 
 -- function methods:of_shroud_data(data)
 --     self:of_pairs(wesnoth.map.parse_bitmap(data))
 -- end
 
----@return Point[]
+---@return location[]
 function methods:to_pairs() end
 
----@return Point[]
+---@return location[]
 function methods:to_stable_pairs() end
 
 -- function methods:to_wml_var(name)
@@ -145,11 +133,8 @@ function methods:to_stable_pairs() end
 --     end)
 -- end
 
--- function methods:to_triples()
---     local res = {}
---     self:iter(function(x, y, v) table.insert(res, { x, y, v }) end)
---     return res
--- end
+---@return location_triple[]
+function methods:to_triples() end
 
 -- function methods:to_shroud_data()
 --     return wesnoth.map.make_bitmap(self:to_pairs())
@@ -163,7 +148,7 @@ function methods:random() end
 function location_set.create() end
 
 ---comment
----@param t (Point|location)[]
+---@param t location[]
 ---@return loc_set
 function location_set.of_pairs(t) end
 
@@ -173,11 +158,9 @@ function location_set.of_pairs(t) end
 --     return s
 -- end
 
--- function location_set.of_triples(t)
---     local s = location_set.create()
---     s:of_triples(t)
---     return s
--- end
+---@param t location_triple[]
+---@return loc_set
+function location_set.of_triples(t) end
 
 -- function location_set.of_shroud_data(data)
 --     local s = location_set.create()

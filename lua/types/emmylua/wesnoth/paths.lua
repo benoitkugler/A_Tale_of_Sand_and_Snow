@@ -42,7 +42,7 @@ function wesnoth.paths.find_vacant_hex(loc, unit) end
 ---@field ignore_teleport? boolean
 ---@field viewing_side? integer
 
----@class reachable_location : location
+---@class reachable_location : location1
 ---@field moves_left integer
 
 ---Get all locations a unit can reach

@@ -4,18 +4,23 @@ UI.show_skills = wesnoth.require("skills/init")
 
 local VARIABLE_IDS_MENUS = "showed_menus"
 
--- data is the menu table
+-- data is the menu table.
 -- keep in memory which menu are shown to avoid warnings
+---@param data WMLTable
 function UI.set_menu_item(data)
-    wesnoth.fire("set_menu_item", data)
-    H.get_variable_proxy_array(VARIABLE_IDS_MENUS)[data.id] = true
+    wml.fire("set_menu_item", data)
+    local menus = wml.variables[VARIABLE_IDS_MENUS] or {}
+    menus[data.id] = true
+    wml.variables[VARIABLE_IDS_MENUS] = menus
 end
 
+--- Remove the item with the given id
+---@param id string
 function UI.clear_menu_item(id)
-    local l = H.get_variable_proxy_array(VARIABLE_IDS_MENUS)
-    if l[id] then
-        wesnoth.fire("clear_menu_item", {id = id})
-        l[id] = nil
+    local menus = wml.variables_proxy[VARIABLE_IDS_MENUS]
+    if menus[id] then
+        wml.fire("clear_menu_item", { id = id })
+        menus[id] = nil
     end
 end
 
@@ -24,32 +29,32 @@ local function _set_menu_item(id, desc, image, x, y, lua_code)
         id = id,
         description = desc,
         image = image,
-        T.show_if{
-            T.have_location{x = "$x1", y = "$y1", {"and", {x = x, y = y}}}
+        T.show_if {
+            T.have_location { x = "$x1", y = "$y1", { "and", { x = x, y = y } } }
         },
-        T.command{T.lua{code = lua_code}}
+        T.command { T.lua { code = lua_code } }
     })
 end
 
 -- TODO: Better icon
 function UI.setup_menu_debuf(x, y, lua_code)
     _set_menu_item("union_debuf", _ "Xavier's union debuf !",
-                   "menu/union_debuf.png", x, y, lua_code)
+        "menu/union_debuf.png", x, y, lua_code)
 end
 
 function UI.setup_menu_warjump(x, y, lua_code)
     _set_menu_item("warjump", _ "War jump here with Gondhül !",
-                   "menu/war_jump.png", x, y, lua_code)
+        "menu/war_jump.png", x, y, lua_code)
 end
 
 function UI.setup_menu_elusive(x, y, lua_code)
     _set_menu_item("elusive", _ "Sneak here with Brinx", "menu/ellusive.png", x,
-                   y, lua_code)
+        y, lua_code)
 end
 
 -- Setup menu needed by abilities with cooldown
 local MENUS_SPECIAL_SKILLS = {
-    vranken = {_ "Transposition", "AB.transposition()"}
+    vranken = { _ "Transposition", "AB.transposition()" }
 }
 function UI.turn_start()
     for unit_id, datas in pairs(MENUS_SPECIAL_SKILLS) do
@@ -57,15 +62,15 @@ function UI.turn_start()
         local id_menu = unit_id .. "_special_skill"
         UI.clear_menu_item(id_menu)
 
-        local hero = wesnoth.get_unit(unit_id)
+        local hero = wesnoth.units.get(unit_id)
         if hero then
             local cd = hero.variables.special_skill_cd
             if cd and cd == 0 then
                 UI.set_menu_item({
                     id = id_menu,
                     description = label,
-                    T.show_if{T.have_unit{x = "$x1", y = "$y1", id = unit_id}},
-                    T.command{T.lua{code = lua_code}}
+                    T.show_if { T.have_unit { x = "$x1", y = "$y1", id = unit_id } },
+                    T.command { T.lua { code = lua_code } }
                 })
             end
         end
@@ -76,9 +81,9 @@ function UI.set_menu_skills()
     UI.set_menu_item({
         id = "show_skills",
         description = _ "Skills",
-        T.show_if{T.have_unit{x = "$x1", y = "$y1", role = "hero"}},
-        T.command{T.lua{code = "UI.show_skills()"}},
-        T.default_hotkey{key = "s", shift = true}
+        T.show_if { T.have_unit { x = "$x1", y = "$y1", role = "hero" } },
+        T.command { T.lua { code = "UI.show_skills()" } },
+        T.default_hotkey { key = "s", shift = true }
     })
 end
 
@@ -87,14 +92,14 @@ function UI.setup_menus()
     UI.set_menu_item({
         id = "special_skills",
         description = _ "Special Ability",
-        T.show_if{
-            T.have_unit{
+        T.show_if {
+            T.have_unit {
                 x = "$x1",
                 y = "$y1",
-                T.filter_wml{T.variables{special_skills = true}}
+                T.filter_wml { T.variables { special_skills = true } }
             }
         },
-        T.command{T.lua{code = "CS.special_skills()"}}
+        T.command { T.lua { code = "CS.special_skills()" } }
     })
 
     UI.set_menu_skills()
@@ -102,6 +107,6 @@ function UI.setup_menus()
     UI.set_menu_item({
         id = "objets",
         description = _ "Objects",
-        T.command{T.lua{code = "O.menuObj()"}}
+        T.command { T.lua { code = "O.menuObj()" } }
     })
 end

@@ -1,7 +1,7 @@
 ---@meta
 
 ---@class wesnoth
----@field interface table
+---@field require fun(path:string):any
 wesnoth = {}
 
 ---@return "'Game Lua Kernel'" | "'Mapgen Lua Kernel'" | "'Application Lua Kernel'"

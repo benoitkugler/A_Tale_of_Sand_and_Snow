@@ -1,5 +1,8 @@
 ---@meta
 
+---@class wesnoth.interface
+wesnoth.interface = {}
+
 ---Freeze the game for a specified time
 ---@param ms number
 ---@param accel? boolean Whether to apply the current acceleration factor

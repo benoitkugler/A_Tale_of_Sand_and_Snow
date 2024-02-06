@@ -84,7 +84,7 @@ local Standard_event = {
 }
 
 -- Commons events for all scenarios
-for __, v in pairs(Standard_event) do
+for __, v in ipairs(Standard_event) do
     wesnoth.game_events.remove(v.id)
     wesnoth.game_events.add(v)
 end

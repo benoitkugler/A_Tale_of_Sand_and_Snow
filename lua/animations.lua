@@ -21,12 +21,12 @@ function ANIM.anim_zaap(x, y, direc)
 end
 
 -- Animate given tiles
----@param tiles integer[][]
+---@param tiles location[]
 ---@param label string
----@param step integer
----@param tiles2 integer[][]
----@param label2 string
----@param red_shift2 integer
+---@param step integer?
+---@param tiles2 location[]?
+---@param label2 string?
+---@param red_shift2 integer?
 function ANIM.hover_tiles(tiles, label, step, tiles2, label2, red_shift2)
     step = step or 5
     tiles2 = tiles2 or {}
