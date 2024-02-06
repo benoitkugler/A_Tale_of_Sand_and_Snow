@@ -5,7 +5,7 @@ local Standard_event = {
     {
         id = "prestart_menus",
         first_time_only = false,
-        name = "prestart",
+        name = "preload",
         T.lua { code = "UI.setup_menus()" }
     },
     {

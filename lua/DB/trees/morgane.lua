@@ -51,7 +51,7 @@ local morgane = {
                 }
             }
         end,
-        table.unpack(standard_amla_heal(5))
+        table.unpack(StandardAmlaHeal(5))
     },
     {
         id = "long_heal1",
@@ -77,7 +77,7 @@ local morgane = {
                 }
             }
         },
-        table.unpack(standard_amla_heal(10))
+        table.unpack(StandardAmlaHeal(10))
     },
     {
         id = "better_heal2",
@@ -117,7 +117,7 @@ local morgane = {
                 }
             }
         end,
-        table.unpack(standard_amla_heal(5))
+        table.unpack(StandardAmlaHeal(5))
     },
     {
         id = "long_heal2",
@@ -146,7 +146,7 @@ local morgane = {
                 }
             }
         },
-        table.unpack(standard_amla_heal(10))
+        table.unpack(StandardAmlaHeal(10))
     },
     {
         id = "lightbeam",
@@ -156,7 +156,7 @@ local morgane = {
         always_display = 1,
         description = _ "Stronger with lightbeam",
         T.effect { apply_to = "attack", name = "lightbeam", increase_damage = 2 },
-        table.unpack(standard_amla_heal(5))
+        table.unpack(StandardAmlaHeal(5))
     },
     {
         id = "fast_lightbeam",
@@ -168,7 +168,7 @@ local morgane = {
         always_display = 1,
         description = _ "Faster with lightbeam",
         T.effect { apply_to = "attack", name = "lightbeam", increase_attacks = 1 },
-        table.unpack(standard_amla_heal(7))
+        table.unpack(StandardAmlaHeal(7))
     },
     {
         id = "transfusion",
@@ -187,7 +187,7 @@ local morgane = {
         ---@param unit unit
         function(unit)
             local next_lvl =
-                (GetSpecial(unit.attacks.lightbeam, "transfusion")._level or 0) +
+                (GetSpecial(unit.attacks['lightbeam'], "transfusion")._level or 0) +
                 1
             return T.effect {
                 set_icon = "attacks/transfusion.png",
@@ -208,7 +208,7 @@ local morgane = {
                 }
             }
         end,
-        table.unpack(standard_amla_heal(10))
+        table.unpack(StandardAmlaHeal(10))
     },
     {
         id = "fast_lightbeam2",
@@ -219,7 +219,7 @@ local morgane = {
         always_display = 1,
         description = _ "Even faster with lightbeam",
         T.effect { apply_to = "attack", name = "lightbeam", increase_attacks = 1 },
-        table.unpack(standard_amla_heal(7))
+        table.unpack(StandardAmlaHeal(7))
     },
     {
         id = "though",
@@ -240,7 +240,7 @@ local morgane = {
                 fire = -7
             }
         },
-        table.unpack(standard_amla_heal(7))
+        table.unpack(StandardAmlaHeal(7))
     },
     {
         id = "deflect",
@@ -264,7 +264,7 @@ local morgane = {
                 }
             }
         },
-        table.unpack(standard_amla_heal(12))
+        table.unpack(StandardAmlaHeal(12))
     }
 }
 DB.AMLAS.morgane = morgane

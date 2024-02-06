@@ -158,11 +158,9 @@ function Popup(title, message)
     ---@param window window
     local function preshow(window)
         local ti = window:find("the_title") --[[@as simple_widget]]
-        ti.use_markup = true
         ti.marked_up_text = _ "<span size='large' color ='#BFA63F' font_weight ='bold'>" .. title ..
             "</span>"
         local me = window:find("the_message") --[[@as simple_widget]]
-        me.use_markup = true
         me.marked_up_text = message
     end
     gui.show_dialog(dialog, preshow)

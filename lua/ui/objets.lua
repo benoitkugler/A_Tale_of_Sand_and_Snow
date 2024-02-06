@@ -4,77 +4,87 @@
 -- TODO: Refactor (using DB.OBJETS)
 -- Librairie Objets
 
-O = {}
 
---PARTIE Echange d'objets
 
--- Reference the objet in player owned objects
-function O.nouvel_objet(objet_id)
-    VAR.objets_joueur[objet_id] = 0
-end
+-- object swap
 
--- Remove effect of given objet, and set its owner to 0
-function O.remove(unit_id, object_id)
+
+-- Remove effect of given objet, and set its owner to ""
+---@param unit_id string
+---@param object_id string
+local function remove(unit_id, object_id)
     local u = wesnoth.units.get(unit_id)
 
     u:remove_modifications({ id = object_id }, "object")
     u:remove_modifications({ id = object_id }, "trait")
     AMLA.update_lvl(u) -- remove_modification may delete extra lvls
 
-    VAR.objets_joueur[object_id] = 0
+    local m = Variables().player_objects
+    m[object_id] = ""
+    Variables().player_objects = m
 end
 
 -- Apply an object to the given unit (unit modification and owner)
-function O.apply(unit_id, objet_id)
+---@param unit_id string
+---@param object_id string
+local function apply(unit_id, object_id)
     local u = wesnoth.units.get(unit_id)
-    local obj = DB.OBJETS[objet_id]
+    local obj = DB.OBJETS[object_id]
     local modif_object = {
-        id = objet_id,
+        id = object_id,
         { "effect", obj.effect }
     }
 
     local modif_trait = {
-        id = objet_id,
+        id = object_id,
         name = obj.name,
         description = obj.description,
         { "effect", {} }
     }
 
-    wesnoth.units.add_modification(u, "object", modif_object, false)
-    wesnoth.units.add_modification(u, "trait", modif_trait)
+    u:add_modification("object", modif_object, false)
+    u:add_modification("trait", modif_trait)
 
-    VAR.objets_joueur[objet_id] = unit_id
+    local m = Variables().player_objects
+    m[object_id] = unit_id
+    Variables().player_objects = m
 end
 
-function O.donne(id_donner, id_obj, id_recev)
-    O.remove(id_donner, id_obj)
-    O.apply(id_recev, id_obj)
+---@param id_donner string
+---@param id_obj string
+---@param id_recev string
+local function giveTo(id_donner, id_obj, id_recev)
+    remove(id_donner, id_obj)
+    apply(id_recev, id_obj)
 end
 
-function O.echange(hero1, obj1, hero2, obj2)
-    O.remove(hero1, obj1)
-    O.remove(hero2, obj2)
-    O.apply(hero1, obj2)
-    O.apply(hero2, obj1)
+local function echange(hero1, obj1, hero2, obj2)
+    remove(hero1, obj1)
+    remove(hero2, obj2)
+    apply(hero1, obj2)
+    apply(hero2, obj1)
 end
 
--- PARTIE fenêtre de gestion des objets
+-- Object inventory GUI
 
--- Helpers
-local function is_in_table(i, t)
-    for j, k in pairs(t) do
-        if i == k then
-            return j
+---returns the first object owned by i,
+---or nil
+---@param hero string # hero id
+---@param t table<string, string>
+---@return string?
+local function hero_first_obj(hero, t)
+    for obj_id, hero_id in pairs(t) do
+        if hero == hero_id then
+            return obj_id
         end
     end
-    return false
+    return nil
 end
 
+---@param myTable table
+---@return string[]
 local function sorted_keys(myTable)
-    local keys = {}
-    for i, v in pairs(myTable) do
-        table.insert(keys, i)
-    end
+    local keys = table.keys(myTable)
     table.sort(keys)
     return keys
 end
@@ -83,12 +93,12 @@ local dialog = {
     T.tooltip { id = "tooltip" },
     T.helptip { id = "tooltip_large" },
     T.grid {
-        T.row { T.column { T.label { tooltip = _ "Equipped artefacts are shown in red font", id = "titre" } } },
+        T.row { T.column { T.label { tooltip = _ "Equipped artefacts are shown in red font", id = "title" } } },
         T.row { T.column { T.spacer { id = "space", height = 10 } } },
         T.row {
             T.column {
                 T.horizontal_listbox {
-                    id = "lobjets",
+                    id = "obj_list",
                     tooltip = _ "Equipped artefacts are shown in red font",
                     T.list_definition {
                         T.row {
@@ -125,13 +135,13 @@ local dialog = {
                         T.column { T.spacer { id = "space3", width = 10 } },
                         T.column {
                             T.grid {
-                                T.row { T.column { T.label { id = "objet_pres" } } },
-                                T.row { T.column { T.image { id = "objet_img" } } },
+                                T.row { T.column { T.label { id = "obj_presentation" } } },
+                                T.row { T.column { T.image { id = "obj_image" } } },
                                 T.row {
                                     T.column {
                                         border_size = 5,
                                         border = "all",
-                                        T.label { characters_per_line = 80, id = "objet_des" }
+                                        T.label { characters_per_line = 80, id = "obj_description" }
                                     }
                                 }
                             }
@@ -144,12 +154,12 @@ local dialog = {
             }
         },
         T.row { T.column { T.spacer { height = 7 } } },
-        T.row { T.column { T.label { id = "titre_heroes" } } },
+        T.row { T.column { T.label { id = "hero_title" } } },
         T.row { T.column { T.spacer { height = 5 } } },
         T.row {
             T.column {
                 T.horizontal_listbox {
-                    id = "lheroes",
+                    id = "hero_list",
                     has_minimum = false,
                     T.list_definition {
                         T.row {
@@ -177,197 +187,229 @@ local dialog = {
     }
 }
 
-local function preshow()
-    wesnoth.set_dialog_markup(true, "titre")
-    wesnoth.set_dialog_value(
-        "<span font_size = 'large' color ='#BFA63F' font_weight ='bold' >" .. _ " Artifacts collected" .. "</span>",
-        "titre"
-    )
 
-    wesnoth.set_dialog_markup(true, "titre_heroes")
-    wesnoth.set_dialog_value(
-        "<span color ='#BFA63F' font_weight ='bold' >" .. _ " Choose your hero" .. " :   </span>",
-        "titre_heroes"
-    )
+-- local ti = window:find("the_title") --[[@as simple_widget]]
+-- ti.use_markup = true
+-- ti.marked_up_text = _ "<span size='large' color ='#BFA63F' font_weight ='bold'>" .. title ..
+-- "</span>"
+-- local me = window:find("the_message") --[[@as simple_widget]]
+-- me.use_markup = true
+--     me.marked_up_text = message
+-- end
 
-    wesnoth.set_dialog_markup(true, "objet_des")
-    wesnoth.set_dialog_markup(true, "objet_pres")
-    wesnoth.set_dialog_markup(true, "owner_name")
+---@param window window
+local function preshow(window)
+    --- widgets
+    local title            = window:find("title") --[[@as label]]
+    local hero_title       = window:find("hero_title") --[[@as label]]
+    local owner_img        = window:find("owner_img") --[[@as image]]
+    local owner_name       = window:find("owner_name") --[[@as label]]
+    local obj_image        = window:find("obj_image") --[[@as image]]
+    local obj_description  = window:find("obj_description") --[[@as label]]
+    local obj_presentation = window:find("obj_presentation") --[[@as label]]
+    local obj_list         = window:find("obj_list") --[[@as listbox]]
+    local hero_list        = window:find("hero_list") --[[@as listbox]]
+    local equip            = window:find("equip") --[[@as button]]
 
-    local function affiche_middle(bool)
-        wesnoth.set_dialog_visible(bool, "owner_img")
-        wesnoth.set_dialog_visible(bool, "owner_name")
-        wesnoth.set_dialog_visible(bool, "objet_img")
-        wesnoth.set_dialog_visible(bool, "objet_des")
-        wesnoth.set_dialog_visible(bool, "objet_pres")
+
+    local heroes = Variables().heros_joueur:split(",")
+    table.sort(heroes)
+
+    --- state
+    local state = {
+        is_unfolded = false,
+        to_unequip = false,
+        ---@type string[]
+        position_objets = {}, -- object id
+        min_length_description = 100
+    }
+
+
+    title.marked_up_text      = "<span font_size = 'large' color ='#BFA63F' font_weight ='bold' >" ..
+        _ " Artifacts collected" .. "</span>"
+
+    hero_title.marked_up_text = "<span color ='#BFA63F' font_weight ='bold' >" ..
+        _ " Choose your hero" .. " :   </span>"
+
+
+    obj_description.use_markup = true
+    obj_presentation.use_markup = true
+    owner_name.use_markup = true
+
+    ---@param bool boolean| 'hidden'
+    local function show_middle(bool)
+        owner_img.visible = bool
+        owner_name.visible = bool
+        obj_image.visible = bool
+        obj_description.visible = bool
+        obj_presentation.visible = bool
     end
 
-    local function affiche_bottom(bool)
-        wesnoth.set_dialog_visible(bool, "lheroes")
-        wesnoth.set_dialog_visible(bool, "titre_heroes")
+    local function show_bottom(bool)
+        hero_list.visible = bool
+        hero_title.visible = bool
     end
 
-    local function onSelect_objet()
-        local obj_id = O.position_objets[wesnoth.get_dialog_value("lobjets")]
+    local function on_select_object()
+        local objects = Variables().player_objects
+
+        local obj_id = state.position_objets[obj_list.selected_index]
         local objet = DB.OBJETS[obj_id]
 
-        wesnoth.set_dialog_active(true, "equip")
-        if O.is_unfolded then
-            affiche_bottom(false)
-            O.is_unfolded = false
+        if state.is_unfolded then
+            show_bottom(false)
+            state.is_unfolded = false
         else
-            affiche_bottom(false)
+            show_bottom(false)
         end
 
-        affiche_middle(false)
-        affiche_middle(true)
-        wesnoth.set_dialog_visible(true, "equip")
-        wesnoth.set_dialog_value(objet.presentation, "objet_pres")
-        wesnoth.set_dialog_value(objet.image .. ".png", "objet_img")
+        show_middle(false)
+        show_middle(true)
 
-        O.to_unequip = false
+        equip.enabled = true
+        equip.visible = true
+        obj_presentation.marked_up_text = objet.presentation
+        obj_image.label = objet.image .. ".png"
 
-        if O.objets[obj_id] == 0 then
-            wesnoth.set_dialog_visible(false, "owner_img")
-            wesnoth.set_dialog_value("<span style='italic'>Not equipped yet</span>", "owner_name")
-            wesnoth.set_dialog_value(_ "Equip", "equip")
+        state.to_unequip = false
+
+        if objects[obj_id] == "" then
+            owner_img.visible = false
+            owner_name.marked_up_text = "<span style='italic'>Not equipped yet</span>"
+            equip.label = _ "Equip"
         else
-            local owner = wesnoth.get_unit(O.objets[obj_id])
-            wesnoth.set_dialog_value(owner.__cfg.image, "owner_img")
-            wesnoth.set_dialog_value("Owned by <span weight='bold'>" .. owner.name .. "</span>", "owner_name")
-            wesnoth.set_dialog_value(_ "Assign to", "equip")
+            local owner = wesnoth.units.get(objects[obj_id])
+            owner_img.label = owner.__cfg.image --[[@as tstring]]
+            owner_name.marked_up_text = "Owned by <span weight='bold'>" .. owner.name .. "</span>"
+            equip.label = _ "Assign to"
         end
 
-        --   Animation de transitions
-        local long_string = string.len(tostring(objet.description))
-        wesnoth.set_dialog_value(objet.description, "objet_des")
-        wesnoth.set_dialog_visible(true, "objet_des")
+        obj_description.label = objet.description
+        obj_description.visible = true
     end
 
-    local function affiche_list_heroes()
-        wesnoth.remove_dialog_item(1, #(O.heroes), "lheroes")
-        for i, v in pairs(O.heroes) do
-            local hero = wesnoth.get_unit(v)
-            if is_in_table(hero.id, O.objets) then
-                wesnoth.set_dialog_value("<span color='#F4673E'>" .. hero.name .. "</span>", "lheroes", i, "name")
-                wesnoth.set_dialog_markup(true, "lheroes", i, "name")
+    local function show_hero_list()
+        local objects = Variables().player_objects
+
+        hero_list:remove_items_at(1, #(heroes))
+        for i, v in ipairs(heroes) do
+            local hero = wesnoth.units.get(v)
+            local name_widget = (hero_list:find(i, "name") --[[@as label]])
+            if hero_first_obj(hero.id, objects) ~= nil then
+                name_widget.marked_up_text = "<span color='#F4673E'>" ..
+                    hero.name .. "</span>"
             else
-                wesnoth.set_dialog_value(hero.name, "lheroes", i, "name")
+                name_widget.marked_up_text = hero.name
             end
-            wesnoth.set_dialog_value(hero.__cfg.image, "lheroes", i, "icone")
+            local img_widget = (hero_list:find(i, "icone") --[[@as image]])
+            img_widget.label = hero.__cfg.image --[[@as tstring]]
         end
     end
 
-    local function onEquip()
-        local objet_id = O.position_objets[wesnoth.get_dialog_value("lobjets")]
-        local is_equipped = not (O.objets[objet_id] == 0)
-        if O.to_unequip then
-            O.remove(O.objets[objet_id], objet_id)
-            wesnoth.set_dialog_visible(false, "lheroes")
-            O.init()
-            onSelect_objet()
+    local function init()
+        local objects = Variables().player_objects
+
+        state.position_objets = {}
+        state.is_unfolded = false
+
+        state.min_length_description = 100000
+
+
+        for idObject, idOwner in pairs(objects) do
+            local len = string.len(tostring(DB.OBJETS[idObject].description))
+            state.min_length_description = (state.min_length_description > len and
+                len) or state.min_length_description
+        end
+
+        for k, idObj in ipairs(sorted_keys(objects)) do
+            local v = objects[idObj]
+            table.insert(state.position_objets, idObj)
+            local objet = DB.OBJETS[idObj];
+
+            (obj_list:find(k, "icone") --[[@as image]]).label = objet.image .. "mini.png" --[[@as tstring]]
+            local name = obj_list:find(k, "name") --[[@as label]]
+            if v == "" then
+                name.label = objet.name --[[@as tstring]]
+            else
+                name.marked_up_text = _ "<span color='#34eb34'>" .. objet.name .. "</span>"
+            end
+        end
+        obj_image.label = "objets/blank.png"
+        obj_presentation.label = "  "
+        obj_description.label = "  "
+        show_middle("hidden")
+        show_bottom(false)
+        equip.visible = false
+    end
+
+    local function on_equip()
+        local objects = Variables().player_objects
+
+        local obj_id = state.position_objets[obj_list.selected_index]
+        local is_equipped = not not (objects[obj_id])
+        if state.to_unequip then
+            remove(objects[obj_id], obj_id)
+            hero_list.visible = false
+            init()
+            on_select_object()
         else
-            affiche_bottom(false)
-            affiche_bottom(true)
-            affiche_list_heroes()
-            O.is_unfolded = true
+            show_bottom(false)
+            show_bottom(true)
+            show_hero_list()
+            state.is_unfolded = true
             if is_equipped then
-                O.to_unequip = true
-                wesnoth.set_dialog_value(_ "To inventory", "equip")
+                state.to_unequip = true
+                equip.label = _ "To inventory"
             else
-                wesnoth.set_dialog_active(false, "equip")
-                wesnoth.set_dialog_value(_ "Equip", "equip")
+                equip.enabled = false
+                equip.label = _ "Equip"
             end
         end
     end
 
-    local function onSelect_hero()
-        local objet_id = O.position_objets[wesnoth.get_dialog_value("lobjets")]
-        local i = wesnoth.get_dialog_value("lheroes")
-        local hero_id = O.heroes[i]
-        if O.objets[objet_id] == 0 then
-            local old_obj = is_in_table(hero_id, O.objets)
-            if old_obj then
-                O.remove(hero_id, old_obj)
-                O.apply(hero_id, objet_id)
+    local function on_select_hero()
+        local objects = Variables().player_objects
+
+        local objet_id = state.position_objets[obj_list.selected_index]
+        local i = hero_list.selected_index
+        local hero_id = heroes[i]
+        if objects[objet_id] == "" then
+            local old_obj = hero_first_obj(hero_id, objects)
+            if old_obj ~= nil then
+                remove(hero_id, old_obj)
+                apply(hero_id, objet_id)
             else
-                O.apply(hero_id, objet_id)
+                apply(hero_id, objet_id)
             end
         else
-            local old_obj = is_in_table(hero_id, O.objets)
-            if old_obj then
-                O.remove(hero_id, old_obj)
-                O.donne(O.objets[objet_id], objet_id, hero_id)
+            local old_obj = hero_first_obj(hero_id, objects)
+            if old_obj ~= nil then
+                remove(hero_id, old_obj)
+                giveTo(objects[objet_id], objet_id, hero_id)
             else
-                O.donne(O.objets[objet_id], objet_id, hero_id)
+                giveTo(objects[objet_id], objet_id, hero_id)
             end
         end
-        wesnoth.set_dialog_visible(false, "lheroes")
-        O.is_unfolded = false
-        O.init()
-        onSelect_objet()
+        hero_list.visible = false
+        state.is_unfolded = false
+        init()
+        on_select_object()
     end
 
-    function O.init()
-        local vari = wesnoth.get_variable("heros_joueur")
-        O.heroes = vari:to_field(",")
-        table.sort(O.heroes)
-        O.objets = wesnoth.get_variable("objets_joueur")
-        O.position_objets = {}
-        O.is_unfolded = false
 
-        O.min_length_description = 100000
-        for i, v in pairs(O.objets) do
-            O.min_length_description =
-                (O.min_length_description > string.len(tostring(DB.OBJETS[i]["description"])) and
-                    string.len(tostring(DB.OBJETS[i]["description"]))) or
-                O.min_length_description
-        end
-
-        for k, i in ipairs(sorted_keys(O.objets)) do
-            local v = O.objets[i]
-            table.insert(O.position_objets, i)
-            local objet = DB.OBJETS[i]
-            wesnoth.set_dialog_value(objet.image .. "mini.png", "lobjets", #(O.position_objets), "icone")
-            if v == 0 then
-                wesnoth.set_dialog_value(objet.name, "lobjets", #(O.position_objets), "name")
-            else
-                wesnoth.set_dialog_value(
-                    "<span color='#F4673E'>" .. objet.name .. "</span>",
-                    "lobjets",
-                    #(O.position_objets),
-                    "name"
-                )
-                wesnoth.set_dialog_markup(true, "lobjets", #(O.position_objets), "name")
-            end
-        end
-        wesnoth.set_dialog_value("objets/blank.png", "objet_img")
-        wesnoth.set_dialog_value("  ", "objet_pres")
-        wesnoth.set_dialog_value("  ", "objet_des")
-        affiche_middle("hidden")
-        affiche_bottom(false)
-        wesnoth.set_dialog_visible(false, "equip")
-    end
-
-    wesnoth.set_dialog_callback(onSelect_objet, "lobjets")
-    wesnoth.set_dialog_callback(onEquip, "equip")
-    wesnoth.set_dialog_callback(onSelect_hero, "lheroes")
-    O.init()
+    obj_list.on_modified = on_select_object
+    equip.on_button_click = on_equip
+    hero_list.on_modified = on_select_hero
+    init()
 end
 
-local function postshow()
-    O.init = nil
-    O.heroes = nil
-    O.objets = nil
-    O.position_objets = nil
-    O.is_unfolded = nil
-end
+O = {}
 
-function O.menuObj()
-    local obj_poss = wesnoth.get_variable("objets_joueur")
+function O.showObjectsDialog()
+    local obj_poss = Variables().player_objects
     if next(obj_poss) == nil then
         Popup(_ "Note", _ "You still have to collect artifacts...")
     else
-        wesnoth.show_dialog(dialog, preshow, postshow)
+        gui.show_dialog(dialog, preshow)
     end
 end

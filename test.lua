@@ -2,13 +2,24 @@
 
 ES = {}
 
-VAR.objets_joueur = {
+InitVariables()
+
+UI.setup_menus()
+
+UI.set_menu_item({
+    id = "debug",
+    description = _ "Hp to 1",
+    T.command { T.lua { code = "Set_hp()" } }
+})
+
+
+VAR.player_objects = {
     ceinture_geant = "brinx",
-    bottes_celerite = 0,
+    bottes_celerite = "",
     ring_haste = "vranken",
     shield_myrom = "drumar"
 }
-wesnoth.set_variable("heros_joueur", "brinx,vranken,drumar")
+wesnoth.set_variable("heros_joueur", "brinx,vranken,drumar,rymor")
 
 -- local br = wesnoth.get_unit("brinx")
 -- br.variables.status_shielded_hp = 15
@@ -70,7 +81,7 @@ function start()
     local u = {
         type = "rymor4",
         id = "rymor",
-        name = "BR",
+        name = "Rymor",
         role = "hero",
         moves = 10
     }
@@ -105,9 +116,10 @@ end
 
 -- entry point on the right click menu
 function test(x, y)
-    local location = wesnoth.map.rotate_right_around_center({ 2, 2 }, { 2, 3 }, 2)
-    wesnoth.interface.add_chat_message(tostring(location))
-    Popup("test", "test")
+    -- local location = wesnoth.map.rotate_right_around_center({ 2, 2 }, { 2, 3 }, 2)
+    -- wesnoth.interface.add_chat_message(tostring(location))
+    -- Popup("test", "test")
+    UI.set_menu_item({ id = "menu_test", description = 'Test Menu' })
     -- switch_limbes()
 end
 

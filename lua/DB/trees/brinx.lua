@@ -1,4 +1,4 @@
-local brinx = {
+DB.AMLAS.brinx = {
     _default_border = "#1EF113",
     _default_background = "68 154 42",
     {
@@ -8,8 +8,8 @@ local brinx = {
         max_times = 3,
         always_display = 1,
         description = _ "Better with swords",
-        T.effect{apply_to = "attack", increase_damage = 1, name = "sword"},
-        table.unpack(standard_amla_heal(5))
+        T.effect { apply_to = "attack", increase_damage = 1, name = "sword" },
+        table.unpack(StandardAmlaHeal(5))
     },
     {
         id = "though",
@@ -19,9 +19,9 @@ local brinx = {
         max_times = 2,
         always_display = 1,
         description = _ "Tougher, + 5% resistances",
-        T.effect{
+        T.effect {
             apply_to = "resistance",
-            T.resistance{
+            T.resistance {
                 impact = -5,
                 blade = -5,
                 arcane = -5,
@@ -30,12 +30,12 @@ local brinx = {
                 fire = -5
             }
         },
-        table.unpack(standard_amla_heal(7))
+        table.unpack(StandardAmlaHeal(7))
     },
     {
         id = "bow_fire",
         _short_desc = "<B> Fire </B> <BR />  Bow",
-        _color = {214, 68, 17},
+        _color = { 214, 68, 17 },
         require_amla = "bow_precis",
         image = "attacks/bow-elven-fire.png",
         max_times = 1,
@@ -43,7 +43,7 @@ local brinx = {
         description = _ "Grants a bow enchanted by elven magic, which sets arrows ablaze.",
         function(unit)
             local atk_bow = unit.attacks.bow
-            local effect = T.effect{
+            local effect = T.effect {
                 apply_to = "new_attack",
                 name = "bow",
                 icon = "attacks/bow-elven-fire.png",
@@ -56,7 +56,7 @@ local brinx = {
             }
             return effect
         end,
-        table.unpack(standard_amla_heal(15))
+        table.unpack(StandardAmlaHeal(15))
     },
     {
         id = "pm",
@@ -65,26 +65,26 @@ local brinx = {
         max_times = 2,
         always_display = 1,
         description = _ "Faster, +1 move",
-        T.effect{increase = 1, apply_to = "movement"},
-        table.unpack(standard_amla_heal(5))
+        T.effect { increase = 1, apply_to = "movement" },
+        table.unpack(StandardAmlaHeal(5))
     },
     {
         id = "bow_focus",
         _short_desc = "Bow <BR /> <B> Focus </B>",
-        _color = {69, 117, 174},
+        _color = { 69, 117, 174 },
         _level_bonus = true,
         require_amla = "bow_fire,bow_pierce",
         image = "attacks/bow_focus.png",
         max_times = 1,
         always_display = 1,
         description = _ "Deadly accurate with bows : 80% chance to hit.",
-        T.effect{
+        T.effect {
             set_icon = "attacks/bow_focus.png",
             apply_to = "attack",
             name = "bow",
-            T.set_specials{
+            T.set_specials {
                 mode = "append",
-                T.chance_to_hit{
+                T.chance_to_hit {
                     id = "focus",
                     value = 80,
                     description = _ "This attack always has a 80% chance to hit regardless of the defensive ability of the unit being attacked.",
@@ -93,12 +93,12 @@ local brinx = {
                 }
             }
         },
-        T.effect{
+        T.effect {
             apply_to = "attack",
             remove_specials = "marksman,precis",
             name = "bow"
         },
-        table.unpack(standard_amla_heal(10))
+        table.unpack(StandardAmlaHeal(10))
     },
     {
         id = "bow2",
@@ -108,31 +108,31 @@ local brinx = {
         max_times = 2,
         always_display = 1,
         description = _ "Even better with bows",
-        T.effect{apply_to = "attack", increase_damage = 2, name = "bow"},
-        table.unpack(standard_amla_heal(5))
+        T.effect { apply_to = "attack", increase_damage = 2, name = "bow" },
+        table.unpack(StandardAmlaHeal(5))
     },
     {
         id = "bow_pierce",
         _short_desc = "<B> Piercing </B> <BR />  Arrows",
-        _color = {214, 220, 220},
+        _color = { 214, 220, 220 },
         require_amla = "bow_precis",
         image = "icons/arrow_strong.png",
         max_times = 1,
         always_display = 1,
         description = _ "Massive arrows dealing damgage to 2 ennemies at once.",
-        T.effect{
+        T.effect {
             name = "bow",
             apply_to = "attack",
-            T.set_specials{
+            T.set_specials {
                 mode = "append",
-                T.isHere{
+                T.isHere {
                     id = "weapon_pierce",
                     description = _ "Deals 75% damage to the enemy behind the target.",
                     name = "pierce"
                 }
             }
         },
-        table.unpack(standard_amla_heal(15))
+        table.unpack(StandardAmlaHeal(15))
     },
     {
         id = "movement",
@@ -143,30 +143,30 @@ local brinx = {
         max_times = 1,
         always_display = 1,
         description = _ "Even faster on sands or snow",
-        T.effect{
+        T.effect {
             replace = true,
             apply_to = "movement_costs",
-            T.movement_costs{frozen = 1, sand = 1}
+            T.movement_costs { frozen = 1, sand = 1 }
         },
-        table.unpack(standard_amla_heal(10))
+        table.unpack(StandardAmlaHeal(10))
     },
     {
         id = "bow_precis",
         _short_desc = "Bow <BR /> <B> Precision</B>",
-        _color = {69, 117, 174},
+        _color = { 69, 117, 174 },
         _level_bonus = true,
         require_amla = "bow_atk",
         image = "attacks/bow_precis.png",
         max_times = 1,
         always_display = 1,
         description = _ "More precise with bows : 70% chance to hit.",
-        T.effect{
+        T.effect {
             set_icon = "attacks/bow_precis.png",
             apply_to = "attack",
             name = "bow",
-            T.set_specials{
+            T.set_specials {
                 mode = "append",
-                T.chance_to_hit{
+                T.chance_to_hit {
                     id = "precis",
                     value = 70,
                     description = _ "This attack always has a 70% chance to hit regardless of the defensive ability of the unit being attacked.",
@@ -175,12 +175,12 @@ local brinx = {
                 }
             }
         },
-        T.effect{
+        T.effect {
             apply_to = "attack",
             remove_specials = "marksman",
             name = "bow"
         },
-        table.unpack(standard_amla_heal(10))
+        table.unpack(StandardAmlaHeal(10))
     },
     {
         id = "skirmisher",
@@ -190,10 +190,10 @@ local brinx = {
         max_times = 1,
         always_display = 1,
         description = _ "Extremly nimble, now able to dodge ennemies",
-        T.effect{
+        T.effect {
             apply_to = "new_ability",
-            T.abilities{
-                T.skirmisher{
+            T.abilities {
+                T.skirmisher {
                     id = "skirmisher",
                     affect_self = true,
                     description = _ "This unit is skilled in moving past enemies quickly, and ignores all enemy Zones of Control.",
@@ -202,7 +202,7 @@ local brinx = {
                 }
             }
         },
-        table.unpack(standard_amla_heal(10))
+        table.unpack(StandardAmlaHeal(10))
     },
     {
         id = "bow_atk",
@@ -212,8 +212,8 @@ local brinx = {
         max_times = 1,
         always_display = 1,
         description = _ "Faster with bows",
-        T.effect{apply_to = "attack", name = "bow", increase_attacks = 1},
-        table.unpack(standard_amla_heal(10))
+        T.effect { apply_to = "attack", name = "bow", increase_attacks = 1 },
+        table.unpack(StandardAmlaHeal(10))
     },
     {
         id = "sword_atk",
@@ -223,30 +223,30 @@ local brinx = {
         max_times = 1,
         always_display = 1,
         description = _ "Faster with swords",
-        T.effect{apply_to = "attack", name = "sword", increase_attacks = 1},
-        table.unpack(standard_amla_heal(10))
+        T.effect { apply_to = "attack", name = "sword", increase_attacks = 1 },
+        table.unpack(StandardAmlaHeal(10))
     },
     {
         id = "bloodlust",
         _short_desc = "<B> Bloodlust </B>",
-        _color = {54, 255, 5},
+        _color = { 54, 255, 5 },
         _level_bonus = true,
         require_amla = "bow_focus,bow_atk2",
         image = "icons/blood-frenzy.png",
         max_times = 1,
         always_display = 1,
         description = _ "Upon killing a unit, this unit will gain another attack and some moves.",
-        T.effect{
+        T.effect {
             apply_to = "new_ability",
-            T.abilities{
-                T.isHere{
+            T.abilities {
+                T.isHere {
                     id = "bloodlust",
                     description = _ "Killing a unit refreshes this unit's strength, and gives it a new attack. Happens at most once a turn.",
                     name = "Bloodlust"
                 }
             }
         },
-        table.unpack(standard_amla_heal(15))
+        table.unpack(StandardAmlaHeal(15))
     },
     {
         id = "hp",
@@ -255,19 +255,19 @@ local brinx = {
         max_times = 2,
         always_display = 1,
         description = _ "Healthier, + 5HP",
-        T.effect{increase_total = 5, apply_to = "hitpoints"},
-        table.unpack(standard_amla_heal(5))
+        T.effect { increase_total = 5, apply_to = "hitpoints" },
+        table.unpack(StandardAmlaHeal(5))
     },
     {
         id = "bow_atk2",
-        _short_desc = "Bow <BR /> <B> +1</B> str",
         require_amla = "bow2,bow2",
-        image = "attacks/bow-elven.png",
         max_times = 1,
         always_display = 1,
         description = _ "Even faster with bows",
-        T.effect{apply_to = "attack", name = "bow", increase_attacks = 1},
-        table.unpack(standard_amla_heal(10))
+        _short_desc = "Bow <BR /> <B> +1</B> str",
+        image = "attacks/bow-elven.png",
+        T.effect { apply_to = "attack", name = "bow", increase_attacks = 1 },
+        table.unpack(StandardAmlaHeal(10))
     },
     {
         id = "bow",
@@ -276,17 +276,16 @@ local brinx = {
         max_times = 2,
         always_display = 1,
         description = _ "Better with bows",
-        T.effect{apply_to = "attack", increase_damage = 2, name = "bow"},
-        table.unpack(standard_amla_heal(5))
+        T.effect { apply_to = "attack", increase_damage = 2, name = "bow" },
+        table.unpack(StandardAmlaHeal(5))
     },
     {
+        id = "default",
+        require_amla = "bloodlust,movement,though,though",
         max_times = -1,
         description = _ " Whow, you've completed all the tree. Bravo !",
-        require_amla = "bloodlust,movement,though,though",
-        id = "default",
         image = "",
-        T.effect{increase_total = 1, apply_to = "hitpoints"},
-        table.unpack(standard_amla_heal(5))
+        T.effect { increase_total = 1, apply_to = "hitpoints" },
+        table.unpack(StandardAmlaHeal(5))
     }
 }
-DB.AMLAS.brinx = brinx

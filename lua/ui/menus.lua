@@ -2,22 +2,18 @@ UI = {}
 
 UI.show_skills = wesnoth.require("skills/init")
 
-local VARIABLE_IDS_MENUS = "showed_menus"
-
 -- data is the menu table.
 -- keep in memory which menu are shown to avoid warnings
 ---@param data WMLTable
 function UI.set_menu_item(data)
     wml.fire("set_menu_item", data)
-    local menus = wml.variables[VARIABLE_IDS_MENUS] or {}
-    menus[data.id] = true
-    wml.variables[VARIABLE_IDS_MENUS] = menus
+    Variables().showed_menus[data.id] = true
 end
 
 --- Remove the item with the given id
 ---@param id string
 function UI.clear_menu_item(id)
-    local menus = wml.variables_proxy[VARIABLE_IDS_MENUS]
+    local menus = Variables().showed_menus
     if menus[id] then
         wml.fire("clear_menu_item", { id = id })
         menus[id] = nil
@@ -88,6 +84,7 @@ function UI.set_menu_skills()
 end
 
 function UI.setup_menus()
+    wesnoth.log('info', "OGT IT", true)
     -- Setup of menus items
     UI.set_menu_item({
         id = "special_skills",
@@ -107,6 +104,6 @@ function UI.setup_menus()
     UI.set_menu_item({
         id = "objets",
         description = _ "Objects",
-        T.command { T.lua { code = "O.menuObj()" } }
+        T.command { T.lua { code = "O.showObjectsDialog()" } }
     })
 end

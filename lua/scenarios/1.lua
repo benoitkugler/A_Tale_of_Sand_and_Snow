@@ -32,10 +32,7 @@ function ES.first_time()
     end
 
     -- Global variables for the whole campaign
-    VAR.table_status = {}
-    VAR.table_status_shielded = {}
-    VAR.objets_joueur = {}
-    VAR.heros_joueur = "brinx"
+    InitVariables()
 end
 
 for i, v in pairs(Scenario_event) do

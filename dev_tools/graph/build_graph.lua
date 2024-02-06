@@ -199,7 +199,7 @@ end
 -- Building amla tree from wesnoth lua source
 -- setup globals needed by amlas.
 _ = function(s) return s end
-standard_amla_heal = function(s) return {} end
+StandardAmlaHeal = function(s) return {} end
 Fmt = function(s) return string.format(s) end
 T = {}
 DB = { AMLAS = {} }

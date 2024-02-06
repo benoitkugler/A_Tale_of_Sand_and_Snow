@@ -13,13 +13,14 @@ local HE = {}
 
 -- name, label, action for skills with cooldown
 HE.actif_skills = {
-    vranken = {"transposition", _ "Transposition", "AB.transposition()"},
-    xavier = {"O_formation", _ "Union debuf", "AB.union_debuf()"}
+    vranken = { "transposition", _ "Transposition", "AB.transposition()" },
+    xavier = { "O_formation", _ "Union debuf", "AB.union_debuf()" }
 }
 
 -- Should be called once, at first use of the hero
+---@param unit_id string
 function HE.init(unit_id)
-    local u = wesnoth.get_unit(unit_id)
+    local u = wesnoth.units.get(unit_id)
     u.variables.special_skills = {}
     u.variables.xp = 0
     u.role = "hero"
