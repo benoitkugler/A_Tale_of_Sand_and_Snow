@@ -45,7 +45,7 @@ wesnoth.require "implementation/amla"
 wesnoth.require "implementation/special_skills"
 
 wesnoth.require "ui/custom_themes"
-wesnoth.require "ui/objets"
+wesnoth.require "ui/objects"
 wesnoth.require "ui/menus"
 wesnoth.require "standard_event" -- event setup
 
