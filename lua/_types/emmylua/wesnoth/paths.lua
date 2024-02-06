@@ -33,7 +33,7 @@ function wesnoth.paths.find_path(start, finish, options) end
 ---@param loc location
 ---@param unit? unit
 ---@return integer x, integer y
----@overload fun(x:integer, y:integer, unit:unit):integer,integer
+---@overload fun(x:integer, y:integer, unit:unit?):integer,integer
 function wesnoth.paths.find_vacant_hex(loc, unit) end
 
 ---@class reach_options

@@ -189,7 +189,7 @@ function wml.array_access.get(var, context) end
 
 ---Puts all the elements of table t inside a WML container with name var.
 ---@param var string
----@param t WML[] An array of WML tables
+---@param t (WML|WMLValue)[] An array of WML tables
 ---@param context any?
 function wml.array_access.set(var, t, context) end
 
