@@ -77,7 +77,7 @@ local formations_abilities = {}
 function formations_abilities.Y(xavier, target)
     local lvl = GetAbilityLevel(xavier, "Y_formation")
     if lvl then
-        local value = DB.SPECIAL_SKILLS.xavier.Y_formation(lvl)
+        local value = Conf.SPECIAL_SKILLS.xavier.Y_formation(lvl)
         local x, y = target[1], target[2]
         xavier:add_modification("trait", {
             id = "_formation_Y",
@@ -100,7 +100,7 @@ end
 function formations_abilities.A(xavier)
     local lvl = GetAbilityLevel(xavier, "A_formation")
     if lvl then
-        local value = DB.SPECIAL_SKILLS.xavier.A_formation(lvl)
+        local value = Conf.SPECIAL_SKILLS.xavier.A_formation(lvl)
         xavier:add_modification("trait",
             { id = "_formation_A", AddDefenses(value) })
     end
@@ -109,7 +109,7 @@ end
 function formations_abilities.I(xavier, target)
     local lvl = GetAbilityLevel(xavier, "I_formation")
     if lvl then
-        local value = DB.SPECIAL_SKILLS.xavier.I_formation(lvl)
+        local value = Conf.SPECIAL_SKILLS.xavier.I_formation(lvl)
         local x, y = target[1], target[2]
         xavier:add_modification("trait", {
             id = "_formation_I",

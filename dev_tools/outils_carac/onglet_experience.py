@@ -12,7 +12,7 @@ def afficheExp():
     global champ_exp 
     champ_exp = {}
     
-    f = open("lua/special_exp_gain.lua","r")
+    f = open("lua/config/special_exp_gain.lua","r")
     lines = f.readlines()
     f.close()
     nl = 0
@@ -50,9 +50,9 @@ def afficheExp():
 
 
 def update_xp():
-    with open("lua/special_exp_gain.lua","r") as fin:
+    with open("lua/config/special_exp_gain.lua","r") as fin:
         lines=fin.readlines()
-    with open("lua/special_exp_gain.lua","w") as fout:
+    with open("lua/config/special_exp_gain.lua","w") as fout:
         nl=0
         for l in lines:
             if nl in champ_exp:

@@ -3,7 +3,7 @@
 -- Warning, %d or %f won't work (since the the value will be surronded by HTML tags beforehand)
 -- Name of skills we be in color as well
 -- Function which compute the values are directly accesible to be used in event_combat.
-local V = DB.EXP_GAIN
+local V = Conf.EXP_GAIN
 
 local info = {}
 
@@ -298,4 +298,4 @@ Every time Morgane or one of her allies fight into the Limbes, she earns points 
     defense = function(lvl) return lvl * 7 end
 }
 
-DB.SPECIAL_SKILLS = info
+Conf.SPECIAL_SKILLS = info

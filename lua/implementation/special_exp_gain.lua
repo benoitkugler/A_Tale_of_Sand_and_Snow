@@ -1,5 +1,5 @@
 -- Track special experience gains
-local V = DB.EXP_GAIN -- shortcut
+local V = Conf.EXP_GAIN -- shortcut
 
 local exp_functions = {
     sword_spirit = {},

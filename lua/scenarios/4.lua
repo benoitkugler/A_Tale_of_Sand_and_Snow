@@ -67,14 +67,14 @@ function ES.prestart()
     }, x, y)
 
     -- heroes variables init
-    DB.HEROES.init("xavier")
-    DB.HEROES.init("morgane")
+    Conf.HEROES.init("xavier")
+    Conf.HEROES.init("morgane")
 end
 
 function ES.presente_xavier()
     Popup(_ "New hero",
         _ "\tLet me introduce you to <span color='" ..
-        DB.HEROES.get_color("xavier") .. "' weight='bold'>Xavier</span>, " ..
+        Conf.HEROES.get_color("xavier") .. "' weight='bold'>Xavier</span>, " ..
         "a young and talented military student. His intuition on military tactics " ..
         " have to be battle-tested, but may become very useful to you..." ..
         '\n\tYou will find more information in the <span style=\'italic\'>"Skills"</span> menu, ' ..

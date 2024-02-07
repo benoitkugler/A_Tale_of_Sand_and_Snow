@@ -6,7 +6,7 @@ local IMAGE_FEAR_OF_LOVE = "menu/fear_of_love.png"
 -- Customs status
 ---@param unit unit
 local function _show_special_skill_cd(unit)
-    local skill_data = DB.HEROES.actif_skills[unit.id]
+    local skill_data = Conf.HEROES.actif_skills[unit.id]
     if not skill_data then return end
     local skill_name = skill_data[1]
     local level = (unit.variables.special_skills or {})[skill_name]
@@ -102,7 +102,7 @@ function wesnoth.theme_items.unit_traits()
         local element = v[2]
         local trt, _ = tostring(element.help):gsub("traits_", "")
         if trt then
-            local objet = DB.OBJETS[trt]
+            local objet = Conf.OBJETS[trt]
             if objet then
                 local str = (objet.code and objet.code(u)) or objet.description
                 element.text = objet.name .. " "

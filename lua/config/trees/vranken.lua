@@ -341,4 +341,4 @@ local vranken = {
         table.unpack(StandardAmlaHeal(5))
     }
 }
-DB.AMLAS.vranken = vranken
+Conf.AMLAS.vranken = vranken

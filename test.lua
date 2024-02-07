@@ -39,7 +39,7 @@ function start()
         { "abilities", { { "isHere", { id = "elusive", name = "Elusive" } } } }
     }
     wesnoth.put_unit(u, 15, 16)
-    DB.HEROES.init("brinx")
+    Conf.HEROES.init("brinx")
     local br = wesnoth.get_unit("brinx")
     br.variables.xp = 1000
     local u = {
@@ -49,7 +49,7 @@ function start()
         role = "hero"
     }
     wesnoth.put_unit(u, 15, 18)
-    DB.HEROES.init("sword_spirit")
+    Conf.HEROES.init("sword_spirit")
     wesnoth.put_unit({
         id = "drumar",
         type = "drumar4",
@@ -57,7 +57,7 @@ function start()
         name = "Dru",
         role = "hero"
     }, 20, 20)
-    DB.HEROES.init("drumar")
+    Conf.HEROES.init("drumar")
     local dru = wesnoth.get_unit("drumar")
     dru.variables.xp = 1000
 
@@ -69,11 +69,11 @@ function start()
         moves = 10
     }
     wesnoth.put_unit(u, 18, 18)
-    DB.HEROES.init("bunshop")
+    Conf.HEROES.init("bunshop")
 
     local u = { type = "xavier4", id = "xavier", name = "Xavier", role = "hero" }
     wesnoth.put_unit(u, 19, 18)
-    DB.HEROES.init("xavier")
+    Conf.HEROES.init("xavier")
     local u = wesnoth.get_unit("xavier")
     u.variables.xp = 1000
     u.level = 7
@@ -86,7 +86,7 @@ function start()
         moves = 10
     }
     wesnoth.put_unit(u, 18, 19)
-    DB.HEROES.init("rymor")
+    Conf.HEROES.init("rymor")
     local u = wesnoth.get_unit("vranken")
     local u = wesnoth.get_unit("brinx")
 
@@ -98,7 +98,7 @@ function start()
         role = "hero",
         side = 1
     }, 6, 5)
-    DB.HEROES.init("morgane")
+    Conf.HEROES.init("morgane")
     wesnoth.put_unit({ type = "otchigin1", side = 2 }, 5, 6)
     wesnoth.put_unit({ type = "otchigin2", side = 2 }, 5, 7)
     wesnoth.put_unit({ type = "otchigin3", side = 2 }, 6, 6)

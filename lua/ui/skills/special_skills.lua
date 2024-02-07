@@ -11,12 +11,12 @@ local function format_description(lvl, callable, description, str_color)
         local coloreds = {}
         for i, v in ipairs(value) do
             table.insert(coloreds, string.format("<span color='%s'>%d</span>",
-                                                 str_color, v))
+                str_color, v))
         end
         return string.format(description, table.unpack(coloreds))
     else
         local colored = string.format("<span color='%s'>%d</span>", str_color,
-                                      value)
+            value)
         return string.format(description, colored)
     end
 end
@@ -32,106 +32,104 @@ function MCS.postshow()
 end
 
 MCS.dialog = {
-    T.row{
-        T.column{
-            T.panel{
+    T.row {
+        T.column {
+            T.panel {
                 definition = "story_viewer_panel",
-                T.grid{
-                    T.row{T.column{T.spacer{height = 10}}}, T.row{
-                        T.column{
-                            border = "left,right",
-                            border_size = 20,
-                            T.grid{
-                                T.row{
-                                    T.column{
-                                        T.label{
-                                            id = "text_xp_dispo",
-                                            label = "test7789"
-                                        }
-                                    }, T.column{T.spacer{width = 15}},
-                                    T.column{T.label{id = "text_xp_total"}},
-                                    T.column{T.spacer{width = 15}},
-                                    T.column{
-                                        T.button{
-                                            id = "help_button",
-                                            label = _ "Show info"
-                                        }
+                T.grid {
+                    T.row { T.column { T.spacer { height = 10 } } }, T.row {
+                    T.column {
+                        border = "left,right",
+                        border_size = 20,
+                        T.grid {
+                            T.row {
+                                T.column {
+                                    T.label {
+                                        id = "text_xp_dispo",
+                                        label = "test7789"
+                                    }
+                                }, T.column { T.spacer { width = 15 } },
+                                T.column { T.label { id = "text_xp_total" } },
+                                T.column { T.spacer { width = 15 } },
+                                T.column {
+                                    T.button {
+                                        id = "help_button",
+                                        label = _ "Show info"
                                     }
                                 }
                             }
                         }
-                    }, T.row{T.column{T.spacer{height = 7}}}, T.row{
-                        T.column{
-                            border = "left,right",
-                            border_size = 10,
-                            T.label{id = "help", characters_per_line = 80}
-                        }
-                    }, T.row{T.column{T.spacer{height = 7}}}
+                    }
+                }, T.row { T.column { T.spacer { height = 7 } } }, T.row {
+                    T.column {
+                        border = "left,right",
+                        border_size = 10,
+                        T.label { id = "help", characters_per_line = 80 }
+                    }
+                }, T.row { T.column { T.spacer { height = 7 } } }
                 }
             }
         }
-    }, T.row{
-        T.column{
-            border = "all",
-            border_size = 10,
-            T.grid{
-                T.row{
-                    T.column{
-                        T.panel{
-                            definition = "box_display",
-                            id = "cadre_next",
-                            T.grid{
-                                T.row{T.column{T.label{id = "titre_pres"}}},
-                                T.row{T.column{T.spacer{height = 7}}},
-                                T.row{
-                                    T.column{
-                                        T.label{
-                                            id = "text_pres_suiv",
-                                            characters_per_line = 35
-                                        }
+    }, T.row {
+    T.column {
+        border = "all",
+        border_size = 10,
+        T.grid {
+            T.row {
+                T.column {
+                    T.panel {
+                        definition = "box_display",
+                        id = "cadre_next",
+                        T.grid {
+                            T.row { T.column { T.label { id = "titre_pres" } } },
+                            T.row { T.column { T.spacer { height = 7 } } },
+                            T.row {
+                                T.column {
+                                    T.label {
+                                        id = "text_pres_suiv",
+                                        characters_per_line = 35
                                     }
-                                }, T.row{T.column{T.spacer{height = 7}}},
-                                T.row{
-                                    T.column{
-                                        T.button{
-                                            id = "lvl_up",
-                                            label = _ "Level up skill"
-                                        }
+                                }
+                            }, T.row { T.column { T.spacer { height = 7 } } },
+                            T.row {
+                                T.column {
+                                    T.button {
+                                        id = "lvl_up",
+                                        label = _ "Level up skill"
                                     }
                                 }
                             }
                         }
-                    }, T.column{T.spacer{width = 7}}, T.column{
-                        T.listbox{
-                            id = "lcomp",
-                            T.list_definition{
-                                T.row{
-                                    T.column{
-                                        horizontal_grow = true,
-                                        border = "all",
-                                        border_size = 5,
-                                        T.toggle_panel{
-                                            T.grid{
-                                                T.row{
-                                                    T.column{
-                                                        border = "all",
-                                                        border_size = 5,
-                                                        T.image{id = "img_comp"}
-                                                    },
-                                                    T.column{
-                                                        border = "right",
-                                                        border_size = 5,
-                                                        T.image{id = "img_lvl"}
-                                                    }, T.column{
-                                                        grow_factor = 1,
-                                                        horizontal_grow = true,
-                                                        T.label{
-                                                            id = "text_comp",
-                                                            characters_per_line = 50
-                                                        }
-                                                    }
-                                                }
+                    }
+                }, T.column { T.spacer { width = 7 } }, T.column {
+                T.listbox {
+                    id = "lcomp",
+                    T.list_definition {
+                        T.row {
+                            T.column {
+                                horizontal_grow = true,
+                                border = "all",
+                                border_size = 5,
+                                T.toggle_panel {
+                                    T.grid {
+                                        T.row {
+                                            T.column {
+                                                border = "all",
+                                                border_size = 5,
+                                                T.image { id = "img_comp" }
+                                            },
+                                            T.column {
+                                                border = "right",
+                                                border_size = 5,
+                                                T.image { id = "img_lvl" }
+                                            }, T.column {
+                                            grow_factor = 1,
+                                            horizontal_grow = true,
+                                            T.label {
+                                                id = "text_comp",
+                                                characters_per_line = 50
                                             }
+                                        }
                                         }
                                     }
                                 }
@@ -140,8 +138,10 @@ MCS.dialog = {
                     }
                 }
             }
+            }
         }
     }
+}
 }
 
 function MCS.preshow(unit)
@@ -172,8 +172,8 @@ function MCS.preshow(unit)
                 _ "<span style='italic' color ='#BFA63F'>Next level : </span>",
                 "titre_pres")
             local formatted_desc = format_description(lvl + 1,
-                                                      MCS.skills_table[comp["name"]],
-                                                      comp.desc, comp.color)
+                MCS.skills_table[comp["name"]],
+                comp.desc, comp.color)
             wesnoth.set_dialog_value(formatted_desc, "text_pres_suiv")
             if MCS.xp_dispo >= comp.costs[lvl + 1] then
                 wesnoth.set_dialog_value(
@@ -201,7 +201,7 @@ function MCS.preshow(unit)
         wesnoth.set_dialog_active(false, "lvl_up")
 
         MCS.u_lvl = unit.level
-        MCS.skills_table = DB.SPECIAL_SKILLS[unit.id]
+        MCS.skills_table = Conf.SPECIAL_SKILLS[unit.id]
         MCS.xp_total = unit.variables.xp
         MCS.xp_dispo = unit.variables.xp
 
@@ -224,14 +224,14 @@ function MCS.preshow(unit)
                     (TableSkills(unit)[v.require_avancement.id] ~= nil) then
                     local formatted_title =
                         string.format("<span color='%s'>%s</span>", v.color,
-                                      v.name_aff)
+                            v.name_aff)
                     local formatted_desc
                     if lvl == 0 then
                         formatted_desc = LVL_0_DESC
                     else
                         formatted_desc =
                             format_description(lvl, MCS.skills_table[v.name],
-                                               v.desc, v.color)
+                                v.desc, v.color)
                     end
                     wesnoth.set_dialog_value(
                         formatted_title .. "\n" .. formatted_desc, "lcomp", i,
@@ -244,14 +244,14 @@ function MCS.preshow(unit)
                 else
                     wesnoth.set_dialog_value(
                         "<span style='italic'>" .. v.require_avancement.des ..
-                            "</span>", "lcomp", i, "text_comp")
+                        "</span>", "lcomp", i, "text_comp")
                     wesnoth.set_dialog_value(v.img, "lcomp", i, "img_comp")
                     MCS.select_functions[i] = non_active_selectl
                 end
             else
                 wesnoth.set_dialog_value(
                     _ "<span style='italic'>Require level " .. v.require_lvl ..
-                        "</span>", "lcomp", i, "text_comp")
+                    "</span>", "lcomp", i, "text_comp")
                 wesnoth.set_dialog_value(v.img, "lcomp", i, "img_comp")
                 MCS.select_functions[i] = non_active_selectl
             end
@@ -261,10 +261,10 @@ function MCS.preshow(unit)
         --        affichage de l'xp
         wesnoth.set_dialog_value(
             _ " <span font_style='italic' ><span color ='#BFA63F'  >Points available :  </span><span font_weight ='bold' >" ..
-                MCS.xp_dispo .. "</span></span>", "text_xp_dispo")
+            MCS.xp_dispo .. "</span></span>", "text_xp_dispo")
         wesnoth.set_dialog_value(
             _ " <span font_style='italic'  color ='#BFA63F'  >Total points:  " ..
-                MCS.xp_total .. "</span>", "text_xp_total")
+            MCS.xp_total .. "</span>", "text_xp_total")
     end
 
     local function selectl()
@@ -279,9 +279,9 @@ function MCS.preshow(unit)
             wesnoth.set_dialog_visible(true, "help")
 
             wesnoth.set_dialog_value(MCS.skills_table.help_des ..
-                                         "\n<span style='italic'>" ..
-                                         MCS.skills_table.help_ratios ..
-                                         "</span>", "help")
+                "\n<span style='italic'>" ..
+                MCS.skills_table.help_ratios ..
+                "</span>", "help")
             wesnoth.set_dialog_value(_ "Hide info", "help_button")
             UI.skills_help = false
         else
@@ -302,7 +302,7 @@ function MCS.preshow(unit)
             unit.variables.special_skills = ss
             SPECIAL_SKILLS[comp.name](newlvl, unit)
             AMLA.update_lvl(unit) -- needed not to loose extras LVL, removed by u:remove_modifications
-            MCS.init() -- reset graphics
+            MCS.init()            -- reset graphics
         else
             wesnoth.set_dialog_value(_ "Confirm ?", "lvl_up")
             MCS.to_valid = true
@@ -313,4 +313,5 @@ function MCS.preshow(unit)
     wesnoth.set_dialog_callback(selectl, "lcomp")
     wesnoth.set_dialog_callback(select_lvlup, "lvl_up")
 end
+
 return MCS

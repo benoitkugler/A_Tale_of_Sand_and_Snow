@@ -3,11 +3,11 @@ local special_skills = wesnoth.require("~add-ons/A_Tale_of_Sand_and_Snow/lua/ui/
 
 -- SKILLS dialog (wrapper around special skills and amla tree)
 local dialog = {
-    T.tooltip {id = "tooltip_large"},
-    T.helptip {id = "tooltip_large"},
+    T.tooltip { id = "tooltip_large" },
+    T.helptip { id = "tooltip_large" },
     T.grid {
-        T.row {T.column {T.label {id = "titre"}}},
-        T.row {T.column {T.spacer {height = 10}}},
+        T.row { T.column { T.label { id = "titre" } } },
+        T.row { T.column { T.spacer { height = 10 } } },
         T.row {
             T.column {
                 T.horizontal_listbox {
@@ -22,7 +22,7 @@ local dialog = {
                                             T.column {
                                                 border = "all",
                                                 border_size = 15,
-                                                T.label {id = "onglet"}
+                                                T.label { id = "onglet" }
                                             }
                                         }
                                     }
@@ -33,24 +33,24 @@ local dialog = {
                 }
             }
         },
-        T.row {T.column {T.spacer {height = 10}}},
+        T.row { T.column { T.spacer { height = 10 } } },
         T.row {
             T.column {
                 T.stacked_widget {
                     id = "pages",
-                    {"layer", amla_tree.dialog},
-                    {"layer", special_skills.dialog},
+                    { "layer", amla_tree.dialog },
+                    { "layer", special_skills.dialog },
                     T.layer {
                         T.row {
                             T.column {
-                                T.label {id = "cache"}
+                                T.label { id = "cache" }
                             }
                         }
                     }
                 }
             }
         },
-        T.row {T.column {T.button {id = "ok", label = _ "Return"}}}
+        T.row { T.column { T.button { id = "ok", label = _ "Return" } } }
     }
 }
 
@@ -59,7 +59,7 @@ local function preshow(unit)
     wesnoth.set_dialog_markup(true, "titre")
     wesnoth.set_dialog_value(
         _ "<span font_size = 'large' font_weight ='bold' ><span  color ='#BFA63F' >Skills of your unit </span>" ..
-            unit.name .. "</span>",
+        unit.name .. "</span>",
         "titre"
     )
 
@@ -83,7 +83,7 @@ local function preshow(unit)
                 wesnoth.set_dialog_visible(true, "cache")
             end
         else
-            if DB.SPECIAL_SKILLS[unit.id] then
+            if Conf.SPECIAL_SKILLS[unit.id] then
                 if unit.__cfg.advances_to == "" then
                     special_skills.init()
                 else

@@ -1,4 +1,4 @@
-DB.AMLAS.brinx = {
+Conf.AMLAS.brinx = {
     _default_border = "#1EF113",
     _default_background = "68 154 42",
     {

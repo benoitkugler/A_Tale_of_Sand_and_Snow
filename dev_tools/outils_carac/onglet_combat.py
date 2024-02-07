@@ -10,7 +10,7 @@ def afficheCombat():
     global champ_combat 
     champ_combat = {}
     
-    f = open("lua/event_combat.lua","r")
+    f = open("lua/implementation/event_combat.lua","r")
     lines = f.readlines()
     f.close()
     nl = 0
@@ -43,10 +43,10 @@ def afficheCombat():
         nl=nl+1
     
 def update_combat():
-    fin=open("lua/event_combat.lua","r")
+    fin=open("lua/implementation/event_combat.lua","r")
     lines=fin.readlines()
     fin.close()
-    fout=open("lua/event_combat.lua","w")
+    fout=open("lua/implementation/event_combat.lua","w")
     nl=0
     for l in lines:
         if nl in champ_combat:

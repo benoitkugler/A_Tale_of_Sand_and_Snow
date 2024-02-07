@@ -17,9 +17,9 @@ function StandardAmlaHeal(exp)
     }
 end
 
-DB.AMLAS = {}
-wesnoth.dofile "~add-ons/A_Tale_of_Sand_and_Snow/lua/DB/trees/brinx.lua"
-wesnoth.dofile "~add-ons/A_Tale_of_Sand_and_Snow/lua/DB/trees/drumar.lua"
-wesnoth.dofile "~add-ons/A_Tale_of_Sand_and_Snow/lua/DB/trees/vranken.lua"
-wesnoth.dofile "~add-ons/A_Tale_of_Sand_and_Snow/lua/DB/trees/xavier.lua"
-wesnoth.dofile "~add-ons/A_Tale_of_Sand_and_Snow/lua/DB/trees/morgane.lua"
+Conf.AMLAS = {}
+wesnoth.dofile "~add-ons/A_Tale_of_Sand_and_Snow/lua/config/trees/brinx.lua"
+wesnoth.dofile "~add-ons/A_Tale_of_Sand_and_Snow/lua/config/trees/drumar.lua"
+wesnoth.dofile "~add-ons/A_Tale_of_Sand_and_Snow/lua/config/trees/vranken.lua"
+wesnoth.dofile "~add-ons/A_Tale_of_Sand_and_Snow/lua/config/trees/xavier.lua"
+wesnoth.dofile "~add-ons/A_Tale_of_Sand_and_Snow/lua/config/trees/morgane.lua"

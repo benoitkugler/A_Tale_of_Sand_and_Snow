@@ -19,7 +19,7 @@ def afficheAmlaHero(hero):
     champ_amla = {"hero":hero}
     
     dic_boxes={}
-    f = open("utils/amla/"+hero,"r")
+    f = open("lua/config/trees/"+hero,"r")
     lines = f.readlines()
     f.close()
     nl = 0
@@ -82,10 +82,10 @@ def afficheAmlaHero(hero):
     
 def update_amla():
     fichier=champ_amla["hero"]
-    fin=open("utils/amla/"+fichier,"r")
+    fin=open("lua/config/trees/"+fichier,"r")
     lines=fin.readlines()
     fin.close()
-    fout=open("utils/amla/"+fichier,"w")
+    fout=open("lua/config/trees/"+fichier,"w")
     nl=0
     for l in lines:
         if nl in champ_amla:
@@ -100,7 +100,7 @@ def afficheAmla():
     for i in heroes.winfo_children():
         i.destroy()
         
-    h = os.listdir("utils/amla")
+    h = os.listdir("lua/config/trees")
     col=0
     liste_button =[]
     for i in h:

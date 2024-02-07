@@ -1,6 +1,6 @@
 local unit_id = arg[1]
 
-local AMLAS_PATH = "../../lua/DB/trees/"
+local AMLAS_PATH = "../../lua/config/trees/"
 local DOT_FILE = "tree.dot"
 
 local DOT_PARAMS = {
@@ -202,7 +202,7 @@ _ = function(s) return s end
 StandardAmlaHeal = function(s) return {} end
 Fmt = function(s) return string.format(s) end
 T = {}
-DB = { AMLAS = {} }
+Conf = { AMLAS = {} }
 Round = function(s) return s end
 ROMANS = { "I", "II", "III", "IV", "V", "VI" }
 
@@ -210,10 +210,10 @@ setmetatable(T,
     { __index = function(k, t) return function(...) return ... end end })
 
 local function compute_arbre_froms_amla(unit_id)
-    local color_border = DB.AMLAS[unit_id]._default_border
-    local color_background = DB.AMLAS[unit_id]._default_background
+    local color_border = Conf.AMLAS[unit_id]._default_border
+    local color_background = Conf.AMLAS[unit_id]._default_background
     local tree = {}
-    for i, amla in ipairs(DB.AMLAS[unit_id]) do
+    for i, amla in ipairs(Conf.AMLAS[unit_id]) do
         if not (amla.id == "default") then
             local tree_node = {
                 id = amla.id,

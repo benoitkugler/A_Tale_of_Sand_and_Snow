@@ -151,7 +151,7 @@ local function update_xavier_defense()
         T.filter_adjacent { id = "xavier" },
         T.filter_side { T.allied_with { side = xavier.side } }
     }
-    local bonus_def = DB.AMLAS.xavier.values.ALLIES_DEFENSE_RATIO * lvl
+    local bonus_def = Conf.AMLAS.xavier.values.ALLIES_DEFENSE_RATIO * lvl
     for i, u in pairs(adj_xavier) do
         u:add_modification("trait", {
             id = trait_id,
@@ -260,7 +260,7 @@ function AB.transposition()
     ANIM.transposition("vranken", "sword_spirit", false)
 
     local lvl = vranken.variables.special_skills.transposition or 0 --[[@as integer]]
-    local cd = DB.SPECIAL_SKILLS.vranken.transposition(lvl)
+    local cd = Conf.SPECIAL_SKILLS.vranken.transposition(lvl)
     vranken.variables.special_skill_cd = cd
     UI.clear_menu_item("vranken_special_skill")
 end
@@ -270,7 +270,7 @@ function AB.union_debuf(x, y)
     local target = wesnoth.units.get(x, y)
     local xavier = wesnoth.units.get("xavier")
     local lvl = xavier.variables.special_skills.O_formation or 0 --[[@as integer]]
-    local cd = DB.SPECIAL_SKILLS.xavier.O_formation(lvl)
+    local cd = Conf.SPECIAL_SKILLS.xavier.O_formation(lvl)
     if target == nil or xavier == nil then
         return wesnoth.interface.add_chat_message(_ "Union debuf not possible here ! ") -- shouln't happen
     end
@@ -325,7 +325,7 @@ local function long_heal(healer)
     local candidates = wesnoth.units.find_on_map {
         T.filter_location { x = healer.x, y = healer.y, radius = 3 }
     }
-    local ratio = DB.AMLAS.morgane.values.LONG_HEAL_RATIO
+    local ratio = Conf.AMLAS.morgane.values.LONG_HEAL_RATIO
     for _, u in pairs(candidates) do
         local d = wesnoth.map.distance_between({ x = u.x, y = u.y }, { x = healer.x, y = healer.y })
         if not wesnoth.sides.is_enemy(healer.side, u.side) and (d == 2 or d == 3) then -- other units will be healed by the standard heal

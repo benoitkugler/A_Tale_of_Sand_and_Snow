@@ -37,7 +37,7 @@ end
 
 function AMLA.pre_advance()
     local u = PrimaryUnit()
-    local table_amlas = DB.AMLAS[u.id] -- loading custom amlas
+    local table_amlas = Conf.AMLAS[u.id] -- loading custom amlas
 
     if (table_amlas == nil) or #(u.advances_to) > 0 then return end
 

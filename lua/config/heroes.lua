@@ -28,4 +28,4 @@ end
 
 function HE.get_color(unit_id) return colors[unit_id] or "#000000" end
 
-DB.HEROES = HE
+Conf.HEROES = HE

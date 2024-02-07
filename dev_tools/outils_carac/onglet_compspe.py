@@ -5,7 +5,7 @@ import re
 from convertion import *
 from base_app import onglet_compspe
 
-DB_FILE = "lua/DB/competences_spe.lua"
+DB_FILE = "lua/config/special_skills.lua"
 
 def afficheCompspe():
     
