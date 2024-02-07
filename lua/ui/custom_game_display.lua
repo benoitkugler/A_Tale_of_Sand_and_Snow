@@ -94,18 +94,18 @@ end
 -- Affichage des traits modifiés pour objets
 local old_unit_traits = wesnoth.interface.game_display.unit_traits
 function wesnoth.interface.game_display.unit_traits()
-    local u = wesnoth.get_displayed_unit()
+    local u = wesnoth.interface.get_displayed_unit()
     if not u then return {} end
     local traits = old_unit_traits()
     for _, v in ipairs(traits) do
         local element = v[2]
         local trt, _ = tostring(element.help):gsub("traits_", "")
         if trt then
-            local objet = Conf.objects[trt]
-            if objet then
-                local str = (objet.code and objet.code(u)) or objet.description
-                element.text = objet.name .. " "
-                element.tooltip = Fmt(_ "Artifact : <b>%s</b>\n %s", objet.name,
+            local object = Conf.objects[trt]
+            if object then
+                local str = (object.code and object.code(u)) or object.description
+                element.text = object.name .. " "
+                element.tooltip = Fmt(_ "Artifact : <b>%s</b>\n %s", object.name,
                     str)
             end
         end

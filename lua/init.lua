@@ -44,7 +44,7 @@ wesnoth.require "implementation/event_combat"
 wesnoth.require "implementation/amla"
 wesnoth.require "implementation/special_skills"
 
-wesnoth.require "ui/custom_themes"
+wesnoth.require "ui/custom_game_display"
 wesnoth.require "ui/objects"
 wesnoth.require "ui/menus"
 wesnoth.require "standard_event" -- event setup
