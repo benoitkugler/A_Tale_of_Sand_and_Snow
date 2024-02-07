@@ -1,5 +1,5 @@
 -- Track special experience gains
-local V = {
+Conf.EXP_GAIN = {
     rymor = {
         ADJ_NEXT = 2, -- + atk.level
         DEF = 2       -- * atk.level
@@ -9,8 +9,8 @@ local V = {
         ATK_MUSPELL = 3, -- * def.level
         KILL_MUSPELL = 5 -- * dying.level
     },
+    -- xp goes to vranken
     sword_spirit = {
-        -- xp goes to vranken
         LEVEL_UP = 60, -- on level up
         ATK = 2,       -- * def.level
         DEF = 1,       -- + atk.level
@@ -40,4 +40,3 @@ local V = {
         KILL = 20 -- * dying.level
     }
 }
-Conf.EXP_GAIN = V
