@@ -1,4 +1,5 @@
--- Define all the numerical values and WML code needed for amla, objects, special skills
+-- Define all the numerical values and WML code needed for amla, objects, special skills.
+-- so that is easily adjustable later
 DB = {}
 wesnoth.require "amla.lua"
 wesnoth.require "heroes.lua"

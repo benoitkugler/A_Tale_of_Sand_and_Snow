@@ -34,7 +34,7 @@ function Variables() return wml.variables end
 wesnoth.require "helpers"
 wesnoth.require "helpers_events"
 wesnoth.require "animations"
-wesnoth.require "DB/init"
+wesnoth.require "config/config"
 
 wesnoth.require "limbes"
 
