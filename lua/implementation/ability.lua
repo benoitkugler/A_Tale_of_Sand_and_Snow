@@ -151,7 +151,7 @@ local function update_xavier_defense()
         T.filter_adjacent { id = "xavier" },
         T.filter_side { T.allied_with { side = xavier.side } }
     }
-    local bonus_def = Conf.AMLAS.xavier.values.ALLIES_DEFENSE_RATIO * lvl
+    local bonus_def = Conf.amlas.xavier.values.ALLIES_DEFENSE_RATIO * lvl
     for i, u in pairs(adj_xavier) do
         u:add_modification("trait", {
             id = trait_id,
@@ -246,7 +246,7 @@ end
 -- Vranken
 function AB.transposition()
     local vranken = wesnoth.units.get("vranken")
-    if vranken.variables.special_skill_cd > 0 then
+    if vranken:custom_variables().special_skill_cd > 0 then
         return wesnoth.interface.add_chat_message(_ "Can't jump now !") -- shouln't happen
     end
 
@@ -259,9 +259,9 @@ function AB.transposition()
     sword_spirit:to_map(x, y)
     ANIM.transposition("vranken", "sword_spirit", false)
 
-    local lvl = vranken.variables.special_skills.transposition or 0 --[[@as integer]]
-    local cd = Conf.SPECIAL_SKILLS.vranken.transposition(lvl)
-    vranken.variables.special_skill_cd = cd
+    local lvl = vranken:custom_variables().special_skills.transposition or 0
+    local cd = Conf.special_skills.vranken.transposition(lvl)
+    vranken:custom_variables().special_skill_cd = cd
     UI.clear_menu_item("vranken_special_skill")
 end
 
@@ -269,8 +269,8 @@ end
 function AB.union_debuf(x, y)
     local target = wesnoth.units.get(x, y)
     local xavier = wesnoth.units.get("xavier")
-    local lvl = xavier.variables.special_skills.O_formation or 0 --[[@as integer]]
-    local cd = Conf.SPECIAL_SKILLS.xavier.O_formation(lvl)
+    local lvl = xavier:custom_variables().special_skills.O_formation or 0
+    local cd = Conf.special_skills.xavier.O_formation(lvl)
     if target == nil or xavier == nil then
         return wesnoth.interface.add_chat_message(_ "Union debuf not possible here ! ") -- shouln't happen
     end
@@ -285,7 +285,7 @@ function AB.union_debuf(x, y)
         }
     })
     wesnoth.interface.float_label(x, y, _ "Disabled !")
-    xavier.variables.special_skill_cd = cd
+    xavier:custom_variables().special_skill_cd = cd
 end
 
 -- -------------------------- Event handler --------------------------
@@ -325,7 +325,7 @@ local function long_heal(healer)
     local candidates = wesnoth.units.find_on_map {
         T.filter_location { x = healer.x, y = healer.y, radius = 3 }
     }
-    local ratio = Conf.AMLAS.morgane.values.LONG_HEAL_RATIO
+    local ratio = Conf.amlas.morgane.values.LONG_HEAL_RATIO
     for _, u in pairs(candidates) do
         local d = wesnoth.map.distance_between({ x = u.x, y = u.y }, { x = healer.x, y = healer.y })
         if not wesnoth.sides.is_enemy(healer.side, u.side) and (d == 2 or d == 3) then -- other units will be healed by the standard heal
@@ -344,9 +344,9 @@ end
 function AB.turn_start()
     local lhero = wesnoth.units.find_on_map { role = "hero" }
     for _, v in pairs(lhero) do
-        local current_cd = v.variables.special_skill_cd or 0
+        local current_cd = v:custom_variables().special_skill_cd or 0
         if current_cd > 0 then
-            v.variables.special_skill_cd = current_cd - 1
+            v:custom_variables().special_skill_cd = current_cd - 1
         end
     end
 

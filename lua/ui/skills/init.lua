@@ -83,7 +83,7 @@ local function preshow(unit)
                 wesnoth.set_dialog_visible(true, "cache")
             end
         else
-            if Conf.SPECIAL_SKILLS[unit.id] then
+            if Conf.special_skills[unit.id] then
                 if unit.__cfg.advances_to == "" then
                     special_skills.init()
                 else

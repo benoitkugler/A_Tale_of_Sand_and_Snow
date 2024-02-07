@@ -267,4 +267,4 @@ local morgane = {
         table.unpack(StandardAmlaHeal(12))
     }
 }
-Conf.AMLAS.morgane = morgane
+Conf.amlas.morgane = morgane

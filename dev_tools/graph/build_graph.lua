@@ -210,10 +210,10 @@ setmetatable(T,
     { __index = function(k, t) return function(...) return ... end end })
 
 local function compute_arbre_froms_amla(unit_id)
-    local color_border = Conf.AMLAS[unit_id]._default_border
-    local color_background = Conf.AMLAS[unit_id]._default_background
+    local color_border = Conf.amlas[unit_id]._default_border
+    local color_background = Conf.amlas[unit_id]._default_background
     local tree = {}
-    for i, amla in ipairs(Conf.AMLAS[unit_id]) do
+    for i, amla in ipairs(Conf.amlas[unit_id]) do
         if not (amla.id == "default") then
             local tree_node = {
                 id = amla.id,

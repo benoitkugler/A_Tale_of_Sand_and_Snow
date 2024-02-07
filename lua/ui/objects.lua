@@ -1,7 +1,7 @@
 -- Menu Object and function to add and remove objects
 
 
--- TODO: Refactor (using Conf.OBJETS)
+-- TODO: Refactor (using Conf.objects)
 -- Librairie Objets
 
 
@@ -29,7 +29,7 @@ end
 ---@param object_id string
 local function apply(unit_id, object_id)
     local u = wesnoth.units.get(unit_id)
-    local obj = Conf.OBJETS[object_id]
+    local obj = Conf.objects[object_id]
     local modif_object = {
         id = object_id,
         { "effect", obj.effect }
@@ -254,7 +254,7 @@ local function preshow(window)
         local objects = Variables().player_objects
 
         local obj_id = state.position_objets[obj_list.selected_index]
-        local objet = Conf.OBJETS[obj_id]
+        local objet = Conf.objects[obj_id]
 
         if state.is_unfolded then
             show_bottom(false)
@@ -316,7 +316,7 @@ local function preshow(window)
 
 
         for idObject, idOwner in pairs(objects) do
-            local len = string.len(tostring(Conf.OBJETS[idObject].description))
+            local len = string.len(tostring(Conf.objects[idObject].description))
             state.min_length_description = (state.min_length_description > len and
                 len) or state.min_length_description
         end
@@ -324,7 +324,7 @@ local function preshow(window)
         for k, idObj in ipairs(sorted_keys(objects)) do
             local v = objects[idObj]
             table.insert(state.position_objets, idObj)
-            local objet = Conf.OBJETS[idObj];
+            local objet = Conf.objects[idObj];
 
             (obj_list:find(k, "icone") --[[@as image]]).label = objet.image .. "mini.png" --[[@as tstring]]
             local name = obj_list:find(k, "name") --[[@as label]]

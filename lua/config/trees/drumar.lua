@@ -273,4 +273,4 @@ local drumar = {
         table.unpack(StandardAmlaHeal(5))
     }
 }
-Conf.AMLAS.drumar = drumar
+Conf.amlas.drumar = drumar

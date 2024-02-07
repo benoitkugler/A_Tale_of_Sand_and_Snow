@@ -86,11 +86,11 @@ end
 local function presentation()
     Popup(_ "New heroes",
         _ "\tYou now have three new heroes : " .. "<span color='" ..
-        Conf.HEROES.get_color("drumar") ..
+        Conf.heroes.get_color("drumar") ..
         "' weight='bold'>Frä Drumar</span>, a powerful spell caster, " ..
-        "<span color='" .. Conf.HEROES.get_color("rymor") ..
+        "<span color='" .. Conf.heroes.get_color("rymor") ..
         "' weight='bold'>Rymôr</span>, solid as a rock, and " ..
-        "<span color='" .. Conf.HEROES.get_color("bunshop") ..
+        "<span color='" .. Conf.heroes.get_color("bunshop") ..
         "' weight='bold'>Bunshop</span>, as nimble and fast as a storm. " ..
         "\nEach of them has unique skills and ways of enhancing them." ..
         '\nYou will find more information in the <span style=\'italic\'>"Skills"</span> menu, ' ..
@@ -185,10 +185,10 @@ function ES.turn1()
 
     -- initialisation des variables
 
-    Conf.HEROES.init("vranken")
-    Conf.HEROES.init("rymor")
-    Conf.HEROES.init("drumar")
-    Conf.HEROES.init("bunshop")
+    Conf.heroes.init("vranken")
+    Conf.heroes.init("rymor")
+    Conf.heroes.init("drumar")
+    Conf.heroes.init("bunshop")
 
     -- Présentation
 
@@ -202,7 +202,7 @@ end
 
 local function note_gondhul()
     Popup(_ "New hero",
-        _ "\tThis is <span color='" .. Conf.HEROES.get_color("sword_spirit") ..
+        _ "\tThis is <span color='" .. Conf.heroes.get_color("sword_spirit") ..
         "' weight='bold'> Göndhul</span>, " ..
         "the Xaintrailles family warden. He's link to Vranken by oath, " ..
         "advising Vranken and finally enhancing Vranken's skills. " ..
@@ -255,7 +255,7 @@ function ES.see_ennemy()
     local sp = wesnoth.get_units { id = "sword_spirit" }[1]
     local x, y = wesnoth.find_vacant_tile(vr.x, vr.y, sp)
     wml.fire("recall", { id = "sword_spirit", x = x, y = y })
-    Conf.HEROES.init("sword_spirit")
+    Conf.heroes.init("sword_spirit")
     wml.fire("message", {
         speaker = "sword_spirit",
         message = _ "<span style='italic'>(Deep, guttural voice)</span> Master... At your service..."

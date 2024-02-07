@@ -1,5 +1,5 @@
 -- Track special experience gains
-Conf.EXP_GAIN = {
+Conf.special_xp_gain = {
     rymor = {
         ADJ_NEXT = 2, -- + atk.level
         DEF = 2       -- * atk.level

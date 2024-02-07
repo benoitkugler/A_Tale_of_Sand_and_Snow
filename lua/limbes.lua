@@ -36,8 +36,8 @@ local function _in_limbe_units()
     xstop = xstop - 1
     ystop = ystop - 1
     for __, u in pairs(wesnoth.units.find_on_map({})) do
-        u.variables.x = u.x
-        u.variables.y = u.y
+        u:custom_variables().x = u.x
+        u:custom_variables().y = u.y
         if is_limbe_actor(u) then
             u.status._limbe = true
             u.canrecruit = true
@@ -56,14 +56,14 @@ end
 local function _out_limbe_units()
     for __, u in pairs(wesnoth.units.find_on_map({})) do
         -- restore original positions
-        u.x = u.variables.x --[[@as integer]]
-        u.y = u.variables.y --[[@as integer]]
+        u.x = u:custom_variables().x
+        u.y = u:custom_variables().y
         u.status._limbe = nil
         u.canrecruit = false
     end
     for __, u in pairs(wesnoth.units.find_on_recall { status = "_limbe_recall" }) do
-        local x, y = u.variables.x, u.variables.y
-        u:to_map(x --[[@as integer]], y --[[@as integer]])
+        local x, y = u:custom_variables().x, u:custom_variables().y
+        u:to_map(x, y)
     end
 end
 

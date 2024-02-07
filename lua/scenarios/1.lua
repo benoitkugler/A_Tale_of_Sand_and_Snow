@@ -6,7 +6,7 @@ local mess = {
     _ "Stand still ! Protect the facility at all costs !"
 }
 
-local brinx_color = Conf.HEROES.get_color("brinx")
+local brinx_color = Conf.heroes.get_color("brinx")
 
 wesnoth.add_event_handler({
     id = "event_scenario_include",
@@ -99,7 +99,7 @@ end
 function ES.prestart()
     -- Initialisation des variables
 
-    Conf.HEROES.init("brinx")
+    Conf.heroes.init("brinx")
 
     -- Suppression temporaire du menu skill
     UI.clear_menu_item("menu_special_skills")

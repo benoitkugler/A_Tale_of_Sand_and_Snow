@@ -201,7 +201,7 @@ function MCS.preshow(unit)
         wesnoth.set_dialog_active(false, "lvl_up")
 
         MCS.u_lvl = unit.level
-        MCS.skills_table = Conf.SPECIAL_SKILLS[unit.id]
+        MCS.skills_table = Conf.special_skills[unit.id]
         MCS.xp_total = unit.variables.xp
         MCS.xp_dispo = unit.variables.xp
 

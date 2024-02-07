@@ -17,7 +17,7 @@ function StandardAmlaHeal(exp)
     }
 end
 
-Conf.AMLAS = {}
+Conf.amlas = {}
 wesnoth.dofile "~add-ons/A_Tale_of_Sand_and_Snow/lua/config/trees/brinx.lua"
 wesnoth.dofile "~add-ons/A_Tale_of_Sand_and_Snow/lua/config/trees/drumar.lua"
 wesnoth.dofile "~add-ons/A_Tale_of_Sand_and_Snow/lua/config/trees/vranken.lua"

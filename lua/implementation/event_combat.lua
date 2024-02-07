@@ -47,7 +47,7 @@ end
 
 function EC.fin_tour()
     local lhero = wesnoth.units.find_on_map { role = "hero" }
-    for _, v in pairs(lhero) do v.variables.bloodlust = false end
+    for _, v in pairs(lhero) do v:custom_variables().bloodlust = false end
     for _, v in pairs(endturn) do v() end
 end
 
@@ -115,8 +115,8 @@ end
 function apply.bloodlust(event, pri, snd, dmg)
     if event == "die" then
         if GetAbilityLevel(snd, "bloodlust") then
-            if snd.variables and not snd.variables.bloodlust then
-                snd.variables.bloodlust = true
+            if not snd:custom_variables().bloodlust then
+                snd:custom_variables().bloodlust = true
                 snd.moves = 4 -- on kill
                 snd.attacks_left = 1
             end
@@ -256,7 +256,7 @@ function apply.armor_shred(event, pri, snd, dmg)
     if event == "attacker_hits" then
         local lvl = GetSpe("armor_shred")
         if lvl then
-            local value = Conf.AMLAS.xavier.values.REDUCE_DEFENSE * lvl
+            local value = Conf.amlas.xavier.values.REDUCE_DEFENSE * lvl
             wesnoth.units.add_modification(snd, "object", {
                 T.effect {
                     apply_to = "resistance",
@@ -277,7 +277,7 @@ function apply.defense_shred(event, pri, snd, dmg)
     if event == "attacker_hits" then
         local lvl = GetSpe("defense_shred")
         if lvl then
-            local shred_per_hit = Conf.AMLAS[pri.id].values.REDUCE_DEFENSE * lvl
+            local shred_per_hit = Conf.amlas[pri.id].values.REDUCE_DEFENSE * lvl
             snd:add_modification("trait", { AddDefenses(-shred_per_hit) }, false)
             label_snd = label_snd ..
                 Fmt(_ "<span color='%s'>-%d%% defense</span>\n",
@@ -329,9 +329,10 @@ function apply.transfusion(event, pri, snd, _)
 end
 
 function apply.slow_zone(event, pri, snd, dmg)
+    if pri.id ~= "drumar" then return end
     local lvl = GetSpe("slow_zone")
     if event == "attacker_hits" and lvl then
-        local intensity = SPECIAL_SKILLS.info[pri.id].slow_zone(lvl)
+        local intensity = Conf.special_skills.drumar.slow_zone(lvl)
         local targets = wesnoth.units.find_on_map {
             T.filter_adjacent { id = snd.id, is_enemy = false }
         }
@@ -358,9 +359,9 @@ end
 -- Consume chilled status
 function apply.chilled_dmg(event, pri, snd, dmg)
     if event == "attacker_hits" and snd.status.chilled then
-        local special_lvl = snd.variables.status_chilled_lvl
+        local special_lvl = snd:custom_variables().status_chilled_lvl
         local att = wesnoth.current.event_context.weapon
-        local values = SPECIAL_SKILLS.info.drumar.bonus_cold_mistress(
+        local values = Conf.special_skills.drumar.bonus_cold_mistress(
             special_lvl - 1)
         local percent_bonus = values[1]
         local bonus_dmg = Round(dmg * percent_bonus / 100)
@@ -392,14 +393,15 @@ end
 -- Apply chilled status on target
 -- table_status_chilled has id with _ instead of - as keys, and a 2 char string lvl cd
 function apply.put_status_chilled(event, pri, snd, dmg)
+    if pri.id ~= "drumar" then return end
     if event == "attacker_hits" and snd then
         local lvl = GetSpe("status_chilled")
         if lvl and not snd.status.chilled then
-            local values = SPECIAL_SKILLS.info.drumar.bonus_cold_mistress(
+            local values = Conf.special_skills.drumar.bonus_cold_mistress(
                 lvl - 1)
             local cd = values[2]
-            snd.variables.status_chilled_lvl = lvl
-            snd.variables.status_chilled_cd = cd
+            snd:custom_variables().status_chilled_lvl = lvl
+            snd:custom_variables().status_chilled_cd = cd
             snd.status.chilled = true
             label_snd = label_snd ..
                 _ "<span color='#1ED9D0'>Chilled !</span>\n"
@@ -411,22 +413,22 @@ end
 function endturn.status_chilled()
     local us = wesnoth.units.find_on_map { status = "chilled" }
     for id, u in ipairs(us) do
-        local lvl, cd = u.variables.status_chilled_lvl,
-            u.variables.status_chilled_cd
+        local lvl, cd = u:custom_variables().status_chilled_lvl,
+            u:custom_variables().status_chilled_cd
         wesnoth.interface.add_chat_message("id: " .. id .. " level: " .. lvl .. " cd: " .. cd)
         if cd == 1 then
             u.status.chilled = nil
-            u.variables.status_chilled_lvl = nil
-            u.variables.status_chilled_cd = nil
+            u:custom_variables().status_chilled_lvl = nil
+            u:custom_variables().status_chilled_cd = nil
         elseif cd then
-            u.variables.status_chilled_cd = u.variables.status_chilled_cd - 1
+            u:custom_variables().status_chilled_cd = u:custom_variables().status_chilled_cd - 1
         end
     end
 end
 
 function apply.shield(event, pri, snd, dmg)
     local function _init_shield(unit)
-        local shield = unit.variables.status_shielded_hp
+        local shield = unit:custom_variables().status_shielded_hp
         unit.hitpoints = unit.hitpoints + shield
         return Fmt(_ "<span color='%s'> +%d shield points</span>\n",
             COLOR_SHIELDED, shield)
@@ -445,12 +447,12 @@ function apply.shield(event, pri, snd, dmg)
     end
 
     local function _update_shield(unit)
-        local sh = unit.variables.status_shielded_hp
+        local sh = unit:custom_variables().status_shielded_hp
         if dmg >= sh then -- no more shield
-            unit.variables.status_shielded_hp = nil
+            unit:custom_variables().status_shielded_hp = nil
             unit.status.shielded = nil
         else -- updating shield
-            unit.variables.status_shielded_hp = sh - dmg
+            unit:custom_variables().status_shielded_hp = sh - dmg
         end
     end
 
@@ -462,7 +464,7 @@ function apply.shield(event, pri, snd, dmg)
     end
 
     local function _remove_over(unit)
-        unit.hitpoints = unit.hitpoints - unit.variables.status_shielded_hp
+        unit.hitpoints = unit.hitpoints - unit:custom_variables().status_shielded_hp
     end
 
     if event == "attack_end" then -- removing over shield left. If shield is remaining, hitpoints were untouched
@@ -475,7 +477,7 @@ function endturn.status_shielded()
     local l_status = wesnoth.units.find_on_map { status = "shielded" }
     for __, v in ipairs(l_status) do
         v.status.shielded = nil
-        v.variables.status_shielded_hp = nil
+        v:custom_variables().status_shielded_hp = nil
     end
 end
 

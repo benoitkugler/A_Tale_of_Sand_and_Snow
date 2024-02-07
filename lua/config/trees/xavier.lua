@@ -307,4 +307,4 @@ Adjacent own units of equal or higher level will do %d%% more damage. ]], value)
         table.unpack(StandardAmlaHeal(5))
     }
 }
-Conf.AMLAS.xavier = xavier
+Conf.amlas.xavier = xavier

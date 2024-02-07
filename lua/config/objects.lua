@@ -78,4 +78,4 @@ obj_DB.cloak_speed = {
     presentation = _ "<span color='yellow'>Cloak of <span font_weight = 'bold'>celerity </span></span>",
     effect = { apply_to = "attack", increase_attacks = 2 }
 }
-Conf.OBJETS = obj_DB
+Conf.objects = obj_DB

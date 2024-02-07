@@ -52,3 +52,21 @@ wesnoth.require "standard_event" -- event setup
 function Set_hp()
     for _, u in pairs(wesnoth.units.find_on_map({ side = 2 })) do u.hitpoints = 1 end
 end
+
+---CustomUnitVariables is the WML table on units used
+---by this campaign
+---@class CustomUnitVariables
+---@field x integer
+---@field y integer
+---@field special_skills table<string, integer> # skill_id -> level
+---@field special_skill_cd integer
+---@field xp integer
+---@field bloodlust boolean
+---@field status_chilled_lvl integer?
+---@field status_chilled_cd integer?
+---@field status_shielded_hp integer?
+
+---Typed wrapper around u.variables
+---@param u unit
+---@return CustomUnitVariables
+function wesnoth.units.custom_variables(u) return u.variables end

@@ -60,7 +60,7 @@ function UI.turn_start()
 
         local hero = wesnoth.units.get(unit_id)
         if hero then
-            local cd = hero.variables.special_skill_cd
+            local cd = hero:custom_variables().special_skill_cd
             if cd and cd == 0 then
                 UI.set_menu_item({
                     id = id_menu,

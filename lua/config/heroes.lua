@@ -9,23 +9,23 @@ local colors = {
     morgane = "#ddebe0"
 }
 
-local HE = {}
+Conf.heroes = {}
 
 -- name, label, action for skills with cooldown
-HE.actif_skills = {
+---@alias actif_skill {[1]:string, [2]:string, [3]:string}
+---@type table<string, actif_skill>
+Conf.heroes.actif_skills = {
     vranken = { "transposition", _ "Transposition", "AB.transposition()" },
     xavier = { "O_formation", _ "Union debuf", "AB.union_debuf()" }
 }
 
 -- Should be called once, at first use of the hero
 ---@param unit_id string
-function HE.init(unit_id)
+function Conf.heroes.init(unit_id)
     local u = wesnoth.units.get(unit_id)
-    u.variables.special_skills = {}
-    u.variables.xp = 0
+    u:custom_variables().special_skills = {}
+    u:custom_variables().xp = 0
     u.role = "hero"
 end
 
-function HE.get_color(unit_id) return colors[unit_id] or "#000000" end
-
-Conf.HEROES = HE
+function Conf.heroes.get_color(unit_id) return colors[unit_id] or "#000000" end

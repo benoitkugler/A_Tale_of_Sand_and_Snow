@@ -77,7 +77,7 @@ local formations_abilities = {}
 function formations_abilities.Y(xavier, target)
     local lvl = GetAbilityLevel(xavier, "Y_formation")
     if lvl then
-        local value = Conf.SPECIAL_SKILLS.xavier.Y_formation(lvl)
+        local value = Conf.special_skills.xavier.Y_formation(lvl)
         local x, y = target[1], target[2]
         xavier:add_modification("trait", {
             id = "_formation_Y",
@@ -100,7 +100,7 @@ end
 function formations_abilities.A(xavier)
     local lvl = GetAbilityLevel(xavier, "A_formation")
     if lvl then
-        local value = Conf.SPECIAL_SKILLS.xavier.A_formation(lvl)
+        local value = Conf.special_skills.xavier.A_formation(lvl)
         xavier:add_modification("trait",
             { id = "_formation_A", AddDefenses(value) })
     end
@@ -109,7 +109,7 @@ end
 function formations_abilities.I(xavier, target)
     local lvl = GetAbilityLevel(xavier, "I_formation")
     if lvl then
-        local value = Conf.SPECIAL_SKILLS.xavier.I_formation(lvl)
+        local value = Conf.special_skills.xavier.I_formation(lvl)
         local x, y = target[1], target[2]
         xavier:add_modification("trait", {
             id = "_formation_I",
@@ -129,10 +129,12 @@ function formations_abilities.I(xavier, target)
     end
 end
 
+---@param xavier unit
+---@param target unit
 function formations_abilities.O(xavier, target)
     UI.clear_menu_item("union_debuf") -- removing then rebuilding
     local lvl = GetAbility(xavier, "O_formation")
-    local cd = xavier.variables.special_skill_cd or 0
+    local cd = xavier:custom_variables().special_skill_cd or 0
     if lvl and target and (cd == 0) then
         local x, y = target[1], target[2]
         local lua_code = string.format("AB.union_debuf(%d, %d)", x, y)
