@@ -47,7 +47,6 @@ wesnoth.require "implementation/special_skills"
 wesnoth.require "ui/custom_game_display"
 wesnoth.require "ui/objects"
 wesnoth.require "ui/menus"
-wesnoth.require "ui/skills"
 wesnoth.require "standard_event" -- event setup
 
 function Set_hp()

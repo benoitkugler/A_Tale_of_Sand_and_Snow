@@ -84,7 +84,6 @@ function UI.set_menu_skills()
 end
 
 function UI.setup_menus()
-    wesnoth.log('info', "OGT IT", true)
     -- Setup of menus items
     UI.set_menu_item({
         id = "special_skills",

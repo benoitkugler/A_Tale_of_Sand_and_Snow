@@ -346,6 +346,8 @@ local function special_skills_preshow(unit, widget)
     help_button.on_button_click = show_help
     lcomp.on_modified = on_select_skill
     lvl_up.on_button_click = select_lvlup
+
+    special_skills_reset()
 end
 
 

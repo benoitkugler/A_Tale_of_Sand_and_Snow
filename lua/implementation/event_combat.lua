@@ -18,8 +18,8 @@ local delay = 0
 
 local keys
 
----@param dmg_dealt integer
-function EC.combat(dmg_dealt)
+function EC.on_combat_event()
+    local dmg_dealt = wesnoth.current.event_context.damage_inflicted
     delay = 0
     local type_event = wesnoth.current.event_context.name
     local u1, u2 = PrimaryUnit(), SecondaryUnit()

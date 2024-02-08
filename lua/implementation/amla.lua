@@ -36,6 +36,7 @@ function AMLA.adv()
 end
 
 function AMLA.pre_advance()
+    wesnoth.interface.add_chat_message("AMLa")
     local u = PrimaryUnit()
     local table_amlas = Conf.amlas[u.id] -- loading custom amlas
 

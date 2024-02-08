@@ -4,7 +4,6 @@ ES = {}
 
 InitVariables()
 
-UI.setup_menus()
 
 UI.set_menu_item({
     id = "debug",
@@ -12,6 +11,18 @@ UI.set_menu_item({
     T.command { T.lua { code = "Set_hp()" } }
 })
 
+UI.set_menu_item({
+    id = "advance_unit",
+    description = "Advance unit",
+    T.show_if { T.have_unit { x = "$x1", y = "$y1" } },
+    T.command { T.lua { code = "local args = ... ;  AdvanceUnit(args.x, args.y)", T.args { x = "$x1", y = "$y1" } } },
+})
+
+function AdvanceUnit(x, y)
+    local unit = wesnoth.units.get(x, y)
+    unit.experience = unit.max_experience
+    unit:advance(true, true)
+end
 
 VAR.player_objects = {
     ceinture_geant = "brinx",
@@ -22,15 +33,12 @@ VAR.player_objects = {
 
 CustomVariables().heros_joueur = "brinx,vranken,drumar,rymor"
 
--- local br = wesnoth.get_unit("brinx")
--- br.variables.status_shielded_hp = 15
--- br.status.shielded = true
-
-function ES.kill() end
-
-function ES.atk() end
 
 function Start()
+    Conf.heroes.init("vranken")
+    local vr = wesnoth.units.get("vranken")
+    vr:custom_variables().xp = 1000
+
     local u = {
         type = "brinx4",
         id = "brinx",
