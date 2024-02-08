@@ -30,6 +30,7 @@ local function on_kill()
 end
 
 
+---@type game_event_options[]
 local Standard_event = {
     {
         id = "prestart_menus",

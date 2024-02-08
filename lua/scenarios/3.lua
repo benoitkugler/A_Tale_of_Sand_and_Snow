@@ -15,25 +15,25 @@ function ES.kill() end
 function ES.prestart()
     wesnoth.put_unit({
         id = "egil",
-        type = "Grand MarshalN",
+        type = "Grand Marshal_nifhell",
         side = 2,
         name = "Egil Skinir"
     }, 10, 4)
     wesnoth.put_unit({
         id = "ran",
-        type = "Iron MaulerN",
+        type = "Iron Mauler_nifhell",
         side = 2,
         name = "Ran Gragass"
     }, 7, 6)
     wesnoth.put_unit({
         id = "harbar",
-        type = "GeneralN",
+        type = "General_nifhell",
         side = 2,
         name = "Harbar Augentyr"
     }, 8, 5)
     wesnoth.put_unit({
         id = "urvi",
-        type = "Red MageN",
+        type = "Red Mage_nifhell",
         side = 2,
         name = "Urvi Herjar"
     }, 9, 5)
@@ -45,19 +45,19 @@ function ES.prestart()
     }, 11, 5)
     wesnoth.put_unit({
         id = "dummy1",
-        type = "Master BowmanN",
+        type = "Master Bowman_nifhell",
         side = 2,
         name = "Zac Tod"
     }, 12, 5)
     wesnoth.put_unit({
         id = "dummy3",
-        type = "Royal GuardN",
+        type = "Royal Guard_nifhell_nifhell",
         side = 2,
         name = "Ulk Zappsnhcip"
     }, 13, 6)
 
-    wesnoth.put_unit({ type = "SwordsmanN", side = 2 }, 8, 21)
-    wesnoth.put_unit({ type = "SwordsmanN", side = 2 }, 12, 21)
+    wesnoth.put_unit({ type = "Swordsman_nifhell", side = 2 }, 8, 21)
+    wesnoth.put_unit({ type = "Swordsman_nifhell", side = 2 }, 12, 21)
     local vr = GetRecallUnit("vranken")
     vr:to_map(10, 21)
 end

@@ -35,7 +35,7 @@ VAR.player_objects = {
     shield_myrom = "drumar"
 }
 
-CustomVariables().heros_joueur = "brinx,vranken,drumar,rymor"
+CustomVariables().player_heroes = "brinx,vranken,drumar,rymor"
 
 
 function Start()

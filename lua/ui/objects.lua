@@ -212,7 +212,7 @@ local function preshow(window)
     local equip            = window:find("equip") --[[@as button]]
 
 
-    local heroes = CustomVariables().heros_joueur:split(",")
+    local heroes = CustomVariables().player_heroes:split(",")
     table.sort(heroes)
 
     --- state

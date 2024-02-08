@@ -11,7 +11,7 @@ _ = wesnoth.textdomain "wesnoth-A_Tale_of_Sand_and_Snow"
 ---@field table_status any
 ---@field table_status_shielded any
 ---@field player_objects table<string,string> # object -> owner
----@field heros_joueur string # comma separated
+---@field player_heroes string # comma separated
 
 ---InitVariables creates global variables.
 ---It should be called once at campaign startup
@@ -24,12 +24,17 @@ function InitVariables()
     vars.table_status = {}
     vars.table_status_shielded = {}
     vars.player_objects = {}
-    vars.heros_joueur = "brinx"
+    vars.player_heroes = "brinx"
 end
 
 ---Variables is are typed wrapper for wml.variables
 ---@return CustomGlobalVariables
 function CustomVariables() return wml.variables end
+
+---ScenarioEvents defines the event handler a scenario must implement
+---@class ScenarioEvents
+---@field atk fun()
+---@field kill fun()
 
 wesnoth.require "helpers"
 wesnoth.require "helpers_events"

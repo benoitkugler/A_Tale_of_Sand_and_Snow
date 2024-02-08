@@ -24,13 +24,29 @@ function Round(f) return math.floor(0.5 + f) end
 
 -- Récupére l'unité primaire ou secondaire d'un event
 function PrimaryUnit()
-    return wesnoth.units.get(wesnoth.current.event_context.x1,
+    return wesnoth.units.get(
+        wesnoth.current.event_context.x1,
         wesnoth.current.event_context.y1)
 end
 
 function SecondaryUnit()
-    return wesnoth.units.get(wesnoth.current.event_context.x2,
+    return wesnoth.units.get(
+        wesnoth.current.event_context.x2,
         wesnoth.current.event_context.y2)
+end
+
+---PrimaryWeapon returns the weapon used
+---by the primary unit
+---@return unit_weapon
+function PrimaryWeapon()
+    return wml.get_child(wesnoth.current.event_context, "weapon") --[[@as unit_weapon]]
+end
+
+---PrimaryWeapon returns the weapon used
+---by the secondary unit
+---@return unit_weapon
+function SecondaryWeapon()
+    return wml.get_child(wesnoth.current.event_context, "second_weapon") --[[@as unit_weapon]]
 end
 
 ---Return the ability with id 'id_ability'.
@@ -59,12 +75,11 @@ function GetAbilityLevel(u, id_ability, ability_name)
     return ab and ab._level --[[@as integer|nil]] or nil
 end
 
----Returns the level of given special for current weapon
+---Returns the level of given special for the primary weapon
 ---@param id_special string
 ---@return integer|nil
 function GetSpe(id_special)
-    return GetSpecial(wesnoth.current.event_context.weapon,
-        id_special)._level
+    return GetSpecial(PrimaryWeapon() or {}, id_special)._level
 end
 
 -- Returns the special with `id_special` on the atk.

@@ -146,7 +146,7 @@ function apply.deflect(event, _, snd, dmg)
             T.filter_adjacent { id = snd.id }, { "not", { side = snd.side } }
         }
         local amount = Round(dmg / 2 / #(enemies))
-        local att = wesnoth.current.event_context.weapon
+        local att = PrimaryWeapon()
         wml.fire("harm_unit", {
             T.filter_second { id = snd.id },
             experience = true,
@@ -168,8 +168,7 @@ function apply.leeches(event, pri, snd, dmg)
         lvl = GetSpe("leeches")
         u = pri
     elseif event == "defender_hits" then
-        lvl = GetSpecial(wesnoth.current.event_context.second_weapon,
-            "leeches")._level
+        lvl = GetSpecial(SecondaryWeapon(), "leeches")._level
         u = snd
     end
     if lvl then
@@ -191,7 +190,7 @@ end
 function apply.weapon_pierce(event, pri, snd, dmg)
     if event == "attacker_hits" and GetSpe("weapon_pierce") then
         local loc = case_derriere(pri.x, pri.y, snd.x, snd.y)
-        local weapon = wesnoth.current.event_context.weapon
+        local weapon = PrimaryWeapon()
         wml.fire("harm_unit", {
             T.filter { x = loc[1], y = loc[2], { "not", { side = pri.side } } },
             annimate = true,
@@ -218,7 +217,7 @@ function apply.cleave(event, pri, snd, dmg)
             T.filter_adjacent_location { x = pri.x, y = pri.y },
             T.filter_adjacent_location { x = snd.x, y = snd.y }
         }
-        local att = wesnoth.current.event_context.weapon
+        local att = PrimaryWeapon()
         for i, v in pairs(l) do
             wml.fire("harm_unit", {
                 T.filter_second { id = pri.id },
@@ -360,7 +359,7 @@ end
 function apply.chilled_dmg(event, pri, snd, dmg)
     if event == "attacker_hits" and snd.status.chilled then
         local special_lvl = snd:custom_variables().status_chilled_lvl
-        local att = wesnoth.current.event_context.weapon
+        local att = PrimaryWeapon()
         local values = Conf.special_skills.drumar.bonus_cold_mistress(
             special_lvl - 1)
         local percent_bonus = values[1]

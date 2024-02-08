@@ -41,7 +41,7 @@ function ES.prestart()
     wesnoth.put_unit({ type = "Thug", side = 2 }, 4, 7)
 
     -- Recuperation de vranken et changement
-    local vr = wesnoth.get_units { id = "vranken" }[1]
+    local vr = wesnoth.units.get("vranken")
     wesnoth.extract_unit(vr)
     wesnoth.put_unit({
         id = "xavier",
@@ -55,7 +55,7 @@ function ES.prestart()
     wesnoth.put_recall_unit(newu)
 
     -- Mise à jour de la liste des heros
-    CustomVariables().heros_joueur = "morgane, xavier"
+    CustomVariables().player_heroes = "morgane, xavier"
 
     local xav = wesnoth.get_unit("xavier")
     local x, y = wesnoth.find_vacant_tile(xav.x, xav.y)
@@ -82,7 +82,7 @@ function ES.presente_xavier()
 end
 
 function ES.turn1()
-    local id = wesnoth.get_units({ side = 2, canrecruit = true })[1].id
+    local id = wesnoth.units.find_on_map({ side = 2, canrecruit = true })[1].id or ""
     Message(id, _ "Haha, we are back ! Tought we would give up that easily ?")
     Message("xavier",
         "Huhu, they have surrounded us.. and they have called big brother...")

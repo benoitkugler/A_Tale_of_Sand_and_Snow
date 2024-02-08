@@ -20,12 +20,11 @@ Conf.heroes.actif_skills = {
 }
 
 -- Should be called once, at first use of the hero
----@param unit_id string
-function Conf.heroes.init(unit_id)
-    local u = wesnoth.units.get(unit_id)
-    u:custom_variables().special_skills = {}
-    u:custom_variables().xp = 0
-    u.role = "hero"
+---@param unit unit
+function wesnoth.units.init_hero(unit)
+    unit:custom_variables().special_skills = {}
+    unit:custom_variables().xp = 0
+    unit.role = "hero"
 end
 
 function Conf.heroes.get_color(unit_id) return colors[unit_id] or "#000000" end

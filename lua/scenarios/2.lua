@@ -1,210 +1,44 @@
-ES = {}
-
 local x_messenger, y_messenger = 19, 1
 
-wesnoth.add_event_handler({
-    id = "event_scenario_include",
-    name = "prestart",
-    T.lua { code = "ES.first_time()" }
-})
 
-local Scenario_event = {
-    { id = "prestart", name = "prestart", T.lua { code = "ES.prestart()" } },
-    { id = "turn1",    name = "turn_1",   T.lua { code = "ES.turn1()" } }
-}
 
-local First_time = {
-    {
-        id = "see",
-        name = "sighted",
-        T.filter { side = 2 },
-        T.lua { code = "ES.see_ennemy()" }
-    }
-}
-
-for i, v in pairs(Scenario_event) do
-    --    wesnoth.remove_event_handler(v.id)
-    wesnoth.add_event_handler(v)
-end
-
-function ES.first_time()
-    for i, v in pairs(First_time) do
-        --    wesnoth.remove_event_handler(v.id)
-        wesnoth.add_event_handler(v)
-    end
-end
-
--- Ces 2 fonctions sont toujours appelés par la macro STANDARD_EVENT
-function ES.atk() end
-
-function ES.kill()
-    local dying = PrimaryUnit()
-    if dying.id == "leader" then
-        Message("vranken",
-            _ "At last ! Their leader has fallen, and the remaining bandits should flee. They won't be a threat anymore !")
-        Message("rymor", _ "Good job soldiers, time to take some rest !")
-        local x, y = wesnoth.find_vacant_tile(x_messenger, y_messenger)
-
-        wesnoth.put_unit({ id = "jod", type = "Woodsman", side = 1 }, x, y)
-        wml.fire("lift_fog", { T.filter_side { side = 1 }, x = x, y = y })
-        Message("jod",
-            _ "<span style='italic'>(Shouting)</span> Sir ! Urgent message from the capital ! Seems like the Council needs you !")
-        Message("rymor", _ "I guess the rest will wait...")
-        Victory()
-    end
-end
-
-function ES.prestart()
-    -- Recuperation de brinx et changement
-    local br = wesnoth.get_units { id = "brinx" }[1]
-    wesnoth.extract_unit(br)
-    wesnoth.put_unit({
-        id = "vranken",
-        type = "vranken2",
-        name = _ "Vranken",
-        canrecruit = true,
-        role = "hero",
-        {
-            "variables", {
-            xp = "",
-            bloodlust = "",
-            special_skills = "",
-            special_skills_lvl = "",
-            special_skills_cd = "",
-            T.special_skills {}
-        }
-        }
-    }, br.x, br.y)
-    local newu = br.__cfg
-    newu["canrecruit"] = nil
-    wesnoth.put_recall_unit(newu)
-
-    -- Set the proper heroes for this scenario
-    CustomVariables().heros_joueur = "vranken,bunshop,drumar,rymor"
-end
-
-local function presentation()
-    Popup(_ "New heroes",
-        _ "\tYou now have three new heroes : " .. "<span color='" ..
-        Conf.heroes.get_color("drumar") ..
-        "' weight='bold'>Frä Drumar</span>, a powerful spell caster, " ..
-        "<span color='" .. Conf.heroes.get_color("rymor") ..
-        "' weight='bold'>Rymôr</span>, solid as a rock, and " ..
-        "<span color='" .. Conf.heroes.get_color("bunshop") ..
-        "' weight='bold'>Bunshop</span>, as nimble and fast as a storm. " ..
-        "\nEach of them has unique skills and ways of enhancing them." ..
-        '\nYou will find more information in the <span style=\'italic\'>"Skills"</span> menu, ' ..
-        "by right-clicking on heroes.")
-
-    local u = wesnoth.get_unit("rymor")
-    u.variables["special_skills"] = { skill1 = 0 }
-    u = wesnoth.get_unit("bunshop")
-    u.variables["special_skills"] = { skill1 = 0 }
-    u = wesnoth.get_unit("drumar")
-    u.variables["special_skills"] = { skill1 = 0 }
-end
-
-function ES.turn1()
-    local vr = wesnoth.get_units { id = "vranken" }[1]
-    local x, y
-
+local function create_sword_spirit()
     wml.fire("message", {
         speaker = "vranken",
-        message = _ "Come on soldiers ! Let's end this !"
+        message = _ "Hum... I feel like this fight will be harder than expected... Any help will be welcome... "
     })
-
-    x, y = wesnoth.find_vacant_tile(vr.x, vr.y)
-    wesnoth.put_unit({
-        id = "rymor",
-        type = "rymor1",
-        side = 1,
-        name = _ "Rymôr",
-        role = "hero",
-        {
-            "variables", {
-            xp = "",
-            bloodlust = "",
-            special_skills = "",
-            special_skills_lvl = "",
-            special_skills_cd = "",
-            T.special_skills {}
-        }
-        }
-    }, x, y)
-
+    wml.fire("message", {
+        speaker = "vranken",
+        message = _ "<span style='italic'>(rubbing the pommel of his sword)</span>"
+    })
     wml.fire("message",
-        { speaker = "rymor", message = _ "Ah some action, at last !" })
+        { speaker = "vranken", message = _ "Göndhul ! Fight for us !" })
 
-    x, y = wesnoth.find_vacant_tile(vr.x, vr.y)
-    wesnoth.put_unit({
-        id = "drumar",
-        type = "drumar1",
-        side = 1,
-        name = _ "Frä Drumar",
-        role = "hero",
-        {
-            "variables", {
-            xp = "",
-            bloodlust = "",
-            special_skills = "",
-            special_skills_lvl = "",
-            special_skills_cd = "",
-            T.special_skills {}
-        }
-        }
-    }, x, y)
+    local sword_spirit = wesnoth.units.create({
+        type = "sword_spirit2",
+        id = "sword_spirit",
+        name = "Göndhul",
+        side = 1
+    })
+    sword_spirit:init_hero()
+    sword_spirit:to_recall()
+
+    local vr = wesnoth.units.get("vranken")
+    local x, y = wesnoth.paths.find_vacant_hex(vr.x, vr.y, sword_spirit)
+    wml.fire("recall", { id = "sword_spirit", x = x, y = y })
     wml.fire("message", {
-        speaker = "drumar",
-        message = _ "The Source is formal, Vranken, this should be an easy win !"
+        speaker = "sword_spirit",
+        message = _ "<span style='italic'>(Deep, guttural voice)</span> Master... At your service..."
+    })
+    wml.fire("message", {
+        speaker = "vranken",
+        message = _ "<span style='italic'>(Feeling uncomfortable)</span> Bruuh, he's always scary, even after all these years..."
     })
 
-    wml.fire("message", { speaker = "rymor", message = _ "Ready Bunshop ?" })
-
-    x, y = wesnoth.find_vacant_tile(vr.x, vr.y)
-    wesnoth.put_unit({
-        id = "bunshop",
-        type = "bunshop0",
-        side = 1,
-        name = _ "Bunshop",
-        role = "hero",
-        {
-            "variables", {
-            xp = "",
-            bloodlust = "",
-            special_skills = "",
-            special_skills_lvl = "",
-            special_skills_cd = "",
-            T.special_skills {}
-        }
-        }
-    }, x, y)
-    wml.fire("message", {
-        speaker = "bunshop",
-        message = _ "<span style='italic'>(enthusiastic barking)</span>"
-    })
-
-    -- initialisation des variables
-
-    Conf.heroes.init("vranken")
-    Conf.heroes.init("rymor")
-    Conf.heroes.init("drumar")
-    Conf.heroes.init("bunshop")
-
-    -- Présentation
-
-    presentation()
-    Popup(_ "Note",
-        _ "As you might have guessed, this campaign is not about war strategy, " ..
-        "manipulating a lot of units, but rather about training and mastering your heroes." ..
-        "\nConsequently, you should not focus too much on recruiting troops : they should only protect you heroes. " ..
-        "By the way, gold should never be an issue : you heroes will always be at your side.")
-end
-
-local function note_gondhul()
     Popup(_ "New hero",
         _ "\tThis is <span color='" .. Conf.heroes.get_color("sword_spirit") ..
         "' weight='bold'> Göndhul</span>, " ..
-        "the Xaintrailles family warden. He's link to Vranken by oath, " ..
+        "the Xaintrailles family warden. He is linked to Vranken by oath, " ..
         "advising Vranken and finally enhancing Vranken's skills. " ..
         '\n\tYou will find more information in the <span style=\'italic\'>"Skills"</span> menu, ' ..
         "by right-clicking on Vranken. " ..
@@ -230,44 +64,147 @@ local function note_gondhul()
         { "objective", { description = _ "Turns run out.", condition = "lose" } },
         { "note",      { description = _ "No gold carry over next scenario." } }
     })
+
+    -- add the new hero
+    local lheros = CustomVariables().player_heroes
+    lheros = lheros .. ",sword_spirit"
+    CustomVariables().player_heroes = lheros
 end
 
-function ES.see_ennemy()
+local function on_see_ennemy()
+    -- check if we already have seen one
+    if wesnoth.units.get("sword_spirit") then return end
+    create_sword_spirit()
+end
+
+
+local function on_prestart()
+    -- hide brinx and introduce vranken
+    local brinx = wesnoth.units.get("brinx")
+    brinx:extract()
+
+    local vranken = wesnoth.units.create({
+        id = "vranken",
+        type = "vranken2",
+        name = _ "Vranken",
+        canrecruit = true,
+    })
+    vranken:init_hero()
+    vranken:to_map(brinx.x, brinx.y)
+
+    brinx.canrecruit = false
+    brinx:to_recall()
+
+    -- local newu = brinx.__cfg
+    -- newu["canrecruit"] = nil
+    -- wesnoth.put_recall_unit(newu)
+
+    -- set the proper heroes for this scenario
+    CustomVariables().player_heroes = "vranken,bunshop,drumar,rymor"
+end
+
+local function presentation()
+    Popup(_ "New heroes",
+        _ "\tYou now have three new heroes : " .. "<span color='" ..
+        Conf.heroes.get_color("drumar") ..
+        "' weight='bold'>Frä Drumar</span>, a powerful spell caster, " ..
+        "<span color='" .. Conf.heroes.get_color("rymor") ..
+        "' weight='bold'>Rymôr</span>, solid as a rock, and " ..
+        "<span color='" .. Conf.heroes.get_color("bunshop") ..
+        "' weight='bold'>Bunshop</span>, as nimble and fast as a storm. " ..
+        "\nEach of them has unique skills and ways of enhancing them." ..
+        '\nYou will find more information in the <span style=\'italic\'>"Skills"</span> menu, ' ..
+        "by right-clicking on heroes.")
+end
+
+local function on_turn1()
     wml.fire("message", {
         speaker = "vranken",
-        message = _ "Hum... I feel like this fight will be harder than expected... Any help will be welcome... "
+        message = _ "Come on soldiers ! Let's end this !"
     })
-    wml.fire("message", {
-        speaker = "vranken",
-        message = _ "<span style='italic'>(rubbing the pommel of his sword)</span>"
+
+    local vr = wesnoth.units.get("vranken")
+    local rymor = wesnoth.units.create({
+        id = "rymor",
+        type = "rymor1",
+        side = 1,
+        name = _ "Rymôr",
     })
+    rymor:init_hero()
+    local x, y = wesnoth.paths.find_vacant_hex(vr.x, vr.y, rymor)
+    rymor:to_map(x, y)
     wml.fire("message",
-        { speaker = "vranken", message = _ "Göndhul ! Fight for us !" })
+        { speaker = "rymor", message = _ "Ah some action, at last !" })
 
-    wesnoth.put_recall_unit({
-        type = "sword_spirit2",
-        id = "sword_spirit",
-        name = "Göndhul",
-        role = "hero",
-        { "variables", { bloodlust = "", T.special_skills {}, special_skills = "" } }
-    }, 1)
-    local vr = wesnoth.get_unit("vranken")
-    local sp = wesnoth.get_units { id = "sword_spirit" }[1]
-    local x, y = wesnoth.find_vacant_tile(vr.x, vr.y, sp)
-    wml.fire("recall", { id = "sword_spirit", x = x, y = y })
-    Conf.heroes.init("sword_spirit")
-    wml.fire("message", {
-        speaker = "sword_spirit",
-        message = _ "<span style='italic'>(Deep, guttural voice)</span> Master... At your service..."
+    local drumar = wesnoth.units.create({
+        id = "drumar",
+        type = "drumar1",
+        side = 1,
+        name = _ "Frä Drumar",
     })
+    drumar:init_hero()
+    x, y = wesnoth.paths.find_vacant_hex(vr.x, vr.y, drumar)
+    drumar:to_map(x, y)
     wml.fire("message", {
-        speaker = "vranken",
-        message = _ "<span style='italic'>(Feeling uncomfortable)</span> Bruuh, he's always scary, even after all these years..."
+        speaker = "drumar",
+        message = _ "The Source is formal, Vranken, this should be an easy win !"
     })
-    note_gondhul()
 
-    -- now add the new hero
-    local lheros = CustomVariables().heros_joueur
-    lheros = lheros .. ",sword_spirit"
-    CustomVariables().heros_joueur = lheros
+    wml.fire("message", { speaker = "rymor", message = _ "Ready Bunshop ?" })
+
+    local bunshop = wesnoth.units.create({
+        id = "bunshop",
+        type = "bunshop0",
+        side = 1,
+        name = _ "Bunshop",
+    })
+    bunshop:init_hero()
+    x, y = wesnoth.paths.find_vacant_hex(vr.x, vr.y, bunshop)
+    bunshop:to_map(x, y)
+    wml.fire("message", {
+        speaker = "bunshop",
+        message = _ "<span style='italic'>(enthusiastic barking)</span>"
+    })
+
+    presentation()
+    Popup(_ "Note",
+        _ "As you might have guessed, this campaign is not about war strategy, " ..
+        "manipulating a lot of units, but rather about training and mastering your heroes." ..
+        "\nAs such, you should not focus too much on recruiting troops : they should only protect you heroes. " ..
+        "Besides, gold should never be an issue, as you heroes will always be recalled at your side.")
+end
+
+
+
+---@type ScenarioEvents
+ES = {
+    atk = function() end,
+    kill = function()
+        local dying = PrimaryUnit()
+        if dying.id == "ennemy_leader" then
+            Message("vranken",
+                _ "At last ! Their leader has fallen, and the remaining bandits should flee. They won't be a threat anymore !")
+            Message("rymor", _ "Good job soldiers, time to take some rest !")
+            local x, y = wesnoth.paths.find_vacant_hex(x_messenger, y_messenger)
+
+            wesnoth.units.to_map({ id = "jod", type = "Woodsman", side = 1 }, x, y)
+            wml.fire("lift_fog", { T.filter_side { side = 1 }, x = x, y = y })
+            Message("jod",
+                _ "<span style='italic'>(Shouting)</span> Sir ! Urgent message from the capital ! Seems like the Council needs you !")
+            Message("rymor", _ "I guess the rest will wait...")
+            Victory()
+        end
+    end
+}
+
+
+---@type game_event_options[]
+local scenario_events = {
+    { id = "s2_see",      name = "sighted",  action = on_see_ennemy, filter = { T.filter { side = 2 } } },
+    { id = "s2_prestart", name = "prestart", action = on_prestart },
+    { id = "s2_turn1",    name = "turn_1",   action = on_turn1 }
+}
+
+for _, v in pairs(scenario_events) do
+    wesnoth.game_events.add(v)
 end

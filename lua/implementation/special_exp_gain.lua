@@ -106,7 +106,7 @@ end
 -- -------------------- Drumar --------------------
 function exp_functions.drumar.combat(atk, def)
     if def.id == "drumar" then
-        local weapon = wesnoth.current.event_context.second_weapon
+        local weapon = SecondaryWeapon()
         if weapon.type == "cold" then
             def:custom_variables().xp = def:custom_variables().xp + atk.level + V.drumar.DEF_COLD -- defense cold
         end
@@ -116,7 +116,7 @@ function exp_functions.drumar.combat(atk, def)
                 Round(atk.level * V.drumar.DEF_SLOW) -- defense slow
         end
     elseif atk.id == "drumar" then
-        local weapon = wesnoth.current.event_context.weapon
+        local weapon = PrimaryWeapon()
         if weapon.type == "cold" then
             atk:custom_variables().xp = atk:custom_variables().xp + def.level + V.drumar.ATK_COLD
             -- attaque cold
