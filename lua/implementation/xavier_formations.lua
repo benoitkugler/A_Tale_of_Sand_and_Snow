@@ -133,7 +133,7 @@ end
 ---@param target unit
 function formations_abilities.O(xavier, target)
     UI.clear_menu_item("union_debuf") -- removing then rebuilding
-    local lvl = GetAbility(xavier, "O_formation")
+    local lvl = GetAbilityLevel(xavier, "O_formation")
     local cd = xavier:custom_variables().special_skill_cd or 0
     if lvl and target and (cd == 0) then
         local x, y = target[1], target[2]

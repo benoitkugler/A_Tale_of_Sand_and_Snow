@@ -28,7 +28,7 @@ local morgane = {
         },
         function(unit)
             local current_lvl =
-                GetAbility(unit, "better_heal", "heals")._level or 0
+                GetAbilityLevel(unit, "better_heal", "heals") or 0
             local value = 8 + V.BETTER_HEAL * (current_lvl + 1)
             return T.effect {
                 apply_to = "new_ability",
@@ -94,7 +94,7 @@ local morgane = {
         },
         function(unit)
             local current_lvl =
-                GetAbility(unit, "better_heal", "heals")._level or 0
+                GetAbilityLevel(unit, "better_heal", "heals") or 0
             local value = 8 + V.BETTER_HEAL * (current_lvl + 1)
             return T.effect {
                 apply_to = "new_ability",

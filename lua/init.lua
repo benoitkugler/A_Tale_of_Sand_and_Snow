@@ -39,7 +39,7 @@ wesnoth.require "config/config"
 wesnoth.require "limbes"
 
 wesnoth.require "implementation/ability"
-wesnoth.require "implementation/special_exp_gain"
+EXP = wesnoth.require "implementation/special_exp_gain"
 wesnoth.require "implementation/event_combat"
 wesnoth.require "implementation/amla"
 wesnoth.require "implementation/special_skills"

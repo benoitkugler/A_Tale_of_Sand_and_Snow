@@ -14,9 +14,10 @@ local exp_functions = {
 -- Funtion called on every unit fighting
 function exp_functions.global.combat(atk, def)
     local rymor = wesnoth.units.get("rymor")
-    if rymor and rymor:matches { side = def.side, T.filter_adjacent { id = def.id } } then       -- defender is ally and next to rymor
+    if rymor and rymor:matches { side = def.side, T.filter_adjacent { id = def.id } } then -- defender is ally and next to rymor
         rymor:custom_variables().xp = rymor:custom_variables().xp + atk.level +
-        V.rymor.ADJ_NEXT                                                                         -- def next to rymor
+            V.rymor
+            .ADJ_NEXT -- def next to rymor
     end
     local xavier = wesnoth.units.get("xavier")
     if xavier then
@@ -89,10 +90,10 @@ end
 function exp_functions.brinx.combat(atk, def)
     if atk.race == "muspell" and def.id == "brinx" then
         def:custom_variables().xp = def:custom_variables().xp + atk.level + V.brinx
-        .DEF_MUSPELL                                                                            -- defense contre muspell
+            .DEF_MUSPELL -- defense contre muspell
     elseif def.race == "muspell" and atk.id == "brinx" then
         atk:custom_variables().xp = atk:custom_variables().xp + def.level * V.brinx
-        .ATK_MUSPELL                                                                            -- attaque contre muspell
+            .ATK_MUSPELL -- attaque contre muspell
     end
 end
 
@@ -159,17 +160,16 @@ function exp_functions.xavier.combat(atk, def)
 end
 
 -- Top level
-EXP = {}
-EXP.values = V
+local events = {}
 
-function EXP.adv()
+function events.on_advance()
     local unit = PrimaryUnit()
     if exp_functions[unit.id] and exp_functions[unit.id].adv then
         exp_functions[unit.id].adv(unit)
     end
 end
 
-function EXP.atk()
+function events.on_attack()
     local atker = PrimaryUnit()
     local defer = SecondaryUnit()
     if exp_functions[atker.id] and exp_functions[atker.id].combat then
@@ -181,7 +181,7 @@ function EXP.atk()
     exp_functions.global.combat(atker, defer)
 end
 
-function EXP.kill()
+function events.on_kill()
     local dying = PrimaryUnit()
     local killer = SecondaryUnit()
     if exp_functions[dying.id] and exp_functions[dying.id].kill then
@@ -191,3 +191,5 @@ function EXP.kill()
         exp_functions[killer.id].kill(killer, dying)
     end
 end
+
+return events

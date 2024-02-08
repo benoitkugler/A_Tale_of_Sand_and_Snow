@@ -38,14 +38,14 @@ end
 ---@param u unit
 ---@param id_ability string
 ---@param ability_name string?
----@return WMLTable
+---@return WMLTable?
 function GetAbility(u, id_ability, ability_name)
     ability_name = ability_name or "isHere"
     local list_abilities = wml.get_child(u.__cfg, "abilities") or {}
     for ab in wml.child_range(list_abilities, ability_name) do
         if ab.id == id_ability then return ab end
     end
-    return {}
+    return nil
 end
 
 ---Return the field '_level' of the abilities with id 'id_ability'.
@@ -56,7 +56,7 @@ end
 ---@return integer|nil
 function GetAbilityLevel(u, id_ability, ability_name)
     local ab = GetAbility(u, id_ability, ability_name)
-    return ab._level --[[@as integer|nil]]
+    return ab and ab._level --[[@as integer|nil]] or nil
 end
 
 ---Returns the level of given special for current weapon

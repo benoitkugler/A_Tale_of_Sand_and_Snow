@@ -1,6 +1,10 @@
 --- DEV file, included in debug scenarios
 
+--- scenario handler
 ES = {}
+function ES.atk() end
+
+function ES.kill() end
 
 InitVariables()
 

@@ -50,7 +50,7 @@ local Standard_event = {
         first_time_only = false,
         name            = "attack",
         action          = function()
-            EXP.atk(); ES.atk(); EC.on_combat_event()
+            EXP.on_attack(); ES.atk(); EC.on_combat_event()
         end
     },
     {
@@ -76,7 +76,7 @@ local Standard_event = {
         first_time_only = false,
         name = "die",
         action = function()
-            EC.on_combat_event(); EXP.kill(); ES.kill(); on_kill()
+            EC.on_combat_event(); EXP.on_kill(); ES.kill(); on_kill()
         end
     },
     {
@@ -102,7 +102,7 @@ local Standard_event = {
         first_time_only = false,
         name = "post advance",
         action = function()
-            AMLA.adv(); EXP.adv()
+            AMLA.adv(); EXP.on_advance()
         end
     },
     {

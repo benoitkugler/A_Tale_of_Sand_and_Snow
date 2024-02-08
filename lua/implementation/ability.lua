@@ -319,7 +319,7 @@ end
 ---Implements the long heal ability (called on each turn)
 ---@param healer unit
 local function long_heal(healer)
-    local level_long_heal = GetAbility(healer, "long_heal")._level
+    local level_long_heal = GetAbilityLevel(healer, "long_heal")
     if not level_long_heal then return end
     local value_heal = GetAbility(healer, "better_heal", "heals").value
     local candidates = wesnoth.units.find_on_map {
