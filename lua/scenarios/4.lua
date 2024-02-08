@@ -55,7 +55,7 @@ function ES.prestart()
     wesnoth.put_recall_unit(newu)
 
     -- Mise à jour de la liste des heros
-    wesnoth.set_variable("heros_joueur", "morgane, xavier")
+    CustomVariables().heros_joueur = "morgane, xavier"
 
     local xav = wesnoth.get_unit("xavier")
     local x, y = wesnoth.find_vacant_tile(xav.x, xav.y)

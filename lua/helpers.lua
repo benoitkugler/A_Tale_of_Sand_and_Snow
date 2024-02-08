@@ -122,17 +122,17 @@ function GetLocation()
     return wesnoth.current.event_context.x1, wesnoth.current.event_context.y1
 end
 
--- Returns the table id_skill = lvl
+-- Returns the amlas table { id_skill -> lvl }
 ---@param u unit
----@return table
-function TableSkills(u)
-    local table_amlas = {}
+---@return table<string,integer>
+function wesnoth.units.skills_level(u)
+    local skills = {}
     for adv in wml.child_range(wml.get_child(u.__cfg, "modifications") or {},
         "advancement") do
-        table_amlas[adv.id] = (table_amlas[adv.id] or 0) + 1
+        skills[adv.id] = (skills[adv.id] or 0) + 1
     end
-    table_amlas.amla_dummy = nil
-    return table_amlas
+    skills.amla_dummy = nil -- clear this sentinel value
+    return skills
 end
 
 ---Popup window with translatable string

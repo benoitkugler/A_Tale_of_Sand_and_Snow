@@ -137,3 +137,43 @@ function wesnoth.interface.color_adjust(red, green, blue) end
 function wesnoth.interface.screen_fade(color, duration) end
 
 wesnoth.interface.game_display = {}
+
+--- Comming from wml.items
+
+---Remove an item from the map
+---@param x integer
+---@param y integer
+---@param name? string
+function wesnoth.interface.remove_item(x, y, name) end
+
+---@class item_info
+---@field x integer
+---@field y integer
+---@field image string
+---@field halo string
+---@field team_name string
+---@field filter_team WML
+---@field visible_in_fog boolean
+---@field submerge number
+---@field redraw boolean
+---@field name string
+---@field z_order integer
+---@field variables WMLTable
+
+---Get items on a given hex
+---@param x integer
+---@param y integer
+---@return item_info[]
+function wesnoth.interface.get_items(x, y) end
+
+---Add an item image to a hex
+---@param x integer
+---@param y integer
+---@param name string
+function wesnoth.interface.add_item_image(x, y, name) end
+
+---Add an item halo to a hex
+---@param x integer
+---@param y integer
+---@param name string
+function wesnoth.interface.add_item_halo(x, y, name) end

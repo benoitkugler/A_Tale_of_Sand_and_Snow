@@ -79,8 +79,8 @@ function ES.prestart()
     newu["canrecruit"] = nil
     wesnoth.put_recall_unit(newu)
 
-    -- Mise à jour de la liste des heros
-    wesnoth.set_variable("heros_joueur", "vranken,bunshop,drumar,rymor")
+    -- Set the proper heroes for this scenario
+    CustomVariables().heros_joueur = "vranken,bunshop,drumar,rymor"
 end
 
 local function presentation()
@@ -266,7 +266,8 @@ function ES.see_ennemy()
     })
     note_gondhul()
 
-    local lheros = wesnoth.get_variable("heros_joueur")
+    -- now add the new hero
+    local lheros = CustomVariables().heros_joueur
     lheros = lheros .. ",sword_spirit"
-    wesnoth.set_variable("heros_joueur", lheros)
+    CustomVariables().heros_joueur = lheros
 end

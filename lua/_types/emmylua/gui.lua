@@ -107,7 +107,7 @@ function gui.add_widget_definition(type, id, content) end
 ---A simple widget, with no children
 ---@class simple_widget : widget
 ---@field use_markup boolean
----@field label tstring
+---@field label string|tstring
 ---@field marked_up_text tstring
 
 ---A button with two or more states, typically used as a checkbox or radiobutton
@@ -216,7 +216,8 @@ function gui.widget.add_item_of_tpe(widget, category, position) end
 ---Remove items from a container widget
 ---@param widget widget
 ---@param position? integer
-function gui.widget.remove_items_at(widget, position) end
+---@param count? integer
+function gui.widget.remove_items_at(widget, position, count) end
 
 ---Find a widget based on a path
 ---@param widget widget

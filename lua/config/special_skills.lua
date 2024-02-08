@@ -5,14 +5,30 @@
 -- Function which compute the values are directly accesible to be used in event_combat.
 local V = Conf.special_xp_gain
 
-local info = {}
+Conf.special_skills = {}
+
+---@class special_skill_config
+---@field img string
+---@field max_lvl integer
+---@field name string
+---@field color string
+---@field name_aff string
+---@field require_lvl integer
+---@field require_avancement {id:string, des:string}?
+---@field desc tstring
+---@field costs integer[]
+
+---@class hero_skills
+---@field help_des tstring
+---@field help_ratios tstring
+---@field [integer] special_skill_config
 
 -- TODO: A implémenter
-info.bunshop = {}
-info.rymor = {}
+Conf.special_skills.bunshop = {}
+Conf.special_skills.rymor = {}
 
 -- DRUMAR
-info.drumar = {
+Conf.special_skills.drumar = {
     help_des = _ "Several years of battles in Vranken company have made Frä Drümar more warlike than any other Frä. " ..
         "She excels at slowing enemies and taking advantage of their delayed reactions. " ..
         "\nShe will earn experience (scaling with enemies level) when applying " ..
@@ -85,12 +101,12 @@ info.drumar = {
 }
 
 -- VRANKEN
-info.vranken = {
+Conf.special_skills.vranken = {
     help_des = _ "Vranken has a familly link with his sword. " ..
         "Every time <span  font_weight ='bold' >Göndhul fights</span>, Vranken earn points " ..
         "(scaling with opponents level).",
     help_ratios = Fmt(
-        _ "(<span weight ='bold'>+ %.1f</span> per defense, <span weight ='bold'>x %.1f</span>per attack, " ..
+        _ "(<span weight ='bold'>+ %.1f</span> per defense, <span weight ='bold'>x %.1f</span> per attack, " ..
         "<span weight ='bold' >x %.1f</span> per kill, <span weight ='bold' >%d</span> per level up)",
         V.sword_spirit.DEF, V.sword_spirit.ATK, V.sword_spirit.KILL,
         V.sword_spirit.LEVEL_UP),
@@ -145,13 +161,13 @@ info.vranken = {
 }
 
 -- BRINX
-info.brinx = {
+Conf.special_skills.brinx = {
     help_des = _ "Brinx seeks to avenge Jödumur's death. Every time he " ..
         "<span  font_weight ='bold' >fights against muspellians</span>, " ..
         "Brinx earn points (scaling with opponents level).",
     help_ratios = Fmt(
         _ "(<span font_weight ='bold'>+ %d</span> per defense, " ..
-        "<span font_weight ='bold'>x %.1f</span>per attack, <span font_weight ='bold'>x %.1f</span> per kill)",
+        "<span font_weight ='bold'>x %.1f</span> per attack, <span font_weight ='bold'>x %.1f</span> per kill)",
         V.brinx.DEF_MUSPELL, V.brinx.ATK_MUSPELL, V.brinx.KILL_MUSPELL),
     {
         img = "icons/armor_leather.png",
@@ -204,7 +220,7 @@ info.brinx = {
 }
 
 -- XAVIER
-info.xavier = {
+Conf.special_skills.xavier = {
     help_des = _ "Xavier thrives in battefield strategy. Every time Xavier <span font_weight='bold'>" ..
         "helps allies</span>, he builds confidence with them (scaling level). This will eventually make Xavier stronger, when " ..
         "fighting in precise formations.",
@@ -265,7 +281,7 @@ info.xavier = {
 }
 
 -- MORGANE
-info.morgane = {
+Conf.special_skills.morgane = {
     help_des = _ [[
 Walking and fighting into the Limbes deeply changes the way Morgane see our world. With a little training, she will be able to build bridges between the two dimensions, modifying her movement and defense abilities. Her experience may also inspire his allies when fighting into the Limbes.
 Every time Morgane or one of her allies fight into the Limbes, she earns points (scaling with opponents level).]],
@@ -297,5 +313,3 @@ Every time Morgane or one of her allies fight into the Limbes, she earns points 
     ---@type fun(lvl:integer): integer
     defense = function(lvl) return lvl * 7 end
 }
-
-Conf.special_skills = info

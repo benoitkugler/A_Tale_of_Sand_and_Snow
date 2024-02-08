@@ -1,19 +1,19 @@
 UI = {}
 
-UI.show_skills = wesnoth.require("skills/init")
+UI.show_skills = wesnoth.require("skills")
 
 -- data is the menu table.
 -- keep in memory which menu are shown to avoid warnings
 ---@param data WMLTable
 function UI.set_menu_item(data)
     wml.fire("set_menu_item", data)
-    Variables().showed_menus[data.id] = true
+    CustomVariables().showed_menus[data.id] = true
 end
 
 --- Remove the item with the given id
 ---@param id string
 function UI.clear_menu_item(id)
-    local menus = Variables().showed_menus
+    local menus = CustomVariables().showed_menus
     if menus[id] then
         wml.fire("clear_menu_item", { id = id })
         menus[id] = nil

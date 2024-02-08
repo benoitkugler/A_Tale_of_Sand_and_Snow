@@ -19,9 +19,9 @@ local function remove(unit_id, object_id)
     u:remove_modifications({ id = object_id }, "trait")
     AMLA.update_lvl(u) -- remove_modification may delete extra lvls
 
-    local m = Variables().player_objects
+    local m = CustomVariables().player_objects
     m[object_id] = ""
-    Variables().player_objects = m
+    CustomVariables().player_objects = m
 end
 
 -- Apply an object to the given unit (unit modification and owner)
@@ -45,9 +45,9 @@ local function apply(unit_id, object_id)
     u:add_modification("object", modif_object, false)
     u:add_modification("trait", modif_trait)
 
-    local m = Variables().player_objects
+    local m = CustomVariables().player_objects
     m[object_id] = unit_id
-    Variables().player_objects = m
+    CustomVariables().player_objects = m
 end
 
 ---@param id_donner string
@@ -212,7 +212,7 @@ local function preshow(window)
     local equip            = window:find("equip") --[[@as button]]
 
 
-    local heroes = Variables().heros_joueur:split(",")
+    local heroes = CustomVariables().heros_joueur:split(",")
     table.sort(heroes)
 
     --- state
@@ -251,7 +251,7 @@ local function preshow(window)
     end
 
     local function on_select_object()
-        local objects = Variables().player_objects
+        local objects = CustomVariables().player_objects
 
         local obj_id = state.position_objets[obj_list.selected_index]
         local objet = Conf.objects[obj_id]
@@ -289,7 +289,7 @@ local function preshow(window)
     end
 
     local function show_hero_list()
-        local objects = Variables().player_objects
+        local objects = CustomVariables().player_objects
 
         hero_list:remove_items_at(1, #(heroes))
         for i, v in ipairs(heroes) do
@@ -307,7 +307,7 @@ local function preshow(window)
     end
 
     local function init()
-        local objects = Variables().player_objects
+        local objects = CustomVariables().player_objects
 
         state.position_objets = {}
         state.is_unfolded = false
@@ -343,7 +343,7 @@ local function preshow(window)
     end
 
     local function on_equip()
-        local objects = Variables().player_objects
+        local objects = CustomVariables().player_objects
 
         local obj_id = state.position_objets[obj_list.selected_index]
         local is_equipped = not not (objects[obj_id])
@@ -368,7 +368,7 @@ local function preshow(window)
     end
 
     local function on_select_hero()
-        local objects = Variables().player_objects
+        local objects = CustomVariables().player_objects
 
         local objet_id = state.position_objets[obj_list.selected_index]
         local i = hero_list.selected_index
@@ -406,7 +406,7 @@ end
 O = {}
 
 function O.showObjectsDialog()
-    local obj_poss = Variables().player_objects
+    local obj_poss = CustomVariables().player_objects
     if next(obj_poss) == nil then
         Popup(_ "Note", _ "You still have to collect artifacts...")
     else
