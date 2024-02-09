@@ -1,14 +1,7 @@
 -- Numerical values
 local V = {
-    REGEN = 10,                -- per level
-    ALLIES_DEFENSE_RATIO = 5,  -- % per level
-    REDUCE_DEFENSE = 2,        -- % per hit per level
-    REDUCE_ARMOR = 3,          -- % per hit per level
-    SWORD_BONUS_DAMAGE = 2,    -- per amla
-    SWORD_BONUS_ATK = 1,       -- per amla
-    SWORD2_BONUS_ATK = 1,      -- per amla
-    CROSSBOW_BONUS_DAMAGE = 2, -- per amla
-    CROSSBOW_BONUS_ATK = 1     -- per amla
+    BONUS_RES = 7, -- per amla
+    REGEN = 10,    -- per level
 }
 
 local sword_spirit = {
@@ -17,27 +10,27 @@ local sword_spirit = {
     values = V,
     {
         id = "though",
-        _short_desc = "Resistances <BR/>  <B> +7 </B> %",
+        _short_desc = ("Resistances <BR/>  <B> +%d </B> %%"):format(V.BONUS_RES),
         image = "icons/cuirass_leather_studded.png",
         max_times = 3,
         always_display = 1,
-        description = _ "Tougher, + 7% resistances",
+        description = Fmt(_ "Tougher, + %d%% resistances", V.BONUS_RES),
         T.effect {
             apply_to = "resistance",
             T.resistance {
-                impact = -7,
-                blade = -7,
-                arcane = -7,
-                cold = -7,
-                pierce = -7,
-                fire = -7
+                impact = -V.BONUS_RES,
+                blade = -V.BONUS_RES,
+                arcane = -V.BONUS_RES,
+                cold = -V.BONUS_RES,
+                pierce = -V.BONUS_RES,
+                fire = -V.BONUS_RES
             }
         },
         table.unpack(StandardAmlaHeal(7))
     },
     {
         id = "regen",
-        _short_desc = "Regeneration <BR/> <B> +10 </B> hpl",
+        _short_desc = ("Regeneration <BR/> <B> +%d</B> hp"):format(V.REGEN),
         image = "icons/potion_red_small.png",
         max_times = 3,
         always_display = 1,
