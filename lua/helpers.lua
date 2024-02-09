@@ -93,7 +93,7 @@ end
 ---@param id_ability string
 ---@param ability_name string?
 ---@return WMLTable?
-function GetAbility(u, id_ability, ability_name)
+function wesnoth.units.get_ability(u, id_ability, ability_name)
     ability_name = ability_name or "customName"
     local list_abilities = wml.get_child(u.__cfg, "abilities") or {}
     for ab in wml.child_range(list_abilities, ability_name) do
@@ -108,8 +108,8 @@ end
 ---@param id_ability string
 ---@param ability_name string?
 ---@return integer|nil
-function GetAbilityLevel(u, id_ability, ability_name)
-    local ab = GetAbility(u, id_ability, ability_name)
+function wesnoth.units.ability_level(u, id_ability, ability_name)
+    local ab = u:get_ability(id_ability, ability_name)
     return ab and ab._level --[[@as integer|nil]] or nil
 end
 

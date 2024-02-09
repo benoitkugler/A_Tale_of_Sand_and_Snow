@@ -29,7 +29,7 @@ local xavier = {
             T.abilities { T.leadership { id = "better_leadership" } }
         },
         function(unit)
-            local current_lvl = GetAbilityLevel(unit, "better_leadership",
+            local current_lvl = unit:ability_level("better_leadership",
                 "leadership") or 0
             local value = V.BETTER_LEADERSHIP_RATIO * (current_lvl + 1)
             return T.effect {
@@ -100,7 +100,7 @@ Adjacent own units of equal or higher level will do %d%% more damage. ]], value)
             T.abilities { T.customName { id = "allies_defense" } }
         },
         function(unit) -- need the current ability level.adjacent
-            local current_lvl = GetAbilityLevel(unit, "allies_defense") or 0
+            local current_lvl = unit:ability_level("allies_defense") or 0
             local value = (current_lvl + 1) * V.ALLIES_DEFENSE_RATIO
             return T.effect {
                 apply_to = "new_ability",

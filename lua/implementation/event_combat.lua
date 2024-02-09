@@ -58,14 +58,14 @@ end
 function apply.shield_flat(event, pri, snd, dmg)
     local s1, s2 = pri.level * 2, snd.level * 2 -- shields
     if event == "attack" then                   -- adding shield value to avoid temporary death.
-        if GetAbilityLevel(pri, "shield_flat") then
+        if pri:ability_level("shield_flat") then
             pri.hitpoints = pri.hitpoints + s1
         end
-        if GetAbilityLevel(snd, "shield_flat") then
+        if snd:ability_level("shield_flat") then
             snd.hitpoints = snd.hitpoints + s2
         end
     elseif event == "attacker_hits" then
-        if GetAbilityLevel(snd, "shield_flat") then
+        if snd:ability_level("shield_flat") then
             if dmg < s2 then
                 snd.hitpoints = snd.hitpoints + dmg
             elseif snd.hitpoints > 0 then
@@ -76,7 +76,7 @@ function apply.shield_flat(event, pri, snd, dmg)
                 " hitpoints" .. "</span>\n"
         end
     elseif event == "defender_hits" then
-        if GetAbilityLevel(pri, "shield_flat") then
+        if pri:ability_level("shield_flat") then
             if dmg < s1 then
                 pri.hitpoints = pri.hitpoints + dmg
             elseif pri.hitpoints > 0 then
@@ -87,10 +87,10 @@ function apply.shield_flat(event, pri, snd, dmg)
                 " hitpoints" .. "</span>\n"
         end
     elseif event == "attack_end" then
-        if GetAbilityLevel(pri, "shield_flat") then
+        if pri:ability_level("shield_flat") then
             pri.hitpoints = pri.hitpoints - s1
         end
-        if GetAbilityLevel(snd, "shield_flat") then
+        if snd:ability_level("shield_flat") then
             snd.hitpoints = snd.hitpoints - s2
         end
     end
@@ -100,7 +100,7 @@ end
 
 function apply.war_leeches(event, pri, snd, dmg)
     if event == "attacker_hits" then
-        local lvl = GetAbilityLevel(snd, "war_leeches")
+        local lvl = snd:ability_level("war_leeches")
         if lvl then
             wml.fire("heal_unit", {
                 T.filter { id = snd.id },
@@ -114,7 +114,7 @@ end
 -- ABILITY SPECIAL de BRINX
 function apply.bloodlust(event, pri, snd, dmg)
     if event == "die" then
-        if GetAbilityLevel(snd, "bloodlust") then
+        if snd:ability_level("bloodlust") then
             if not snd:custom_variables().bloodlust then
                 snd:custom_variables().bloodlust = true
                 snd.moves = 4 -- on kill
@@ -126,7 +126,7 @@ end
 
 function apply.fresh_blood_musp(event, pri, snd, dmg)
     if event == "die" then
-        local lvl = GetAbilityLevel(snd, "fresh_blood_musp")
+        local lvl = snd:ability_level("fresh_blood_musp")
         if not lvl then return end
         if pri.__cfg.race == "muspell" then
             wml.fire("heal_unit", {
@@ -140,7 +140,7 @@ end
 
 -- Deflect
 function apply.deflect(event, _, snd, dmg)
-    if event == "attacker_hits" and GetAbility(snd, "deflect") then
+    if event == "attacker_hits" and snd:ability_level("deflect") then
         snd.hitpoints = snd.hitpoints + Round(dmg / 2)
         local enemies = wesnoth.units.find_on_map {
             T.filter_adjacent { id = snd.id }, { "not", { side = snd.side } }

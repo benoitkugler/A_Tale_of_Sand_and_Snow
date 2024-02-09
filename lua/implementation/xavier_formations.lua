@@ -87,7 +87,7 @@ end
 -- Application of ablities when a formation is active
 local formations_abilities = {}
 function formations_abilities.Y(xavier, target)
-    local lvl = GetAbilityLevel(xavier, "Y_formation")
+    local lvl = xavier:ability_level("Y_formation")
     if lvl then
         local value = Conf.special_skills.xavier.Y_formation(lvl)
         local x, y = target[1], target[2]
@@ -110,7 +110,7 @@ function formations_abilities.Y(xavier, target)
 end
 
 function formations_abilities.A(xavier)
-    local lvl = GetAbilityLevel(xavier, "A_formation")
+    local lvl = xavier:ability_level("A_formation")
     if lvl then
         local value = Conf.special_skills.xavier.A_formation(lvl)
         xavier:add_modification("trait",
@@ -119,7 +119,7 @@ function formations_abilities.A(xavier)
 end
 
 function formations_abilities.I(xavier, target)
-    local lvl = GetAbilityLevel(xavier, "I_formation")
+    local lvl = xavier:ability_level("I_formation")
     if lvl then
         local value = Conf.special_skills.xavier.I_formation(lvl)
         local x, y = target[1], target[2]
@@ -145,11 +145,11 @@ end
 ---@param target location?
 function formations_abilities.O(xavier, target)
     UI.clear_menu_item("union_debuf") -- removing then rebuilding
-    local lvl = GetAbilityLevel(xavier, "O_formation")
+    local lvl = xavier:ability_level("O_formation")
     local cd = xavier:custom_variables().special_skill_cd or 0
     if lvl and target and (cd == 0) then
         local x, y = target.x, target.y
-        UI.setup_menu_debuf(x, y, function() AB.union_debuf(x, y) end)
+        UI.setup_menu_debuf(x, y)
     end
 end
 

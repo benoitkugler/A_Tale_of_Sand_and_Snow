@@ -91,7 +91,7 @@ function AB.war_jump()
     local tox, toy = GetLocation()
     local locs = LocSet.of_triples(wesnoth.paths.find_reach(u, { ignore_units = true }))
     local moves_left = locs:get(tox, toy)
-    if not GetAbilityLevel(u, "war_jump") or not moves_left or not is_empty(tox, toy) then
+    if not u:ability_level("war_jump") or not moves_left or not is_empty(tox, toy) then
         Popup(_ "Error",
             _ "Can't <span color='red'>War Jump </span> right now. Please <span weight='bold'>select</span> me again.")
     else
@@ -129,7 +129,7 @@ function AB.elusive()
 
     local locs = LocSet.of_pairs(wesnoth.paths.find_reach(u, { ignore_units = true }))
     local moves_left = locs:get(tox, toy)
-    if not GetAbilityLevel(u, "elusive") or not moves_left or not is_empty(tox, toy) then
+    if not u:ability_level("elusive") or not moves_left or not is_empty(tox, toy) then
         Popup(_ "Error",
             _ "Can't be <span color='green'>Elusive</span> right now. Please <span weight='bold'>select</span> me again.")
     else
@@ -150,7 +150,7 @@ end
 -- Then we apply a trait modification with id _tmp_allies_defense_bonus
 local function update_xavier_defense()
     local xavier = wesnoth.units.get("xavier")
-    local lvl = GetAbilityLevel(xavier, "allies_defense")
+    local lvl = xavier:ability_level("allies_defense")
     if not lvl then return end
 
     local trait_id = "_tmp_allies_defense_bonus"
@@ -202,7 +202,7 @@ function AB.active_xavier_formations(xavier)
     local tiles_target = LocSet.create()
     ---@type formation_targets
     local active_formations = {}
-    if GetAbilityLevel(xavier, "Y_formation") then
+    if xavier:ability_level("Y_formation") then
         for __, pos in ipairs(formations_def.Y { x = xavier.x, y = xavier.y }) do
             if _check_formation(xavier, pos) then
                 tiles_ally:of_pairs(pos)
@@ -211,7 +211,7 @@ function AB.active_xavier_formations(xavier)
             end
         end
     end
-    if GetAbilityLevel(xavier, "I_formation") then
+    if xavier:ability_level("I_formation") then
         for __, pos in ipairs(formations_def.I { x = xavier.x, y = xavier.y }) do
             if _check_formation(xavier, pos) then
                 tiles_ally:of_pairs(pos)
@@ -220,7 +220,7 @@ function AB.active_xavier_formations(xavier)
             end
         end
     end
-    if GetAbilityLevel(xavier, "A_formation") then
+    if xavier:ability_level("A_formation") then
         for __, pos in ipairs(formations_def.A { x = xavier.x, y = xavier.y }) do
             if _check_formation(xavier, pos) then
                 tiles_ally:of_pairs(pos)
@@ -228,7 +228,7 @@ function AB.active_xavier_formations(xavier)
             end
         end
     end
-    if GetAbilityLevel(xavier, "O_formation") then
+    if xavier:ability_level("O_formation") then
         for __, pos in ipairs(formations_def.O { x = xavier.x, y = xavier.y }) do
             if _check_formation(xavier, pos) then
                 tiles_ally:of_pairs(pos)
@@ -323,9 +323,9 @@ function AB.select()
     UI.clear_menu_item("war_jump")
     local u = PrimaryUnit()
 
-    if GetAbilityLevel(u, "war_jump") and u.moves > 0 then show_war_jump(u) end
+    if u:ability_level("war_jump") and u.moves > 0 then show_war_jump(u) end
 
-    if GetAbilityLevel(u, "elusive") and u.moves > 0 then show_elusive(u) end
+    if u:ability_level("elusive") and u.moves > 0 then show_elusive(u) end
 
     if u.id == "xavier" then
         local _, tiles, targets = AB.active_xavier_formations(u)
@@ -337,9 +337,9 @@ end
 ---Implements the long heal ability (called on each turn)
 ---@param healer unit
 local function long_heal(healer)
-    local level_long_heal = GetAbilityLevel(healer, "long_heal")
+    local level_long_heal = healer:ability_level("long_heal")
     if not level_long_heal then return end
-    local value_heal = GetAbility(healer, "better_heal", "heals").value
+    local value_heal = healer:get_ability("better_heal", "heals").value
     local candidates = wesnoth.units.find_on_map {
         T.filter_location { x = healer.x, y = healer.y, radius = 3 }
     }

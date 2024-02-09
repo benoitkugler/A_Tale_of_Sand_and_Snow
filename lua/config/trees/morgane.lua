@@ -26,9 +26,10 @@ local morgane = {
             apply_to = "remove_ability",
             T.abilities { T.heals { id = "better_heal" } }
         },
+        ---@param unit unit
         function(unit)
             local current_lvl =
-                GetAbilityLevel(unit, "better_heal", "heals") or 0
+                unit:ability_level("better_heal", "heals") or 0
             local value = 8 + V.BETTER_HEAL * (current_lvl + 1)
             return T.effect {
                 apply_to = "new_ability",
@@ -94,7 +95,7 @@ local morgane = {
         },
         function(unit)
             local current_lvl =
-                GetAbilityLevel(unit, "better_heal", "heals") or 0
+                unit:ability_level("better_heal", "heals") or 0
             local value = 8 + V.BETTER_HEAL * (current_lvl + 1)
             return T.effect {
                 apply_to = "new_ability",
@@ -227,7 +228,7 @@ local morgane = {
         image = "icons/cuirass_leather_studded.png",
         max_times = 3,
         always_display = 1,
-        description = _ "Limbes strengh makes Morgan tougher: + 7% resistances",
+        description = _ "Limbes strengh makes Morgane tougher: + 7% resistances",
         T.effect {
             apply_to = "resistance",
             T.resistance {
