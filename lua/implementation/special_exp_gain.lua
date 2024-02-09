@@ -34,13 +34,15 @@ end
 -- Functions called only when the given hero is fighting
 
 -- ---------------------- Bunshop ----------------------
+---@param atk unit
+---@param def unit
 function exp_functions.bunshop.combat(atk, def)
     if atk.id == "bunshop" then
         Bunshop_atk_unit_full = (def.hitpoints == def.max_hitpoints) -- Storing for event kill
 
-        local c = wesnoth.map.rotate_right_around_center({ atk.x, atk.y },
-            { def.x, def.y }, 3) -- behind defender
-        local u = wesnoth.units.get(c[1], c[2])
+        local c = wesnoth.map.rotate_right_around_center({ x = atk.x, y = atk.y },
+            { x = def.x, y = def.y }, 3) -- behind defender
+        local u = wesnoth.units.get(c)
         if u and not wesnoth.sides.is_enemy(u.side, atk.side) then
             atk:custom_variables().xp = atk:custom_variables().xp + def.level *
                 V.bunshop.ATK_BACKSTAB -- backstab attack
@@ -79,6 +81,8 @@ function exp_functions.sword_spirit.combat(atk, def)
     end
 end
 
+---@param kil unit
+---@param dyi unit
 function exp_functions.sword_spirit.kill(kil, dyi)
     if kil.id == "sword_spirit" then
         local u = wesnoth.units.get("vranken")
@@ -106,7 +110,7 @@ end
 -- -------------------- Drumar --------------------
 function exp_functions.drumar.combat(atk, def)
     if def.id == "drumar" then
-        local weapon = SecondaryWeapon()
+        local weapon = SWeapon()
         if weapon.type == "cold" then
             def:custom_variables().xp = def:custom_variables().xp + atk.level + V.drumar.DEF_COLD -- defense cold
         end
@@ -116,7 +120,7 @@ function exp_functions.drumar.combat(atk, def)
                 Round(atk.level * V.drumar.DEF_SLOW) -- defense slow
         end
     elseif atk.id == "drumar" then
-        local weapon = PrimaryWeapon()
+        local weapon = PWeapon()
         if weapon.type == "cold" then
             atk:custom_variables().xp = atk:custom_variables().xp + def.level + V.drumar.ATK_COLD
             -- attaque cold
@@ -125,7 +129,7 @@ function exp_functions.drumar.combat(atk, def)
             atk:custom_variables().xp = atk:custom_variables().xp +
                 Round(def.level * V.drumar.ATK_SLOW) -- attaque slow
         end
-        if wml.get_child(wml.get_child(weapon, "specials") or {}, "isHere", "snare") ~=
+        if wml.get_child(wml.get_child(weapon, "specials") or {}, "customName", "snare") ~=
             nil then
             atk:custom_variables().xp = atk:custom_variables().xp +
                 Round(def.level * V.drumar.ATK_SNARE) -- attaque snare
@@ -140,7 +144,7 @@ end
 -- -------------------- Xavier --------------------
 function exp_functions.xavier.combat(atk, def)
     if atk.id == "xavier" then
-        local active_formations, __ = AB.get_active_formations(atk)
+        local active_formations, __ = AB.active_xavier_formations(atk)
         local fY, fI = active_formations.Y, active_formations.I
         if not (fY == nil) and def.x == fY[1] and def.y == fY[2] then
             atk:custom_variables().xp = atk:custom_variables().xp +
@@ -151,7 +155,7 @@ function exp_functions.xavier.combat(atk, def)
                 Round(def.level * V.xavier.I_FORMATION)
         end
     elseif def.id == "xavier" then
-        local active_formations, __ = AB.get_active_formations(atk)
+        local active_formations, __ = AB.active_xavier_formations(atk)
         if active_formations.A then
             atk:custom_variables().xp = atk:custom_variables().xp + atk.level +
                 V.xavier.A_FORMATION

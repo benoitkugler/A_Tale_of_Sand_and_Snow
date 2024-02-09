@@ -65,7 +65,7 @@ local morgane = {
         T.effect {
             apply_to = "new_ability",
             T.abilities {
-                T.isHere {
+                T.customName {
                     id = "long_heal",
                     _level = 1,
                     description = Fmt(_ [[
@@ -129,12 +129,12 @@ local morgane = {
         description = _ "Able to better heal non adjacent units",
         T.effect {
             apply_to = "remove_ability",
-            T.abilities { T.isHere { id = "long_heal" } }
+            T.abilities { T.customName { id = "long_heal" } }
         },
         T.effect {
             apply_to = "new_ability",
             T.abilities {
-                T.isHere {
+                T.customName {
                     id = "long_heal",
                     _level = 2,
                     description = Fmt(_ [[
@@ -186,7 +186,7 @@ local morgane = {
         },
         ---@param unit unit
         function(unit)
-            local next_lvl = (unit:weapon('lightbeam'):get_special("transfusion")._level or 0) +
+            local next_lvl = (unit:weapon('lightbeam'):special_level("transfusion") or 0) +
                 1
             return T.effect {
                 set_icon = "attacks/transfusion.png",
@@ -194,7 +194,7 @@ local morgane = {
                 name = "lightbeam",
                 T.set_specials {
                     mode = "append",
-                    T.isHere {
+                    T.customName {
                         id = "transfusion",
                         _level = next_lvl,
                         description = Fmt(
@@ -254,7 +254,7 @@ local morgane = {
         T.effect {
             apply_to = "new_ability",
             T.abilities {
-                T.isHere {
+                T.customName {
                     id = "deflect",
                     description = _ [[
     Travelling into the Limbes taught Morgane how to switch from a world to another.

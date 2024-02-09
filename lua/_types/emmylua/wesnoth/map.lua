@@ -1,12 +1,12 @@
 ---@meta
 
----@alias location  location1 | {[1]:integer, [2]:integer}
+-- --- @alias location  location1 | {[1]:integer, [2]:integer}
 
----@class location1
+---@class location
 ---@field x integer
 ---@field y integer
 
----@class location_triple : location1
+---@class location_triple : location
 ---@field value any
 
 ---@alias direction
@@ -122,7 +122,7 @@ function wesnoth.map.parse_bitmap(data) end
 ---@param options {is_odd?:boolean, ignore_special_location?:boolean, rules?:terrain_mask_rule[]}
 function wesnoth.map.terrain_mask(map, pivot, mask, options) end
 
----@class label_info : location1
+---@class label_info : location
 ---@field text tstring
 ---@field team_name? string
 ---@field color? color|integer[]

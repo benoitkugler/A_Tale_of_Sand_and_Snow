@@ -1,10 +1,11 @@
 --- DEV file, included in debug scenarios
 
 --- scenario handler
-ES = {}
-function ES.atk() end
-
-function ES.kill() end
+---@type ScenarioEvents
+ES = {
+    atk = function() end,
+    kill = function() end,
+}
 
 InitVariables()
 
@@ -44,11 +45,10 @@ function Start()
     vr:custom_variables().xp = 1000
 
     local brinx = wesnoth.units.create {
-        type = "brinx4",
         id = "brinx",
+        type = "brinx4",
         name = "Brinx",
         moves = 10,
-        { "abilities", { { "isHere", { id = "elusive", name = "Elusive" } } } }
     }
     brinx:init_hero()
     brinx:to_map(15, 16)

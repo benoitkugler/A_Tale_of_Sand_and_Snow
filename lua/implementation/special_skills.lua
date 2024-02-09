@@ -2,8 +2,9 @@
 -- Each special skill is coded in WML object with id skill_idoftheskill
 -- An attribut _level maybe added to abilities and specials when needed
 -- Upgrading a skill should remove the old level and create a new one.
--- Some peculiar skills we also be implemented in Event combat or Abilities
+-- Some peculiar skills may also be implemented in Event combat or Abilities
 
+---@type table<string, fun(lvl:integer, unit:unit)>
 SPECIAL_SKILLS = {}
 
 local function _get_ids(lvl, skill_name)
@@ -31,7 +32,7 @@ function SPECIAL_SKILLS.leeches_cac(lvl, unit)
                 range = "melee",
                 T.set_specials {
                     mode = "append",
-                    T.isHere {
+                    T.customName {
                         id = "leeches",
                         _level = lvl,
                         name = _ "leeches",
@@ -121,7 +122,7 @@ function SPECIAL_SKILLS.transposition(lvl, unit)
             T.effect {
                 apply_to = "new_ability",
                 T.abilities {
-                    T.isHere {
+                    T.customName {
                         id = "transposition",
                         _level = lvl,
                         name = _ "War link",
@@ -149,7 +150,7 @@ function SPECIAL_SKILLS.def_muspell(lvl, unit)
             T.effect {
                 apply_to = "new_ability",
                 T.abilities {
-                    T.isHere {
+                    T.customName {
                         id = id,
                         name = _ "Muspell Equilibrium",
                         description = desc
@@ -188,7 +189,7 @@ function SPECIAL_SKILLS.dmg_muspell(lvl, unit)
             T.effect {
                 apply_to = "new_ability",
                 T.abilities {
-                    T.isHere {
+                    T.customName {
                         id = "dmg_muspell",
                         _level = lvl,
                         name = _ "Muspell Terror",
@@ -227,7 +228,7 @@ function SPECIAL_SKILLS.fresh_blood_musp(lvl, unit)
             T.effect {
                 apply_to = "new_ability",
                 T.abilities {
-                    T.isHere {
+                    T.customName {
                         id = "fresh_blood_musp",
                         _level = lvl,
                         name = _ "Muspell strength",
@@ -252,7 +253,7 @@ function SPECIAL_SKILLS.muspell_rage(lvl, unit)
             T.effect {
                 apply_to = "new_ability",
                 T.abilities {
-                    T.isHere {
+                    T.customName {
                         id = "muspell_rage",
                         _level = lvl,
                         name = _ "Revenge",
@@ -332,7 +333,7 @@ function SPECIAL_SKILLS.slow_zone(lvl, unit)
                 name = "entangle",
                 T.set_specials {
                     mode = "append",
-                    T.isHere {
+                    T.customName {
                         id = "slow_zone",
                         _level = lvl,
                         name = _ "slowing field",
@@ -363,7 +364,7 @@ function SPECIAL_SKILLS.bonus_cold_mistress(lvl, unit)
                 remove_specials = "status_chilled",
                 T.set_specials {
                     mode = "append",
-                    T.isHere {
+                    T.customName {
                         id = "status_chilled",
                         _level = lvl + 1,
                         name = _ "chilling",
@@ -389,7 +390,7 @@ function SPECIAL_SKILLS.Y_formation(lvl, unit)
             T.effect {
                 apply_to = "new_ability",
                 T.abilities {
-                    T.isHere {
+                    T.customName {
                         id = "Y_formation",
                         _level = lvl,
                         name = _ "Back formation",
@@ -415,7 +416,7 @@ function SPECIAL_SKILLS.A_formation(lvl, unit)
             T.effect {
                 apply_to = "new_ability",
                 T.abilities {
-                    T.isHere {
+                    T.customName {
                         id = "A_formation",
                         _level = lvl,
                         name = _ "Wedge formation",
@@ -441,7 +442,7 @@ function SPECIAL_SKILLS.I_formation(lvl, unit)
             T.effect {
                 apply_to = "new_ability",
                 T.abilities {
-                    T.isHere {
+                    T.customName {
                         id = "I_formation",
                         _level = lvl,
                         name = _ "Spear formation",
@@ -469,7 +470,7 @@ function SPECIAL_SKILLS.O_formation(lvl, unit)
             T.effect {
                 apply_to = "new_ability",
                 T.abilities {
-                    T.isHere {
+                    T.customName {
                         id = "O_formation",
                         _level = lvl,
                         name = _ "Union formation",
@@ -478,6 +479,53 @@ function SPECIAL_SKILLS.O_formation(lvl, unit)
                     }
                 }
             }
+        }
+    )
+end
+
+-------------------------------------- Morgane --------------------------------------
+function SPECIAL_SKILLS.moves(lvl, unit)
+    local id, old_id = _get_ids(lvl, "moves")
+    unit:remove_modifications({ id = old_id }, "object")
+
+    local new_costs = lvl == 1 and T.movement_costs {
+        forest = 1,
+        hills = 1,
+        cave = 1,
+        shallow_water = 2,
+        swamp_water = 2,
+        mountains = 2,
+        frozen = 2,
+    } or T.movement_costs {
+        forest = 1,
+        hills = 1,
+        cave = 1,
+        shallow_water = 1,
+        swamp_water = 1,
+        mountains = 1,
+        frozen = 1,
+    }
+
+    unit:add_modification('object', {
+        id = id,
+        T.effect {
+            apply_to = "movement_costs",
+            replace = true,
+            new_costs
+        }
+    })
+end
+
+function SPECIAL_SKILLS.limbes_defense(lvl, unit)
+    local id, old_id = _get_ids(lvl, "limbes_defense")
+    unit:remove_modifications({ id = old_id }, "object")
+
+    local def = Conf.special_skills.morgane.limbes_defense(lvl)
+    unit:add_modification(
+        "object",
+        {
+            id = id,
+            AddDefenses(def)
         }
     )
 end

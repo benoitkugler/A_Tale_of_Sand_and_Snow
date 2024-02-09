@@ -55,7 +55,7 @@
 ---@field __cfg WMLTable
 
 ---Defines an individual unit
----@class unit : wesnoth.units, location1
+---@class unit : wesnoth.units, location
 ---@field valid "'map'"|"'recall'"|"'private'"|nil
 ---@field loc? location
 ---@field id? string

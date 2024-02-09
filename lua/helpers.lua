@@ -54,10 +54,10 @@ end
 
 -- Returns the special with `id_special` on the weapon.
 ---@param id_special string
----@param special_name? string # default to isHere
+---@param special_name? string # default to customName
 ---@return special?
-function weapon_mt:get_special(id_special, special_name)
-    special_name = special_name or "isHere"
+function weapon_mt:special(id_special, special_name)
+    special_name = special_name or "customName"
     local specials = wml.get_child(self, "specials") or {}
     for spe in wml.child_range(specials, special_name) do
         if spe["id"] == id_special then return spe --[[@as special]] end
@@ -65,30 +65,36 @@ function weapon_mt:get_special(id_special, special_name)
     return nil
 end
 
----PrimaryWeapon returns the weapon used
----by the primary unit
+---@param id_special string
+---@param special_name? string # default to customName
+---@return integer?
+function weapon_mt:special_level(id_special, special_name)
+    local spe = self:special(id_special, special_name)
+    return (spe or {})._level
+end
+
+---Returns the weapon used by the primary unit
 ---@return weapon
-function PrimaryWeapon()
+function PWeapon()
     local t = wml.get_child(wesnoth.current.event_context, "weapon") or {}
     return new_weapon(t)
 end
 
----PrimaryWeapon returns the weapon used
----by the secondary unit
+---Returns the weapon used by the secondary unit
 ---@return weapon
-function SecondaryWeapon()
+function SWeapon()
     local t = wml.get_child(wesnoth.current.event_context, "second_weapon") or {}
     return new_weapon(t)
 end
 
 ---Return the ability with id 'id_ability'.
----'ability_name' defaut to "isHere"
+---'ability_name' defaut to "customName"
 ---@param u unit
 ---@param id_ability string
 ---@param ability_name string?
 ---@return WMLTable?
 function GetAbility(u, id_ability, ability_name)
-    ability_name = ability_name or "isHere"
+    ability_name = ability_name or "customName"
     local list_abilities = wml.get_child(u.__cfg, "abilities") or {}
     for ab in wml.child_range(list_abilities, ability_name) do
         if ab.id == id_ability then return ab end
@@ -97,7 +103,7 @@ function GetAbility(u, id_ability, ability_name)
 end
 
 ---Return the field '_level' of the abilities with id 'id_ability'.
----'ability_name' defaut to "isHere"
+---'ability_name' defaut to "customName"
 ---@param u unit
 ---@param id_ability string
 ---@param ability_name string?
@@ -105,14 +111,6 @@ end
 function GetAbilityLevel(u, id_ability, ability_name)
     local ab = GetAbility(u, id_ability, ability_name)
     return ab and ab._level --[[@as integer|nil]] or nil
-end
-
----Returns the level of given custom special for the primary weapon
----@param id_special string
----@return integer|nil
-function PrimarySpecialLvl(id_special)
-    local spe = PrimaryWeapon():get_special(id_special, nil)
-    return (spe or {})._level
 end
 
 -- Return an effect wml table augmenting all defenses by given number (positive is better)
@@ -164,7 +162,7 @@ end
 ---@param name string
 ---@return weapon
 function wesnoth.units.weapon(u, name)
-    return new_weapon(u.attacks[name])
+    return new_weapon(u.attacks[name].__cfg)
 end
 
 ---Popup window with translatable string

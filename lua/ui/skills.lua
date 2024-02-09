@@ -223,7 +223,7 @@ local function special_skills_preshow(unit, widget)
         local comp = skills_table[i]
         local lvl = unit:custom_variables().special_skills[comp.name] or 0
         if lvl == comp.max_lvl then
-            text_pres_suiv.label = MAX_LVL_REACHED
+            text_pres_suiv.marked_up_text = MAX_LVL_REACHED
             titre_pres.label = ""
             lvl_up.label = ""
             affiche_pres(true)
@@ -444,7 +444,7 @@ local function preshow(window)
                 cache.visible = true
             end
         else --special_skills
-            if Conf.special_skills[unit.id] then
+            if #(Conf.special_skills[unit.id]) ~= 0 then
                 if unit.__cfg.advances_to == "" then
                     special_skills_preshow(unit, content2)
                 else

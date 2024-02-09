@@ -66,19 +66,19 @@ Adjacent own units of equal or higher level will do %d%% more damage. ]], value)
         description = _ "In offense, reduces ennemies defense on hit, both with sword and crossbow.",
         ---@param unit unit
         function(unit)
-            local current_lvl = unit:weapon("sword"):get_special("defense_shred")._level or 0
+            local current_lvl = unit:weapon("sword"):special_level("defense_shred") or 0
             local shred_on_hit = V.REDUCE_DEFENSE * (current_lvl + 1)
             return T.effect {
                 apply_to = "attack",
                 remove_specials = "defense_shred",
                 T.set_specials {
                     mode = "append",
-                    T.isHere {
+                    T.customName {
                         id = "defense_shred",
                         _level = current_lvl + 1,
                         active_on = "offense",
                         name = _ "destabilize",
-                        description = Fmt(_ "Decreses defense by %d%% per hit",
+                        description = Fmt(_ "Decreases defense by %d%% per hit",
                             shred_on_hit)
                     }
                 }
@@ -97,7 +97,7 @@ Adjacent own units of equal or higher level will do %d%% more damage. ]], value)
             V.ALLIES_DEFENSE_RATIO),
         T.effect {
             apply_to = "remove_ability",
-            T.abilities { T.isHere { id = "allies_defense" } }
+            T.abilities { T.customName { id = "allies_defense" } }
         },
         function(unit) -- need the current ability level.adjacent
             local current_lvl = GetAbilityLevel(unit, "allies_defense") or 0
@@ -105,7 +105,7 @@ Adjacent own units of equal or higher level will do %d%% more damage. ]], value)
             return T.effect {
                 apply_to = "new_ability",
                 T.abilities {
-                    T.isHere {
+                    T.customName {
                         id = "allies_defense",
                         _level = current_lvl + 1,
                         name = _ "Defense-" .. ROMANS[current_lvl + 1],
@@ -144,20 +144,20 @@ Adjacent own units of equal or higher level will do %d%% more damage. ]], value)
         description = _ "Reduces ennemies armor on hit, with sword or crossbow.",
         ---@param unit unit
         function(unit)
-            local current_lvl = unit:weapon("sword"):get_special("armor_shred")._level or 0
+            local current_lvl = unit:weapon("sword"):special_level("armor_shred") or 0
             local shred_on_hit = V.REDUCE_ARMOR * (current_lvl + 1)
             return T.effect {
                 apply_to = "attack",
                 remove_specials = "armor_shred",
                 T.set_specials {
                     mode = "append",
-                    T.isHere {
+                    T.customName {
                         id = "armor_shred",
                         _level = current_lvl + 1,
                         active_on = "offense",
                         name = _ "shreds",
                         description = Fmt(
-                            _ "Decreses physical resistances by %d%% per hit",
+                            _ "Decreases physical resistances by %d%% per hit",
                             shred_on_hit)
                     }
                 }
@@ -284,8 +284,7 @@ Adjacent own units of equal or higher level will do %d%% more damage. ]], value)
                 T.chance_to_hit {
                     id = "precis",
                     value = 70,
-                    description = _ [[ This attack always has a 70% chance to hit,
-					regardless of the defensive ability of the unit being attacked. ]],
+                    description = _ "This attack always has a 70% chance to hit, regardless of the defensive ability of the unit being attacked.",
                     cumulative = false,
                     name = "precision"
                 }

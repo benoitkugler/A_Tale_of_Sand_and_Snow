@@ -41,7 +41,7 @@ local drumar = {
             name = "entangle",
             T.set_specials {
                 mode = "append",
-                T.isHere {
+                T.customName {
                     description = _ "Lock down the target for 1 turn.",
                     id = "snare",
                     active_on = "offense",
@@ -75,7 +75,7 @@ local drumar = {
             apply_to = "attack",
             T.set_specials {
                 mode = "append",
-                T.isHere {
+                T.customName {
                     description = _ "Reduces target's damage by <span color='red'> 15%</span> per hit. <span style='italic'>Last 1 turn.</span>",
                     id = "weaker_slow",
                     _level = 2,
@@ -111,7 +111,7 @@ local drumar = {
             apply_to = "new_attack",
             name = "chilling touch",
             T.specials {
-                T.isHere {
+                T.customName {
                     id = "status_chilled",
                     _level = 1,
                     description = _ "Tags the target for 2 turns. Chilled unit will take bonus damage when hit by cold attacks.",
@@ -167,7 +167,7 @@ local drumar = {
             apply_to = "attack",
             T.set_specials {
                 mode = "append",
-                T.isHere {
+                T.customName {
                     description = _ "Reduces target's magic resistances by <span color='red'>7%</span> per hit.",
                     id = "res_magic",
                     _level = 2,
@@ -197,7 +197,7 @@ local drumar = {
             apply_to = "attack",
             T.set_specials {
                 mode = "append",
-                T.isHere {
+                T.customName {
                     description = _ "Reduces target's damage by <span color='red'> 10%</span> per hit. <span style='italic'>Last 1 turn.</span>",
                     id = "weaker_slow",
                     _level = 1,
@@ -254,7 +254,7 @@ local drumar = {
             apply_to = "attack",
             T.set_specials {
                 mode = "append",
-                T.isHere {
+                T.customName {
                     description = _ "Reduces target's magic resistances by <span color='red'>5%</span> per hit.",
                     id = "res_magic",
                     _level = 1,

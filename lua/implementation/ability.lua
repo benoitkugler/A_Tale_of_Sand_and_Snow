@@ -24,7 +24,7 @@ end
 local function next_to_ennemy(unit, x, y)
     local c1, c2, c3, c4, c5, c6 = wesnoth.map.get_adjacent_hexes({ x = x, y = y })
     for _, loc in ipairs({ c1, c2, c3, c4, c5, c6 }) do
-        local u = wesnoth.units.get(loc.x, loc.y)
+        local u = wesnoth.units.get(loc)
         if u and wesnoth.sides.is_enemy(u.side, unit.side) then return true end
     end
     return false
@@ -66,21 +66,22 @@ end
 local function show_war_jump(unit)
     local blocked = tiles_behind(unit)
     local listx, listy = to_zip_pairs(blocked)
-    local lua_code = Fmt("AB.war_jump(%q,%d,%d)", unit.id, unit.x, unit.y)
-    UI.setup_menu_warjump(listx, listy, lua_code)
+    UI.setup_menu_war_jump(listx, listy, function() AB.war_jump(unit.id, unit.x, unit.y) end)
     ANIM.hover_tiles(blocked:to_pairs(), "Right-click here")
 end
 
-function AB.war_jump(unit_id, x, y)
+
+--- not attributed yet
+function AB.war_jump(unit_id, unit_x, unit_y)
     local u = wesnoth.units.get(unit_id)
     local tox, toy = GetLocation()
     if u == nil then
         Popup(_ "Error",
             _ "Can't <span color='red'>War Jump </span> now. Please <span weight='bold'>select</span> me again.")
     else
-        local locs = LocSet.of_pairs(wesnoth.paths.find_reach(u, { ignore_units = true }))
+        local locs = LocSet.of_triples(wesnoth.paths.find_reach(u, { ignore_units = true }))
         local moves_left = locs:get(tox, toy)
-        if u.x ~= x or u.y ~= y or not GetAbilityLevel(u, "war_jump") or
+        if u.x ~= unit_x or u.y ~= unit_y or not GetAbilityLevel(u, "war_jump") or
             not moves_left or not is_empty(tox, toy) then
             Popup(_ "Error",
                 _ "Can't <span color='red'>War Jump </span> right now. Please <span weight='bold'>select</span> me again.")
@@ -94,21 +95,22 @@ function AB.war_jump(unit_id, x, y)
             u.moves = 0
         end
     end
-    UI.clear_menu_item("warjump")
+    UI.clear_menu_item("war_jump")
 end
 
 local function show_elusive(unit)
     local blocked = available_tiles(unit)
     local listx, listy = to_zip_pairs(blocked)
-    local lua_code = Fmt("AB.elusive(%q,%d,%d)", unit.id, unit.x, unit.y)
-    UI.setup_menu_elusive(listx, listy, lua_code)
+    UI.setup_menu_elusive(listx, listy, function() AB.elusive(unit.id, unit.x, unit.y) end)
     ANIM.hover_tiles(blocked:to_pairs(), "Right-click here")
 end
 
+
+---not attributed yet
 ---@param unit_id string
----@param x integer
----@param y integer
-function AB.elusive(unit_id, x, y)
+---@param unit_x integer
+---@param unit_y integer
+function AB.elusive(unit_id, unit_x, unit_y)
     local u = wesnoth.units.get(unit_id)
     local tox, toy = GetLocation()
     if u == nil then
@@ -117,7 +119,7 @@ function AB.elusive(unit_id, x, y)
     else
         local locs = LocSet.of_pairs(wesnoth.paths.find_reach(u, { ignore_units = true }))
         local moves_left = locs:get(tox, toy)
-        if u.x ~= x or u.y ~= y or not GetAbilityLevel(u, "elusive") or
+        if u.x ~= unit_x or u.y ~= unit_y or not GetAbilityLevel(u, "elusive") or
             not moves_left or not is_empty(tox, toy) then
             Popup(_ "Error",
                 _ "Can't be <span color='green'>Elusive</span> right now. Please <span weight='bold'>select</span> me again.")
@@ -170,27 +172,35 @@ local formations_def, formations_abilities = fms.def, fms.abs
 
 -- Returns true if all tiles of the formation are allied (and occupied)
 ---@param xavier unit
+---@param formation formation
 local function _check_formation(xavier, formation)
     local side = xavier.side
-    for __, tile in ipairs(formation) do
-        local u = wesnoth.units.get(tile[1], tile[2])
+    for _, tile in ipairs(formation) do
+        local u = wesnoth.units.get(tile)
         if u == nil or wesnoth.sides.is_enemy(side, u.side) then return false end
     end
     return true
 end
 
 -- Returns the active formations (xavier need to have the ability corresponding)
+---@class formation_targets
+---@field A boolean?
+---@field I location?
+---@field Y location?
+---@field O location?
+
 ---@param xavier unit
-function AB.get_active_formations(xavier)
+function AB.active_xavier_formations(xavier)
     local tiles_ally = LocSet.create()
     local tiles_target = LocSet.create()
+    ---@type formation_targets
     local active_formations = {}
     if GetAbilityLevel(xavier, "Y_formation") then
         for __, pos in ipairs(formations_def.Y { x = xavier.x, y = xavier.y }) do
             if _check_formation(xavier, pos) then
                 tiles_ally:of_pairs(pos)
                 active_formations.Y = pos.target
-                tiles_target:insert(pos.target[1], pos.target[2])
+                tiles_target:insert(pos.target.x, pos.target.y)
             end
         end
     end
@@ -199,7 +209,7 @@ function AB.get_active_formations(xavier)
             if _check_formation(xavier, pos) then
                 tiles_ally:of_pairs(pos)
                 active_formations.I = pos.target
-                tiles_target:insert(pos.target[1], pos.target[2])
+                tiles_target:insert(pos.target.x, pos.target.y)
             end
         end
     end
@@ -216,7 +226,7 @@ function AB.get_active_formations(xavier)
             if _check_formation(xavier, pos) then
                 tiles_ally:of_pairs(pos)
                 active_formations.O = pos.target
-                tiles_target:insert(pos.target[1], pos.target[2])
+                tiles_target:insert(pos.target.x, pos.target.y)
             end
         end
     end
@@ -231,9 +241,11 @@ local function update_xavier_formation()
     for _, name in pairs({ "A", "I", "Y" }) do -- remove potential old ability
         xavier:remove_modifications({ id = "_formation_" .. name }, "trait")
     end
-    local active_formations, tiles, targets = AB.get_active_formations(xavier)
-    ANIM.hover_tiles(tiles:to_pairs(), FORMATION_LABEL, nil, targets:to_pairs(),
-        TARGET_LABEL, 50)
+    local active_formations, tiles, targets = AB.active_xavier_formations(xavier)
+
+    ANIM.hover_tiles(tiles:to_pairs(), FORMATION_LABEL,
+        targets:to_pairs(), TARGET_LABEL, 50)
+
     for name, target in pairs(active_formations) do
         if not (name == "O") then
             formations_abilities[name](xavier, target)
@@ -310,8 +322,8 @@ function AB.select()
     if GetAbilityLevel(u, "elusive") and u.moves > 0 then show_elusive(u) end
 
     if u.id == "xavier" then
-        local _, tiles, targets = AB.get_active_formations(u)
-        ANIM.hover_tiles(tiles:to_pairs(), FORMATION_LABEL, 15,
+        local _, tiles, targets = AB.active_xavier_formations(u)
+        ANIM.hover_tiles(tiles:to_pairs(), FORMATION_LABEL,
             targets:to_pairs(), TARGET_LABEL, 50)
     end
 end

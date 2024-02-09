@@ -23,12 +23,10 @@ end
 -- Animate given tiles
 ---@param tiles location[]
 ---@param label string
----@param step integer?
 ---@param tiles2 location[]?
 ---@param label2 string?
 ---@param red_shift2 integer?
-function ANIM.hover_tiles(tiles, label, step, tiles2, label2, red_shift2)
-    step = step or 5
+function ANIM.hover_tiles(tiles, label, tiles2, label2, red_shift2)
     tiles2 = tiles2 or {}
     label2 = label2 or ""
     red_shift2 = red_shift2 or 0
@@ -39,22 +37,20 @@ function ANIM.hover_tiles(tiles, label, step, tiles2, label2, red_shift2)
         wesnoth.interface.float_label(v[1], v[2], Fmt(_ "<span size='smaller'>%s</span>", label2))
     end
 
-    for j = 100, 0, -step do
-        for __, v in ipairs(tiles) do
-            wesnoth.interface.add_hex_overlay(v[1], v[2], { image = HOVER_IMAGE .. Fmt("~O(%d%%)", j) })
-        end
-        for __, v in ipairs(tiles2) do
-            wesnoth.interface.add_hex_overlay(v[1], v[2],
-                { image = HOVER_IMAGE .. Fmt("~O(%d%%)~BLEND(%d,0,0,1)", j, red_shift2) })
-        end
-        wml.fire("redraw")
-        wesnoth.interface.delay(5)
-        for __, v in ipairs(tiles) do
-            wesnoth.interface.remove_hex_overlay(v[1], v[2])
-        end
-        for __, v in ipairs(tiles2) do
-            wesnoth.interface.remove_hex_overlay(v[1], v[2])
-        end
+    for __, v in ipairs(tiles) do
+        wesnoth.interface.add_hex_overlay(v[1], v[2], { image = HOVER_IMAGE })
+    end
+    for __, v in ipairs(tiles2) do
+        wesnoth.interface.add_hex_overlay(v[1], v[2],
+            { image = HOVER_IMAGE .. Fmt("~BLEND(%d,0,0,1)", red_shift2) })
+    end
+    wml.fire("redraw")
+    wesnoth.interface.delay(2000)
+    for __, v in ipairs(tiles) do
+        wesnoth.interface.remove_hex_overlay(v[1], v[2])
+    end
+    for __, v in ipairs(tiles2) do
+        wesnoth.interface.remove_hex_overlay(v[1], v[2])
     end
 end
 

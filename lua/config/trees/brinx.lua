@@ -125,7 +125,7 @@ Conf.amlas.brinx = {
             apply_to = "attack",
             T.set_specials {
                 mode = "append",
-                T.isHere {
+                T.customName {
                     id = "weapon_pierce",
                     description = _ "Deals 75% damage to the enemy behind the target.",
                     name = "pierce"
@@ -239,7 +239,7 @@ Conf.amlas.brinx = {
         T.effect {
             apply_to = "new_ability",
             T.abilities {
-                T.isHere {
+                T.customName {
                     id = "bloodlust",
                     description = _ "Killing a unit refreshes this unit's strength, and gives it a new attack. Happens at most once a turn.",
                     name = "Bloodlust"

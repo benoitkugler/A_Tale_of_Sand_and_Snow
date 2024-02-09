@@ -242,7 +242,7 @@ local vranken = {
             apply_to = "attack",
             T.set_specials {
                 mode = "append",
-                T.isHere {
+                T.customName {
                     description = _ "Reduces damages of the target by 1per hit, until the end of the scenario.",
                     id = "mayhem",
                     active_on = "offense",
@@ -322,7 +322,7 @@ local vranken = {
             apply_to = "attack",
             T.set_specials {
                 mode = "append",
-                T.isHere {
+                T.customName {
                     id = "cleave",
                     description = _ "Deals 75% damage to enemies between attacker and defender.",
                     name = "cleave"

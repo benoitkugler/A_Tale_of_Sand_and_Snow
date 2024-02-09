@@ -27,6 +27,8 @@ Conf.special_skills = {}
 Conf.special_skills.bunshop = {}
 Conf.special_skills.rymor = {}
 
+Conf.special_skills.sword_spirit = {}
+
 -- DRUMAR
 Conf.special_skills.drumar = {
     help_des = _ "Several years of battles in Vranken company have made Frä Drümar more warlike than any other Frä. " ..
@@ -63,7 +65,7 @@ Conf.special_skills.drumar = {
         costs = { 70, 70, 70 }
     },
     ---@type fun(lvl:integer): integer
-    forecast_defense = function(lvl) return 7 end,
+    forecast_defense = function(lvl) return lvl * 6 end,
     {
         img = "special_skills/slow_zone.png",
         max_lvl = 1,
@@ -283,7 +285,7 @@ Conf.special_skills.xavier = {
 -- MORGANE
 Conf.special_skills.morgane = {
     help_des = _ [[
-Walking and fighting into the Limbes deeply changes the way Morgane see our world. With a little training, she will be able to build bridges between the two dimensions, modifying her movement and defense abilities. Her experience may also inspire his allies when fighting into the Limbes.
+Walking and fighting into the Limbes deeply changes the way Morgane sees our world. With a little training, she will be able to build bridges between the two dimensions, modifying her movement and defense abilities. Her experience may also inspire his allies when fighting into the Limbes.
 Every time Morgane or one of her allies fight into the Limbes, she earns points (scaling with opponents level).]],
     help_ratios = Fmt(
         _ [[(<span font_weight ='bold'>+ %d</span> per defense,<span font_weight ='bold'>x %.1f</span> per attack, <span font_weight ='bold'>x %.1f</span> per kill)]],
@@ -303,7 +305,7 @@ Every time Morgane or one of her allies fight into the Limbes, she earns points 
     {
         img = "icons/tunic_elven.png",
         max_lvl = 3,
-        name = "defense",
+        name = "limbes_defense",
         color = "#f36e0a",
         name_aff = _ "Nimble : ",
         require_lvl = 3,
@@ -311,5 +313,5 @@ Every time Morgane or one of her allies fight into the Limbes, she earns points 
         costs = { 60, 40, 40 }
     },
     ---@type fun(lvl:integer): integer
-    defense = function(lvl) return lvl * 7 end
+    limbes_defense = function(lvl) return lvl * 7 end
 }

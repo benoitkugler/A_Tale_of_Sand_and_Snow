@@ -31,7 +31,7 @@ Conf.objects.shield_myrom = {
     end,
     effect = {
         apply_to = "new_ability",
-        T.abilities { T.isHere { id = "shield_flat" } }
+        T.abilities { T.customName { id = "shield_flat" } }
     }
 }
 
