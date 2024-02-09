@@ -1,41 +1,41 @@
-function ES.prestart()
-    wesnoth.put_unit({ type = "Ruffian", side = 2 }, 2, 15)
-    wesnoth.put_unit({ type = "Ruffian", side = 2 }, 6, 15)
-    wesnoth.put_unit({ type = "Ruffian", side = 2 }, 3, 7)
-    wesnoth.put_unit({ type = "Thug", side = 2 }, 4, 7)
+local function on_prestart()
+    wesnoth.units.to_map({ type = "Ruffian", side = 2 }, 2, 15)
+    wesnoth.units.to_map({ type = "Ruffian", side = 2 }, 6, 15)
+    wesnoth.units.to_map({ type = "Ruffian", side = 2 }, 3, 7)
+    wesnoth.units.to_map({ type = "Thug", side = 2 }, 4, 7)
 
-    -- Recuperation de vranken et changement
+    -- hide vranken
     local vr = wesnoth.units.get("vranken")
-    wesnoth.extract_unit(vr)
-    wesnoth.put_unit({
+    vr:extract()
+    local xavier = wesnoth.units.create({
         id = "xavier",
         type = "xavier1",
         name = "Xavier Augentyr",
         canrecruit = true,
-        role = "hero"
-    }, vr.x, vr.y)
-    local newu = vr.__cfg
-    newu["canrecruit"] = nil
-    wesnoth.put_recall_unit(newu)
+    })
+    xavier:init_hero()
+    xavier:to_map(vr.x, vr.y)
 
-    -- Mise à jour de la liste des heros
+    vr.canrecruit = false
+    vr:to_recall()
+
     CustomVariables().player_heroes = "morgane, xavier"
 
-    local xav = wesnoth.units.get("xavier")
-    local x, y = wesnoth.paths.find_vacant_hex(xav.x, xav.y)
-    wesnoth.put_unit({
+    local morgane = wesnoth.units.create({
         id = "morgane",
         type = "morgane1",
         side = 1,
         name = "Morgane"
-    }, x, y)
-
-    -- heroes variables init
-    Conf.heroes.init("xavier")
-    Conf.heroes.init("morgane")
+    })
+    morgane:init_hero()
+    local x, y = wesnoth.paths.find_vacant_hex(xavier.x, xavier.y, morgane)
+    morgane:to_map(x, y)
 end
 
-function ES.presente_xavier()
+local function on_presente_xavier()
+    local xavier = wesnoth.units.get("xavier")
+    if xavier.status._was_presented then return end
+
     Popup(_ "New hero",
         _ "\tLet me introduce you to <span color='" ..
         Conf.heroes.get_color("xavier") .. "' weight='bold'>Xavier</span>, " ..
@@ -43,40 +43,36 @@ function ES.presente_xavier()
         " have to be battle-tested, but may become very useful to you..." ..
         '\n\tYou will find more information in the <span style=\'italic\'>"Skills"</span> menu, ' ..
         "by right-clicking on Xavier. ")
+    xavier.status._was_presented = true
 end
 
-function ES.turn1()
-    local id = wesnoth.units.find_on_map({ side = 2, canrecruit = true })[1].id or ""
-    Message(id, _ "Haha, we are back ! Tought we would give up that easily ?")
+local function on_turn1()
+    local ennemy_leader = wesnoth.units.find_on_map({ side = 2, canrecruit = true })[1].id or ""
+    Message(ennemy_leader, _ "Haha, we are back ! Tought we would give up that easily ?")
     Message("xavier",
         "Huhu, they have surrounded us.. and they have called big brother...")
     Message("xavier",
         "(To Morgane) Stay behind me, I'll get rid of these garnments !")
 
     wml.fire("objectives", {
-        {
-            "objective",
-            { description = _ "Defeat ennemy leader.", condition = "win" }
-        },
+        { "objective", { description = _ "Defeat ennemy leader.", condition = "win" } },
         { "objective", { description = _ "Death of Xavier.", condition = "lose" } },
         { "objective", { description = _ "Death of Morgane.", condition = "lose" } },
         { "objective", { description = _ "Turns run out.", condition = "lose" } },
-        { "note",      { description = _ "No gold carry over next scenario." } }, {
-        "note", {
-        description = _ "<span style='italic'>Hint: Xavier is showing off. " ..
-            "Take your time, as it might be more difficult than he will admit.</span>"
-    }
-    }
+        { "note",      { description = _ "No gold carry over next scenario." } },
+        { "note", {
+            description = _ "<span style='italic'>Hint: Xavier is showing off. " ..
+                "Take your time, as it might be more difficult than he will admit.</span>"
+        }
+        }
     })
 end
 
-function ES.turn2()
+local function on_turn2()
     local bu = wesnoth.units.get_recall("bunshop")
     bu:to_map(14, 2)
-    bu = wesnoth.units.get("bunshop")
     bu.side = 3
     MoveTo("bunshop", 12, 12)
-    wesnoth.message(bu.valid)
     Message("morgane",
         _ "Hum... This dog is intriging... I <i>feel</i> something...")
     Message("xavier",
@@ -93,6 +89,8 @@ function ES.turn2()
     bu.side = 1
     Message("morgane", _ "See ? I can help too...")
 end
+
+
 
 ---@type ScenarioEvents
 ES = {
@@ -117,15 +115,14 @@ ES = {
     end
 }
 
-
-local Scenario_event = {
-    { id = "prestart", name = "prestart", T.lua { code = "ES.prestart()" } },
-    { id = "turn1",    name = "turn_1",   T.lua { code = "ES.turn1()" } }, {
-    id = "click_xavier",
-    name = "select",
-    T.filter { id = "xavier" },
-    T.lua { code = "ES.presente_xavier()" }
-}, { id = "turn2", name = "turn_2", T.lua { code = "ES.turn2()" } }
+---@type game_event_options[]
+local scenario_events = {
+    { id = "s4_prestart",     name = "prestart", action = on_prestart },
+    { id = "s4_turn1",        name = "turn_1",   action = on_turn1 },
+    { id = "s4_click_xavier", name = "select",   action = on_presente_xavier, filter = { T.filter { id = "xavier" } } },
+    { id = "s4_turn2",        name = "turn_2",   action = on_turn2 }
 }
 
-for _, v in pairs(Scenario_event) do wesnoth.add_event_handler(v) end
+for _, v in pairs(scenario_events) do
+    wesnoth.game_events.add(v)
+end
