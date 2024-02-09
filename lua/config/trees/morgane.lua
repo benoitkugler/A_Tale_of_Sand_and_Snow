@@ -186,8 +186,7 @@ local morgane = {
         },
         ---@param unit unit
         function(unit)
-            local next_lvl =
-                (GetSpecial(unit.attacks['lightbeam'], "transfusion")._level or 0) +
+            local next_lvl = (unit:weapon('lightbeam'):get_special("transfusion")._level or 0) +
                 1
             return T.effect {
                 set_icon = "attacks/transfusion.png",

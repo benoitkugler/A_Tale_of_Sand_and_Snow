@@ -126,8 +126,8 @@ function Test(x, y)
     -- local location = wesnoth.map.rotate_right_around_center({ 2, 2 }, { 2, 3 }, 2)
     -- wesnoth.interface.add_chat_message(tostring(location))
     -- Popup("test", "test")
-    UI.set_menu_item({ id = "menu_test", description = 'Test Menu' })
-    -- switch_limbes()
+    -- UI.set_menu_item({ id = "menu_test", description = 'Test Menu' })
+    switch_limbes()
 end
 
 function ES.dump_amla()

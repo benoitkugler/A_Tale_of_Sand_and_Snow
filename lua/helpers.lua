@@ -35,18 +35,50 @@ function SecondaryUnit()
         wesnoth.current.event_context.y2)
 end
 
+---@class weapon : helper.weapon, unit_weapon
+
+
+---@class helper.weapon
+local weapon_mt = {}
+
+---@param table WMLTable
+---@return weapon
+local function new_weapon(table)
+    weapon_mt.__index = weapon_mt
+    return setmetatable(table, weapon_mt) --[[@as weapon]]
+end
+
+
+---@class special
+---@field _level integer?
+
+-- Returns the special with `id_special` on the weapon.
+---@param id_special string
+---@param special_name? string # default to isHere
+---@return special?
+function weapon_mt:get_special(id_special, special_name)
+    special_name = special_name or "isHere"
+    local specials = wml.get_child(self, "specials") or {}
+    for spe in wml.child_range(specials, special_name) do
+        if spe["id"] == id_special then return spe --[[@as special]] end
+    end
+    return nil
+end
+
 ---PrimaryWeapon returns the weapon used
 ---by the primary unit
----@return unit_weapon
+---@return weapon
 function PrimaryWeapon()
-    return wml.get_child(wesnoth.current.event_context, "weapon") --[[@as unit_weapon]]
+    local t = wml.get_child(wesnoth.current.event_context, "weapon") or {}
+    return new_weapon(t)
 end
 
 ---PrimaryWeapon returns the weapon used
 ---by the secondary unit
----@return unit_weapon
+---@return weapon
 function SecondaryWeapon()
-    return wml.get_child(wesnoth.current.event_context, "second_weapon") --[[@as unit_weapon]]
+    local t = wml.get_child(wesnoth.current.event_context, "second_weapon") or {}
+    return new_weapon(t)
 end
 
 ---Return the ability with id 'id_ability'.
@@ -75,35 +107,12 @@ function GetAbilityLevel(u, id_ability, ability_name)
     return ab and ab._level --[[@as integer|nil]] or nil
 end
 
----Returns the level of given special for the primary weapon
+---Returns the level of given custom special for the primary weapon
 ---@param id_special string
 ---@return integer|nil
-function GetSpe(id_special)
-    return GetSpecial(PrimaryWeapon() or {}, id_special)._level
-end
-
--- Returns the special with `id_special` on the atk.
--- Atk is a unit.attack proxy or a weapon child
----@param atk unit_weapon|WMLTable
----@param id_special string
----@param special_name? string # default to isHere
----@return table
-function GetSpecial(atk, id_special, special_name)
-    special_name = special_name or "isHere"
-    if atk == nil then return {} end
-    local list_specials
-    if type(atk) == "userdata" then
-        ---@cast atk unit_weapon
-        list_specials = atk.specials or {}
-    else
-        ---@cast atk WMLTable
-        list_specials = wml.get_child(atk, "specials")
-    end
-    if not list_specials then return {} end
-    for spe in wml.child_range(list_specials, special_name) do
-        if spe["id"] == id_special then return spe end
-    end
-    return {}
+function PrimarySpecialLvl(id_special)
+    local spe = PrimaryWeapon():get_special(id_special, nil)
+    return (spe or {})._level
 end
 
 -- Return an effect wml table augmenting all defenses by given number (positive is better)
@@ -148,6 +157,14 @@ function wesnoth.units.skills_level(u)
     end
     skills.amla_dummy = nil -- clear this sentinel value
     return skills
+end
+
+---Returns the weapon with the given name
+---@param u unit
+---@param name string
+---@return weapon
+function wesnoth.units.weapon(u, name)
+    return new_weapon(u.attacks[name])
 end
 
 ---Popup window with translatable string

@@ -165,10 +165,10 @@ end
 function apply.leeches(event, pri, snd, dmg)
     local lvl, u
     if event == "attacker_hits" then
-        lvl = GetSpe("leeches")
+        lvl = PrimarySpecialLvl("leeches")
         u = pri
     elseif event == "defender_hits" then
-        lvl = GetSpecial(SecondaryWeapon(), "leeches")._level
+        lvl = (SecondaryWeapon():get_special("leeches") or {})._level
         u = snd
     end
     if lvl then
@@ -188,7 +188,7 @@ end
 
 -- Pierce
 function apply.weapon_pierce(event, pri, snd, dmg)
-    if event == "attacker_hits" and GetSpe("weapon_pierce") then
+    if event == "attacker_hits" and PrimarySpecialLvl("weapon_pierce") then
         local loc = case_derriere(pri.x, pri.y, snd.x, snd.y)
         local weapon = PrimaryWeapon()
         wml.fire("harm_unit", {
@@ -203,7 +203,7 @@ end
 
 -- Mayhem
 function apply.mayhem(event, pri, snd, dmg)
-    if event == "attacker_hits" and GetSpe("mayhem") then
+    if event == "attacker_hits" and PrimarySpecialLvl("mayhem") then
         wesnoth.units.add_modification(snd, "object", {
             T.effect { apply_to = "attack", increase_damage = -1 }
         }, false) -- atker hit
@@ -212,7 +212,7 @@ end
 
 -- Cleave
 function apply.cleave(event, pri, snd, dmg)
-    if event == "attacker_hits" and GetSpe("cleave") then
+    if event == "attacker_hits" and PrimarySpecialLvl("cleave") then
         local l = wesnoth.current.map:find {
             T.filter_adjacent_location { x = pri.x, y = pri.y },
             T.filter_adjacent_location { x = snd.x, y = snd.y }
@@ -234,7 +234,7 @@ end
 
 function apply.res_magic(event, pri, snd, dmg)
     if event == "attacker_hits" then
-        local lvl = GetSpe("res_magic")
+        local lvl = PrimarySpecialLvl("res_magic")
         if lvl then
             local value = 3 + 2 * lvl -- atker hit
             wesnoth.units.add_modification(snd, "object", {
@@ -253,7 +253,7 @@ end
 
 function apply.armor_shred(event, pri, snd, dmg)
     if event == "attacker_hits" then
-        local lvl = GetSpe("armor_shred")
+        local lvl = PrimarySpecialLvl("armor_shred")
         if lvl then
             local value = Conf.amlas.xavier.values.REDUCE_DEFENSE * lvl
             wesnoth.units.add_modification(snd, "object", {
@@ -274,7 +274,7 @@ end
 
 function apply.defense_shred(event, pri, snd, dmg)
     if event == "attacker_hits" then
-        local lvl = GetSpe("defense_shred")
+        local lvl = PrimarySpecialLvl("defense_shred")
         if lvl then
             local shred_per_hit = Conf.amlas[pri.id].values.REDUCE_DEFENSE * lvl
             snd:add_modification("trait", { AddDefenses(-shred_per_hit) }, false)
@@ -287,7 +287,7 @@ end
 
 function apply.weaker_slow(event, pri, snd, dmg)
     if event == "attacker_hits" then
-        local lvl = GetSpe("weaker_slow")
+        local lvl = PrimarySpecialLvl("weaker_slow")
         if lvl then
             local value = 5 + 5 * lvl -- atker hit
             wesnoth.units.add_modification(snd, "object", {
@@ -304,7 +304,7 @@ function apply.weaker_slow(event, pri, snd, dmg)
 end
 
 function apply.snare(event, pri, snd, dmg)
-    if event == "attacker_hits" and GetSpe("snare") then
+    if event == "attacker_hits" and PrimarySpecialLvl("snare") then
         wesnoth.units.add_modification(snd, "object", {
             duration = "turn_end",
             T.effect { apply_to = "movement", set = 0 }
@@ -315,7 +315,7 @@ end
 
 function apply.transfusion(event, pri, snd, _)
     if event == "attacker_hits" then
-        local lvl = GetSpe("transfusion")
+        local lvl = PrimarySpecialLvl("transfusion")
         if not lvl then return end
         local heal = lvl * 3
         wml.fire("heal_unit", {
@@ -329,7 +329,7 @@ end
 
 function apply.slow_zone(event, pri, snd, dmg)
     if pri.id ~= "drumar" then return end
-    local lvl = GetSpe("slow_zone")
+    local lvl = PrimarySpecialLvl("slow_zone")
     if event == "attacker_hits" and lvl then
         local intensity = Conf.special_skills.drumar.slow_zone(lvl)
         local targets = wesnoth.units.find_on_map {
@@ -394,7 +394,7 @@ end
 function apply.put_status_chilled(event, pri, snd, dmg)
     if pri.id ~= "drumar" then return end
     if event == "attacker_hits" and snd then
-        local lvl = GetSpe("status_chilled")
+        local lvl = PrimarySpecialLvl("status_chilled")
         if lvl and not snd.status.chilled then
             local values = Conf.special_skills.drumar.bonus_cold_mistress(
                 lvl - 1)
