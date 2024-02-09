@@ -39,77 +39,73 @@ CustomVariables().player_heroes = "brinx,vranken,drumar,rymor"
 
 
 function Start()
-    Conf.heroes.init("vranken")
     local vr = wesnoth.units.get("vranken")
+    vr:init_hero()
     vr:custom_variables().xp = 1000
 
-    local u = {
+    local brinx = wesnoth.units.create {
         type = "brinx4",
         id = "brinx",
         name = "Brinx",
-        role = "hero",
         moves = 10,
         { "abilities", { { "isHere", { id = "elusive", name = "Elusive" } } } }
     }
-    wesnoth.units.to_map(u, 15, 16)
-    Conf.heroes.init("brinx")
-    local br = wesnoth.units.get("brinx")
-    br:custom_variables().xp = 1000
-    local u = {
+    brinx:init_hero()
+    brinx:to_map(15, 16)
+    brinx:custom_variables().xp = 1000
+
+    local sw = wesnoth.units.create {
         type = "sword_spirit2",
         id = "sword_spirit",
         name = "Göndhul",
-        role = "hero"
     }
-    wesnoth.units.to_map(u, 15, 18)
-    Conf.heroes.init("sword_spirit")
-    wesnoth.units.to_map({
+    sw:init_hero()
+    sw:to_map(15, 18)
+
+    local dru = wesnoth.units.create {
         id = "drumar",
         type = "drumar4",
         side = 1,
         name = "Dru",
-        role = "hero"
-    }, 20, 20)
-    Conf.heroes.init("drumar")
-    local dru = wesnoth.units.get("drumar")
+    }
+    dru:init_hero()
+    dru:to_map(20, 20)
     dru:custom_variables().xp = 1000
 
-    local u = {
+    local bun = wesnoth.units.create {
         type = "bunshop3",
         id = "bunshop",
         name = "Bunshop",
-        role = "hero",
         moves = 10
     }
-    wesnoth.units.to_map(u, 18, 18)
-    Conf.heroes.init("bunshop")
+    bun:init_hero()
+    bun:to_map(18, 18)
 
-    local u = { type = "xavier4", id = "xavier", name = "Xavier", role = "hero" }
-    wesnoth.units.to_map(u, 19, 18)
-    Conf.heroes.init("xavier")
-    local u = wesnoth.units.get("xavier")
-    u:custom_variables().xp = 1000
-    u.level = 7
+    local xavier = wesnoth.units.create { type = "xavier4", id = "xavier", name = "Xavier" }
+    xavier:init_hero()
+    xavier:to_map(19, 18)
+    xavier:custom_variables().xp = 1000
+    xavier.level = 7
 
-    local u = {
+    local rymor = wesnoth.units.create {
         type = "rymor4",
         id = "rymor",
         name = "Rymor",
-        role = "hero",
         moves = 10
     }
-    wesnoth.units.to_map(u, 18, 19)
-    Conf.heroes.init("rymor")
+    rymor:init_hero()
+    rymor:to_map(18, 19)
 
     wesnoth.units.to_map({ type = "Sergeant", side = 2 }, 15, 15)
 
-    wesnoth.units.to_map({
+    local morgane = wesnoth.units.create {
         type = "morgane1",
         id = "morgane",
-        role = "hero",
         side = 1
-    }, 6, 5)
-    Conf.heroes.init("morgane")
+    }
+    morgane:init_hero()
+    morgane:to_map(6, 5)
+
     wesnoth.units.to_map({ type = "otchigin1", side = 2 }, 5, 6)
     wesnoth.units.to_map({ type = "otchigin2", side = 2 }, 5, 7)
     wesnoth.units.to_map({ type = "otchigin3", side = 2 }, 6, 6)
