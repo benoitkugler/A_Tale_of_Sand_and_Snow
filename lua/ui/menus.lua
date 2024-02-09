@@ -24,7 +24,9 @@ local function set_menu_item(config, action)
     wml.fire("set_menu_item", config)
     wesnoth.game_events.add({ name = "menu item " .. config.id, action = action })
     -- keep in memory which menu are shown to avoid warnings
-    CustomVariables().showed_menus[config.id] = true
+    local m = CustomVariables().showed_menus
+    m[config.id] = true
+    CustomVariables().showed_menus = m
 end
 
 local function set_menu_item_at(id, desc, image, x, y, action)

@@ -19,7 +19,7 @@ _ = wesnoth.textdomain "wesnoth-A_Tale_of_Sand_and_Snow"
 ---since it would overwrite existing ones.
 function InitVariables()
     ---@type CustomGlobalVariables
-    local vars = wml.variables_proxy
+    local vars = wml.variables
     vars.showed_menus = {}
     vars.table_status = {}
     vars.table_status_shielded = {}

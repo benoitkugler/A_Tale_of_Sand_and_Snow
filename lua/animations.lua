@@ -20,38 +20,38 @@ function ANIM.anim_zaap(x, y, direc)
     --items.place_halo(20,17, "terrain/animation/zaap-red-droite/disable.png~CROP(0,38,181,213)")
 end
 
+function ANIM.clear_overlays()
+    for x, y in wesnoth.current.map:iter() do
+        wesnoth.interface.remove_hex_overlay(x, y)
+    end
+    wml.fire("redraw")
+end
+
 -- Animate given tiles
 ---@param tiles location[]
 ---@param label string
 ---@param tiles2 location[]?
 ---@param label2 string?
----@param red_shift2 integer?
-function ANIM.hover_tiles(tiles, label, tiles2, label2, red_shift2)
+---@param color2 string?
+function ANIM.hover_tiles(tiles, label, tiles2, label2, color2)
     tiles2 = tiles2 or {}
     label2 = label2 or ""
-    red_shift2 = red_shift2 or 0
+    color2 = color2 or ""
     for __, v in ipairs(tiles) do
         wesnoth.interface.float_label(v[1], v[2], Fmt(_ "<span size='smaller'>%s</span>", label))
     end
     for __, v in ipairs(tiles2) do
-        wesnoth.interface.float_label(v[1], v[2], Fmt(_ "<span size='smaller'>%s</span>", label2))
+        wesnoth.interface.float_label(v[1], v[2], Fmt(_ "<span size='smaller' color='%s'>%s</span>", color2, label2))
     end
 
     for __, v in ipairs(tiles) do
-        wesnoth.interface.add_hex_overlay(v[1], v[2], { image = HOVER_IMAGE })
+        wesnoth.interface.add_hex_overlay(v[1], v[2], { image = HOVER_IMAGE .. Fmt("~O(%d%%)", 40) })
     end
     for __, v in ipairs(tiles2) do
         wesnoth.interface.add_hex_overlay(v[1], v[2],
-            { image = HOVER_IMAGE .. Fmt("~BLEND(%d,0,0,1)", red_shift2) })
+            { image = HOVER_IMAGE .. Fmt("~O(%d%%)~BLEND(%d,0,0,1)", 40, 50) })
     end
     wml.fire("redraw")
-    wesnoth.interface.delay(2000)
-    for __, v in ipairs(tiles) do
-        wesnoth.interface.remove_hex_overlay(v[1], v[2])
-    end
-    for __, v in ipairs(tiles2) do
-        wesnoth.interface.remove_hex_overlay(v[1], v[2])
-    end
 end
 
 -- Thunder effect (from macro in interface-utils.cfg)

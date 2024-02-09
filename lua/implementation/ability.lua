@@ -67,7 +67,7 @@ local function show_war_jump(unit)
     local blocked = tiles_behind(unit)
     local listx, listy = to_zip_pairs(blocked)
     UI.setup_menu_war_jump(listx, listy, function() AB.war_jump(unit.id, unit.x, unit.y) end)
-    ANIM.hover_tiles(blocked:to_pairs(), "Right-click here")
+    ANIM.hover_tiles(blocked:to_pairs(), "Right-click to jump")
 end
 
 
@@ -102,7 +102,7 @@ local function show_elusive(unit)
     local blocked = available_tiles(unit)
     local listx, listy = to_zip_pairs(blocked)
     UI.setup_menu_elusive(listx, listy, function() AB.elusive(unit.id, unit.x, unit.y) end)
-    ANIM.hover_tiles(blocked:to_pairs(), "Right-click here")
+    ANIM.hover_tiles(blocked:to_pairs(), "Right-click to be elusive")
 end
 
 
@@ -234,17 +234,14 @@ function AB.active_xavier_formations(xavier)
 end
 
 -- Update abilities related to Formations,
--- and display active ones
+-- without displaying
 local function update_xavier_formation()
     local xavier = wesnoth.units.get("xavier")
     if xavier == nil then return end
     for _, name in pairs({ "A", "I", "Y" }) do -- remove potential old ability
         xavier:remove_modifications({ id = "_formation_" .. name }, "trait")
     end
-    local active_formations, tiles, targets = AB.active_xavier_formations(xavier)
-
-    ANIM.hover_tiles(tiles:to_pairs(), FORMATION_LABEL,
-        targets:to_pairs(), TARGET_LABEL, 50)
+    local active_formations, _, _ = AB.active_xavier_formations(xavier)
 
     for name, target in pairs(active_formations) do
         if not (name == "O") then
@@ -313,6 +310,7 @@ end
 
 -- Appelée sur sélection d'une unité
 function AB.select()
+    ANIM.clear_overlays()
     UI.clear_menu_item("elusive")
     UI.clear_menu_item("war_jump")
     local u = PrimaryUnit()
@@ -324,7 +322,7 @@ function AB.select()
     if u.id == "xavier" then
         local _, tiles, targets = AB.active_xavier_formations(u)
         ANIM.hover_tiles(tiles:to_pairs(), FORMATION_LABEL,
-            targets:to_pairs(), TARGET_LABEL, 50)
+            targets:to_pairs(), TARGET_LABEL, "red")
     end
 end
 
