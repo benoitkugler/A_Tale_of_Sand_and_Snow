@@ -10,6 +10,7 @@ function UI.clear_menu_item(id)
         wml.fire("clear_menu_item", { id = id })
         menus[id] = nil
     end
+    CustomVariables().showed_menus = menus
 end
 
 ---@class menu_config
@@ -19,17 +20,20 @@ end
 ---@field [integer] WMLTag
 
 ---@param config menu_config
----@param action fun()
-local function set_menu_item(config, action)
+local function set_menu_item(config)
     wml.fire("set_menu_item", config)
-    wesnoth.game_events.add({ name = "menu item " .. config.id, action = action })
     -- keep in memory which menu are shown to avoid warnings
-    local m = CustomVariables().showed_menus
-    m[config.id] = true
-    CustomVariables().showed_menus = m
+    local menus = CustomVariables().showed_menus
+    menus[config.id] = true
+    CustomVariables().showed_menus = menus
 end
 
-local function set_menu_item_at(id, desc, image, x, y, action)
+---@param id string
+---@param desc tstring
+---@param image string?
+---@param x integer|integer[]
+---@param y integer|integer[]
+local function set_menu_item_at(id, desc, image, x, y)
     set_menu_item({
         id = id,
         description = desc,
@@ -37,32 +41,30 @@ local function set_menu_item_at(id, desc, image, x, y, action)
         T.show_if {
             T.have_location { x = "$x1", y = "$y1", { "and", { x = x, y = y } } }
         },
-    }, action)
+        T.command { T.test { a = 5 } }
+    })
 end
 
 -- TODO: Better icon
 ---@param x integer
 ---@param y integer
----@param action fun()
-function UI.setup_menu_debuf(x, y, action)
+function UI.setup_menu_debuf(x, y)
     set_menu_item_at("union_debuf", _ "Xavier's union debuf !",
-        "menu/union_debuf.png", x, y, action)
+        "menu/union_debuf.png", x, y)
 end
 
----@param x integer
----@param y integer
----@param action fun()
-function UI.setup_menu_war_jump(x, y, action)
+---@param x integer[]
+---@param y integer[]
+function UI.setup_menu_war_jump(x, y)
     set_menu_item_at("war_jump", _ "War jump here with Gondhül !",
-        "menu/war_jump.png", x, y, action)
+        "menu/war_jump.png", x, y)
 end
 
----@param x integer
----@param y integer
----@param action fun()
-function UI.setup_menu_elusive(x, y, action)
+---@param x integer[]
+---@param y integer[]
+function UI.setup_menu_elusive(x, y)
     set_menu_item_at("elusive", _ "Sneak here with Bunshop !", "menu/ellusive.png", x,
-        y, action)
+        y)
 end
 
 -- Setup menu needed by abilities with cooldown
@@ -71,7 +73,7 @@ local MENUS_SPECIAL_SKILLS = {
 }
 function UI.turn_start()
     for unit_id, datas in pairs(MENUS_SPECIAL_SKILLS) do
-        local label, action = datas[1], datas[2]
+        local label = datas[1]
         local id_menu = unit_id .. "_special_skill"
         UI.clear_menu_item(id_menu)
 
@@ -83,7 +85,7 @@ function UI.turn_start()
                     id = id_menu,
                     description = label,
                     T.show_if { T.have_unit { x = "$x1", y = "$y1", id = unit_id } },
-                }, action)
+                })
             end
         end
     end
@@ -95,14 +97,25 @@ function UI.set_menu_skills()
         description = _ "Skills",
         T.show_if { T.have_unit { x = "$x1", y = "$y1", role = "hero" } },
         T.default_hotkey { key = "s", shift = true }
-    }, UI.show_skills_dialog)
+    })
 end
 
 function UI.setup_menus()
     UI.set_menu_skills()
 
-    set_menu_item({
-        id = "objets",
-        description = _ "Objects",
-    }, O.showObjectsDialog)
+    set_menu_item({ id = "objects", description = _ "Objects" })
+
+    -- register all possible events triggered by menu items
+    wesnoth.game_events.add({ name = "menu item objects", first_time_only = false, action = O.showObjectsDialog })
+    wesnoth.game_events.add({ name = "menu item show_skills", first_time_only = false, action = UI.show_skills_dialog })
+
+    wesnoth.game_events.add({ name = "menu item elusive", first_time_only = false, action = AB.elusive })
+    wesnoth.game_events.add({ name = "menu item war_jump", first_time_only = false, action = AB.war_jump })
+    wesnoth.game_events.add({ name = "menu item union_debuf", first_time_only = false, action = AB.union_debuf })
+
+    for unit_id, datas in pairs(MENUS_SPECIAL_SKILLS) do
+        local action = datas[2]
+        local id_menu = unit_id .. "_special_skill"
+        wesnoth.game_events.add({ name = "menu item " .. id_menu, first_time_only = false, action = action })
+    end
 end

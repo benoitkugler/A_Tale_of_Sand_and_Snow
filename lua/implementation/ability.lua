@@ -62,78 +62,85 @@ local function available_tiles(unit)
     return tiles
 end
 
+---@class _
+---@field elusive unit?
+---@field war_jump unit?
+local menu_items_data = {}
+
+
 ---@param unit unit
 local function show_war_jump(unit)
     local blocked = tiles_behind(unit)
     local listx, listy = to_zip_pairs(blocked)
-    UI.setup_menu_war_jump(listx, listy, function() AB.war_jump(unit.id, unit.x, unit.y) end)
+    menu_items_data.war_jump = unit
+    UI.setup_menu_war_jump(listx, listy)
     ANIM.hover_tiles(blocked:to_pairs(), "Right-click to jump")
 end
 
 
 --- not attributed yet
-function AB.war_jump(unit_id, unit_x, unit_y)
-    local u = wesnoth.units.get(unit_id)
-    local tox, toy = GetLocation()
+function AB.war_jump()
+    UI.clear_menu_item("war_jump")
+
+    local u = menu_items_data.war_jump
     if u == nil then
         Popup(_ "Error",
             _ "Can't <span color='red'>War Jump </span> now. Please <span weight='bold'>select</span> me again.")
-    else
-        local locs = LocSet.of_triples(wesnoth.paths.find_reach(u, { ignore_units = true }))
-        local moves_left = locs:get(tox, toy)
-        if u.x ~= unit_x or u.y ~= unit_y or not GetAbilityLevel(u, "war_jump") or
-            not moves_left or not is_empty(tox, toy) then
-            Popup(_ "Error",
-                _ "Can't <span color='red'>War Jump </span> right now. Please <span weight='bold'>select</span> me again.")
-        else
-            wml.fire("teleport", {
-                T.filter { id = unit_id },
-                x = tox,
-                y = toy,
-                animate = true
-            })
-            u.moves = 0
-        end
+        return
     end
-    UI.clear_menu_item("war_jump")
+    local tox, toy = GetLocation()
+    local locs = LocSet.of_triples(wesnoth.paths.find_reach(u, { ignore_units = true }))
+    local moves_left = locs:get(tox, toy)
+    if not GetAbilityLevel(u, "war_jump") or not moves_left or not is_empty(tox, toy) then
+        Popup(_ "Error",
+            _ "Can't <span color='red'>War Jump </span> right now. Please <span weight='bold'>select</span> me again.")
+    else
+        wml.fire("teleport", {
+            T.filter { id = u.id },
+            x = tox,
+            y = toy,
+            animate = true
+        })
+        u.moves = 0
+    end
 end
 
 local function show_elusive(unit)
     local blocked = available_tiles(unit)
     local listx, listy = to_zip_pairs(blocked)
-    UI.setup_menu_elusive(listx, listy, function() AB.elusive(unit.id, unit.x, unit.y) end)
+    menu_items_data.elusive = unit
+    UI.setup_menu_elusive(listx, listy)
     ANIM.hover_tiles(blocked:to_pairs(), "Right-click to be elusive")
 end
 
 
----not attributed yet
----@param unit_id string
----@param unit_x integer
----@param unit_y integer
-function AB.elusive(unit_id, unit_x, unit_y)
-    local u = wesnoth.units.get(unit_id)
+---Triggered by menu item (not attributed yet)
+function AB.elusive()
+    UI.clear_menu_item("elusive")
+
+    local u = menu_items_data.elusive
+    if not u then
+        Popup(_ "Error",
+            _ "Can't be <span color='green'>Elusive</span> right now. Please <span weight='bold'>select</span> me again.")
+        return
+    end
+
     local tox, toy = GetLocation()
-    if u == nil then
+
+    local locs = LocSet.of_pairs(wesnoth.paths.find_reach(u, { ignore_units = true }))
+    local moves_left = locs:get(tox, toy)
+    if not GetAbilityLevel(u, "elusive") or not moves_left or not is_empty(tox, toy) then
         Popup(_ "Error",
             _ "Can't be <span color='green'>Elusive</span> right now. Please <span weight='bold'>select</span> me again.")
     else
-        local locs = LocSet.of_pairs(wesnoth.paths.find_reach(u, { ignore_units = true }))
-        local moves_left = locs:get(tox, toy)
-        if u.x ~= unit_x or u.y ~= unit_y or not GetAbilityLevel(u, "elusive") or
-            not moves_left or not is_empty(tox, toy) then
-            Popup(_ "Error",
-                _ "Can't be <span color='green'>Elusive</span> right now. Please <span weight='bold'>select</span> me again.")
-        else
-            wml.fire("move_unit", {
-                id = unit_id,
-                to_x = tox,
-                to_y = toy,
-                fire_event = true
-            })
-            u.moves = moves_left[3]
-        end
+        wml.fire("move_unit", {
+            id = u.id,
+            to_x = tox,
+            to_y = toy,
+            fire_event = true
+        })
+        u.moves = moves_left[3]
     end
-    UI.clear_menu_item("elusive")
 end
 
 -- ----------------------- ALLIED DEFENSE (Xavier) -----------------------
@@ -252,6 +259,7 @@ local function update_xavier_formation()
 end
 
 -- --- Special skills (actual action, menu setup is done beforehand) ---
+
 -- Vranken
 function AB.transposition()
     local vranken = wesnoth.units.get("vranken")
@@ -274,9 +282,9 @@ function AB.transposition()
     UI.clear_menu_item("vranken_special_skill")
 end
 
--- Xavier
-function AB.union_debuf(x, y)
-    local target = wesnoth.units.get(x, y)
+-- Menu item callback triggered to apply Xavier special skill
+function AB.union_debuf()
+    local target = PrimaryUnit()
     local xavier = wesnoth.units.get("xavier")
     local lvl = xavier:custom_variables().special_skills.O_formation or 0
     local cd = Conf.special_skills.xavier.O_formation(lvl)
@@ -293,7 +301,7 @@ function AB.union_debuf(x, y)
             T.set_specials {} -- remove all specials
         }
     })
-    wesnoth.interface.float_label(x, y, _ "Disabled !")
+    wesnoth.interface.float_label(target.x, target.y, _ "Disabled !")
     xavier:custom_variables().special_skill_cd = cd
 end
 

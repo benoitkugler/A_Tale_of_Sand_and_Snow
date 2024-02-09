@@ -153,7 +153,9 @@ function wesnoth.units.skills_level(u)
         "advancement") do
         skills[adv.id] = (skills[adv.id] or 0) + 1
     end
-    skills.amla_dummy = nil -- clear this sentinel value
+    -- clear sentinel values
+    skills.amla_dummy = nil
+    skills.default = nil
     return skills
 end
 

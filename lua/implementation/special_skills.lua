@@ -88,7 +88,7 @@ function SPECIAL_SKILLS.atk_brut(lvl, unit)
 
     local ratio = Conf.special_skills.vranken.atk_brut(lvl)
 
-    local atk = unit.attacks.sword
+    local atk = unit:weapon("sword")
     local new_attack = {
         apply_to = "new_attack",
         name = "sword",

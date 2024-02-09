@@ -11,8 +11,6 @@ InitVariables()
 UI.setup_menus()
 
 local function setup_units()
-    local vranken = wesnoth.units.get("vranken")
-    vranken:init_hero()
     for _, cfg in ipairs({
         { id = "brinx",  type = "brinx4",  name = "Brinx" },
         { id = "drumar", type = "drumar4", name = "Drumar" },
@@ -26,6 +24,14 @@ local function setup_units()
         { id = "xavier",  type = "xavier4",  name = "Xavier" }
     }) do
         local hero = wesnoth.units.create(cfg)
+        hero:to_map(wesnoth.paths.find_vacant_hex(14, 16, hero))
+    end
+
+    -- init variables and activate advancements
+    for _, id in ipairs({ "vranken", "brinx", "drumar",
+        "rymor", "bunshop", "sword_spirit", "morgane", "xavier",
+    }) do
+        local hero = wesnoth.units.get(id)
         hero:init_hero()
         hero.level = 10 -- unlock all skills
         hero:custom_variables().xp = 1000
@@ -38,7 +44,6 @@ local function setup_units()
             SPECIAL_SKILLS[skill.name](skill.max_lvl, hero)
         end
         hero:custom_variables().special_skills = hero_skills
-        hero:to_map(wesnoth.paths.find_vacant_hex(14, 16, hero))
     end
 
     for _, loc in ipairs({ { x = 9, y = 17 }, { x = 10, y = 18 }, { x = 9, y = 18 } }) do
@@ -50,8 +55,8 @@ wesnoth.game_events.add({
     id = "unit_setup", name = "prestart", action = setup_units
 })
 
-wml.fire("set_menu_item", { id = "setup_units", description = "Create heroes" })
-wesnoth.game_events.add({ name = "menu item setup_units", action = setup_units })
+-- wml.fire("set_menu_item", { id = "setup_units", description = "Create heroes" })
+-- wesnoth.game_events.add({ name = "menu item setup_units", action = setup_units })
 
 wml.fire("set_menu_item", {
     id = "advance_unit",
@@ -68,13 +73,3 @@ wesnoth.game_events.add({
         unit:advance(true, true)
     end
 })
--- wesnoth.game_events.add_menu("advance_unit", setup_units)
--- wesnoth.game_events.add({ name = "menu item setup_units", action = setup_units })
-
-
--- UI.set_menu_item({
---     id = "advance_unit",
---     description = "Advance unit",
---     T.show_if { T.have_unit { x = "$x1", y = "$y1" } },
---     T.command { T.lua { code = "local args = ... ;  AdvanceUnit(args.x, args.y)", T.args { x = "$x1", y = "$y1" } } },
--- })
