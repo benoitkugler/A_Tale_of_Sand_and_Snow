@@ -1,39 +1,3 @@
-ES = {}
-
-local Scenario_event = {
-    { id = "prestart", name = "prestart", T.lua { code = "ES.prestart()" } },
-    { id = "turn1",    name = "turn_1",   T.lua { code = "ES.turn1()" } }, {
-    id = "click_xavier",
-    name = "select",
-    T.filter { id = "xavier" },
-    T.lua { code = "ES.presente_xavier()" }
-}, { id = "turn2", name = "turn_2", T.lua { code = "ES.turn2()" } }
-}
-
-for _, v in pairs(Scenario_event) do wesnoth.add_event_handler(v) end
-
--- Ces 2 fonctions sont toujours appelés par la macro STANDARD_EVENT
-function ES.atk() end
-
-function ES.kill()
-    local dying = PrimaryUnit()
-    if dying.id == "leader" then
-        Message("xavier",
-            _ "Haha ! We defeated them ! You dont need to be scared anymore, Morgane !")
-        Message("morgane",
-            _ "Was I ? ... <i>(Turning back to Bunsop)</i> So, who are you ?")
-        Message("xavier",
-            _ "You're talking to a dog ? Humpf... Well, goodbye then, I need to hurry not to miss the departure of the Vranken Xaintrailles company !")
-        MoveTo("xavier", 14, 2)
-        wesnoth.get_unit("xavier"):to_recall()
-        local mr = wesnoth.get_unit("morgane")
-        MoveTo("bunshop", wesnoth.find_vacant_tile(mr.x, mr.y))
-        Message("morgane",
-            _ "<i>(Stroking the dog)</i> Argh, to think I'm assigned to the same squad as that braggart...")
-        Victory()
-    end
-end
-
 function ES.prestart()
     wesnoth.put_unit({ type = "Ruffian", side = 2 }, 2, 15)
     wesnoth.put_unit({ type = "Ruffian", side = 2 }, 6, 15)
@@ -57,8 +21,8 @@ function ES.prestart()
     -- Mise à jour de la liste des heros
     CustomVariables().player_heroes = "morgane, xavier"
 
-    local xav = wesnoth.get_unit("xavier")
-    local x, y = wesnoth.find_vacant_tile(xav.x, xav.y)
+    local xav = wesnoth.units.get("xavier")
+    local x, y = wesnoth.paths.find_vacant_hex(xav.x, xav.y)
     wesnoth.put_unit({
         id = "morgane",
         type = "morgane1",
@@ -107,9 +71,9 @@ function ES.turn1()
 end
 
 function ES.turn2()
-    local bu = GetRecallUnit("bunshop")
+    local bu = wesnoth.units.get_recall("bunshop")
     bu:to_map(14, 2)
-    bu = wesnoth.get_unit("bunshop")
+    bu = wesnoth.units.get("bunshop")
     bu.side = 3
     MoveTo("bunshop", 12, 12)
     wesnoth.message(bu.valid)
@@ -120,12 +84,48 @@ function ES.turn2()
     Message("morgane", _ "... <i>(Focusing)</i>")
     Message("bunshop", _ "<i>(Barks)</i>")
     local x, y = 8, 13
-    local tbx, tby = wesnoth.find_vacant_tile(x, y)
+    local tbx, tby = wesnoth.paths.find_vacant_hex(x, y)
     MoveTo("bunshop", tbx, tby)
-    tbx, tby = wesnoth.find_vacant_tile(x, y)
+    tbx, tby = wesnoth.paths.find_vacant_hex(x, y)
     MoveTo("morgane", tbx, tby)
     Message("morgane", _ "<i>(Starring at Bunshop)</i> ... ")
     Message("bunshop", _ "<i>(Barks loudly)</i>")
     bu.side = 1
     Message("morgane", _ "See ? I can help too...")
 end
+
+---@type ScenarioEvents
+ES = {
+    atk = function() end,
+    kill = function()
+        local dying = PrimaryUnit()
+        if dying.id == "leader" then
+            Message("xavier",
+                _ "Haha ! We defeated them ! You dont need to be scared anymore, Morgane !")
+            Message("morgane",
+                _ "Was I ? ... <i>(Turning back to Bunsop)</i> So, who are you ?")
+            Message("xavier",
+                _ "You're talking to a dog ? Humpf... Well, goodbye then, I need to hurry not to miss the departure of the Vranken Xaintrailles company !")
+            MoveTo("xavier", 14, 2)
+            wesnoth.units.get("xavier"):to_recall()
+            local mr = wesnoth.units.get("morgane")
+            MoveTo("bunshop", wesnoth.paths.find_vacant_hex(mr.x, mr.y))
+            Message("morgane",
+                _ "<i>(Stroking the dog)</i> Argh, to think I'm assigned to the same squad as that braggart...")
+            Victory()
+        end
+    end
+}
+
+
+local Scenario_event = {
+    { id = "prestart", name = "prestart", T.lua { code = "ES.prestart()" } },
+    { id = "turn1",    name = "turn_1",   T.lua { code = "ES.turn1()" } }, {
+    id = "click_xavier",
+    name = "select",
+    T.filter { id = "xavier" },
+    T.lua { code = "ES.presente_xavier()" }
+}, { id = "turn2", name = "turn_2", T.lua { code = "ES.turn2()" } }
+}
+
+for _, v in pairs(Scenario_event) do wesnoth.add_event_handler(v) end

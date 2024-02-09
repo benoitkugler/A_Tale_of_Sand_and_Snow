@@ -61,56 +61,35 @@ local function turn1()
     local ra = wesnoth.units.get("rand")
     ra:to_recall(1)
 
-    wml.fire("message",
-        { speaker = u1.id, message = _ "Hey, what's going on ?" })
+    Message(u1.id, _ "Hey, what's going on ?")
 
     ANIM.anim_zaap(55, 5, "d")
 
-    wml.fire("message", {
-        speaker = u2.id,
-        message = _ "Damned, the East White Ark is being activated !"
-    })
+    Message(u2.id, _ "Damned, the East White Ark is being activated !")
     ANIM.anim_zaap(55, 5, "d")
-    wml.fire("message", {
-        speaker = u1.id,
-        message = _ "Could Muspell dare attacking us ?"
-    })
+    Message(u1.id, _ "Could Muspell dare attacking us ?")
     ANIM.anim_zaap(55, 5, "d")
     wml.fire("recall", { id = "rand", x = 54, y = 6 })
     wesnoth.units.get("rand").side = 3
     wesnoth.interface.delay(500)
 
-    wml.fire("move_unit", { id = "rand", to_x = 41, to_y = 25 })
+    MoveTo("rand", 41, 25)
 
-    wml.fire("message", {
-        speaker = u1.id,
-        message = _ "They actually did ! Sound the alarm !"
-    })
+    Message(u1.id, _ "They actually did ! Sound the alarm !")
 
-    wml.fire("message", {
-        speaker = "jod",
-        message = _ "What the hell ! Is Muspell really breaking the tacit piece ? Whatever, to arms men ! We have to protect the White Arks facilities at all costs !"
-    })
+    Message("jod",
+        _ "What the hell ! Is Muspell really breaking the tacit piece ? Whatever, to arms men ! We have to protect the White Arks facilities at all costs !")
 
-    wml.fire("message", {
-        speaker = "jod",
-        message = _ "And I need two volunteers to escort the young Brinx !"
-    })
+    Message("jod", _ "And I need two volunteers to escort the young Brinx !")
     wesnoth.units.to_map({ type = "Bowman_nifhell", side = 1 }, 12, 27)
     wesnoth.units.to_map({ type = "Heavy Infantryman_nifhell", side = 1 }, 10, 26)
-    wml.fire("message", { speaker = "brinx", message = _ "Thanks sir !" })
+    Message("brinx", _ "Thanks sir !")
 end
 
 local function turn2()
-    wml.fire("message", {
-        speaker = "rand",
-        message = _ "I let you a chance to live. Just surrender."
-    })
-    wml.fire("message", { speaker = "jod", message = _ "..." })
-    wml.fire("message", {
-        speaker = "rand",
-        message = _ "So death will be. Soldiers, cut the escape path !"
-    })
+    Message("rand", _ "I let you a chance to live. Just surrender.")
+    Message("jod", _ "...")
+    Message("rand", _ "So death will be. Soldiers, cut the escape path !")
     wesnoth.interface.scroll_to_hex(14, 18)
     wesnoth.units.to_map(
         { type = "Dune Spearguard_muspell", side = 3, max_moves = 0 }, 13, 18)
@@ -122,8 +101,7 @@ end
 local function explo_mur()
     ANIM.thunder()
 
-    wml.fire("message",
-        { speaker = "brinx", message = _ "What just happened ?! " })
+    Message("brinx", _ "What just happened ?! ")
     wesnoth.interface.scroll_to_hex(26, 26)
     wesnoth.current.map[{ 24, 27 }] = "Re"
     wesnoth.current.map[{ 25, 25 }] = "Re"
@@ -131,15 +109,9 @@ local function explo_mur()
     wesnoth.interface.add_item_image(25, 25, "scenery/rubble.png")
     wml.fire("redraw")
     wesnoth.interface.delay(200)
-    wml.fire("message", {
-        speaker = "jod",
-        message = _ "In the name of Powers ! Their naphtha just destroyed our walls..."
-    })
+    Message("jod", _ "In the name of Powers ! Their naphtha just destroyed our walls...")
 
-    wml.fire("message", {
-        speaker = "rand",
-        message = _ "Nice job soldiers, the gate is ours ! Go ahead, for Muspell !"
-    })
+    Message("rand", _ "Nice job soldiers, the gate is ours ! Go ahead, for Muspell !")
 end
 
 local function turn12()
@@ -148,10 +120,8 @@ local function turn12()
         local x, y = wesnoth.paths.find_vacant_hex(ennemy_chief.x, ennemy_chief.y)
         wesnoth.units.to_map({ type = "Dune Blademaster_muspell", side = 3 }, x, y)
     end
-    wml.fire("message", {
-        speaker = "rand",
-        message = _ "Halt soldiers, enough blood for today. We are in control of the White Arks facility, that's the point. Put in jail the remaining Nifhellians, and alert the Khan about the success of our mission !"
-    })
+    Message("rand",
+        _ "Halt soldiers, enough blood for today. We are in control of the White Arks facility, that's the point. Put in jail the remaining Nifhellians, and alert the Khan about the success of our mission !")
     if wesnoth.units.get("jod") ~= nil then presente_brinx(false) end
     Victory()
 end
@@ -162,27 +132,17 @@ ES = {
     atk = function()
         local u = PrimaryUnit()
         if u.id == "jod" then
-            wml.fire("message",
-                { speaker = "jod", message = mess[math.random(3)] })
+            Message("jod", mess[math.random(3)])
         end
     end,
     kill = function()
         local u = PrimaryUnit()
         if u.id == "jod" then
-            wml.fire("message", {
-                speaker = "jod",
-                message = _ "Argh... I fell... The council must now about this att..."
-            })
-            wml.fire("message", {
-                speaker = "brinx",
-                message = _ "Nooo ! Bloody muspellians !"
-            })
+            Message("jod", _ "Argh... I fell... The council must now about this att...")
+            Message("brinx", _ "Nooo ! Bloody muspellians !")
             presente_brinx(true)
         elseif u.id == "brinx" then
-            wml.fire("message", {
-                speaker = "brinx",
-                message = _ "No... I have to avenge Nifhell..."
-            })
+            Message("brinx", _ "No... I have to avenge Nifhell...")
             wml.fire("endlevel", { result = "defeat", side = 1 })
         end
     end

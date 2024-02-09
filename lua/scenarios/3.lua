@@ -1,69 +1,56 @@
-ES = {}
-
-local Scenario_event = {
-    { id = "prestart", name = "prestart", T.lua { code = "ES.prestart()" } },
-    { id = "turn1",    name = "turn_1",   T.lua { code = "ES.turn1()" } }
-}
-
-for _, v in pairs(Scenario_event) do wesnoth.add_event_handler(v) end
-
--- Ces 2 fonctions sont toujours appelés par la macro STANDARD_EVENT
-function ES.atk() end
-
-function ES.kill() end
-
-function ES.prestart()
-    wesnoth.put_unit({
+local function prestart()
+    wesnoth.units.to_map({
         id = "egil",
         type = "Grand Marshal_nifhell",
         side = 2,
         name = "Egil Skinir"
     }, 10, 4)
-    wesnoth.put_unit({
+    wesnoth.units.to_map({
         id = "ran",
         type = "Iron Mauler_nifhell",
         side = 2,
         name = "Ran Gragass"
     }, 7, 6)
-    wesnoth.put_unit({
+    wesnoth.units.to_map({
         id = "harbar",
         type = "General_nifhell",
         side = 2,
         name = "Harbar Augentyr"
     }, 8, 5)
-    wesnoth.put_unit({
+    wesnoth.units.to_map({
         id = "urvi",
         type = "Red Mage_nifhell",
         side = 2,
         name = "Urvi Herjar"
     }, 9, 5)
-    wesnoth.put_unit({
+    wesnoth.units.to_map({
         id = "bragi",
-        type = "Master at ArmsN",
+        type = "Master at Arms_nifhell",
         side = 2,
         name = "Bragi Daldr"
     }, 11, 5)
-    wesnoth.put_unit({
+    wesnoth.units.to_map({
         id = "dummy1",
         type = "Master Bowman_nifhell",
         side = 2,
         name = "Zac Tod"
     }, 12, 5)
-    wesnoth.put_unit({
+    wesnoth.units.to_map({
         id = "dummy3",
-        type = "Royal Guard_nifhell_nifhell",
+        type = "Royal Guard_nifhell",
         side = 2,
         name = "Ulk Zappsnhcip"
     }, 13, 6)
 
-    wesnoth.put_unit({ type = "Swordsman_nifhell", side = 2 }, 8, 21)
-    wesnoth.put_unit({ type = "Swordsman_nifhell", side = 2 }, 12, 21)
-    local vr = GetRecallUnit("vranken")
+    wesnoth.units.to_map({ type = "Swordsman_nifhell", side = 2 }, 8, 21)
+    wesnoth.units.to_map({ type = "Swordsman_nifhell", side = 2 }, 12, 21)
+
+    local vr = wesnoth.units.get_recall("vranken")
     vr:to_map(10, 21)
 end
 
-function ES.turn1()
-    wml.fire("move_unit", { id = "vranken", to_x = 10, to_y = 7 })
+local function turn1()
+    MoveTo("vranken", 10, 7)
 
     Message("egil", _ "Captain Xaintrailles, please have a sit !")
 
@@ -100,4 +87,20 @@ function ES.turn1()
         _ "That's not a detail ! When should we head towards the White Arks ?")
 
     Victory()
+end
+
+---@type ScenarioEvents
+ES = {
+    atk = function() end,
+    kill = function() end,
+}
+
+---@type game_event_options[]
+local scenario_events = {
+    { id = "s3_prestart", name = "prestart", action = prestart },
+    { id = "s3_turn1",    name = "turn_1",   action = turn1 }
+}
+
+for _, v in pairs(scenario_events) do
+    wesnoth.game_events.add(v)
 end

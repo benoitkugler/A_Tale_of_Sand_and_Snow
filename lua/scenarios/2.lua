@@ -3,16 +3,9 @@ local x_messenger, y_messenger = 19, 1
 
 
 local function create_sword_spirit()
-    wml.fire("message", {
-        speaker = "vranken",
-        message = _ "Hum... I feel like this fight will be harder than expected... Any help will be welcome... "
-    })
-    wml.fire("message", {
-        speaker = "vranken",
-        message = _ "<span style='italic'>(rubbing the pommel of his sword)</span>"
-    })
-    wml.fire("message",
-        { speaker = "vranken", message = _ "Göndhul ! Fight for us !" })
+    Message("vranken", _ "Hum... I feel like this fight will be harder than expected... Any help will be welcome... ")
+    Message("vranken", _ "<span style='italic'>(rubbing the pommel of his sword)</span>")
+    Message("vranken", _ "Göndhul ! Fight for us !")
 
     local sword_spirit = wesnoth.units.create({
         type = "sword_spirit2",
@@ -26,14 +19,9 @@ local function create_sword_spirit()
     local vr = wesnoth.units.get("vranken")
     local x, y = wesnoth.paths.find_vacant_hex(vr.x, vr.y, sword_spirit)
     wml.fire("recall", { id = "sword_spirit", x = x, y = y })
-    wml.fire("message", {
-        speaker = "sword_spirit",
-        message = _ "<span style='italic'>(Deep, guttural voice)</span> Master... At your service..."
-    })
-    wml.fire("message", {
-        speaker = "vranken",
-        message = _ "<span style='italic'>(Feeling uncomfortable)</span> Bruuh, he's always scary, even after all these years..."
-    })
+    Message("sword_spirit", _ "<span style='italic'>(Deep, guttural voice)</span> Master... At your service...")
+    Message("vranken",
+        _ "<span style='italic'>(Feeling uncomfortable)</span> Bruuh, he's always scary, even after all these years...")
 
     Popup(_ "New hero",
         _ "\tThis is <span color='" .. Conf.heroes.get_color("sword_spirit") ..
@@ -118,10 +106,7 @@ local function presentation()
 end
 
 local function on_turn1()
-    wml.fire("message", {
-        speaker = "vranken",
-        message = _ "Come on soldiers ! Let's end this !"
-    })
+    Message("vranken", _ "Come on soldiers ! Let's end this !")
 
     local vr = wesnoth.units.get("vranken")
     local rymor = wesnoth.units.create({
@@ -133,8 +118,7 @@ local function on_turn1()
     rymor:init_hero()
     local x, y = wesnoth.paths.find_vacant_hex(vr.x, vr.y, rymor)
     rymor:to_map(x, y)
-    wml.fire("message",
-        { speaker = "rymor", message = _ "Ah some action, at last !" })
+    Message("rymor", _ "Ah some action, at last !")
 
     local drumar = wesnoth.units.create({
         id = "drumar",
@@ -145,12 +129,9 @@ local function on_turn1()
     drumar:init_hero()
     x, y = wesnoth.paths.find_vacant_hex(vr.x, vr.y, drumar)
     drumar:to_map(x, y)
-    wml.fire("message", {
-        speaker = "drumar",
-        message = _ "The Source is formal, Vranken, this should be an easy win !"
-    })
+    Message("drumar", _ "The Source is formal, Vranken, this should be an easy win !")
 
-    wml.fire("message", { speaker = "rymor", message = _ "Ready Bunshop ?" })
+    Message("rymor", _ "Ready Bunshop ?")
 
     local bunshop = wesnoth.units.create({
         id = "bunshop",
@@ -161,10 +142,7 @@ local function on_turn1()
     bunshop:init_hero()
     x, y = wesnoth.paths.find_vacant_hex(vr.x, vr.y, bunshop)
     bunshop:to_map(x, y)
-    wml.fire("message", {
-        speaker = "bunshop",
-        message = _ "<span style='italic'>(enthusiastic barking)</span>"
-    })
+    Message("bunshop", _ "<span style='italic'>(enthusiastic barking)</span>")
 
     presentation()
     Popup(_ "Note",

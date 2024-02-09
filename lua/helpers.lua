@@ -181,8 +181,10 @@ function Popup(title, message)
     gui.show_dialog(dialog, preshow)
 end
 
+---Same as wesnoth.units.get, but works for unit on
+---the recall list.
 ---@param id string
 ---@return unit
-function GetRecallUnit(id)
+function wesnoth.units.get_recall(id)
     return wesnoth.units.find_on_recall({ id = id })[1]
 end
