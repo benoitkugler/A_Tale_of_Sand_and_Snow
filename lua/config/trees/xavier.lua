@@ -87,7 +87,7 @@ Adjacent own units of equal or higher level will do %d%% more damage. ]], value)
         table.unpack(StandardAmlaHeal(10))
     },
     {
-        id = "defense",
+        id = "allies_defense",
         _short_desc = "Bonus defense",
         require_amla = "better_leadership,better_leadership,better_leadership,sword_precis,crossbow_marksman",
         image = "icons/dress_silk_green.png",
@@ -110,7 +110,8 @@ Adjacent own units of equal or higher level will do %d%% more damage. ]], value)
                         _level = current_lvl + 1,
                         name = _ "Defense-" .. ROMANS[current_lvl + 1],
                         description = Fmt(_ "Adjacent allies gain %d%% defense",
-                            value)
+                            value),
+                        halo_image_self = "halo/defense-aura.png"
                     }
                 }
             }
@@ -137,7 +138,7 @@ Adjacent own units of equal or higher level will do %d%% more damage. ]], value)
         _short_desc = "<B> Armor shred </B>",
         _color = { 54, 255, 5 },
         _level_bonus = true,
-        require_amla = "defense",
+        require_amla = "allies_defense",
         image = "icons/broken_shield.png",
         max_times = 3,
         always_display = 1,
@@ -299,7 +300,7 @@ Adjacent own units of equal or higher level will do %d%% more damage. ]], value)
     },
     {
         id = "default",
-        require_amla = "defense_reduc,defense_reduc,defense_reduc,armor_shred,armor_shred,armor_shred",
+        require_amla = "defense_shred,defense_shred,defense_shred,armor_shred,armor_shred,armor_shred",
         max_times = -1,
         description = _ " Whow, you've completed all the tree. Bravo !",
         table.unpack(StandardAmlaHeal(5, 5))
