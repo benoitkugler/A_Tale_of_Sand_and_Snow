@@ -113,9 +113,26 @@ function wesnoth.units.ability_level(u, id_ability, ability_name)
     return ab and ab._level --[[@as integer|nil]] or nil
 end
 
--- Return an effect wml table augmenting all defenses by given number (positive is better)
+-- Return an T.effect wml tag augmenting all resitances by the given number (positive is better)
+---@param res integer
+---@return WMLTag
+function AddResistances(res)
+    return T.effect {
+        apply_to = "resistance",
+        T.resistance {
+            impact = -res,
+            blade = -res,
+            arcane = -res,
+            cold = -res,
+            pierce = -res,
+            fire = -res
+        }
+    }
+end
+
+-- Return an T.effect wml tag augmenting all defenses by given number (positive is better)
 ---@param def integer
----@return table
+---@return WMLTag
 function AddDefenses(def)
     return T.effect {
         apply_to = "defense",

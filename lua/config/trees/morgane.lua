@@ -229,17 +229,7 @@ local morgane = {
         max_times = 3,
         always_display = 1,
         description = _ "Limbes strengh makes Morgane tougher: + 7% resistances",
-        T.effect {
-            apply_to = "resistance",
-            T.resistance {
-                impact = -7,
-                blade = -7,
-                arcane = -7,
-                cold = -7,
-                pierce = -7,
-                fire = -7
-            }
-        },
+        AddResistances(7),
         table.unpack(StandardAmlaHeal(7))
     },
     {

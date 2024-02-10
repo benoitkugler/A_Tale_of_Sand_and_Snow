@@ -97,7 +97,7 @@ function wesnoth.interface.game_display.unit_traits()
     local u = wesnoth.interface.get_displayed_unit()
     if not u then return {} end
     local traits = old_unit_traits()
-    for _, v in ipairs(traits) do
+    for __, v in ipairs(traits) do
         local element = v[2]
         local trt, _ = tostring(element.help):gsub("traits_", "")
         if trt then

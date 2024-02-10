@@ -11,7 +11,7 @@ InitVariables()
 UI.setup_menus()
 
 local function setup_units()
-    for _, cfg in ipairs({
+    for __, cfg in ipairs({
         { id = "brinx",  type = "brinx4",  name = "Brinx" },
         { id = "drumar", type = "drumar4", name = "Drumar" },
         { id = "rymor",  type = "rymor4",  name = "Rymor" },
@@ -28,7 +28,7 @@ local function setup_units()
     end
 
     -- init variables and activate advancements
-    for _, id in ipairs({ "vranken", "brinx", "drumar",
+    for __, id in ipairs({ "vranken", "brinx", "drumar",
         "rymor", "bunshop", "sword_spirit", "morgane", "xavier",
     }) do
         local hero = wesnoth.units.get(id)
@@ -38,15 +38,14 @@ local function setup_units()
         -- unlock all special skills
         local skills = Conf.special_skills[hero.id] --[[@as hero_skills]]
         local hero_skills = {}
-        for _, skill in ipairs(skills) do
+        for __, skill in ipairs(skills) do
             hero_skills[skill.name] = skill.max_lvl
-            wesnoth.interface.add_chat_message(skill.name)
             SPECIAL_SKILLS[skill.name](skill.max_lvl, hero)
         end
         hero:custom_variables().special_skills = hero_skills
     end
 
-    for _, loc in ipairs({ { x = 9, y = 17 }, { x = 10, y = 18 }, { x = 9, y = 18 } }) do
+    for __, loc in ipairs({ { x = 9, y = 17 }, { x = 10, y = 18 }, { x = 9, y = 18 } }) do
         wesnoth.units.to_map({ type = "Dune Blademaster_muspell", side = 2 }, loc)
     end
 end

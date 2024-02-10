@@ -26,7 +26,7 @@ function EC.on_combat_event()
     label_pri, label_snd = "", ""
     local x1, y1, x2, y2 = u1 and u1.x, u1 and u1.y, u2 and u2.x, u2 and u2.y
 
-    for _, i in ipairs(keys) do
+    for __, i in ipairs(keys) do
         if u1 and u1.valid and u2 and u2.valid then
             apply[i](type_event, u1, u2, dmg_dealt)
         end
@@ -47,8 +47,8 @@ end
 
 function EC.fin_tour()
     local lhero = wesnoth.units.find_on_map { role = "hero" }
-    for _, v in pairs(lhero) do v:custom_variables().bloodlust = false end
-    for _, v in pairs(endturn) do v() end
+    for __, v in pairs(lhero) do v:custom_variables().bloodlust = false end
+    for __, v in pairs(endturn) do v() end
 end
 
 -- COMMON ABILITIES
@@ -414,7 +414,6 @@ function endturn.status_chilled()
     for id, u in ipairs(us) do
         local lvl, cd = u:custom_variables().status_chilled_lvl,
             u:custom_variables().status_chilled_cd
-        wesnoth.interface.add_chat_message("id: " .. id .. " level: " .. lvl .. " cd: " .. cd)
         if cd == 1 then
             u.status.chilled = nil
             u:custom_variables().status_chilled_lvl = nil

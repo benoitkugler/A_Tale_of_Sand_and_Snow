@@ -103,7 +103,7 @@ local Standard_event = {
         first_time_only = false,
         name = "post advance",
         action = function()
-            AMLA.adv(); EXP.on_advance()
+            AMLA.adv(); EXP.on_advance(); AB.post_advance()
         end
     },
     {

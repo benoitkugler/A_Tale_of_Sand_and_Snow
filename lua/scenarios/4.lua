@@ -123,6 +123,6 @@ local scenario_events = {
     { id = "s4_turn2",        name = "turn_2",   action = on_turn2 }
 }
 
-for _, v in pairs(scenario_events) do
+for __, v in pairs(scenario_events) do
     wesnoth.game_events.add(v)
 end

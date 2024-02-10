@@ -19,17 +19,7 @@ local sword_spirit = {
         max_times = 3,
         always_display = 1,
         description = Fmt(_ "Tougher, + %d%% resistances", V.BONUS_RES),
-        T.effect {
-            apply_to = "resistance",
-            T.resistance {
-                impact = -V.BONUS_RES,
-                blade = -V.BONUS_RES,
-                arcane = -V.BONUS_RES,
-                cold = -V.BONUS_RES,
-                pierce = -V.BONUS_RES,
-                fire = -V.BONUS_RES
-            }
-        },
+        AddResistances(V.BONUS_RES),
         table.unpack(StandardAmlaHeal(7))
     },
     {
@@ -99,6 +89,7 @@ local sword_spirit = {
             T.abilities {
                 T.customName {
                     id = "war_jump",
+                    _level = 1,
                     description = _ "Jump behind ennemies (once per turn).",
                     name = "War jump"
                 }
@@ -130,7 +121,8 @@ local sword_spirit = {
                         id = "shred_aura_res",
                         _level = next_lvl,
                         description = Fmt(_ "Adjacent ennemies resistances decreased by %d%%", value),
-                        name = "Weakness aura " .. ROMANS[next_lvl]
+                        name = "Weakness aura " .. ROMANS[next_lvl],
+                        halo_image_self = "halo/reddens-aura.png"
                     }
                 }
             }
@@ -161,7 +153,8 @@ local sword_spirit = {
                         id = "shred_aura_def",
                         _level = next_lvl,
                         description = Fmt(_ "Adjacent ennemies defenses decreased by %d%%", value),
-                        name = "Clumsiness aura " .. ROMANS[next_lvl]
+                        name = "Clumsiness aura " .. ROMANS[next_lvl],
+                        halo_image_self = "halo/reddens-aura.png"
                     }
                 }
             }
@@ -191,8 +184,10 @@ local sword_spirit = {
             T.abilities {
                 T.customName {
                     id = "distant_shred_auras",
+                    _level = 1,
                     description = _ "Göndhul is so powerfull that it Clumsiness aura III and Weakness aura III abilities also affect distant ennemies.",
-                    name = "Distant aura"
+                    name = "Distant aura",
+                    halo_image_self = "halo/reddens-aura-distant.png"
                 }
             }
         },

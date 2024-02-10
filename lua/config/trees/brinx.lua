@@ -19,17 +19,7 @@ Conf.amlas.brinx = {
         max_times = 2,
         always_display = 1,
         description = _ "Tougher, + 5% resistances",
-        T.effect {
-            apply_to = "resistance",
-            T.resistance {
-                impact = -5,
-                blade = -5,
-                arcane = -5,
-                cold = -5,
-                pierce = -5,
-                fire = -5
-            }
-        },
+        AddResistances(5),
         table.unpack(StandardAmlaHeal(7))
     },
     {

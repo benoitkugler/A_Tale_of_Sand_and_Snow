@@ -23,7 +23,7 @@ end
 ---@param y integer
 local function next_to_ennemy(unit, x, y)
     local c1, c2, c3, c4, c5, c6 = wesnoth.map.get_adjacent_hexes({ x = x, y = y })
-    for _, loc in ipairs({ c1, c2, c3, c4, c5, c6 }) do
+    for __, loc in ipairs({ c1, c2, c3, c4, c5, c6 }) do
         local u = wesnoth.units.get(loc)
         if u and wesnoth.sides.is_enemy(u.side, unit.side) then return true end
     end
@@ -61,6 +61,13 @@ local function available_tiles(unit)
     end)
     return tiles
 end
+
+--- remove the given trait modification for all units on the map
+local function remove_trait(trait_id)
+    local us = wesnoth.units.find_on_map { trait = trait_id }
+    for __, u in pairs(us) do u:remove_modifications({ id = trait_id }, "trait") end
+end
+
 
 ---@class _
 ---@field elusive unit?
@@ -144,6 +151,7 @@ function AB.elusive()
 end
 
 -- ----------------------- ALLIED DEFENSE (Xavier) -----------------------
+
 -- Called on move event
 -- We first remove passed defense bonus
 -- Then we find the unit who should benefit from Xavier ability
@@ -154,8 +162,8 @@ local function update_xavier_defense()
     if not lvl then return end
 
     local trait_id = "_tmp_allies_defense_bonus"
-    local us = wesnoth.units.find_on_map { trait = trait_id }
-    for i, u in pairs(us) do u:remove_modifications({ id = trait_id }, "trait") end
+    remove_trait(trait_id)
+
     local adj_xavier = wesnoth.units.find_on_map {
         T.filter_adjacent { id = "xavier" },
         T.filter_side { T.allied_with { side = xavier.side } }
@@ -182,7 +190,7 @@ local formations_def, formations_abilities = fms.def, fms.abs
 ---@param formation formation
 local function _check_formation(xavier, formation)
     local side = xavier.side
-    for _, tile in ipairs(formation) do
+    for __, tile in ipairs(formation) do
         local u = wesnoth.units.get(tile)
         if u == nil or wesnoth.sides.is_enemy(side, u.side) then return false end
     end
@@ -245,7 +253,7 @@ end
 local function update_xavier_formation()
     local xavier = wesnoth.units.get("xavier")
     if xavier == nil then return end
-    for _, name in pairs({ "A", "I", "Y" }) do -- remove potential old ability
+    for __, name in pairs({ "A", "I", "Y" }) do -- remove potential old ability
         xavier:remove_modifications({ id = "_formation_" .. name }, "trait")
     end
     local active_formations, _, _ = AB.active_xavier_formations(xavier)
@@ -256,6 +264,64 @@ local function update_xavier_formation()
         end
     end
     formations_abilities.O(xavier, active_formations.O) -- always called, to remove menu item if needed
+end
+
+
+
+-- sword_spirit auras
+
+-- We first remove current modifications
+-- Then we find the unit who should benefit from Gonhdul ability
+-- Then we apply trait modifications with custom ids
+local function update_sword_spirit_auras()
+    local ss = wesnoth.units.get("sword_spirit")
+
+    --- first check for the last amla : it implies the others
+    local res_level, def_level, is_distant
+    if ss:ability_level("distant_shred_auras") then
+        res_level, def_level, is_distant = 3, 3, true
+    else
+        res_level = ss:ability_level("shred_aura_res") or 0
+        def_level = ss:ability_level("shred_aura_def") or 0
+        is_distant = false
+    end
+
+    if (res_level == 0 and def_level == 0) then return end --- nothing to do
+
+    --- remove current traits
+    local res_trait_id, def_trait_id = "_tmp_res_aura", "_tmp_def_aura"
+    remove_trait(res_trait_id)
+    remove_trait(def_trait_id)
+
+    --- find ennemies
+    local candidates = wesnoth.units.find_on_map {
+        T.filter_location { x = ss.x, y = ss.y, radius = is_distant and 2 or 1 },
+        T.filter_side { T.enemy_of { side = ss.side } }
+    }
+    local res_shred = Conf.amlas.sword_spirit.values.RES_SHRED * res_level
+    local def_shred = Conf.amlas.sword_spirit.values.DEF_SHRED * def_level
+    for __, ennemy in ipairs(candidates) do
+        if (res_level ~= 0) then
+            ennemy:add_modification("trait", {
+                id = res_trait_id,
+                name = _ "Weakness aura " .. ROMANS[res_level],
+                description = Fmt(
+                    _ "Ghöndul aura reduces this unit resistances by %d%%",
+                    res_shred),
+                AddResistances(-res_shred),
+            })
+        end
+        if (def_level ~= 0) then
+            ennemy:add_modification("trait", {
+                id = def_trait_id,
+                name = _ "Clumsiness aura " .. ROMANS[def_level],
+                description = Fmt(
+                    _ "Ghöndul aura reduces this unit defenses by %d%%",
+                    def_shred),
+                AddDefenses(-def_shred),
+            })
+        end
+    end
 end
 
 -- --- Special skills (actual action, menu setup is done beforehand) ---
@@ -305,19 +371,44 @@ function AB.union_debuf()
     xavier:custom_variables().special_skill_cd = cd
 end
 
--- -------------------------- Event handler --------------------------
-function AB.on_moveto()
+--- refresh abilities computed from units positions
+local function on_advance()
     local u = PrimaryUnit()
-    local xavier = wesnoth.units.get("xavier")
-    if not xavier then return end
-    if not wesnoth.sides.is_enemy(u.side, xavier.side) then
+    if (u.id == "xavier") then
         update_xavier_defense()
-        update_xavier_formation() -- only when necessary, to avoid slows
+        update_xavier_formation()
+    end
+    if (u.id == "sword_spirit") then
+        update_sword_spirit_auras()
+    end
+end
+
+--- refresh abilities computed from units positions
+local function on_moveto()
+    local moved_unit = PrimaryUnit()
+
+    --- Xavier
+    local xavier = wesnoth.units.get("xavier")
+    if xavier then
+        --- only update when an ally moves
+        if wesnoth.sides.is_enemy(moved_unit.side, xavier.side) then return end
+
+        update_xavier_defense()
+        update_xavier_formation()
+    end
+
+    --- Sword spirit
+    local sword_spirit = wesnoth.units.get("sword_spirit")
+    if sword_spirit then
+        --- update when sword_spirit moves or when an ennemy moves
+        if not (moved_unit.id == "sword_spirit" or wesnoth.sides.is_enemy(moved_unit.side, sword_spirit.side)) then return end
+
+        update_sword_spirit_auras()
     end
 end
 
 -- Appelée sur sélection d'une unité
-function AB.select()
+local function on_select()
     ANIM.clear_overlays()
     UI.clear_menu_item("elusive")
     UI.clear_menu_item("war_jump")
@@ -341,12 +432,13 @@ local function long_heal(healer)
     if not level_long_heal then return end
     local value_heal = healer:get_ability("better_heal", "heals").value
     local candidates = wesnoth.units.find_on_map {
-        T.filter_location { x = healer.x, y = healer.y, radius = 3 }
+        T.filter_location { x = healer.x, y = healer.y, radius = 3 },
+        T.filter_side { T.allied_with { side = healer.side } }
     }
     local ratio = Conf.amlas.morgane.values.LONG_HEAL_RATIO
-    for _, u in pairs(candidates) do
+    for __, u in pairs(candidates) do
         local d = wesnoth.map.distance_between({ x = u.x, y = u.y }, { x = healer.x, y = healer.y })
-        if not wesnoth.sides.is_enemy(healer.side, u.side) and (d == 2 or d == 3) then -- other units will be healed by the standard heal
+        if (d == 2 or d == 3) then -- other units will be healed by the standard heal
             local amount = Round(ratio * level_long_heal * value_heal / d)
             wml.fire("heal_unit", {
                 T.filter { x = u.x, y = u.y },
@@ -359,9 +451,9 @@ local function long_heal(healer)
 end
 
 -- Should decrease special skill CDs
-function AB.turn_start()
+local function on_turn_start()
     local lhero = wesnoth.units.find_on_map { role = "hero" }
-    for _, v in pairs(lhero) do
+    for __, v in pairs(lhero) do
         local current_cd = v:custom_variables().special_skill_cd or 0
         if current_cd > 0 then
             v:custom_variables().special_skill_cd = current_cd - 1
@@ -371,3 +463,11 @@ function AB.turn_start()
     local morg = wesnoth.units.get("morgane")
     if morg then long_heal(morg) end
 end
+
+---
+--- Hook into the event system
+---
+AB.on_moveto = on_moveto
+AB.select = on_select
+AB.turn_start = on_turn_start
+AB.post_advance = on_advance

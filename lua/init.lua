@@ -55,7 +55,7 @@ wesnoth.require "ui/menus"
 wesnoth.require "standard_event" -- event setup
 
 function Set_hp()
-    for _, u in pairs(wesnoth.units.find_on_map({ side = 2 })) do u.hitpoints = 1 end
+    for __, u in pairs(wesnoth.units.find_on_map({ side = 2 })) do u.hitpoints = 1 end
 end
 
 ---CustomUnitVariables is the WML table on units used

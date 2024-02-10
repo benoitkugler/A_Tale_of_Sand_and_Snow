@@ -104,7 +104,7 @@ local function _remove_limbe_terrain()
 end
 
 local function _has_limbe_ennemies()
-    for _, u in pairs(wesnoth.units.find_on_map({})) do
+    for __, u in pairs(wesnoth.units.find_on_map({})) do
         if u.side ~= 1 and is_limbe_actor(u) then return true end
     end
     return false
