@@ -99,7 +99,7 @@ Adjacent own units of equal or higher level will do %d%% more damage. ]], value)
             apply_to = "remove_ability",
             T.abilities { T.customName { id = "allies_defense" } }
         },
-        function(unit) -- need the current ability level.adjacent
+        function(unit) -- need the current ability level
             local current_lvl = unit:ability_level("allies_defense") or 0
             local value = (current_lvl + 1) * V.ALLIES_DEFENSE_RATIO
             return T.effect {
@@ -301,9 +301,8 @@ Adjacent own units of equal or higher level will do %d%% more damage. ]], value)
         id = "default",
         require_amla = "defense_reduc,defense_reduc,defense_reduc,armor_shred,armor_shred,armor_shred",
         max_times = -1,
-        description = _ "Basic +3Hp AMLA.",
-        T.effect { increase_total = 3, apply_to = "hitpoints" },
-        table.unpack(StandardAmlaHeal(5))
+        description = _ " Whow, you've completed all the tree. Bravo !",
+        table.unpack(StandardAmlaHeal(5, 5))
     }
 }
 Conf.amlas.xavier = xavier

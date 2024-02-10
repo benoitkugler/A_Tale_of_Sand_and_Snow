@@ -1,2 +1,4 @@
 .vscode/*
 **/__pycache__/*
+dev_tools/graph/layers/*
+dev_tools/graph/images/tree.png

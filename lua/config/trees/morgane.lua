@@ -265,6 +265,13 @@ local morgane = {
             }
         },
         table.unpack(StandardAmlaHeal(12))
+    },
+    {
+        require_amla = "deflect, long_heal2",
+        max_times = -1,
+        description = _ " Whow, you've completed all the tree. Bravo !",
+        id = "default",
+        table.unpack(StandardAmlaHeal(5, 3))
     }
 }
 Conf.amlas.morgane = morgane

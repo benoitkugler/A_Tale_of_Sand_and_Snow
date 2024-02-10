@@ -266,11 +266,11 @@ local drumar = {
         table.unpack(StandardAmlaHeal(10))
     },
     {
-        max_times = -1,
         require_amla = "though,though,attack_chilled,toile_snare",
+        max_times = -1,
+        description = _ " Whow, you've completed all the tree. Bravo !",
         id = "default",
-        T.effect { increase_total = 1, apply_to = "hitpoints" },
-        table.unpack(StandardAmlaHeal(5))
+        table.unpack(StandardAmlaHeal(5, 3))
     }
 }
 Conf.amlas.drumar = drumar

@@ -7,13 +7,15 @@
 
 ---shortcut to avoid boilerplate code in trees
 ---@param exp integer
+---@param hp integer?
 ---@return WMLTag[]
-function StandardAmlaHeal(exp)
+function StandardAmlaHeal(exp, hp)
+    hp = hp or 2
     return {
         T.effect { increase = tostring(exp) .. "%", apply_to = "max_experience" },
         T.effect { remove = "poisoned", apply_to = "status" },
         T.effect { remove = "slowed", apply_to = "status" },
-        T.effect { apply_to = "hitpoints", increase_total = 2, heal_full = true }
+        T.effect { apply_to = "hitpoints", increase_total = hp, heal_full = true }
     }
 end
 

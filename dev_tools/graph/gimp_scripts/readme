@@ -1,2 +1,4 @@
 The directory plug-ins should be added in Gimp path for pluggins.
 The .scm script are backups.
+If using Gimp a installed with flatpak, it requires filesystem access :
+sudo flatpak override org.gimp.GIMP --filesystem=<path-to-addon>/A_Tale_of_Sand_and_Snow

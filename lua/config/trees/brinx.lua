@@ -285,7 +285,6 @@ Conf.amlas.brinx = {
         max_times = -1,
         description = _ " Whow, you've completed all the tree. Bravo !",
         image = "",
-        T.effect { increase_total = 1, apply_to = "hitpoints" },
-        table.unpack(StandardAmlaHeal(5))
+        table.unpack(StandardAmlaHeal(5, 3))
     }
 }

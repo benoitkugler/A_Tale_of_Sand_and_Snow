@@ -31,8 +31,10 @@ local header_dot = string.format(
 local function format_node(id, img, cell_chiffres, cell_desc)
     return string.format(
         [[ %s [ layer=%q , label=<<TABLE COLOR=%q STYLE="ROUNDED" CELLSPACING="0" BORDER=%q>
-            <TR><TD BORDER="0"><IMG SRC=%q/></TD>
-            %s</TR>
+            <TR>
+                <TD BORDER="0"><IMG SRC=%q/></TD>
+                %s
+            </TR>
             <TR>%s</TR>
             </TABLE>> ] ]], id, id, BORDER_COLOR, DOT_PARAMS.cell_border_size,
         img, cell_chiffres, cell_desc)
@@ -71,7 +73,7 @@ local function cell_chiffres(with_border, max_level)
 end
 
 local function format_text_with_border(desc)
-    return string.format([[ <TD BORDER="0" COLSPAN="2" CELLPADDING="3">
+    return string.format([[ <TD BORDER="0" COLSPAN="2" CELLPADDING="4">
                     <TABLE BORDER="0" CELLSPACING="0">
                     <TR><TD  BORDER="1"  COLOR=%q > ]],
             DOT_PARAMS.basic_border_color) ..
@@ -200,9 +202,9 @@ end
 -- setup globals needed by amlas.
 _ = function(s) return s end
 StandardAmlaHeal = function(s) return {} end
-Fmt = function(s) return string.format(s) end
+Fmt = function(...) return string.format(...) end
 T = {}
-Conf = { AMLAS = {} }
+Conf = { amlas = {} }
 Round = function(s) return s end
 ROMANS = { "I", "II", "III", "IV", "V", "VI" }
 

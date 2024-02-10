@@ -333,12 +333,10 @@ local vranken = {
     },
     {
         max_times = -1,
-        description = _ "",
         require_amla = "bow_mayhem,bow_firststrike,sword_cleave,sword_precis,sand,though,though",
         id = "default",
-        image = "",
-        T.effect { increase_total = 1, apply_to = "hitpoints" },
-        table.unpack(StandardAmlaHeal(5))
+        description = _ " Whow, you've completed all the tree. Bravo !",
+        table.unpack(StandardAmlaHeal(5, 3))
     }
 }
 Conf.amlas.vranken = vranken

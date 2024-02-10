@@ -1,9 +1,9 @@
 #!/bin/bash
 echo "Welcome in the ALMA tree image builder !"
  
-ADDON_DATA_PATH=$HOME/.config/wesnoth-1.14/data/add-ons/A_Tale_of_Sand_and_Snow/
-WESNOTH_PATH=/usr/share/games/wesnoth/1.14
-
+ADDON_DATA_PATH=$HOME/.var/app/org.wesnoth.Wesnoth/data/wesnoth/1.17/data/add-ons/A_Tale_of_Sand_and_Snow/
+WESNOTH_PATH=/var/lib/flatpak/app/org.wesnoth.Wesnoth/current/active/files/share/wesnoth/
+GIMP_CMD="flatpak run org.gimp.GIMP"
 set -e;
 
 keep="1"
@@ -67,7 +67,7 @@ if [ $full_process = "0" ]; then
 echo "Lancer la mise à jour des layers ? (Poursuivre : o, sauter : Entree)"
 read update_layers
     if [ "$update_layers" = "o" ]; then
-        cmd="gimp -i -d -b '(python-fu-build-wesnoth-text-effect RUN-NONINTERACTIVE \""$liste_layers"\")' -b '(gimp-quit 1)'"
+        cmd="${GIMP_CMD} -i -d -b '(python-fu-build-wesnoth-text-effect RUN-NONINTERACTIVE \""$liste_layers"\")' -b '(gimp-quit 1)'"
         eval $cmd &&
         echo "Mise à jour des layers (couleur, nombre) réussie";
     fi;
@@ -83,7 +83,7 @@ fi;
 rm -r -f ${ADDON_DATA_PATH}images/arbres/$id;
 mkdir -p ${ADDON_DATA_PATH}images/arbres/$id;
 args=$couleurfond" "$ADDON_DATA_PATH"images/arbres/"$id
-com="gimp -i -d -b '(python-fu-build-wesnoth-caches RUN-NONINTERACTIVE \""$args"\")' -b '(gimp-quit 1)'"
+com="${GIMP_CMD} -i -d -b '(python-fu-build-wesnoth-caches RUN-NONINTERACTIVE \""$args"\")' -b '(gimp-quit 1)'"
 eval $com
 
 if [ $full_process = "0" ]; then
