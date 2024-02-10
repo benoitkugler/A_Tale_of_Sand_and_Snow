@@ -1,10 +1,10 @@
 -- Numerical values
 local V = {
-    BONUS_RES = 7, -- per amla
-    REGEN = 10,    -- per level
-    MAX_HP = 15,   -- per amla
-    RES_SHRED = 7, -- per amla
-    DEF_SHRED = 7, -- per amla
+    BONUS_RES = 10, -- per amla
+    REGEN = 15,     -- per level
+    MAX_HP = 20,    -- per amla
+    RES_SHRED = 7,  -- per amla
+    DEF_SHRED = 7,  -- per amla
 }
 
 local sword_spirit = {
@@ -66,12 +66,12 @@ local sword_spirit = {
     {
         id = "juggernaut",
         require_amla = "regen,regen,regen",
-        _short_desc = ("HP <BR/>  <B> +%d </B> %%"):format(V.MAX_HP),
+        _short_desc = ("HP <BR/>  <B> +%d </B>"):format(V.MAX_HP),
         image = "icons/amla-default.png",
         max_times = 3,
         always_display = 1,
-        description = Fmt(_ "Healthier, + %d%% hitpoints", V.MAX_HP),
-        table.unpack(StandardAmlaHeal(7, 15))
+        description = Fmt(_ "Healthier, + %d hitpoints", V.MAX_HP),
+        table.unpack(StandardAmlaHeal(7, V.MAX_HP))
     },
     -- Moves tree
     {
@@ -191,7 +191,7 @@ local sword_spirit = {
             T.abilities {
                 T.customName {
                     id = "distant_shred_auras",
-                    description = _ "Clumsiness and weakness auras also affect distant ennemies.",
+                    description = _ "Göndhul is so powerfull that it Clumsiness aura III and Weakness aura III abilities also affect distant ennemies.",
                     name = "Distant aura"
                 }
             }

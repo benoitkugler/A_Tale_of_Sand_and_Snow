@@ -2,3 +2,4 @@
 **/__pycache__/*
 dev_tools/graph/layers/*
 dev_tools/graph/images/tree.png
+dev_tools/graph/tree.dot
