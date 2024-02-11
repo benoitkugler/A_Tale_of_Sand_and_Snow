@@ -27,6 +27,7 @@ Conf.special_skills = {}
 Conf.special_skills.bunshop = {}
 Conf.special_skills.rymor = {}
 
+Conf.special_skills.mark = {}
 Conf.special_skills.sword_spirit = {}
 
 -- DRUMAR

@@ -1,5 +1,5 @@
 -- Numerical values
-local V = {
+local V           = {
     BETTER_LEADERSHIP_RATIO = 15, -- % per level
     ALLIES_DEFENSE_RATIO = 5,     -- % per level
     REDUCE_DEFENSE = 2,           -- % per hit per level
@@ -11,7 +11,7 @@ local V = {
     CROSSBOW_BONUS_ATK = 1        -- per amla
 }
 
-local xavier = {
+Conf.amlas.xavier = {
     _default_border = "#a99508",
     _default_background = "181 167 71", -- rgb
     values = V,
@@ -67,7 +67,8 @@ Adjacent own units of equal or higher level will do %d%% more damage. ]], value)
         ---@param unit unit
         function(unit)
             local current_lvl = unit:weapon("sword"):special_level("defense_shred") or 0
-            local shred_on_hit = V.REDUCE_DEFENSE * (current_lvl + 1)
+            local next_lvl = current_lvl + 1
+            local shred_on_hit = V.REDUCE_DEFENSE * next_lvl
             return T.effect {
                 apply_to = "attack",
                 remove_specials = "defense_shred",
@@ -75,9 +76,9 @@ Adjacent own units of equal or higher level will do %d%% more damage. ]], value)
                     mode = "append",
                     T.customName {
                         id = "defense_shred",
-                        _level = current_lvl + 1,
+                        _level = next_lvl,
                         active_on = "offense",
-                        name = _ "destabilize",
+                        name = _ "destabilize " .. ROMANS[next_lvl],
                         description = Fmt(_ "Decreases defense by %d%% per hit",
                             shred_on_hit)
                     }
@@ -146,7 +147,8 @@ Adjacent own units of equal or higher level will do %d%% more damage. ]], value)
         ---@param unit unit
         function(unit)
             local current_lvl = unit:weapon("sword"):special_level("armor_shred") or 0
-            local shred_on_hit = V.REDUCE_ARMOR * (current_lvl + 1)
+            local next_lvl = current_lvl + 1
+            local shred_on_hit = V.REDUCE_ARMOR * next_lvl
             return T.effect {
                 apply_to = "attack",
                 remove_specials = "armor_shred",
@@ -154,9 +156,9 @@ Adjacent own units of equal or higher level will do %d%% more damage. ]], value)
                     mode = "append",
                     T.customName {
                         id = "armor_shred",
-                        _level = current_lvl + 1,
+                        _level = next_lvl,
                         active_on = "offense",
-                        name = _ "shreds",
+                        name = _ "shreds " .. ROMANS[next_lvl],
                         description = Fmt(
                             _ "Decreases physical resistances by %d%% per hit",
                             shred_on_hit)
@@ -306,4 +308,3 @@ Adjacent own units of equal or higher level will do %d%% more damage. ]], value)
         table.unpack(StandardAmlaHeal(5, 5))
     }
 }
-Conf.amlas.xavier = xavier

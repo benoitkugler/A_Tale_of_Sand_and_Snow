@@ -202,6 +202,8 @@ end
 -- setup globals needed by amlas.
 _ = function(s) return s end
 StandardAmlaHeal = function(s) return {} end
+AddResistances = function() return {} end
+AddDefenses = function() return {} end
 Fmt = function(...) return string.format(...) end
 T = {}
 Conf = { amlas = {} }

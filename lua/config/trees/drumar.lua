@@ -1,4 +1,4 @@
-local drumar = {
+Conf.amlas.drumar = {
     _default_border = "#00FFF5",
     _default_background = "0 168 162",
     {
@@ -273,4 +273,3 @@ local drumar = {
         table.unpack(StandardAmlaHeal(5, 3))
     }
 }
-Conf.amlas.drumar = drumar

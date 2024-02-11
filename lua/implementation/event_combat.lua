@@ -111,14 +111,15 @@ function apply.war_leeches(event, pri, snd, dmg)
     end
 end
 
--- ABILITY SPECIAL de BRINX
+-- BRINX and MARK special skill
 function apply.bloodlust(event, pri, snd, dmg)
     if event == "die" then
         if snd:ability_level("bloodlust") then
             if not snd:custom_variables().bloodlust then
-                snd:custom_variables().bloodlust = true
-                snd.moves = 4 -- on kill
+                snd:custom_variables().bloodlust = true -- limit the effect
+                snd.moves = 4
                 snd.attacks_left = 1
+                wesnoth.interface.float_label(snd.x, snd.y, "<span color='#eb7521'>Bloodlust !</span>")
             end
         end
     end

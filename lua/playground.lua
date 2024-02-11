@@ -21,14 +21,15 @@ local function setup_units()
         { id = "sword_spirit", type = "sword_spirit4", name = "Gondhul",
             T.abilities { T.customName { id = "war_jump", name = "War jump", _level = 1 } } },
         { id = "morgane", type = "morgane3", name = "Morgane" },
-        { id = "xavier",  type = "xavier4",  name = "Xavier" }
+        { id = "xavier",  type = "xavier4",  name = "Xavier" },
+        { id = "mark",    type = "mark1",    name = "Mark" },
     }) do
         local hero = wesnoth.units.create(cfg)
         hero:to_map(wesnoth.paths.find_vacant_hex(14, 16, hero))
     end
 
     -- init variables and activate advancements
-    for __, id in ipairs({ "vranken", "brinx", "drumar",
+    for __, id in ipairs({ "vranken", "brinx", "drumar", "mark",
         "rymor", "bunshop", "sword_spirit", "morgane", "xavier",
     }) do
         local hero = wesnoth.units.get(id)

@@ -231,6 +231,7 @@ Conf.amlas.brinx = {
             T.abilities {
                 T.customName {
                     id = "bloodlust",
+                    _level = 1,
                     description = _ "Killing a unit refreshes this unit's strength, and gives it a new attack. Happens at most once a turn.",
                     name = "Bloodlust"
                 }

@@ -7,7 +7,7 @@ local V = {
     DEF_SHRED = 7,  -- per amla
 }
 
-local sword_spirit = {
+Conf.amlas.sword_spirit = {
     _default_border = "#b3230c",
     _default_background = "166 154 149", -- rgb
     values = V,
@@ -274,4 +274,3 @@ local sword_spirit = {
         table.unpack(StandardAmlaHeal(5, 10))
     }
 }
-Conf.amlas.sword_spirit = sword_spirit

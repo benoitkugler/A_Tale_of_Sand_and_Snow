@@ -1,4 +1,4 @@
-local vranken = {
+Conf.amlas.vranken = {
     _default_border = "#1C71CD",
     _default_background = "66 65 193",
     {
@@ -329,4 +329,3 @@ local vranken = {
         table.unpack(StandardAmlaHeal(5, 3))
     }
 }
-Conf.amlas.vranken = vranken

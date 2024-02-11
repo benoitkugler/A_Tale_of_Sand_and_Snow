@@ -2,7 +2,7 @@ local V = {                -- numerical values
     LONG_HEAL_RATIO = 0.8, -- * lvl / distance
     BETTER_HEAL = 10       -- bonus per level
 }
-local morgane = {
+Conf.amlas.morgane = {
     _default_border = "#ddebe0",
     _default_background = "66 65 193",
     values = V,
@@ -264,4 +264,3 @@ local morgane = {
         table.unpack(StandardAmlaHeal(5, 3))
     }
 }
-Conf.amlas.morgane = morgane
