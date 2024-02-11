@@ -290,7 +290,7 @@ function apply.weaker_slow(event, pri, snd, dmg)
     if event == "attacker_hits" then
         local lvl = PWeapon():special_level("weaker_slow")
         if lvl then
-            local value = 5 + 5 * lvl -- atker hit
+            local value = 5 * lvl  -- atker hit
             wesnoth.units.add_modification(snd, "object", {
                 duration = "turn_end",
                 T.effect {

@@ -62,36 +62,6 @@ Conf.amlas.drumar = {
         table.unpack(StandardAmlaHeal(5))
     },
     {
-        id = "wave_weaker_slow2",
-        _short_desc = "<B> Freezing</B><BR />  Chill wave  ",
-        _color = { 145, 145, 145 },
-        require_amla = "wave_weaker_slow1",
-        image = "icons/iceball_slow.png",
-        max_times = 1,
-        always_display = 1,
-        description = _ "Chill wave decreases target's damages even harder.",
-        T.effect {
-            name = "chill wave",
-            apply_to = "attack",
-            T.set_specials {
-                mode = "append",
-                T.customName {
-                    description = _ "Reduces target's damage by <span color='red'> 15%</span> per hit. <span style='italic'>Last 1 turn.</span>",
-                    id = "weaker_slow",
-                    _level = 2,
-                    active_on = "offense",
-                    name = "weaker slow"
-                }
-            }
-        },
-        T.effect {
-            apply_to = "attack",
-            remove_specials = "weaker_slow",
-            name = "chill wave"
-        },
-        table.unpack(StandardAmlaHeal(10))
-    },
-    {
         id = "attack_chilled",
         _short_desc = "<B> Chilling touch</B> ",
         _color = { 30, 217, 208 },
@@ -193,16 +163,42 @@ Conf.amlas.drumar = {
         always_display = 1,
         description = _ "Chill wave decreases target's damage per hit.",
         T.effect {
+            apply_to = "attack",
+            name = "chill wave",
+            T.set_specials {
+                mode = "append",
+                T.customName {
+                    id = "weaker_slow",
+                    description = _ "Reduces target's damage by <span color='red'> 5%</span> per hit. <span style='italic'>Last 1 turn.</span>",
+                    _level = 1,
+                    active_on = "offense",
+                    name = "weaker slow I"
+                }
+            }
+        },
+        table.unpack(StandardAmlaHeal(10))
+    },
+    {
+        id = "wave_weaker_slow2",
+        _short_desc = "<B> Freezing</B><BR />  Chill wave  ",
+        _color = { 145, 145, 145 },
+        require_amla = "wave_weaker_slow1",
+        image = "icons/iceball_slow.png",
+        max_times = 1,
+        always_display = 1,
+        description = _ "Chill wave decreases target's damages even harder.",
+        T.effect {
             name = "chill wave",
             apply_to = "attack",
+            remove_specials = "weaker_slow",
             T.set_specials {
                 mode = "append",
                 T.customName {
                     description = _ "Reduces target's damage by <span color='red'> 10%</span> per hit. <span style='italic'>Last 1 turn.</span>",
                     id = "weaker_slow",
-                    _level = 1,
+                    _level = 2,
                     active_on = "offense",
-                    name = "weaker slow"
+                    name = _ "weaker slow II"
                 }
             }
         },

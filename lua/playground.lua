@@ -36,14 +36,6 @@ local function setup_units()
         hero:init_hero()
         hero.level = 10 -- unlock all skills
         hero:custom_variables().xp = 1000
-        -- unlock all special skills
-        local skills = Conf.special_skills[hero.id] --[[@as hero_skills]]
-        local hero_skills = {}
-        for __, skill in ipairs(skills) do
-            hero_skills[skill.name] = skill.max_lvl
-            SPECIAL_SKILLS[skill.name](skill.max_lvl, hero)
-        end
-        hero:custom_variables().special_skills = hero_skills
     end
 
     for __, loc in ipairs({ { x = 9, y = 17 }, { x = 10, y = 18 }, { x = 9, y = 18 } }) do
