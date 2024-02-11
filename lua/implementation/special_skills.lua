@@ -345,6 +345,7 @@ function SPECIAL_SKILLS.slow_zone(lvl, unit)
     )
 end
 
+-- enhance chilling special
 function SPECIAL_SKILLS.bonus_cold_mistress(lvl, unit)
     local id, old_id = _get_ids(lvl, "bonus_cold_mistress")
     unit:remove_modifications({ id = old_id }, "object")

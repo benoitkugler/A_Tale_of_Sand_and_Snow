@@ -385,13 +385,12 @@ function apply.chilled_dmg(event, pri, snd, dmg)
                 })
             end
             label_snd = label_snd .. "<span color='#1ED9D0'>" .. dmg_display ..
-                "</span>\n"
+                "<span size='small'> (chilled)</span></span>\n"
         end
     end
 end
 
 -- Apply chilled status on target
--- table_status_chilled has id with _ instead of - as keys, and a 2 char string lvl cd
 function apply.put_status_chilled(event, pri, snd, dmg)
     if pri.id ~= "drumar" then return end
     if event == "attacker_hits" and snd then

@@ -5,6 +5,7 @@ local IMAGE_FEAR_OF_LOVE = "menu/fear_of_love.png"
 
 -- Customs status
 ---@param unit unit
+---@return WMLTag?
 local function show_special_skill_cd(unit)
     ---@type actif_skill?
     local skill_data = Conf.heroes.actif_skills[unit.id]
@@ -21,6 +22,7 @@ local function show_special_skill_cd(unit)
 end
 
 ---@param unit unit
+---@return WMLTag?
 local function show_fear_of_love(unit)
     local tooltip
     if unit.id == "sword_spirit" and unit:ability("fearlove_self") then
@@ -35,27 +37,35 @@ local function show_fear_of_love(unit)
     return T.element { image = IMAGE_FEAR_OF_LOVE, tooltip = tooltip }
 end
 
+---@param unit unit
+---@return WMLTag?
+local function show_chilled(unit)
+    if not (unit.status.chilled) then return end
+
+    local lvl, cd = unit:custom_variables().status_chilled_lvl,
+        unit:custom_variables().status_chilled_cd
+    local bonus_dmg = Conf.special_skills.drumar.bonus_cold_mistress(lvl - 1)[1]
+    return T.element {
+        image = "menu/chilled.png",
+        tooltip = Fmt(
+            _ "chilled: This unit is infoged by Cold Mistress. It will take <span color='%s'>%d%%</span> bonus damage when hit by cold attacks. " ..
+            "<span style='italic'>Last %d turn(s).</span>",
+            COLOR_CHILLED, bonus_dmg, cd)
+    }
+end
+
+
 local old_unit_status = wesnoth.interface.game_display.unit_status
 function wesnoth.interface.game_display.unit_status()
     local u = wesnoth.interface.get_displayed_unit()
     if not u then return {} end
 
     local s = old_unit_status()
-    if u.status.chilled then
-        local lvl, cd = u:custom_variables().status_chilled_lvl,
-            u:custom_variables().status_chilled_cd
-        local bonus_dmg = Conf.special_skills.drumar
-            .bonus_cold_mistress(lvl - 1)[1]
-        table.insert(s, {
-            T.element {
-                image = "menu/chilled.png",
-                tooltip = Fmt(
-                    _ "chilled: This unit is infoged by Cold Mistress. It will take <span color='%s'>%d%%</span> bonus damage when hit by cold attacks. " ..
-                    "<span style='italic'>Last %d turn(s).</span>",
-                    COLOR_CHILLED, bonus_dmg, cd)
-            }
-        })
-    end
+
+    local ch = show_chilled(u)
+    if ch then table.insert(s, ch) end
+
+
     if u.status._zone_slowed then
         table.insert(s, {
             "element", {
@@ -64,11 +74,11 @@ function wesnoth.interface.game_display.unit_status()
         }
         })
     end
-    local el = show_fear_of_love(u)
-    if el then table.insert(s, el) end
+    local fl = show_fear_of_love(u)
+    if fl then table.insert(s, fl) end
 
-    local special_skill = show_special_skill_cd(u)
-    if special_skill then table.insert(s, special_skill) end
+    local el = show_special_skill_cd(u)
+    if el then table.insert(s, el) end
 
     return s
 end
