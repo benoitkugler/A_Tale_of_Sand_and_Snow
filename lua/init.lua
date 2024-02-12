@@ -54,6 +54,9 @@ wesnoth.require "ui/objects"
 wesnoth.require "ui/menus"
 wesnoth.require "standard_event" -- event setup
 
+--- always build menus
+UI.setup_menus()
+
 function Set_hp()
     for __, u in pairs(wesnoth.units.find_on_map({ side = 2 })) do u.hitpoints = 1 end
 end

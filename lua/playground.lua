@@ -8,8 +8,6 @@ ES = {
 
 InitVariables()
 
-UI.setup_menus()
-
 local function setup_units()
     for __, cfg in ipairs({
         { id = "brinx",  type = "brinx4",  name = "Brinx" },

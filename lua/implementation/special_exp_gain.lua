@@ -33,12 +33,15 @@ end
 
 -- Functions called only when the given hero is fighting
 
+-- tag set to true if target Bunshop attack has full hitpoints
+local bunshop_atk_unit_full = false
+
 -- ---------------------- Bunshop ----------------------
 ---@param atk unit
 ---@param def unit
 function exp_functions.bunshop.combat(atk, def)
     if atk.id == "bunshop" then
-        Bunshop_atk_unit_full = (def.hitpoints == def.max_hitpoints) -- Storing for event kill
+        bunshop_atk_unit_full = (def.hitpoints == def.max_hitpoints) -- Storing for event kill
 
         local c = wesnoth.map.rotate_right_around_center({ x = atk.x, y = atk.y },
             { x = def.x, y = def.y }, 3) -- behind defender
@@ -52,7 +55,7 @@ end
 
 function exp_functions.bunshop.kill(kil, dyi)
     if kil.id == "bunshop" then
-        if Bunshop_atk_unit_full then
+        if bunshop_atk_unit_full then
             kil:custom_variables().xp = kil:custom_variables().xp + dyi.level * V.bunshop.ONE_SHOT -- one shot
         end
     end

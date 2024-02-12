@@ -6,7 +6,8 @@ local colors = {
     bunshop = "#FFFA80",
     xavier = "#a99508",
     sword_spirit = "#A00E27",
-    morgane = "#ddebe0"
+    morgane = "#ddebe0",
+    mark = "#f5dd42"
 }
 
 Conf.heroes = {}

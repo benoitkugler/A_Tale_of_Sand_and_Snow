@@ -33,12 +33,6 @@ end
 ---@type game_event_options[]
 local Standard_event = {
     {
-        id = "prestart_menus",
-        first_time_only = false,
-        name = "preload",
-        action = UI.setup_menus,
-    },
-    {
         id = "new_turn",
         first_time_only = false,
         name = "side_1_turn",

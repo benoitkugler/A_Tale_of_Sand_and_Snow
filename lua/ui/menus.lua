@@ -23,7 +23,7 @@ end
 local function set_menu_item(config)
     wml.fire("set_menu_item", config)
     -- keep in memory which menu are shown to avoid warnings
-    local menus = CustomVariables().showed_menus
+    local menus = CustomVariables().showed_menus or {}
     menus[config.id] = true
     CustomVariables().showed_menus = menus
 end

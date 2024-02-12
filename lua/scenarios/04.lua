@@ -7,6 +7,7 @@ local function on_prestart()
     -- hide vranken
     local vr = wesnoth.units.get("vranken")
     vr:extract()
+
     local xavier = wesnoth.units.create({
         id = "xavier",
         type = "xavier1",
@@ -17,7 +18,6 @@ local function on_prestart()
     xavier:to_map(vr.x, vr.y)
 
     vr.canrecruit = false
-    vr:to_recall()
 
     CustomVariables().player_heroes = "morgane, xavier"
 
