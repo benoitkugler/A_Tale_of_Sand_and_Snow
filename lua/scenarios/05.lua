@@ -79,30 +79,25 @@ ES = {
     atk = function() end,
     kill = function()
         local dying = PrimaryUnit()
-        if dying.id == "ennemy_leader" then
-            -- Message("xavier",
-            --     _ "Haha ! We defeated them ! You dont need to be scared anymore, Morgane !")
-            -- Message("morgane",
-            --     _ "Was I ? ... <i>(Turning back to Bunsop)</i> So, who are you ?")
-            -- Message("xavier",
-            --     _ "You're talking to a dog ? Humpf... Well, goodbye then, I need to hurry not to miss the departure of the Vranken Xaintrailles company !")
-            -- MoveTo("xavier", 14, 2)
-            -- wesnoth.units.get("xavier"):to_recall()
-            -- local mr = wesnoth.units.get("morgane")
-            -- MoveTo("bunshop", wesnoth.paths.find_vacant_hex(mr.x, mr.y))
-            -- Message("morgane",
-            --     _ "<i>(Stroking the dog)</i> Argh, to think I'm assigned to the same squad as that braggart...")
-            -- Victory()
+        if dying.id == "ennemy_leader1" or dying.id == "ennemy_leader2" then
+            -- check if one leader is already dead
+            if not (wesnoth.units.get("ennemy_leader1") and wesnoth.units.get("ennemy_leader1")) then
+                Message(dying.id, _ "Herk !")
+                Message("vranken", _ "Nice jobs soldiers, the Ark is ours !")
+                Message("rymor", _ "Congrats to the youngsters for your first fight under the Vranken company !")
+                Victory()
+            else
+                Message(dying.id, _ "Hurgh, these youngsters are more useful then expected..")
+            end
         end
     end
 }
 
 ---@type game_event_options[]
 local scenario_events = {
-    { id = "s5_prestart",     name = "prestart", action = on_prestart },
-    { id = "s5_turn1",        name = "turn_1",   action = on_turn1 },
-    { id = "s5_click_xavier", name = "select",   action = on_presente_mark, filter = { T.filter { id = "mark" } } },
-    -- { id = "s5_turn2",        name = "turn_2",   action = on_turn2 }
+    { id = "s5_prestart",   name = "prestart", action = on_prestart },
+    { id = "s5_turn1",      name = "turn_1",   action = on_turn1 },
+    { id = "s5_click_mark", name = "select",   action = on_presente_mark, filter = { T.filter { id = "mark" } } },
 }
 
 for __, v in pairs(scenario_events) do

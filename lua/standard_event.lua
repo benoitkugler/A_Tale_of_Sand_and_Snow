@@ -23,6 +23,12 @@ local function on_kill()
     elseif dying.id == "morgane" then
         Message("morgane",
             _ "My body dies ? ... Nooo ... My spirit vanishes as well !!")
+    elseif dying.id == "mark" then
+        Message("mark", _ "Argh ... It was too much, even for me...")
+    elseif dying.id == "brinx" then
+        Message("brinx", _ "No ! I'm not done with my revenge yet !")
+    elseif dying.id == "xavier" then
+        Message("xavier", _ "What ? My tactics are not enough ?")
     else
         return
     end
