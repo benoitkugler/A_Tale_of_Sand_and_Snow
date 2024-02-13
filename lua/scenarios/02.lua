@@ -69,7 +69,8 @@ end
 local function on_prestart()
     -- hide brinx and introduce vranken
     local brinx = wesnoth.units.get("brinx")
-    brinx:extract()
+    brinx.canrecruit = false
+    brinx:to_recall()
 
     local vranken = wesnoth.units.create({
         id = "vranken",
@@ -78,14 +79,8 @@ local function on_prestart()
         canrecruit = true,
     })
     vranken:init_hero()
-    vranken:to_map(brinx.x, brinx.y)
+    vranken:to_map(wesnoth.sides.get(1).starting_location)
 
-    brinx.canrecruit = false
-    brinx:to_recall()
-
-    -- local newu = brinx.__cfg
-    -- newu["canrecruit"] = nil
-    -- wesnoth.put_recall_unit(newu)
 
     -- set the proper heroes for this scenario
     CustomVariables().player_heroes = "vranken,bunshop,drumar,rymor"

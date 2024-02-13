@@ -1,19 +1,25 @@
 local function on_prestart()
-    -- TODO: properly set up vranken
+    -- switch back xavier for vranken as leader
+    local xavier = wesnoth.units.get("xavier")
+    xavier.canrecruit = false
+    xavier:to_recall()
 
-    -- init mark and recall all heroes
-    -- local vr = wesnoth.units.get("vranken")
+    local vranken = wesnoth.units.get_recall("vranken")
+    vranken.canrecruit = true
+    vranken:to_map(wesnoth.sides.get(1).starting_location)
 
-    -- local mark = wesnoth.units.create({
-    --     id = "mark",
-    --     type = "mark1",
-    --     name = "Mârk",
-    -- })
-    -- mark:init_hero()
-    -- mark:to_map(wesnoth.paths.find_vacant_hex(vr.x, vr.y))
-
+    -- init mark
+    local mark = wesnoth.units.create({
+        id = "mark",
+        type = "mark1",
+        name = "Mârk",
+    })
+    mark:init_hero()
+    mark:to_recall()
 
     CustomVariables().player_heroes = "vranken,bunshop,drumar,rymor,morgane,xavier,sword_spirit"
+
+    wml.fire("label", { x = 38, y = 32, text = _ "White Ark" })
 end
 
 local function on_presente_mark()
@@ -31,40 +37,41 @@ local function on_presente_mark()
 end
 
 local function on_turn1()
-    -- init mark and recall all heroes
     local vr = wesnoth.units.get("vranken")
+    local rymor = wesnoth.units.get_recall("rymor")
 
-    local mark = wesnoth.units.create({
-        id = "mark",
-        type = "mark1",
-        name = "Mârk",
-    })
-    mark:init_hero()
-    mark:to_map(wesnoth.paths.find_vacant_hex(vr.x, vr.y))
+    -- wesnoth.interface.add_chat_message(wesnoth.paths.find_vacant_hex(vr.x, vr.y))
+    rymor:to_map(wesnoth.paths.find_vacant_hex(vr.x, vr.y))
 
+    Message("rymor", _ "See ? Some bandits are in our way...")
+
+    Message("ennemy_leader1", _ "Revenge for our fallen brothers !")
+    Message("ennemy_leader2", _ "Hurgh !")
+
+    Message("vranken",
+        _ "(To Rymor) Hum, I don't like being delayed during such an important expedition, but well .. We have to free the path to the White Ark for the whole army !")
+    Message("rymor", _ "(Grinning) Some action is always good for our cadets. The sooner they fight, the better !")
+    Message("vranken", _ "To arms, soldiers !")
+    Message("ennemy_leader1", _ "Kill them all !")
+
+    -- recall all heroes, expect brinx
     for __, u in ipairs(wesnoth.units.find_on_recall({ role = "hero" })) do
-        u:to_map(wesnoth.paths.find_vacant_hex(vr.x, vr.y))
+        if u.id ~= "brinx" then
+            u:to_map(wesnoth.paths.find_vacant_hex(vr.x, vr.y))
+        end
     end
 
-    -- local ennemy_leader = wesnoth.units.find_on_map({ side = 2, canrecruit = true })[1].id or ""
-    -- Message(ennemy_leader, _ "Haha, we are back ! Tought we would give up that easily ?")
-    -- Message("xavier",
-    --     "Huhu, they have surrounded us.. and they have called big brother...")
-    -- Message("xavier",
-    --     "(To Morgane) Stay behind me, I'll get rid of these garnments !")
 
-    -- wml.fire("objectives", {
-    --     { "objective", { description = _ "Defeat ennemy leader.", condition = "win" } },
-    --     { "objective", { description = _ "Death of Xavier.", condition = "lose" } },
-    --     { "objective", { description = _ "Death of Morgane.", condition = "lose" } },
-    --     { "objective", { description = _ "Turns run out.", condition = "lose" } },
-    --     { "note",      { description = _ "No gold carry over next scenario." } },
-    --     { "note", {
-    --         description = _ "<span style='italic'>Hint: Xavier is showing off. " ..
-    --             "Take your time, as it might be more difficult than he will admit.</span>"
-    --     }
-    --     }
-    -- })
+    wml.fire("objectives", {
+        { "objective", { description = _ "Defeat ennemy leaders.", condition = "win" } },
+        { "objective", { description = _ "Death of any of your heroes.", condition = "lose" } },
+        { "note",      { description = _ "No gold carry over next scenario." } },
+        { "note", {
+            description = _ "<span style='italic'>Hint:This is your first battle, and your are still quite weak. " ..
+                "Recruit some expendable units and train your heroes as well as possible.</span>"
+        }
+        }
+    })
 end
 
 ---@type ScenarioEvents

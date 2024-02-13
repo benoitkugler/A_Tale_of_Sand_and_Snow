@@ -26,6 +26,13 @@ function wesnoth.units.init_hero(unit)
     unit:custom_variables().special_skills = {}
     unit:custom_variables().xp = 0
     unit.role = "hero"
+    unit:add_modification("trait", {
+        id = "hero_overlay",
+        T.effect {
+            apply_to = "overlay",
+            add = "misc/leader-expendable.png"
+        }
+    })
 end
 
 function Conf.heroes.get_color(unit_id) return colors[unit_id] or "#000000" end
