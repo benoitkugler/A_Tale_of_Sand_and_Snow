@@ -38,5 +38,8 @@ Conf.special_xp_gain = {
         ATK = 10, -- * def.level
         DEF = 5,  -- + atk.level
         KILL = 20 -- * dying.level
+    },
+    porthos = {
+        DMG_TAKEN_RATIO = 0.1 -- * damage taken
     }
 }

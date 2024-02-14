@@ -359,6 +359,7 @@ function AB.union_debuf()
     end
 
     ANIM.quake()
+
     local list_abilities = wml.get_child(target.__cfg, "abilities") or {}
     target:add_modification("trait", {
         T.effect { apply_to = "remove_ability", T.abilities(list_abilities) },

@@ -20,6 +20,7 @@ local function _process_amlas(amlas_table, unit)
 end
 
 -- Add bonus levels based on AMLAs the unit currently has
+---@param unit unit
 function AMLA.update_lvl(unit)
     local base_lvl = wesnoth.unit_types[unit.type].level
     for amla in wml.child_range(wml.get_child(unit.__cfg, "modifications") or {},

@@ -52,15 +52,16 @@ end
 ---@class special
 ---@field _level integer?
 
--- Returns the special with `id_special` on the weapon.
----@param id_special string
+---Returns the special with `id_special` on the weapon.
+---If id_special is nil, the any id is matched
+---@param id_special string?
 ---@param special_name? string # default to customName
 ---@return special?
 function weapon_mt:special(id_special, special_name)
     special_name = special_name or "customName"
     local specials = wml.get_child(self, "specials") or {}
     for spe in wml.child_range(specials, special_name) do
-        if spe["id"] == id_special then return spe --[[@as special]] end
+        if id_special == nil or spe["id"] == id_special then return spe --[[@as special]] end
     end
     return nil
 end

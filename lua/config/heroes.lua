@@ -7,7 +7,8 @@ local colors = {
     xavier = "#a99508",
     sword_spirit = "#A00E27",
     morgane = "#ddebe0",
-    mark = "#f5dd42"
+    mark = "#f5dd42",
+    porthos = "#f542e9",
 }
 
 Conf.heroes = {}

@@ -21,6 +21,7 @@ local function setup_units()
         { id = "morgane", type = "morgane3", name = "Morgane" },
         { id = "xavier",  type = "xavier4",  name = "Xavier" },
         { id = "mark",    type = "mark1",    name = "Mark" },
+        { id = "porthos", type = "porthos1", name = "Porthos" },
     }) do
         local hero = wesnoth.units.create(cfg)
         hero:to_map(wesnoth.paths.find_vacant_hex(14, 16, hero))
@@ -28,16 +29,15 @@ local function setup_units()
 
     -- init variables and activate advancements
     for __, id in ipairs({ "vranken", "brinx", "drumar", "mark",
-        "rymor", "bunshop", "sword_spirit", "morgane", "xavier",
+        "rymor", "bunshop", "sword_spirit", "morgane", "xavier", "porthos",
     }) do
         local hero = wesnoth.units.get(id)
         hero:init_hero()
-        hero.level = 10 -- unlock all skills
         hero:custom_variables().xp = 1000
     end
 
     for __, loc in ipairs({ { x = 9, y = 17 }, { x = 10, y = 18 }, { x = 9, y = 18 } }) do
-        wesnoth.units.to_map({ type = "Dune Blademaster_muspell", side = 2 }, loc)
+        wesnoth.units.to_map({ type = "Dune Blademaster_muspell", side = 2, moves = 0 }, loc)
     end
 end
 
@@ -45,8 +45,6 @@ wesnoth.game_events.add({
     id = "unit_setup", name = "prestart", action = setup_units
 })
 
--- wml.fire("set_menu_item", { id = "setup_units", description = "Create heroes" })
--- wesnoth.game_events.add({ name = "menu item setup_units", action = setup_units })
 
 wml.fire("set_menu_item", {
     id = "advance_unit",

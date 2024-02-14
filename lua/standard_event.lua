@@ -58,13 +58,17 @@ local Standard_event = {
         id = "attacker_hits",
         first_time_only = false,
         name = "attacker hits",
-        action = EC.on_combat_event
+        action = function()
+            EC.on_combat_event(); EXP.on_attacker_hits()
+        end,
     },
     {
         id = "defender_hits",
         first_time_only = false,
         name = "defender hits",
-        action = EC.on_combat_event
+        action = function()
+            EC.on_combat_event(); EXP.on_defender_hits()
+        end,
     },
     {
         id = "attack_end",

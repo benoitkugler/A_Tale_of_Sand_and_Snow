@@ -1,18 +1,21 @@
 -- Track special experience gains
 local V = Conf.special_xp_gain -- shortcut
 
-local exp_functions = {
-    sword_spirit = {},
-    brinx = {},
-    drumar = {},
-    rymor = {},
-    bunshop = {},
-    global = {},
-    xavier = {}
+-- Functions called only when the given hero is fighting
+---@type table<string, fun(attacker:unit, defender:unit)>
+local on_attack_funcs = {
+    -- sword_spirit = {},
+    -- brinx = {},
+    -- drumar = {},
+    -- rymor = {},
+    -- bunshop = {},
+    -- xavier = {},
 }
 
 -- Funtion called on every unit fighting
-function exp_functions.global.combat(atk, def)
+---@param atk unit
+---@param def unit
+local function on_attack_common(atk, def)
     local rymor = wesnoth.units.get("rymor")
     if rymor and rymor:matches { side = def.side, T.filter_adjacent { id = def.id } } then -- defender is ally and next to rymor
         rymor:custom_variables().xp = rymor:custom_variables().xp + atk.level +
@@ -31,15 +34,12 @@ function exp_functions.global.combat(atk, def)
     end
 end
 
--- Functions called only when the given hero is fighting
 
 -- tag set to true if target Bunshop attack has full hitpoints
 local bunshop_atk_unit_full = false
 
 -- ---------------------- Bunshop ----------------------
----@param atk unit
----@param def unit
-function exp_functions.bunshop.combat(atk, def)
+function on_attack_funcs.bunshop(atk, def)
     if atk.id == "bunshop" then
         bunshop_atk_unit_full = (def.hitpoints == def.max_hitpoints) -- Storing for event kill
 
@@ -53,28 +53,28 @@ function exp_functions.bunshop.combat(atk, def)
     end
 end
 
-function exp_functions.bunshop.kill(kil, dyi)
-    if kil.id == "bunshop" then
-        if bunshop_atk_unit_full then
-            kil:custom_variables().xp = kil:custom_variables().xp + dyi.level * V.bunshop.ONE_SHOT -- one shot
-        end
+---@param kil unit
+---@param dyi unit
+local function bunshop_on_kill(kil, dyi)
+    if bunshop_atk_unit_full then
+        kil:custom_variables().xp = kil:custom_variables().xp + dyi.level * V.bunshop.ONE_SHOT -- one shot
     end
 end
 
 -- ----------------------- Rymor -----------------------
-function exp_functions.rymor.combat(atk, def)
+function on_attack_funcs.rymor(atk, def)
     if def.id == "rymor" then
         def:custom_variables().xp = def:custom_variables().xp + atk.level * V.rymor.DEF -- defense
     end
 end
 
 -- ------------------ Sword spirit ------------------
-function exp_functions.sword_spirit.adv(__)
+local function sword_spirit_on_adv()
     local u = wesnoth.units.get("vranken")
     u:custom_variables().xp = u:custom_variables().xp + V.sword_spirit.LEVEL_UP -- sword_spirit lvl up
 end
 
-function exp_functions.sword_spirit.combat(atk, def)
+function on_attack_funcs.sword_spirit(atk, def)
     if atk.id == "sword_spirit" then
         local u = wesnoth.units.get("vranken")
         u:custom_variables().xp = u:custom_variables().xp + V.sword_spirit.ATK * def.level -- attaque
@@ -86,15 +86,13 @@ end
 
 ---@param kil unit
 ---@param dyi unit
-function exp_functions.sword_spirit.kill(kil, dyi)
-    if kil.id == "sword_spirit" then
-        local u = wesnoth.units.get("vranken")
-        u:custom_variables().xp = u:custom_variables().xp + dyi.level * V.sword_spirit.KILL -- sword_spirit kills
-    end
+local function sword_spirit_on_kill(kil, dyi)
+    local u = wesnoth.units.get("vranken")
+    u:custom_variables().xp = u:custom_variables().xp + dyi.level * V.sword_spirit.KILL -- sword_spirit kills
 end
 
 -- -------------------- Brinx --------------------
-function exp_functions.brinx.combat(atk, def)
+function on_attack_funcs.brinx(atk, def)
     if atk.race == "muspell" and def.id == "brinx" then
         def:custom_variables().xp = def:custom_variables().xp + atk.level + V.brinx
             .DEF_MUSPELL -- defense contre muspell
@@ -104,21 +102,22 @@ function exp_functions.brinx.combat(atk, def)
     end
 end
 
-function exp_functions.brinx.kill(kil, dyi)
-    if kil.id == "brinx" and dyi.race == "muspell" then
+---@param kil unit
+---@param dyi unit
+local function brinx_on_kill(kil, dyi)
+    if dyi.race == "muspell" then
         kil:custom_variables().xp = kil:custom_variables().xp + dyi.level * V.brinx.KILL_MUSPELL -- brinx kills muspell
     end
 end
 
 -- -------------------- Drumar --------------------
-function exp_functions.drumar.combat(atk, def)
+function on_attack_funcs.drumar(atk, def)
     if def.id == "drumar" then
         local weapon = SWeapon()
         if weapon.type == "cold" then
             def:custom_variables().xp = def:custom_variables().xp + atk.level + V.drumar.DEF_COLD -- defense cold
         end
-        if wml.get_child(weapon, "specials") ~= nil and
-            wml.get_child(wml.get_child(weapon, "specials") or {}, "slow") ~= nil then
+        if weapon:special(nil, "slow") then
             def:custom_variables().xp = def:custom_variables().xp +
                 Round(atk.level * V.drumar.DEF_SLOW) -- defense slow
         end
@@ -128,12 +127,11 @@ function exp_functions.drumar.combat(atk, def)
             atk:custom_variables().xp = atk:custom_variables().xp + def.level + V.drumar.ATK_COLD
             -- attaque cold
         end
-        if wml.get_child(wml.get_child(weapon, "specials") or {}, "slow") ~= nil then
+        if weapon:special(nil, "slow") then
             atk:custom_variables().xp = atk:custom_variables().xp +
                 Round(def.level * V.drumar.ATK_SLOW) -- attaque slow
         end
-        if wml.get_child(wml.get_child(weapon, "specials") or {}, "customName", "snare") ~=
-            nil then
+        if weapon:special("snare") then
             atk:custom_variables().xp = atk:custom_variables().xp +
                 Round(def.level * V.drumar.ATK_SNARE) -- attaque snare
         end
@@ -145,7 +143,7 @@ function exp_functions.drumar.combat(atk, def)
 end
 
 -- -------------------- Xavier --------------------
-function exp_functions.xavier.combat(atk, def)
+function on_attack_funcs.xavier(atk, def)
     if atk.id == "xavier" then
         local active_formations, __ = AB.active_xavier_formations(atk)
         local fY, fI = active_formations.Y, active_formations.I
@@ -166,36 +164,65 @@ function exp_functions.xavier.combat(atk, def)
     end
 end
 
+-- -------------------- Porthos --------------------
+
+
+---@param porthos unit
+local function porthos_on_hit(porthos)
+    local dmg = wesnoth.current.event_context.damage_inflicted
+    local xp_gain = Round(Conf.special_xp_gain.porthos.DMG_TAKEN_RATIO * dmg)
+    porthos:custom_variables().xp = porthos:custom_variables().xp + xp_gain
+end
+
+
+
 -- Top level
 local events = {}
 
 function events.on_advance()
     local unit = PrimaryUnit()
-    if exp_functions[unit.id] and exp_functions[unit.id].adv then
-        exp_functions[unit.id].adv(unit)
+    if unit.id == "sword_spirit" then
+        sword_spirit_on_adv()
     end
 end
 
 function events.on_attack()
     local atker = PrimaryUnit()
     local defer = SecondaryUnit()
-    if exp_functions[atker.id] and exp_functions[atker.id].combat then
-        exp_functions[atker.id].combat(atker, defer)
+    if on_attack_funcs[atker.id] then
+        on_attack_funcs[atker.id](atker, defer)
+    elseif on_attack_funcs[defer.id] then
+        on_attack_funcs[defer.id](atker, defer)
     end
-    if exp_functions[defer.id] and exp_functions[defer.id].combat then
-        exp_functions[defer.id].combat(atker, defer)
-    end
-    exp_functions.global.combat(atker, defer)
+
+    on_attack_common(atker, defer)
 end
 
 function events.on_kill()
     local dying = PrimaryUnit()
     local killer = SecondaryUnit()
-    if exp_functions[dying.id] and exp_functions[dying.id].kill then
-        exp_functions[dying.id].kill(killer, dying)
+    if killer.id == "sword_spirit" then
+        sword_spirit_on_kill(killer, dying)
+    elseif killer.id == "bunshop" then
+        bunshop_on_kill(killer, dying)
+    elseif killer.id == "brinx" then
+        brinx_on_kill(killer, dying)
     end
-    if exp_functions[killer.id] and exp_functions[killer.id].kill then
-        exp_functions[killer.id].kill(killer, dying)
+end
+
+function events.on_attacker_hits()
+    local atker = PrimaryUnit()
+    local defer = SecondaryUnit()
+    if defer.id == "porthos" then
+        porthos_on_hit(defer)
+    end
+end
+
+function events.on_defender_hits()
+    local atker = PrimaryUnit()
+    local defer = SecondaryUnit()
+    if atker.id == "porthos" then
+        porthos_on_hit(atker)
     end
 end
 

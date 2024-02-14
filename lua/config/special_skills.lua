@@ -26,6 +26,7 @@ Conf.special_skills = {}
 -- TODO: A implémenter
 Conf.special_skills.bunshop = {}
 Conf.special_skills.rymor = {}
+Conf.special_skills.porthos = {}
 
 Conf.special_skills.mark = {}
 Conf.special_skills.sword_spirit = {}
