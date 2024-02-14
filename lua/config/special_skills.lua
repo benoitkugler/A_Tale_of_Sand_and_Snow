@@ -324,18 +324,18 @@ Conf.special_skills.porthos = {
         "In fact, Porthos is eager to protect his allies by taking the focus of ennemy fire." ..
         "\nHe will earn experience every time he is <span  font_weight ='bold' >directly hit</span> in combat.",
     help_ratios = Fmt(_ "(<span weight ='bold' >+ %.1f%%</span> of the damage taken)",
-        V.porthos.DMG_TAKEN_RATIO),
+        V.porthos.DMG_TAKEN_RATIO * 100),
     ---return the melee and distant ratios
-    ---@type fun(lvl:integer): {[1]: number, [2]:number}
-    sacrifice = function(lvl) return lvl == 3 and { 0.6, 0.3 } or { 0.3 + lvl * 0.1, 0 } end,
+    ---@type fun(lvl:integer): {[1]: integer, [2]:integer}
+    sacrifice = function(lvl) return lvl == 3 and { 60, 30 } or { 30 + lvl * 10, 0 } end,
     {
-        img = "icons/boots_elven.png",
-        max_lvl = 2,
-        name = "moves",
+        img = "attacks/transfusion.png",
+        max_lvl = 3,
+        name = "sacrifice",
         color = "#f36e0a",
-        name_aff = _ "Faster : ",
-        require_lvl = 3,
-        desc = _ "Morgane moves faster on all terrains.",
-        costs = { 50, 20 }
+        name_aff = _ "Sacrifice : ",
+        require_lvl = 4,
+        desc = _ "Porthos shares %s%% of the damage inflicted to adjacent allies (%s%% at 2 tiles).",
+        costs = { 70, 30, 30 }
     },
 }

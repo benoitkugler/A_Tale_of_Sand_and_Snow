@@ -1,6 +1,7 @@
 local V = {                -- numerical values
     LONG_HEAL_RATIO = 0.8, -- * lvl / distance
-    BETTER_HEAL = 10       -- bonus per level
+    BETTER_HEAL = 10,      -- bonus per level
+    TRANSFUSION = 4,       -- * lvl
 }
 Conf.amlas.morgane = {
     _default_border = "#ddebe0",
@@ -177,7 +178,7 @@ Conf.amlas.morgane = {
         -- _color = {211, 224, 238},
         require_amla = "fast_lightbeam",
         image = "attacks/transfusion.png",
-        max_times = 2,
+        max_times = 3,
         always_display = 1,
         description = _ "On hit, allies adjacents to the target are healed.",
         T.effect {
@@ -198,9 +199,10 @@ Conf.amlas.morgane = {
                     T.customName {
                         id = "transfusion",
                         _level = next_lvl,
+                        value = next_lvl * V.TRANSFUSION,
                         description = Fmt(
                             _ "On each hit, allies adjacent to the target are healed by %d.",
-                            next_lvl * 3),
+                            next_lvl * V.TRANSFUSION),
                         active_on = "offense",
                         cumulative = false,
                         name = "transfusion " .. ROMANS[next_lvl]
@@ -257,7 +259,7 @@ Conf.amlas.morgane = {
         table.unpack(StandardAmlaHeal(12))
     },
     {
-        require_amla = "deflect, long_heal2",
+        require_amla = "deflect, long_heal2, transfusion,transfusion,transfusion",
         max_times = -1,
         description = _ " Whow, you've completed all the tree. Bravo !",
         id = "default",

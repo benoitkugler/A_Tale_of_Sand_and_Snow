@@ -317,13 +317,12 @@ end
 
 function apply.transfusion(event, pri, snd, _)
     if event == "attacker_hits" then
-        local lvl = PWeapon():special_level("transfusion")
-        if not lvl then return end
-        local heal = lvl * 3
+        local spe = PWeapon():special("transfusion")
+        if not spe then return end
         wml.fire("heal_unit", {
             T.filter { T.filter_adjacent { id = snd.id }, side = pri.side },
             T.filter_second { id = pri.id },
-            amount = heal,
+            amount = spe.value,
             animate = true
         })
     end
@@ -487,15 +486,15 @@ function apply.sacrifice(event, primary, secondary, dmg_dealt)
     if secondary.id == "porthos" then return end -- do not self apply the ability
     local porthos = wesnoth.units.get("porthos")
     if not porthos then return end
-
+    if wesnoth.sides.is_enemy(porthos.side, secondary.side) then return end
 
     --- is porthos in range ?
     local level = porthos:ability_level("sacrifice")
     local d = wesnoth.map.distance_between(porthos, secondary)
     if (not level) or d >= 3 then return end
 
-    local ratio = Conf.special_skills.porthos.sacrifice(level)[d]
-    local to_heal = Round(dmg_dealt * ratio)
+    local percent = Conf.special_skills.porthos.sacrifice(level)[d]
+    local to_heal = Round(dmg_dealt * percent / 100)
 
     --- only trigger if the unit is still alive after being healed
     if secondary.hitpoints + to_heal <= 0 then return end

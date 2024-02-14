@@ -51,6 +51,7 @@ end
 
 ---@class special
 ---@field _level integer?
+---@field value integer?
 
 ---Returns the special with `id_special` on the weapon.
 ---If id_special is nil, the any id is matched
