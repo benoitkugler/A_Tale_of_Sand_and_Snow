@@ -26,7 +26,8 @@ Conf.special_skills = {}
 -- TODO: A implémenter
 Conf.special_skills.bunshop = {}
 Conf.special_skills.rymor = {}
-Conf.special_skills.porthos = {}
+
+
 
 Conf.special_skills.mark = {}
 Conf.special_skills.sword_spirit = {}
@@ -316,4 +317,25 @@ Every time Morgane or one of her allies fight into the Limbes, she earns points 
     },
     ---@type fun(lvl:integer): integer
     limbes_defense = function(lvl) return lvl * 7 end
+}
+
+Conf.special_skills.porthos = {
+    help_des = _ "Battlefield has hardened Porthos beyond reason. Taking damage doesn't bother him anymore. " ..
+        "In fact, Porthos is eager to protect his allies by taking the focus of ennemy fire." ..
+        "\nHe will earn experience every time he is <span  font_weight ='bold' >directly hit</span> in combat.",
+    help_ratios = Fmt(_ "(<span weight ='bold' >+ %.1f%%</span> of the damage taken)",
+        V.porthos.DMG_TAKEN_RATIO),
+    ---return the melee and distant ratios
+    ---@type fun(lvl:integer): {[1]: number, [2]:number}
+    sacrifice = function(lvl) return lvl == 3 and { 0.6, 0.3 } or { 0.3 + lvl * 0.1, 0 } end,
+    {
+        img = "icons/boots_elven.png",
+        max_lvl = 2,
+        name = "moves",
+        color = "#f36e0a",
+        name_aff = _ "Faster : ",
+        require_lvl = 3,
+        desc = _ "Morgane moves faster on all terrains.",
+        costs = { 50, 20 }
+    },
 }

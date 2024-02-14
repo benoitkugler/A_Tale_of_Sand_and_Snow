@@ -18,6 +18,7 @@ local delay = 0
 
 local keys
 
+---Called with events: attack, attacker_hits, defender_hits, attack_end, die
 function EC.on_combat_event()
     local dmg_dealt = wesnoth.current.event_context.damage_inflicted
     delay = 0
@@ -129,7 +130,7 @@ function apply.fresh_blood_musp(event, pri, snd, dmg)
     if event == "die" then
         local lvl = snd:ability_level("fresh_blood_musp")
         if not lvl then return end
-        if pri.__cfg.race == "muspell" then
+        if pri.race == "muspell" then
             wml.fire("heal_unit", {
                 animate = (snd.hitpoints ~= snd.max_hitpoints),
                 T.filter { id = snd.id },
@@ -290,7 +291,7 @@ function apply.weaker_slow(event, pri, snd, dmg)
     if event == "attacker_hits" then
         local lvl = PWeapon():special_level("weaker_slow")
         if lvl then
-            local value = 5 * lvl  -- atker hit
+            local value = 5 * lvl -- atker hit
             wesnoth.units.add_modification(snd, "object", {
                 duration = "turn_end",
                 T.effect {
@@ -477,6 +478,40 @@ function endturn.status_shielded()
         v.status.shielded = nil
         v:custom_variables().status_shielded_hp = nil
     end
+end
+
+-- ------------------------------- Sacrifice (Porthos) -------------------------------
+
+function apply.sacrifice(event, primary, secondary, dmg_dealt)
+    if event ~= "attacker_hits" then return end  -- only active in defense
+    if secondary.id == "porthos" then return end -- do not self apply the ability
+    local porthos = wesnoth.units.get("porthos")
+    if not porthos then return end
+
+
+    --- is porthos in range ?
+    local level = porthos:ability_level("sacrifice")
+    local d = wesnoth.map.distance_between(porthos, secondary)
+    if (not level) or d >= 3 then return end
+
+    local ratio = Conf.special_skills.porthos.sacrifice(level)[d]
+    local to_heal = Round(dmg_dealt * ratio)
+
+    --- only trigger if the unit is still alive after being healed
+    if secondary.hitpoints + to_heal <= 0 then return end
+
+    -- mix the damages
+    wml.fire("heal_unit", {
+        T.filter { id = secondary.id },
+        animate = true,
+        amount = to_heal
+    })
+    wml.fire("harm_unit", {
+        T.filter { id = porthos.id },
+        amount = to_heal,
+        animate = true,
+        fire_event = true,
+    })
 end
 
 keys = table.keys(apply)

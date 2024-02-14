@@ -324,6 +324,9 @@ local function update_sword_spirit_auras()
     end
 end
 
+
+
+
 -- --- Special skills (actual action, menu setup is done beforehand) ---
 
 -- Vranken

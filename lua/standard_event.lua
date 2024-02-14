@@ -16,7 +16,7 @@ local function on_kill()
     elseif dying.id == "sword_spirit" then
         Message("sword_spirit", _ "...")
         Message("vranken", _ "He's grabbing me in the Death Lands ! Nooo...")
-        wesnoth.units.extract(wesnoth.units.find_on_map { id = "vranken" }[1])
+        wesnoth.units.get("vranken"):extract()
     elseif dying.id == "vranken" then
         Message("vranken", _ "Noo... I still have so much to do...")
         Message("rymor", _ "No ! Vranken ! Don't let me alone, old friend !")
@@ -29,6 +29,8 @@ local function on_kill()
         Message("brinx", _ "No ! I'm not done with my revenge yet !")
     elseif dying.id == "xavier" then
         Message("xavier", _ "What ? My tactics are not enough ?")
+    elseif dying.id == "porthos" then
+        Message("porthos", _ "Urgh... Pain.. Too strong..")
     else
         return
     end
