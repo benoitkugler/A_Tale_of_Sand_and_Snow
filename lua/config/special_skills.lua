@@ -325,7 +325,19 @@ Conf.special_skills.porthos = {
         "\nHe will earn experience every time he is <span  font_weight ='bold' >directly hit</span> in combat.",
     help_ratios = Fmt(_ "(<span weight ='bold' >+ %.1f%%</span> of the damage taken)",
         V.porthos.DMG_TAKEN_RATIO * 100),
-    ---return the melee and distant ratios
+    ---return the % of hit points converted to bonus damage
+    pain_adept = function(lvl) return 10 + lvl * 5 end,
+    {
+        img = "icons/helmet_frogmouth.png",
+        max_lvl = 3,
+        name = "pain_adept",
+        color = "#f36e0a",
+        name_aff = _ "Pain adept : ",
+        require_lvl = 4,
+        desc = _ "Porthos gains %s%% of his missing health as bonus damage.",
+        costs = { 70, 30, 30 }
+    },
+    ---return the melee and distant ratios (as percentages)
     ---@type fun(lvl:integer): {[1]: integer, [2]:integer}
     sacrifice = function(lvl) return lvl == 3 and { 60, 30 } or { 30 + lvl * 10, 0 } end,
     {

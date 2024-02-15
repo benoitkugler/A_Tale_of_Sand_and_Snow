@@ -431,7 +431,7 @@ end
 
 ---Implements the long heal ability (called on each turn)
 ---@param healer unit
-local function long_heal(healer)
+local function morgane_long_heal(healer)
     local level_long_heal = healer:ability_level("long_heal")
     if not level_long_heal then return end
     local value_heal = healer:get_ability("better_heal", "heals").value
@@ -454,6 +454,30 @@ local function long_heal(healer)
     end
 end
 
+---@param unit unit
+local function porthos_pain_adept(unit)
+    local lvl = unit:ability_level("pain_adept")
+    if not lvl then return end
+
+    -- remove existing ability and replace it
+    unit:remove_modifications({ id = "pain_adept_effect" }, "trait")
+
+    local percent = Conf.special_skills.porthos.pain_adept(lvl)
+    local missing_hp = unit.max_hitpoints - unit.hitpoints
+    local bonus_dmg = Round(missing_hp * percent / 100)
+    if bonus_dmg == 0 then return end
+
+    unit:add_modification('trait', {
+        id = "pain_adept_effect",
+        name = _ "Pain adept",
+        description = _ "Porthos uses his pain to gain damage (refreshed each turn).",
+        T.effect {
+            apply_to = "attack",
+            increase_damage = bonus_dmg,
+        }
+    })
+end
+
 -- Should decrease special skill CDs
 local function on_turn_start()
     local lhero = wesnoth.units.find_on_map { role = "hero" }
@@ -464,9 +488,14 @@ local function on_turn_start()
         end
     end
 
-    local morg = wesnoth.units.get("morgane")
-    if morg then long_heal(morg) end
+    local morgane = wesnoth.units.get("morgane")
+    if morgane then morgane_long_heal(morgane) end
+
+    local porthos = wesnoth.units.get("porthos")
+    if porthos then porthos_pain_adept(porthos) end
 end
+
+
 
 ---
 --- Hook into the event system

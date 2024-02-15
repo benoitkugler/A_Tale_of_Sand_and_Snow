@@ -530,3 +530,53 @@ function SPECIAL_SKILLS.limbes_defense(lvl, unit)
         }
     )
 end
+
+------------------------- Porthos -------------------------
+
+function SPECIAL_SKILLS.pain_adept(lvl, unit)
+    local id, old_id = _get_ids(lvl, "pain_adept")
+    unit:remove_modifications({ id = old_id }, "object")
+
+    local percent = Conf.special_skills.porthos.pain_adept(lvl)
+    unit:add_modification('object', {
+        id = id,
+        T.effect {
+            apply_to = "new_ability",
+            T.abilities {
+                T.customName {
+                    id = "pain_adept",
+                    _level = lvl,
+                    name = _ "Pain adept " .. ROMANS[lvl],
+                    description = Fmt(_ "Porthos gains %d%% of his missing health as bonus damage (refreshed at each turn start).", percent)
+                }
+            }
+        }
+    })
+end
+
+function SPECIAL_SKILLS.sacrifice(lvl, unit)
+    local id, old_id = _get_ids(lvl, "sacrifice")
+    unit:remove_modifications({ id = old_id }, "object")
+
+    local percents = Conf.special_skills.porthos.sacrifice(lvl)
+    local adj, dist = percents[1], percents[2]
+    local desc = dist == 0
+        and Fmt(_ "Porthos shares %d%% of the damage inflicted to adjacent allies", adj)
+        or Fmt(
+            _ "Porthos shares %d%% of the damage inflicted to adjacent allies (%d%% for allies distant by 2 hexes).",
+            adj, dist)
+    unit:add_modification('object', {
+        id = id,
+        T.effect {
+            apply_to = "new_ability",
+            T.abilities {
+                T.customName {
+                    id = "sacrifice",
+                    _level = lvl,
+                    name = _ "Sacrifice " .. ROMANS[lvl],
+                    description = desc
+                }
+            }
+        }
+    })
+end
