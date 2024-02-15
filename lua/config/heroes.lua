@@ -1,17 +1,18 @@
 -- default is black
-local colors = {
-    brinx = "#357815",
-    rymor = "#BCB4D6",
-    drumar = "#00FFF5",
-    bunshop = "#FFFA80",
-    xavier = "#a99508",
-    sword_spirit = "#A00E27",
-    morgane = "#ddebe0",
-    mark = "#f5dd42",
-    porthos = "#f542e9",
-}
 
-Conf.heroes = {}
+Conf.heroes = {
+    colors = {
+        brinx = "#357815",
+        rymor = "#BCB4D6",
+        drumar = "#00FFF5",
+        bunshop = "#FFFA80",
+        xavier = "#a99508",
+        sword_spirit = "#A00E27",
+        morgane = "#ddebe0",
+        mark = "#f5dd42",
+        porthos = "#f542e9",
+    }
+}
 
 -- name, label, action for skills with cooldown
 ---@alias actif_skill {[1]:string, [2]:string, [3]:string}
@@ -35,5 +36,3 @@ function wesnoth.units.init_hero(unit)
         }
     })
 end
-
-function Conf.heroes.get_color(unit_id) return colors[unit_id] or "#000000" end

@@ -37,7 +37,7 @@ local function on_presente_xavier()
 
     Popup(_ "New hero",
         _ "\tLet me introduce you to <span color='" ..
-        Conf.heroes.get_color("xavier") .. "' weight='bold'>Xavier</span>, " ..
+        Conf.heroes.colors.xavier .. "' weight='bold'>Xavier</span>, " ..
         "a young and talented military student. His intuition on military tactics " ..
         " have to be battle-tested, but may become very useful to you..." ..
         '\n\tYou will find more information in the <span style=\'italic\'>"Skills"</span> menu, ' ..

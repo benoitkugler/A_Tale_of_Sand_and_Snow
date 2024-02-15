@@ -8,7 +8,7 @@ local mess = {
     _ "Bloody muspellians !"
 }
 
-local brinx_color = Conf.heroes.get_color("brinx")
+local brinx_color = Conf.heroes.colors.brinx
 
 -- setup global variables for the whole campaign
 local function setup_campaign()

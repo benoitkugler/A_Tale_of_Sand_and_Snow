@@ -28,7 +28,7 @@ local function on_presente_mark()
 
     Popup(_ "New hero",
         _ "\tLet me introduce you to <span color='" ..
-        Conf.heroes.get_color("mark") .. "' weight='bold'>Mârk</span>, " ..
+        Conf.heroes.colors.mark .. "' weight='bold'>Mârk</span>, " ..
         "a bold and brave kid. His strengh and power will grow over the battles," ..
         " making it a fierce melee fighter !" ..
         '\n\tYou will find more information in the <span style=\'italic\'>"Skills"</span> menu, ' ..

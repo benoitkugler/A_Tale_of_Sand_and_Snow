@@ -112,34 +112,6 @@ function apply.war_leeches(event, pri, snd, dmg)
     end
 end
 
--- BRINX and MARK special skill
-function apply.bloodlust(event, pri, snd, dmg)
-    if event == "die" then
-        if snd:ability_level("bloodlust") then
-            if not snd:custom_variables().bloodlust then
-                snd:custom_variables().bloodlust = true -- limit the effect
-                snd.moves = 4
-                snd.attacks_left = 1
-                wesnoth.interface.float_label(snd.x, snd.y, "<span color='#eb7521'>Bloodlust !</span>")
-            end
-        end
-    end
-end
-
-function apply.fresh_blood_musp(event, pri, snd, dmg)
-    if event == "die" then
-        local lvl = snd:ability_level("fresh_blood_musp")
-        if not lvl then return end
-        if pri.race == "muspell" then
-            wml.fire("heal_unit", {
-                animate = (snd.hitpoints ~= snd.max_hitpoints),
-                T.filter { id = snd.id },
-                amount = 2 + 6 * lvl
-            }) -- on kill
-        end
-    end
-end
-
 -- Deflect
 function apply.deflect(event, _, snd, dmg)
     if event == "attacker_hits" and snd:ability_level("deflect") then

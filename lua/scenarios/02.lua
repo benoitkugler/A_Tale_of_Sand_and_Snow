@@ -24,7 +24,7 @@ local function create_sword_spirit()
         _ "<span style='italic'>(Feeling uncomfortable)</span> Bruuh, he's always scary, even after all these years...")
 
     Popup(_ "New hero",
-        _ "\tThis is <span color='" .. Conf.heroes.get_color("sword_spirit") ..
+        _ "\tThis is <span color='" .. Conf.heroes.colors.sword_spirit ..
         "' weight='bold'> Göndhul</span>, " ..
         "the Xaintrailles family warden. He is linked to Vranken by oath, " ..
         "advising Vranken and finally enhancing Vranken's skills. " ..
@@ -89,11 +89,11 @@ end
 local function presentation()
     Popup(_ "New heroes",
         _ "\tYou now have three new heroes : " .. "<span color='" ..
-        Conf.heroes.get_color("drumar") ..
+        Conf.heroes.colors.drumar ..
         "' weight='bold'>Frä Drumar</span>, a powerful spell caster, " ..
-        "<span color='" .. Conf.heroes.get_color("rymor") ..
+        "<span color='" .. Conf.heroes.colors.rymor ..
         "' weight='bold'>Rymôr</span>, solid as a rock, and " ..
-        "<span color='" .. Conf.heroes.get_color("bunshop") ..
+        "<span color='" .. Conf.heroes.colors.bunshop ..
         "' weight='bold'>Bunshop</span>, as nimble and fast as a storm. " ..
         "\nEach of them has unique skills and ways of enhancing them." ..
         '\nYou will find more information in the <span style=\'italic\'>"Skills"</span> menu, ' ..

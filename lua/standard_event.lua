@@ -76,14 +76,16 @@ local Standard_event = {
         id = "attack_end",
         first_time_only = false,
         name = "attack_end",
-        action = EC.on_combat_event,
+        action = function()
+            EC.on_combat_event(); AB.attack_end()
+        end,
     },
     {
         id = "die",
         first_time_only = false,
         name = "die",
         action = function()
-            EC.on_combat_event(); EXP.on_kill(); ES.kill(); on_kill()
+            EC.on_combat_event(); EXP.on_kill(); ES.kill(); on_kill(); AB.die()
         end
     },
     {

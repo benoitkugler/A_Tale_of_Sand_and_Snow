@@ -411,23 +411,7 @@ local function on_moveto()
     end
 end
 
--- Appelée sur sélection d'une unité
-local function on_select()
-    ANIM.clear_overlays()
-    UI.clear_menu_item("elusive")
-    UI.clear_menu_item("war_jump")
-    local u = PrimaryUnit()
 
-    if u:ability_level("war_jump") and u.moves > 0 then show_war_jump(u) end
-
-    if u:ability_level("elusive") and u.moves > 0 then show_elusive(u) end
-
-    if u.id == "xavier" then
-        local _, tiles, targets = AB.active_xavier_formations(u)
-        ANIM.hover_tiles(tiles:to_pairs(), FORMATION_LABEL,
-            targets:to_pairs(), TARGET_LABEL, "red")
-    end
-end
 
 ---Implements the long heal ability (called on each turn)
 ---@param healer unit
@@ -478,8 +462,89 @@ local function porthos_pain_adept(unit)
     })
 end
 
--- Should decrease special skill CDs
-local function on_turn_start()
+
+
+-- BRINX and MARK special skill
+---@param killer unit
+local function bloodlust(killer)
+    if killer:ability_level("bloodlust") then
+        if not killer:custom_variables().bloodlust then
+            killer:custom_variables().bloodlust = true -- limit the effect
+            killer.moves = 4
+            killer.attacks_left = 1
+            wesnoth.interface.float_label(killer.x, killer.y, "<span color='#eb7521'>Bloodlust !</span>")
+        end
+    end
+end
+
+-- brinx
+---@param killer unit
+---@param dead unit
+local function fresh_blood_musp(killer, dead)
+    local lvl = killer:ability_level("fresh_blood_musp")
+    if not lvl then return end
+    if dead.race == "muspell" then
+        wml.fire("heal_unit", {
+            animate = (killer.hitpoints ~= killer.max_hitpoints),
+            T.filter { id = killer.id },
+            amount = 2 + 6 * lvl
+        }) -- on kill
+    end
+end
+
+-- porthos adaptative resistance, should always be called
+-- to take indirect damage into account
+local function adaptative_def_res()
+    local porthos = wesnoth.units.get("porthos")
+    if not porthos then return end
+
+    local lvl = porthos:ability_level("adaptative_def_res")
+    if not lvl then return end
+
+    -- remove existing ability and replace it
+    porthos:remove_modifications({ id = "adaptatived_def_res_effect" }, "trait")
+
+    local hp_ratio    = porthos.hitpoints / porthos.max_hitpoints
+    local bonus_ratio = 1 - hp_ratio
+    local value       = Round(bonus_ratio *
+        (Conf.amlas.porthos.values.ADAPTATIVE_RESILIENCE_BASE + lvl * Conf.amlas.porthos.values.ADAPTATIVE_RESILIENCE_STEP))
+
+    porthos:add_modification('trait', {
+        id = "adaptatived_def_res_effect",
+        name = _ "Adaptative resilience",
+        description = Fmt(
+            _ "As he gets weaker, Porthos defenses and resistances are increased by <span weight='bold' color='%s'>%d%%</span>",
+            Conf.heroes.colors.porthos, value),
+        AddResistances(value),
+        AddDefenses(value),
+    })
+end
+
+---
+--- Hook into the event system
+---
+AB.on_moveto = on_moveto
+AB.post_advance = on_advance
+
+function AB.select()
+    ANIM.clear_overlays()
+    UI.clear_menu_item("elusive")
+    UI.clear_menu_item("war_jump")
+    local u = PrimaryUnit()
+
+    if u:ability_level("war_jump") and u.moves > 0 then show_war_jump(u) end
+
+    if u:ability_level("elusive") and u.moves > 0 then show_elusive(u) end
+
+    if u.id == "xavier" then
+        local _, tiles, targets = AB.active_xavier_formations(u)
+        ANIM.hover_tiles(tiles:to_pairs(), FORMATION_LABEL,
+            targets:to_pairs(), TARGET_LABEL, "red")
+    end
+end
+
+function AB.turn_start()
+    -- decrease special skill CDs
     local lhero = wesnoth.units.find_on_map { role = "hero" }
     for __, v in pairs(lhero) do
         local current_cd = v:custom_variables().special_skill_cd or 0
@@ -495,12 +560,15 @@ local function on_turn_start()
     if porthos then porthos_pain_adept(porthos) end
 end
 
+function AB.attack_end()
+    adaptative_def_res()
+end
 
+function AB.die()
+    local dead = PrimaryUnit()
+    local killer = SecondaryUnit()
 
----
---- Hook into the event system
----
-AB.on_moveto = on_moveto
-AB.select = on_select
-AB.turn_start = on_turn_start
-AB.post_advance = on_advance
+    bloodlust(killer)
+
+    fresh_blood_musp(killer, dead)
+end
