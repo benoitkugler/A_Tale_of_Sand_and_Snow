@@ -24,7 +24,7 @@ end
 ---@param unit unit
 ---@return WMLTag?
 local function show_fear_of_love(unit)
-    local tooltip
+    local tooltip ---@type string
     if unit.id == "sword_spirit" and unit:ability("fearlove_self") then
         tooltip =
             _ "endangered: Resistances reduces by <span color='red'>50%</span> !"

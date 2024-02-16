@@ -8,13 +8,14 @@ end
 
 ROMANS = { "I", "II", "III", "IV", "V", "VI" }
 
--- Return string keys
----@param t table
----@return string[]
-function table.keys(t)
-    local s = {}
-    for i, v in pairs(t) do if type(i) == "string" then s[#s + 1] = i end end
-    return s
+-- Return an array ofsorted string keys
+---@param t table<string, any>
+function SortedKeys(t)
+    ---@type string[]
+    local keys = {}
+    for i, __ in pairs(t) do keys[#keys + 1] = i end
+    table.sort(keys)
+    return keys
 end
 
 -- round
@@ -209,12 +210,12 @@ end
 
 -- Returns the amlas table { id_skill -> lvl }
 ---@param u unit
----@return table<string,integer>
 function wesnoth.units.skills_level(u)
+    ---@type table<string,integer>
     local skills = {}
     for adv in wml.child_range(wml.get_child(u.__cfg, "modifications") or {},
         "advancement") do
-        skills[adv.id] = (skills[adv.id] or 0) + 1
+        skills[ adv.id --[[@as string]] ] = (skills[adv.id] or 0) + 1
     end
     -- clear sentinel values
     skills.amla_dummy = nil

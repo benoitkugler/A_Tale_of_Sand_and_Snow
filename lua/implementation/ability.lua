@@ -169,7 +169,7 @@ local function update_defense_auras()
             T.filter_adjacent { id = unit.id },
             T.filter_side { T.allied_with { side = unit.side } }
         }
-        local bonus_def = ab.value
+        local bonus_def = ab.value or 0
         for i, u in pairs(adjacent_units) do
             u:add_modification("trait", {
                 id = trait_id,
@@ -265,11 +265,10 @@ local function update_xavier_formation()
     end
     local active_formations, _, _ = AB.active_xavier_formations(xavier)
 
-    for name, target in pairs(active_formations) do
-        if not (name == "O") then
-            formations_abilities[name](xavier, target)
-        end
-    end
+    if active_formations.A then formations_abilities.A(xavier) end
+    if active_formations.I then formations_abilities.I(xavier, active_formations.I) end
+    if active_formations.Y then formations_abilities.Y(xavier, active_formations.Y) end
+
     formations_abilities.O(xavier, active_formations.O) -- always called, to remove menu item if needed
 end
 
@@ -284,7 +283,7 @@ local function update_sword_spirit_auras()
     local ss = wesnoth.units.get("sword_spirit")
 
     --- first check for the last amla : it implies the others
-    local res_level, def_level, is_distant
+    local res_level --[[@type integer]], def_level --[[@type integer]], is_distant --[[@type boolean]]
     if ss:ability_level("distant_shred_auras") then
         res_level, def_level, is_distant = 3, 3, true
     else

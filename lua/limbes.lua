@@ -7,6 +7,10 @@ local LIMBE_WIDTH = 10
 local LIMBE_HEIGHT = 10
 local LIMBE_TERRAIN_VARIABLE = "lt" -- short to "compress" saves
 
+---@class terrain_save :location
+---@field t string
+
+
 ---@return integer, integer, integer, integer, integer, integer, integer
 local function _limbes_geoms()
     local m = wesnoth.current.map
@@ -73,10 +77,12 @@ local function _set_limbe_terrain()
     local map = wesnoth.current.map;
     local width, height, border, xstart, ystart, xstop, ystop = _limbes_geoms()
 
+    ---@type terrain_save[]
     local current_terrains = {}
 
     for x = 0, width + border do
         for y = 0, height + border do
+            ---@type string
             local new_terrain
             if (y == ystart and (x == xstart or x == xstop)) then
                 new_terrain = LIMBE_FLOOR
@@ -86,7 +92,6 @@ local function _set_limbe_terrain()
             else
                 new_terrain = LIMBE_FLOOR
             end
-            ---@type string
             local terrain = map[{ x, y }]
             table.insert(current_terrains, { x = x, y = y, t = terrain })
             map[{ x, y }] = new_terrain
@@ -99,6 +104,7 @@ end
 local function _remove_limbe_terrain()
     local map = wesnoth.current.map;
     for __, v in ipairs(wml.array_access.get(LIMBE_TERRAIN_VARIABLE)) do
+        ---@cast v terrain_save
         map[{ v.x, v.y }] = v.t
     end
 end

@@ -92,7 +92,7 @@ local Standard_event = {
         id = "turn_end",
         first_time_only = false,
         name = "turn end",
-        action = EC.fin_tour,
+        action = EC.end_turn,
     },
     {
         id = "select",

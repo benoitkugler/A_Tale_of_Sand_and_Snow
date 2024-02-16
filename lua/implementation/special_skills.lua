@@ -7,6 +7,8 @@
 ---@type table<string, fun(lvl:integer, unit:unit)>
 SPECIAL_SKILLS = {}
 
+---@param lvl integer
+---@param skill_name string
 local function _get_ids(lvl, skill_name)
     local id, old_id = "skill_" .. skill_name .. lvl, "skill_" .. skill_name .. tostring(lvl - 1)
     return id, old_id
@@ -82,6 +84,8 @@ function SPECIAL_SKILLS.drain_cac(lvl, unit)
     )
 end
 
+---@param lvl integer
+---@param unit unit
 function SPECIAL_SKILLS.atk_brut(lvl, unit)
     local id, old_id = _get_ids(lvl, "atk_brut")
     unit:remove_modifications({ id = old_id }, "object")
@@ -109,6 +113,8 @@ function SPECIAL_SKILLS.atk_brut(lvl, unit)
     )
 end
 
+---@param lvl integer
+---@param unit unit
 function SPECIAL_SKILLS.transposition(lvl, unit)
     local id, old_id = _get_ids(lvl, "transposition")
     unit:remove_modifications({ id = old_id }, "object")

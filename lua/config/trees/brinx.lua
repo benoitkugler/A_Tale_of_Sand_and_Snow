@@ -31,8 +31,9 @@ Conf.amlas.brinx = {
         max_times = 1,
         always_display = 1,
         description = _ "Grants a bow enchanted by elven magic, which sets arrows ablaze.",
+        ---@param unit unit
         function(unit)
-            local atk_bow = unit.attacks.bow
+            local atk_bow = unit:weapon("bow")
             local effect = T.effect {
                 apply_to = "new_attack",
                 name = "bow",

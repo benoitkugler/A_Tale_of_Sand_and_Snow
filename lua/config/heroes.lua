@@ -1,5 +1,17 @@
 -- default is black
 
+---@alias Hero
+---| "brinx"
+---| "vranken"
+---| "rymor"
+---| "drumar"
+---| "bunshop"
+---| "xavier"
+---| "sword_spirit"
+---| "morgane"
+---| "mark"
+---| "porthos"
+
 Conf.heroes = {
     colors = {
         brinx = "#357815",
@@ -16,7 +28,7 @@ Conf.heroes = {
 
 -- name, label, action for skills with cooldown
 ---@alias actif_skill {[1]:string, [2]:string, [3]:string}
----@type table<string, actif_skill>
+---@type table<Hero, actif_skill>
 Conf.heroes.actif_skills = {
     vranken = { "transposition", _ "Transposition", "AB.transposition()" },
     xavier = { "O_formation", _ "Union debuf", "AB.union_debuf()" }

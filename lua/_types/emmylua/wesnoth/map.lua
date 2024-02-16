@@ -1,7 +1,5 @@
 ---@meta
 
--- --- @alias location  location1 | {[1]:integer, [2]:integer}
-
 ---@class location
 ---@field x integer
 ---@field y integer
@@ -20,7 +18,7 @@
 ---@class wesnoth.map
 wesnoth.map = {}
 
----@class terrain_map : wesnoth.map
+---@class terrain_map : wesnoth.map, {[{[1]:integer, [2]:integer}]: string}
 ---@field width integer
 ---@field height integer
 ---@field playable_width integer

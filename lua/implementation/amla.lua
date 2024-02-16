@@ -1,17 +1,26 @@
 AMLA = {}
 
+---@param t table<string|integer, any>
+local function shallow_copy(t)
+    local out = {} ---@type table<string|integer, any>
+    for i, v in pairs(t) do
+        out[i] = v
+    end
+    return out
+end
+
 -- Process an amla tree by computing effect given by a function
----@param amlas_table table
+---@param amlas_table hero_amla_tree
 ---@param unit unit
 local function _process_amlas(amlas_table, unit)
-    local computed_table = {}
+    local computed_table = {} ---@type WMLTag[]
     for i, amla in ipairs(amlas_table) do
-        local computed_amla = {}
-        for j, value in pairs(amla) do
-            if type(value) == "function" then -- executing function with unit as argument
-                computed_amla[j] = value(unit)
-            else                              -- just copy
-                computed_amla[j] = value
+        local computed_amla = shallow_copy(amla) ---@type custom_amla
+        for j, effect in ipairs(computed_amla) do
+            if type(effect) == "function" then -- executing function with unit as argument
+                computed_amla[j] = effect(unit)
+            else                               -- just copy
+                computed_amla[j] = effect
             end
         end
         computed_table[i] = T.advancement(computed_amla)
@@ -38,17 +47,17 @@ end
 
 function AMLA.pre_advance()
     local u = PrimaryUnit()
-    local table_amlas = Conf.amlas[u.id] -- loading custom amlas
+    local table_amlas = Conf.amlas[ u.id --[[@as Hero]] ] -- loading custom amlas
 
-    if (table_amlas == nil) or #(u.advances_to) > 0 then return end
+    if (not table_amlas) or #(u.advances_to) > 0 then return end
 
-    table_amlas = _process_amlas(table_amlas, u)
+    local processed = _process_amlas(table_amlas, u)
     u:add_modification("trait", {
         id = "current_amlas",
         T.effect {
             apply_to = "new_advancement",
             replace = true,
-            table.unpack(table_amlas)
+            table.unpack(processed)
         }
     })
 end

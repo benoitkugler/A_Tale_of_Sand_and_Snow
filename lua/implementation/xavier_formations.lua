@@ -86,6 +86,9 @@ end
 
 -- Application of ablities when a formation is active
 local formations_abilities = {}
+
+---@param xavier unit
+---@param target {[1]:integer, [2]:integer}
 function formations_abilities.Y(xavier, target)
     local lvl = xavier:ability_level("Y_formation")
     if lvl then
@@ -109,6 +112,7 @@ function formations_abilities.Y(xavier, target)
     end
 end
 
+---@param xavier unit
 function formations_abilities.A(xavier)
     local lvl = xavier:ability_level("A_formation")
     if lvl then
@@ -118,6 +122,8 @@ function formations_abilities.A(xavier)
     end
 end
 
+---@param xavier unit
+---@param target {[1]:integer, [2]:integer}
 function formations_abilities.I(xavier, target)
     local lvl = xavier:ability_level("I_formation")
     if lvl then

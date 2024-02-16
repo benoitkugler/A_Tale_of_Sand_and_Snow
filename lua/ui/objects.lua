@@ -81,13 +81,7 @@ local function hero_first_obj(hero, t)
     return nil
 end
 
----@param myTable table
----@return string[]
-local function sorted_keys(myTable)
-    local keys = table.keys(myTable)
-    table.sort(keys)
-    return keys
-end
+
 
 local dialog = {
     T.tooltip { id = "tooltip" },
@@ -321,10 +315,10 @@ local function preshow(window)
                 len) or state.min_length_description
         end
 
-        for k, idObj in ipairs(sorted_keys(objects)) do
-            local v = objects[idObj]
-            table.insert(state.position_objets, idObj)
-            local objet = Conf.objects[idObj];
+        for k, idObject in ipairs(SortedKeys(objects)) do
+            local v = objects[idObject]
+            table.insert(state.position_objets, idObject)
+            local objet = Conf.objects[idObject];
 
             (obj_list:find(k, "icone") --[[@as image]]).label = objet.image .. "mini.png" --[[@as tstring]]
             local name = obj_list:find(k, "name") --[[@as label]]

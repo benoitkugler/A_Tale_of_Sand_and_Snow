@@ -19,7 +19,18 @@ function StandardAmlaHeal(exp, hp)
     }
 end
 
+---@class custom_amla
+---@field [string] any
+---@field [integer] WMLTag|fun(u:unit):WMLTag -- effects
+
+---@class hero_amla_tree
+---@field _default_border string
+---@field _default_background string
+---@field [integer] custom_amla
+
+---@type table<Hero, hero_amla_tree>
 Conf.amlas = {}
+
 wesnoth.dofile "~add-ons/A_Tale_of_Sand_and_Snow/lua/config/trees/brinx.lua"
 wesnoth.dofile "~add-ons/A_Tale_of_Sand_and_Snow/lua/config/trees/drumar.lua"
 wesnoth.dofile "~add-ons/A_Tale_of_Sand_and_Snow/lua/config/trees/vranken.lua"

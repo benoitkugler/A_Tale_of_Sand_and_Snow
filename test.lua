@@ -130,20 +130,6 @@ function Test(x, y)
     switch_limbes()
 end
 
-function ES.dump_amla()
-    local types = { "amla_vranken", "amla_brinx", "amla_drumar", "amla_xavier" }
-    local s = ""
-    for i, t in pairs(types) do
-        local u = wesnoth.units.create { type = t }
-        s = s .. "\n \n" .. t .. " = { \n"
-        for adv in wml.child_range(u.__cfg, "advancement") do
-            s = s .. "\n { \n " .. wml.tostring(adv) .. "\n },"
-        end
-        s = s .. "\n } \n"
-    end
-    wesnoth.interface.add_chat_message(s)
-end
-
 local s = wesnoth.interface.game_display.edit_left_button_function
 function wesnoth.interface.game_display.edit_left_button_function()
     local r = s()

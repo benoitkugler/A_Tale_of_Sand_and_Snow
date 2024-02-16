@@ -9,23 +9,33 @@ local COLOR_DEFENSE_SHRED = "#994d00"
 local COLOR_SHIELDED = "#4A4257"
 
 -- Table of event handlers
-local endturn = {}                  -- end of turn event
+---@type table<string, fun()>
+local endturn = {} -- end of turn event
+
 ---@type table<string, fun(event:string, primary:unit, secondary:unit, dmg_dealt: integer)>
-local apply = {}                    -- combat event
+local apply = {} -- combat event
 
-local label_pri, label_snd = "", "" -- custom labels
-local delay = 0
+---reset at the start of combat_event
+local state = {
+    -- custom labels
+    label_pri = "",
+    label_snd = "",
+    delay = 0,
+}
 
+---@type string[]
 local keys
 
 ---Called with events: attack, attacker_hits, defender_hits, attack_end, die
 function EC.on_combat_event()
     local dmg_dealt = wesnoth.current.event_context.damage_inflicted
-    delay = 0
     local type_event = wesnoth.current.event_context.name
     local u1, u2 = PrimaryUnit(), SecondaryUnit()
-    label_pri, label_snd = "", ""
     local x1, y1, x2, y2 = u1 and u1.x, u1 and u1.y, u2 and u2.x, u2 and u2.y
+
+    state.delay = 0
+    state.label_pri = ""
+    state.label_snd = ""
 
     for __, i in ipairs(keys) do
         if u1 and u1.valid and u2 and u2.valid then
@@ -34,19 +44,19 @@ function EC.on_combat_event()
     end
 
     if x1 and y1 then
-        if delay > 0 then wesnoth.interface.delay(delay, true) end
-        wesnoth.interface.float_label(x1, y1, label_pri)
+        if state.delay > 0 then wesnoth.interface.delay(state.delay, true) end
+        wesnoth.interface.float_label(x1, y1, state.label_pri)
     end
     if x2 and y2 then
-        if delay > 0 then wesnoth.interface.delay(delay, true) end
-        wesnoth.interface.float_label(x2, y2, label_snd)
+        if state.delay > 0 then wesnoth.interface.delay(state.delay, true) end
+        wesnoth.interface.float_label(x2, y2, state.label_snd)
     end
-    if delay > 0 then wesnoth.interface.delay(delay, true) end
+    if state.delay > 0 then wesnoth.interface.delay(state.delay, true) end
     if not (u1 == nil) and u1.valid then u1:advance(true, true) end
     if not (u2 == nil) and u2.valid then u2:advance(true, true) end
 end
 
-function EC.fin_tour()
+function EC.end_turn()
     local lhero = wesnoth.units.find_on_map { role = "hero" }
     for __, v in pairs(lhero) do v:custom_variables().bloodlust = false end
     for __, v in pairs(endturn) do v() end
@@ -72,9 +82,7 @@ function apply.shield_flat(event, pri, snd, dmg)
             elseif snd.hitpoints > 0 then
                 snd.hitpoints = snd.hitpoints + s2
             end
-            label_snd =
-                label_snd .. "<span color='#4A4257'>" .. _ " shield : " .. s2 ..
-                " hitpoints" .. "</span>\n"
+            state.label_snd = state.label_snd .. Fmt(_ "<span color='#4A4257'>  shield : %d hitpoints</span>\n", s2)
         end
     elseif event == "defender_hits" then
         if pri:ability_level("shield_flat") then
@@ -83,9 +91,7 @@ function apply.shield_flat(event, pri, snd, dmg)
             elseif pri.hitpoints > 0 then
                 pri.hitpoints = pri.hitpoints + s1
             end
-            label_pri =
-                label_pri .. "<span color='#4A4257'>" .. _ " shield : " .. s1 ..
-                " hitpoints" .. "</span>\n"
+            state.label_pri = state.label_pri .. Fmt(_ "<span color='#4A4257'>  shield : %d hitpoints</span>\n", s1)
         end
     elseif event == "attack_end" then
         if pri:ability_level("shield_flat") then
@@ -137,7 +143,8 @@ end
 
 -- Leeches
 function apply.leeches(event, pri, snd, dmg)
-    local lvl, u
+    local lvl ---@type integer?
+    local u ---@type unit?
     if event == "attacker_hits" then
         lvl = PWeapon():special_level("leeches")
         u = pri
@@ -145,25 +152,25 @@ function apply.leeches(event, pri, snd, dmg)
         lvl = SWeapon():special_level("leeches")
         u = snd
     end
-    if lvl then
+    if lvl and u then
         if u.hitpoints < u.max_hitpoints then
             wml.fire("heal_unit", {
                 T.filter { id = u.id },
+                amount = Round(dmg * (0.05 + 0.05 * lvl)),
                 animate = true,
-                amount = Round(dmg * (0.05 + 0.05 * lvl))
-            }) -- toujours
+            }) -- always
         end
     end
 end
 
-local function case_derriere(x1, y1, x2, y2)
+local function hex_behind(x1, y1, x2, y2)
     return wesnoth.map.rotate_right_around_center({ x = x1, y = y1 }, { x = x2, y = y2 }, 3)
 end
 
 -- Pierce
 function apply.weapon_pierce(event, pri, snd, dmg)
     if event == "attacker_hits" and PWeapon():special_level("weapon_pierce") then
-        local loc = case_derriere(pri.x, pri.y, snd.x, snd.y)
+        local loc = hex_behind(pri.x, pri.y, snd.x, snd.y)
         local weapon = PWeapon()
         wml.fire("harm_unit", {
             T.filter { x = loc[1], y = loc[2], { "not", { side = pri.side } } },
@@ -217,9 +224,8 @@ function apply.res_magic(event, pri, snd, dmg)
                     { "resistance", { fire = value, cold = value, arcane = value } }
                 }
             }, false)
-            label_snd = label_snd ..
-                Fmt(
-                    _ "<span color='%s'>-%d%% magic resistances</span>\n",
+            state.label_snd = state.label_snd ..
+                Fmt(_ "<span color='%s'>-%d%% magic resistances</span>\n",
                     COLOR_MAGIC_RES_SHRED, value)
         end
     end
@@ -239,7 +245,7 @@ function apply.armor_shred(event, pri, snd, dmg)
                     }
                 }
             }, false)
-            label_snd = label_snd ..
+            state.label_snd = state.label_snd ..
                 Fmt(_ "<span color='%s'>-%d%% armor</span>\n",
                     COLOR_ARMOR_SHRED, value)
         end
@@ -250,9 +256,9 @@ function apply.defense_shred(event, pri, snd, dmg)
     if event == "attacker_hits" then
         local lvl = PWeapon():special_level("defense_shred")
         if lvl then
-            local shred_per_hit = Conf.amlas[pri.id].values.REDUCE_DEFENSE * lvl
+            local shred_per_hit = Conf.amlas.xavier.values.REDUCE_DEFENSE * lvl
             snd:add_modification("trait", { AddDefenses(-shred_per_hit) }, false)
-            label_snd = label_snd ..
+            state.label_snd = state.label_snd ..
                 Fmt(_ "<span color='%s'>-%d%% defense</span>\n",
                     COLOR_DEFENSE_SHRED, shred_per_hit)
         end
@@ -271,7 +277,7 @@ function apply.weaker_slow(event, pri, snd, dmg)
                     increase_damage = "-" .. value .. "%"
                 }
             }, true)
-            label_snd = label_snd .. _ "<span color='#919191'>-" .. value ..
+            state.label_snd = state.label_snd .. _ "<span color='#919191'>-" .. value ..
                 "% damage</span>\n"
         end
     end
@@ -283,7 +289,7 @@ function apply.snare(event, pri, snd, dmg)
             duration = "turn_end",
             T.effect { apply_to = "movement", set = 0 }
         }, true)
-        label_snd = label_snd .. _ "<span color='#1CDC3F'>Snared</span>\n"
+        state.label_snd = state.label_snd .. _ "<span color='#1CDC3F'>Snared</span>\n"
     end
 end
 
@@ -338,7 +344,7 @@ function apply.chilled_dmg(event, pri, snd, dmg)
         local percent_bonus = values[1]
         local bonus_dmg = Round(dmg * percent_bonus / 100)
         if att.type == "cold" then
-            local dmg_display
+            local dmg_display ---@type integer
             if snd.hitpoints - bonus_dmg > 0 then
                 snd.hitpoints = snd.hitpoints - bonus_dmg
                 dmg_display = bonus_dmg
@@ -356,8 +362,8 @@ function apply.chilled_dmg(event, pri, snd, dmg)
                     fire_event = true
                 })
             end
-            label_snd = label_snd .. "<span color='#1ED9D0'>" .. dmg_display ..
-                "<span size='small'> (chilled)</span></span>\n"
+            state.label_snd = state.label_snd ..
+                Fmt(_ "<span color='#1ED9D0'>%d<span size='small'> (chilled)</span></span>\n", dmg_display)
         end
     end
 end
@@ -374,7 +380,7 @@ function apply.put_status_chilled(event, pri, snd, dmg)
             snd:custom_variables().status_chilled_lvl = lvl
             snd:custom_variables().status_chilled_cd = cd
             snd.status.chilled = true
-            label_snd = label_snd ..
+            state.label_snd = state.label_snd ..
                 _ "<span color='#1ED9D0'>Chilled !</span>\n"
         end
     end
@@ -397,6 +403,7 @@ function endturn.status_chilled()
 end
 
 function apply.shield(event, pri, snd, dmg)
+    ---@param unit unit
     local function _init_shield(unit)
         local shield = unit:custom_variables().status_shielded_hp
         unit.hitpoints = unit.hitpoints + shield
@@ -407,15 +414,16 @@ function apply.shield(event, pri, snd, dmg)
     if event == "attack" then -- applying inital shield
         if pri.status.shielded then
             local l = _init_shield(pri)
-            label_pri = label_pri .. l
+            state.label_pri = state.label_pri .. l
         end
         if snd.status.shielded then
             local l = _init_shield(snd)
-            label_snd = label_snd .. l
+            state.label_snd = state.label_snd .. l
         end
-        delay = 50
+        state.delay = 50
     end
 
+    ---@param unit unit
     local function _update_shield(unit)
         local sh = unit:custom_variables().status_shielded_hp
         if dmg >= sh then -- no more shield
@@ -433,6 +441,7 @@ function apply.shield(event, pri, snd, dmg)
         _update_shield(pri)
     end
 
+    ---@param unit unit
     local function _remove_over(unit)
         unit.hitpoints = unit.hitpoints - unit:custom_variables().status_shielded_hp
     end
@@ -485,5 +494,5 @@ function apply.sacrifice(event, primary, secondary, dmg_dealt)
     })
 end
 
-keys = table.keys(apply)
-table.sort(keys) -- deterministic
+-- enforce deterministic order
+keys = SortedKeys(apply)

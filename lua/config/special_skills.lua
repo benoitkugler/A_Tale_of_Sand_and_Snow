@@ -34,12 +34,12 @@ Conf.special_skills.sword_spirit = {}
 
 -- DRUMAR
 Conf.special_skills.drumar = {
-    help_des = _ "Several years of battles in Vranken company have made Frä Drümar more warlike than any other Frä. " ..
-        "She excels at slowing enemies and taking advantage of their delayed reactions. " ..
-        "\nShe will earn experience (scaling with enemies level) when applying " ..
-        "<span  font_weight ='bold' >slows</span>, <span  font_weight ='bold' >snares</span> or " ..
-        " <span  font_weight ='bold' >chilling</span> states to her targets, " ..
-        "as well as using <span  font_weight ='bold' >cold</span> attacks.",
+    help_des = _ "Several years of battles in Vranken company have made Frä Drümar more warlike than any other Frä. \z
+        She excels at slowing enemies and taking advantage of their delayed reactions. \z
+        \nShe will earn experience (scaling with enemies level) when applying \z
+        <span  font_weight ='bold' >slows</span>, <span  font_weight ='bold' >snares</span> or \z
+         <span  font_weight ='bold' >chilling</span> states to her targets, \z
+        as well as using <span  font_weight ='bold' >cold</span> attacks.",
     help_ratios = Fmt(
         _ "(<span weight ='bold' >+ %.1f</span> per cold attack, <span weight ='bold' >x %.1f</span> " ..
         "per slow, <span weight ='bold' >x %.1f</span> per snare, <span weight ='bold' >x %.1f</span> per chilling state)",
@@ -107,9 +107,9 @@ Conf.special_skills.drumar = {
 
 -- VRANKEN
 Conf.special_skills.vranken = {
-    help_des = _ "Vranken has a familly link with his sword. " ..
-        "Every time <span  font_weight ='bold' >Göndhul fights</span>, Vranken earn points " ..
-        "(scaling with opponents level).",
+    help_des = _ "Vranken has a familly link with his sword. \z
+        Every time <span  font_weight ='bold' >Göndhul fights</span>, Vranken earn points \z
+        (scaling with opponents level).",
     help_ratios = Fmt(
         _ "(<span weight ='bold'>+ %.1f</span> per defense, <span weight ='bold'>x %.1f</span> per attack, " ..
         "<span weight ='bold' >x %.1f</span> per kill, <span weight ='bold' >%d</span> per level up)",
@@ -167,9 +167,9 @@ Conf.special_skills.vranken = {
 
 -- BRINX
 Conf.special_skills.brinx = {
-    help_des = _ "Brinx seeks to avenge Jödumur's death. Every time he " ..
-        "<span  font_weight ='bold' >fights against muspellians</span>, " ..
-        "Brinx earn points (scaling with opponents level).",
+    help_des = _ "Brinx seeks to avenge Jödumur's death. Every time he \z
+        <span  font_weight ='bold' >fights against muspellians</span>, \z
+        Brinx earn points (scaling with opponents level).",
     help_ratios = Fmt(
         _ "(<span font_weight ='bold'>+ %d</span> per defense, " ..
         "<span font_weight ='bold'>x %.1f</span> per attack, <span font_weight ='bold'>x %.1f</span> per kill)",
@@ -226,9 +226,9 @@ Conf.special_skills.brinx = {
 
 -- XAVIER
 Conf.special_skills.xavier = {
-    help_des = _ "Xavier thrives in battefield strategy. Every time Xavier <span font_weight='bold'>" ..
-        "helps allies</span>, he builds confidence with them (scaling level). This will eventually make Xavier stronger, when " ..
-        "fighting in precise formations.",
+    help_des = _ "Xavier thrives in battefield strategy. Every time Xavier <span font_weight='bold'>\z
+        helps allies</span>, he builds confidence with them (scaling level). This will eventually make Xavier stronger, when \z
+        fighting in precise formations.",
     help_ratios = Fmt(
         _ "(<span font_weight ='bold'>x %.1f</span> per lead, <span font_weight ='bold'>x %.1f</span> per Y-formation, " ..
         "<span font_weight ='bold'>x %.1f</span> per I-formation and <span font_weight ='bold'>+ %d</span> per A-formation)",
@@ -277,8 +277,8 @@ Conf.special_skills.xavier = {
         color = "#c09d1b",
         name_aff = _ "Union formation : ",
         require_lvl = 6,
-        desc = _ "When attacking in O, Xavier may launch a powerful strike which removes all abilities and " ..
-            "weapons specials of its target (%s turn(s) cooldown)",
+        desc = _ "When attacking in O, Xavier may launch a powerful strike which removes all abilities and \z
+            weapons specials of its target (%s turn(s) cooldown)",
         costs = { 200, 100 }
     },
     ---@type fun(lvl:integer): integer
@@ -320,12 +320,13 @@ Every time Morgane or one of her allies fight into the Limbes, she earns points 
 }
 
 Conf.special_skills.porthos = {
-    help_des = _ "Battlefield has hardened Porthos beyond reason. Taking damage doesn't bother him anymore. " ..
-        "In fact, Porthos is eager to protect his allies by taking the focus of ennemy fire." ..
-        "\nHe will earn experience every time he is <span  font_weight ='bold' >directly hit</span> in combat.",
+    help_des = _ "Battlefield has hardened Porthos beyond reason. Taking damage doesn't bother him anymore. \z
+        In fact, Porthos is eager to protect his allies by taking the focus of ennemy fire.\z
+        \nHe will earn experience every time he is <span  font_weight ='bold' >directly hit</span> in combat.",
     help_ratios = Fmt(_ "(<span weight ='bold' >+ %.1f%%</span> of the damage taken)",
         V.porthos.DMG_TAKEN_RATIO * 100),
     ---return the % of hit points converted to bonus damage
+    ---@param lvl integer
     pain_adept = function(lvl) return 10 + lvl * 5 end,
     {
         img = "icons/helmet_frogmouth.png",

@@ -16,23 +16,18 @@ local function setup_campaign()
 end
 
 local function presente_brinx(is_jod_dead)
-    local s
-    if is_jod_dead then
-        s =
-            _ "As he has lost his revered Lieutenant, Brinx is feeling hatred towards muspellians, " ..
-            "and this hatred will make him stronger."
-    else
-        s =
-            _ "As he was struck by the savage muspellian raid on Dead Island, Brinx is feeling" ..
-            "hatred towards muspellians, and this hatred will make him stronger."
-    end
-    Popup(_ "Welcome", _ "\tHello friend, and welcome to this campaign. " ..
-        "Let me introduce you to your first hero : <span color='" ..
-        brinx_color .. "' weight='bold'> Brinx</span>. " .. s ..
-        _ " <span weight='bold'>Fighting muspellians</span> will eventually unlock unique " ..
-        "skills for Brinx." ..
-        '\n\tYou can access more information in the <span style=\'italic\'>"Skills"</span> menu, ' ..
-        "by right-clicking on Brinx.")
+    local s = is_jod_dead and
+        _ "As he has lost his revered Lieutenant, Brinx is feeling hatred towards muspellians, \z
+        and this hatred will make him stronger."
+        or
+        _ "As he was struck by the savage muspellian raid on Dead Island, Brinx is feeling \z
+        hatred towards muspellians, and this hatred will make him stronger."
+    Popup(_ "Welcome", Fmt(_ "\tHello friend, and welcome to this campaign. \z
+        Let me introduce you to your first hero : <span color='%s' ' weight='bold'> Brinx</span>." .. s ..
+        "<span weight='bold'>Fighting muspellians</span> will eventually unlock unique \z
+        skills for Brinx.\z
+        \n\tYou can access more information in the <span style=\'italic\'>Skills</span> menu, \z
+        by right-clicking on Brinx.", brinx_color))
     UI.set_menu_skills()
 end
 
