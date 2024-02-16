@@ -1,30 +1,19 @@
 #!/bin/bash
-echo "Welcome in the ALMA tree image builder !"
  
 ADDON_DATA_PATH=$HOME/.var/app/org.wesnoth.Wesnoth/data/wesnoth/1.17/data/add-ons/A_Tale_of_Sand_and_Snow/
 WESNOTH_PATH=/var/lib/flatpak/app/org.wesnoth.Wesnoth/current/active/files/share/wesnoth/
 GIMP_CMD="flatpak run org.gimp.GIMP"
 set -e;
 
-keep="1"
-full_process="0"
-while [ $keep = "1" ]
-do  
-    echo "Character ID ? :";
-    read commande;
-    if [ "$commande" = "" ]; then
-        echo "Missing parameters !"
-    else
-        tabl_par=(${commande// / })
-        id=${tabl_par[0]}
-        arg1=${tabl_par[1]}
-        if [ "$arg1" == "-f" ]; then
-            full_process="1"
-        fi;
-        keep="0"
-    fi;
-done  
+if [ -z "$1" ]; then
+    echo "Please provide a character ID";
+    exit 1;
+fi
+id=$1
 
+echo "Starting the ALMA tree image builder for $id";
+
+full_process="0"
 
 if [ $full_process = "0" ]; then
 echo "Lancer la création du code du graphe et des ALMA ? (Poursuivre : Entree)"

@@ -9,7 +9,7 @@ local V = {                           -- numerical values
     MAX_HP = 30,  -- * lvl
     RES_AURA = 7, -- * lvl
     DEF_AURA = 7, -- * lvl
-
+    SELF_RES = 5  -- * lvl
 }
 
 Conf.amlas.porthos = {
@@ -59,6 +59,7 @@ Conf.amlas.porthos = {
     },
     {
         id = "adaptative_def_res",
+        require_amla = "juggernaut,juggernaut,juggernaut",
         _short_desc = "<B> Adaptative defenses </B>",
         image = "icons/shield_tower.png",
         max_times = 3,
@@ -88,7 +89,18 @@ Conf.amlas.porthos = {
 
     -- Defense auras tree
     {
+        id = "though",
+        _short_desc = ("Resistances <BR/>  <B> +%d </B> %%"):format(V.SELF_RES),
+        image = "icons/cuirass_leather_studded.png",
+        max_times = 3,
+        always_display = 1,
+        description = Fmt(_ "Tougher, + %d%% resistances", V.SELF_RES),
+        AddResistances(V.SELF_RES),
+        table.unpack(StandardAmlaHeal(5))
+    },
+    {
         id = "res_aura_porthos",
+        require_amla = "though,though,though",
         _short_desc = "<B> Resistance aura </B>",
         image = "halo/resistance-aura-small.png",
         max_times = 3,
@@ -112,6 +124,7 @@ Conf.amlas.porthos = {
     },
     {
         id = "def_aura",
+        require_amla = "though,though,though",
         _short_desc = "<B> Defense aura </B>",
         image = "halo/defense-aura-small.png",
         max_times = 3,
@@ -178,8 +191,6 @@ Conf.amlas.porthos = {
         T.effect { apply_to = "attack", name = "cleaver", increase_attacks = 1 },
         table.unpack(StandardAmlaHeal(10))
     },
-
-
     {
         id = "default",
         require_amla = "juggernaut,juggernaut,juggernaut,war_jump,distant_shred_auras,blade_requiem_atk",
