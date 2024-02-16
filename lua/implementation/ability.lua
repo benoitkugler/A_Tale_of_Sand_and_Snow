@@ -517,8 +517,8 @@ local function adaptative_def_res()
 
     local hp_ratio    = porthos.hitpoints / porthos.max_hitpoints
     local bonus_ratio = 1 - hp_ratio
-    local value       = Round(bonus_ratio *
-        (Conf.amlas.porthos.values.ADAPTATIVE_RESILIENCE_BASE + lvl * Conf.amlas.porthos.values.ADAPTATIVE_RESILIENCE_STEP))
+    local value       = Round(bonus_ratio * Conf.amlas.porthos.values.adaptative_resilience(lvl))
+
 
     porthos:add_modification('trait', {
         id = "adaptatived_def_res_effect",
@@ -528,6 +528,20 @@ local function adaptative_def_res()
             Conf.heroes.colors.porthos, value),
         AddResistances(value),
         AddDefenses(value),
+    })
+end
+
+local function end_attack_regen()
+    local attacker = PrimaryUnit()
+    local ab = attacker:get_ability("end_attack_regen")
+    if not (ab) then return end
+
+    if attacker.hitpoints <= 0 then return end
+
+    wml.fire("heal_unit", {
+        T.filter { id = attacker.id },
+        amount = ab.value,
+        animate = true
     })
 end
 
@@ -572,7 +586,8 @@ function AB.turn_start()
 end
 
 function AB.attack_end()
-    adaptative_def_res()
+    end_attack_regen()
+    adaptative_def_res() -- porthos hitpoints influence this call
 end
 
 function AB.die()

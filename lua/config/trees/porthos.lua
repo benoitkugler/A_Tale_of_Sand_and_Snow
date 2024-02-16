@@ -1,10 +1,15 @@
-local V = {                          -- numerical values
-    ADAPTATIVE_RESILIENCE_BASE = 40, -- max bonus def (for 0 hp)
-    ADAPTATIVE_RESILIENCE_STEP = 10, -- ADAPTATIVE_RESILIENCE_BASE + lvl * this
-    REGEN = 20,                      -- * lvl
-    MAX_HP = 30,                     -- * lvl
-    RES_AURA = 7,                    -- * lvl
-    DEF_AURA = 7,                    -- * lvl
+local ADAPTATIVE_RESILIENCE_BASE = 40 -- max bonus def (for 0 hp)
+local ADAPTATIVE_RESILIENCE_STEP = 10 -- ADAPTATIVE_RESILIENCE_BASE + lvl * this
+
+local V = {                           -- numerical values
+    adaptative_resilience = function(lvl)
+        return ADAPTATIVE_RESILIENCE_BASE + lvl * ADAPTATIVE_RESILIENCE_STEP
+    end,
+    REGEN = 20,   -- * lvl
+    MAX_HP = 30,  -- * lvl
+    RES_AURA = 7, -- * lvl
+    DEF_AURA = 7, -- * lvl
+
 }
 
 Conf.amlas.porthos = {
@@ -52,6 +57,35 @@ Conf.amlas.porthos = {
         description = Fmt(_ "Healthier, + %d hitpoints", V.MAX_HP),
         table.unpack(StandardAmlaHeal(7, V.MAX_HP))
     },
+    {
+        id = "adaptative_def_res",
+        _short_desc = "<B> Adaptative defenses </B>",
+        image = "icons/shield_tower.png",
+        max_times = 3,
+        always_display = 1,
+        description = "Porthos defense and resistance increase when he is weak",
+        T.effect {
+            apply_to = "remove_ability",
+            T.abilities { T.customName { id = "adaptative_def_res" } }
+        },
+        ---@param unit unit
+        function(unit)
+            local current_lvl = unit:ability_level("adaptative_def_res") or 0
+            local next_lvl = current_lvl + 1
+            local value = V.DEF_AURA * next_lvl
+            return T.effect {
+                apply_to = "new_ability",
+                T.abilities { T.customName {
+                    id = "adaptative_def_res",
+                    name = _ "Adaptative resilience " .. ROMANS[next_lvl],
+                    description = Fmt(_ "Porthos gains up to %d%% defense and resistance when he is low health",
+                        V.adaptative_resilience(next_lvl)),
+                } }
+            }
+        end,
+        table.unpack(StandardAmlaHeal(10))
+    },
+
     -- Defense auras tree
     {
         id = "res_aura_porthos",
@@ -99,142 +133,52 @@ Conf.amlas.porthos = {
         end,
         table.unpack(StandardAmlaHeal(10))
     },
-    -- {
-    --     id = "shred_aura_def",
-    --     _short_desc = "<B> Clumsiness aura </B>",
-    --     image = "halo/reddens-aura-small.png",
-    --     require_amla = "shred_aura_res,shred_aura_res,shred_aura_res",
-    --     max_times = 3,
-    --     always_display = 1,
-    --     description = Fmt(_ "Reduces adjacent ennemies defenses by %d%%", V.DEF_SHRED),
-    --     T.effect {
-    --         apply_to = "remove_ability",
-    --         T.abilities { T.customName { id = "shred_aura_def" } }
-    --     },
-    --     ---@param unit unit
-    --     function(unit)
-    --         local current_lvl = unit:ability_level("shred_aura_def") or 0
-    --         local next_lvl = current_lvl + 1
-    --         local value = V.DEF_SHRED * next_lvl
-    --         return T.effect {
-    --             apply_to = "new_ability",
-    --             T.abilities {
-    --                 T.customName {
-    --                     id = "shred_aura_def",
-    --                     _level = next_lvl,
-    --                     description = Fmt(_ "Adjacent ennemies defenses decreased by %d%%", value),
-    --                     name = "Clumsiness aura " .. ROMANS[next_lvl],
-    --                     halo_image_self = "halo/reddens-aura.png"
-    --                 }
-    --             }
-    --         }
-    --     end,
-    --     table.unpack(StandardAmlaHeal(10))
-    -- },
-    -- {
-    --     id = "distant_shred_auras",
-    --     _short_desc = "<B> Wider auras </B>",
-    --     _color = { 54, 255, 5 },
-    --     _level_bonus = true,
-    --     require_amla = "shred_aura_def,shred_aura_def,shred_aura_def",
-    --     image = "halo/reddens-aura-small.png",
-    --     max_times = 1,
-    --     always_display = 1,
-    --     description = _ "Clumsiness and weakness auras also affect distant ennemies.",
-    --     T.effect {
-    --         apply_to = "remove_ability",
-    --         T.abilities { T.customName { id = "shred_aura_def" } }
-    --     },
-    --     T.effect {
-    --         apply_to = "remove_ability",
-    --         T.abilities { T.customName { id = "shred_aura_res" } }
-    --     },
-    --     T.effect {
-    --         apply_to = "new_ability",
-    --         T.abilities {
-    --             T.customName {
-    --                 id = "distant_shred_auras",
-    --                 _level = 1,
-    --                 description = _ "Göndhul is so powerfull that it Clumsiness aura III and Weakness aura III abilities also affect distant ennemies.",
-    --                 name = "Distant aura",
-    --                 halo_image_self = "halo/reddens-aura-distant.png"
-    --             }
-    --         }
-    --     },
-    --     table.unpack(StandardAmlaHeal(10))
-    -- },
-    -- --- attack tree
-    -- {
-    --     id = "blade_requiem",
-    --     _short_desc = "Blade and Requiem <BR /> <B> +1</B> dmg",
-    --     image = "items/sword-holy.png",
-    --     max_times = 3,
-    --     always_display = 1,
-    --     description = _ "Stronger with blade and requiem",
-    --     T.effect { apply_to = "attack", increase_damage = 1, name = "ancient_blade" },
-    --     T.effect { apply_to = "attack", increase_damage = 1, name = "requiem" },
-    --     table.unpack(StandardAmlaHeal(5))
-    -- },
-    -- {
-    --     id = "blade_slow",
-    --     _short_desc = "Slowing <BR/>Blade",
-    --     _color = { 79, 253, 235 },
-    --     require_amla = "blade_requiem,blade_requiem,blade_requiem",
-    --     image = "items/sword-holy.png",
-    --     max_times = 1,
-    --     always_display = 1,
-    --     description = _ "Freezes your blade. Add weapon special : slows.",
-    --     T.effect {
-    --         set_icon = "items/sword-holy.png",
-    --         apply_to = "attack",
-    --         name = "ancient_blade",
-    --         T.set_specials {
-    --             mode = "append",
-    --             T.slow {
-    --                 id = "slow",
-    --                 description = _ "This attack slows the target until it ends a turn. Slow halves the damage caused by attacks and the movement cost for a slowed unit is doubled. A unit that is slowed will feature a snail icon in its sidebar information when it is selected.",
-    --                 name = "slows"
-    --             }
-    --         }
-    --     },
-    --     table.unpack(StandardAmlaHeal(10))
-    -- },
-    -- {
-    --     id = "requiem_slow",
-    --     _short_desc = "Slowing <BR/>Requiem",
-    --     _color = { 79, 253, 235 },
-    --     require_amla = "blade_requiem,blade_requiem,blade_requiem",
-    --     image = "attacks/wail.png",
-    --     max_times = 1,
-    --     always_display = 1,
-    --     description = _ "Enhances your requiem. Add weapon special : slows.",
-    --     T.effect {
-    --         apply_to = "attack",
-    --         name = "requiem",
-    --         T.set_specials {
-    --             mode = "append",
-    --             T.slow {
-    --                 id = "slow",
-    --                 description = _ "This attack slows the target until it ends a turn. Slow halves the damage caused by attacks and the movement cost for a slowed unit is doubled. A unit that is slowed will feature a snail icon in its sidebar information when it is selected.",
-    --                 name = "slows"
-    --             }
-    --         }
-    --     },
-    --     table.unpack(StandardAmlaHeal(10))
-    -- },
-    -- {
-    --     id = "blade_requiem_atk",
-    --     _short_desc = "Blade and requiem <BR /> <B> +1</B> str",
-    --     require_amla = "blade_slow,requiem_slow",
-    --     _level_bonus = true,
-    --     image = "items/sword-holy.png",
-    --     max_times = 1,
-    --     always_display = 1,
-    --     description = _ "Faster with with blade and requiem",
-    --     T.effect { apply_to = "attack", name = "ancient_blade", increase_attacks = 1 },
-    --     T.effect { apply_to = "attack", name = "requiem", increase_attacks = 1 },
-    --     table.unpack(StandardAmlaHeal(10))
-    -- },
+    --- attack tree
+    {
+        id = "cleaver",
+        _short_desc = "Cleaver <BR /> <B> +1 </B> dmg",
+        image = "attacks/cleaver.png",
+        max_times = 2,
+        always_display = 1,
+        description = _ "Better with cleaver",
+        T.effect { apply_to = "attack", increase_damage = 1, name = "cleaver" },
+        table.unpack(StandardAmlaHeal(5))
+    },
+    {
+        id = "cleaver_drain",
+        _short_desc = "Drain <BR/>Cleaver",
+        _color = { 79, 253, 235 },
+        require_amla = "cleaver,cleaver",
+        image = "attacks/cleaver_drain.png",
+        max_times = 1,
+        always_display = 1,
+        description = _ "Cleaver absorbs life. Add weapon special : drain.",
+        T.effect {
+            apply_to = "attack",
+            name = "cleaver",
+            T.set_specials {
+                mode = "append",
+                T.drains {
+                    id = "drains",
+                    name = _ "drains",
+                    description = _ "This unit drains health from living units, healing itself for half the amount of damage it deals (rounded down).",
+                }
+            }
+        },
+        table.unpack(StandardAmlaHeal(10))
+    },
+    {
+        id = "cleaver_atk",
+        _short_desc = "Cleaver <BR /> <B> +1</B> str",
+        require_amla = "cleaver_drain",
+        image = "attacks/cleaver.png",
+        max_times = 2,
+        always_display = 1,
+        description = _ "Faster with cleaver",
+        T.effect { apply_to = "attack", name = "cleaver", increase_attacks = 1 },
+        table.unpack(StandardAmlaHeal(10))
+    },
+
 
     {
         id = "default",
