@@ -88,33 +88,25 @@ Adjacent own units of equal or higher level will do %d%% more damage. ]], value)
         table.unpack(StandardAmlaHeal(10))
     },
     {
-        id = "allies_defense",
+        id = "def_aura_xavier",
         _short_desc = "Bonus defense",
         require_amla = "better_leadership,better_leadership,better_leadership,sword_precis,crossbow_marksman",
-        image = "icons/dress_silk_green.png",
+        image = "halo/defense-aura-small.png",
         max_times = 3,
         always_display = 1,
         description = Fmt(_ "Adjacent allies gain additionnal %d%% defense",
             V.ALLIES_DEFENSE_RATIO),
         T.effect {
             apply_to = "remove_ability",
-            T.abilities { T.customName { id = "allies_defense" } }
+            T.abilities { T.defense { id = "def_aura" } }
         },
         function(unit) -- need the current ability level
-            local current_lvl = unit:ability_level("allies_defense") or 0
-            local value = (current_lvl + 1) * V.ALLIES_DEFENSE_RATIO
+            local current_lvl = unit:ability_level("def_aura") or 0
+            local next_lvl = current_lvl + 1
+            local value = next_lvl * V.ALLIES_DEFENSE_RATIO
             return T.effect {
                 apply_to = "new_ability",
-                T.abilities {
-                    T.customName {
-                        id = "allies_defense",
-                        _level = current_lvl + 1,
-                        name = _ "Defense-" .. ROMANS[current_lvl + 1],
-                        description = Fmt(_ "Adjacent allies gain %d%% defense",
-                            value),
-                        halo_image_self = "halo/defense-aura.png"
-                    }
-                }
+                DefenseAura(value, next_lvl)
             }
         end,
         table.unpack(StandardAmlaHeal(10))

@@ -89,17 +89,23 @@ function SWeapon()
     return new_weapon(t)
 end
 
+---@class ability
+---@field name tstring
+---@field description tstring
+---@field _level integer?
+---@field value integer?
+
 ---Return the ability with id 'id_ability'.
 ---'ability_name' defaut to "customName"
 ---@param u unit
 ---@param id_ability string
 ---@param ability_name string?
----@return WMLTable?
+---@return ability?
 function wesnoth.units.get_ability(u, id_ability, ability_name)
     ability_name = ability_name or "customName"
     local list_abilities = wml.get_child(u.__cfg, "abilities") or {}
     for ab in wml.child_range(list_abilities, ability_name) do
-        if ab.id == id_ability then return ab end
+        if ab.id == id_ability then return ab --[[@as ability]] end
     end
     return nil
 end
@@ -112,7 +118,7 @@ end
 ---@return integer|nil
 function wesnoth.units.ability_level(u, id_ability, ability_name)
     local ab = u:get_ability(id_ability, ability_name)
-    return ab and ab._level --[[@as integer|nil]] or nil
+    return ab and ab._level or nil
 end
 
 -- Return an T.effect wml tag augmenting all resitances by the given number (positive is better)
@@ -155,6 +161,44 @@ function AddDefenses(def)
             unwalkable = -def,
             fungus = -def,
             impassable = -def
+        }
+    }
+end
+
+---Return a T.abilities resitance affecting allies (not the unit itself)
+---@param id string
+---@param value integer
+---@param lvl integer
+---@return WMLTag
+function ResistanceAura(id, value, lvl)
+    return T.abilities {
+        T.resistance {
+            id = id,
+            _level = lvl,
+            add = value,
+            affect_self = false,
+            affect_allies = true,
+            T.affect_adjacent {},
+            description = Fmt(_ "Adjacent allies resistances increased by %d%%", value),
+            name = "Resistance aura " .. ROMANS[lvl],
+            halo_image_self = "halo/resistance-aura.png~O(0.7)",
+        }
+    }
+end
+
+---Return a custom T.abilities with id 'def_aura' affecting allies (not the unit itself)
+---@param value integer
+---@param lvl integer
+---@return WMLTag
+function DefenseAura(value, lvl)
+    return T.abilities {
+        T.customName {
+            id = "def_aura",
+            _level = lvl,
+            value = value,
+            description = Fmt(_ "Adjacent allies gain %d%% defense", value),
+            name = _ "Defense aura " .. ROMANS[lvl],
+            halo_image_self = "halo/defense-aura.png~O(0.7)"
         }
     }
 end

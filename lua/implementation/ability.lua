@@ -150,35 +150,42 @@ function AB.elusive()
     end
 end
 
--- ----------------------- ALLIED DEFENSE (Xavier) -----------------------
+-- ----------------------- Defense bonus auras (Xavier and Porthos) -----------------------
 
 -- Called on move event
 -- We first remove passed defense bonus
--- Then we find the unit who should benefit from Xavier ability
--- Then we apply a trait modification with id _tmp_allies_defense_bonus
-local function update_xavier_defense()
-    local xavier = wesnoth.units.get("xavier")
-    local lvl = xavier:ability_level("allies_defense")
-    if not lvl then return end
+-- Then we find the unit who should benefit from the ability
+-- Then we apply a trait modification with id def_aura_bonus_XXX
+local function update_defense_auras()
+    ---@param unit unit
+    local function apply(unit)
+        local ab = unit:get_ability("def_aura")
+        if not ab then return end
 
-    local trait_id = "_tmp_allies_defense_bonus"
-    remove_trait(trait_id)
+        local trait_id = "def_aura_bonus_" .. unit.id
+        remove_trait(trait_id)
 
-    local adj_xavier = wesnoth.units.find_on_map {
-        T.filter_adjacent { id = "xavier" },
-        T.filter_side { T.allied_with { side = xavier.side } }
-    }
-    local bonus_def = Conf.amlas.xavier.values.ALLIES_DEFENSE_RATIO * lvl
-    for i, u in pairs(adj_xavier) do
-        u:add_modification("trait", {
-            id = trait_id,
-            name = _ "Xavier's defense",
-            description = Fmt(
-                _ "Xavier is so strong! He grants us <b>%d%%</b> bonus defense",
-                bonus_def),
-            AddDefenses(bonus_def)
-        })
+        local adjacent_units = wesnoth.units.find_on_map {
+            T.filter_adjacent { id = unit.id },
+            T.filter_side { T.allied_with { side = unit.side } }
+        }
+        local bonus_def = ab.value
+        for i, u in pairs(adjacent_units) do
+            u:add_modification("trait", {
+                id = trait_id,
+                name = _ "Defense aura",
+                description = Fmt(
+                    _ "%s is so strong! He grants us <b>%d%%</b> bonus defense",
+                    unit.name, bonus_def),
+                AddDefenses(bonus_def)
+            })
+        end
     end
+
+    local xavier = wesnoth.units.get("xavier")
+    if xavier then apply(xavier) end
+    local porthos = wesnoth.units.get("porthos")
+    if porthos then apply(porthos) end
 end
 
 -- ------------------------------------ Formations (Xavier) ------------------------------------
@@ -376,10 +383,14 @@ function AB.union_debuf()
 end
 
 --- refresh abilities computed from units positions
-local function on_advance()
+local function on_post_advance()
     local u = PrimaryUnit()
+
+    if u:ability_level("def_aura") then
+        update_defense_auras()
+    end
+
     if (u.id == "xavier") then
-        update_xavier_defense()
         update_xavier_formation()
     end
     if (u.id == "sword_spirit") then
@@ -397,7 +408,7 @@ local function on_moveto()
         --- only update when an ally moves
         if wesnoth.sides.is_enemy(moved_unit.side, xavier.side) then return end
 
-        update_xavier_defense()
+        update_defense_auras()
         update_xavier_formation()
     end
 
@@ -524,7 +535,7 @@ end
 --- Hook into the event system
 ---
 AB.on_moveto = on_moveto
-AB.post_advance = on_advance
+AB.post_advance = on_post_advance
 
 function AB.select()
     ANIM.clear_overlays()
