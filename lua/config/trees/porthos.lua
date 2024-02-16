@@ -1,4 +1,4 @@
-local ADAPTATIVE_RESILIENCE_BASE = 40 -- max bonus def (for 0 hp)
+local ADAPTATIVE_RESILIENCE_BASE = 30 -- max bonus def (for 0 hp)
 local ADAPTATIVE_RESILIENCE_STEP = 10 -- ADAPTATIVE_RESILIENCE_BASE + lvl * this
 
 local V = {                           -- numerical values
@@ -73,11 +73,11 @@ Conf.amlas.porthos = {
         function(unit)
             local current_lvl = unit:ability_level("adaptative_def_res") or 0
             local next_lvl = current_lvl + 1
-            local value = V.DEF_AURA * next_lvl
             return T.effect {
                 apply_to = "new_ability",
                 T.abilities { T.customName {
                     id = "adaptative_def_res",
+                    _level = next_lvl,
                     name = _ "Adaptative resilience " .. ROMANS[next_lvl],
                     description = Fmt(_ "Porthos gains up to %d%% defense and resistance when he is low health",
                         V.adaptative_resilience(next_lvl)),

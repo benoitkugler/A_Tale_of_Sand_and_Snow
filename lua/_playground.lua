@@ -22,10 +22,10 @@ local function setup_units()
         { id = "morgane", type = "morgane3", name = "Morgane" },
         { id = "xavier",  type = "xavier4",  name = "Xavier" },
         { id = "mark",    type = "mark1",    name = "Mark" },
-        { id = "porthos", type = "porthos1", name = "Porthos", hitpoints = 1,
-            T.abilities { T.customName { id = "adaptative_def_res", name = "Adaptative", _level = 1 } },
-            T.abilities { T.customName { id = "pain_adept", _level = 1 } },
-            T.abilities { T.customName { id = "sacrifice", name = "Sacrifice", _level = 3 } }
+        { id = "porthos", type = "porthos1", name = "Porthos",
+            -- T.abilities { T.customName { id = "adaptative_def_res", name = "Adaptative", _level = 1 } },
+            -- T.abilities { T.customName { id = "pain_adept", _level = 1 } },
+            -- T.abilities { T.customName { id = "sacrifice", name = "Sacrifice", _level = 3 } }
         },
     }) do
         local hero = wesnoth.units.create(cfg)

@@ -39,8 +39,8 @@ end
 
 
 
-local LVL_0_DESC = _ "<span style='italic'>Skill not learned yet</span>"
-local MAX_LVL_REACHED = _ "<span style='italic'>Max level reached </span>"
+local LVL_0_DESC = _ "<span style='italic'>Skill not learned yet. </span>"
+local MAX_LVL_REACHED = _ "<span style='italic'>Max level reached. </span>"
 
 ---@param lvl integer
 ---@param callable fun(lvl:integer):integer|integer[]
