@@ -26,7 +26,7 @@ Conf.special_xp_gain = {
     },
     bunshop = {
         ATK_BACKSTAB = 2, -- * def.level
-        ONE_SHOT = 4      -- * dying.level
+        ONE_SHOT = 6      -- * dying.level
     },
     xavier = {
         LEADERSHIP = 1,  -- * ally level

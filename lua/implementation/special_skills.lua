@@ -586,3 +586,28 @@ function SPECIAL_SKILLS.sacrifice(lvl, unit)
         }
     })
 end
+
+-------------------------------------- Bunshop --------------------------------------
+
+function SPECIAL_SKILLS.fangs_heal(lvl, unit)
+    local id, old_id = _get_ids(lvl, "fangs_heal")
+    unit:remove_modifications({ id = old_id }, "object")
+
+    local heal_on_hit = Conf.special_skills.bunshop.fangs_heal(lvl)
+    unit:add_modification('object', {
+        id = id,
+        T.effect {
+            apply_to = "attack",
+            T.set_specials {
+                mode = "append",
+                T.heal_on_hit {
+                    id = "fangs_heal",
+                    _level = lvl,
+                    name = _ "heal",
+                    description = Fmt(_ "Bunshop heals himself by <b>%d</b> hp per hit.", heal_on_hit),
+                    value = heal_on_hit,
+                }
+            }
+        }
+    })
+end

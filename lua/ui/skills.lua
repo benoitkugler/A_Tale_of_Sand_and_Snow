@@ -221,7 +221,7 @@ local function special_skills_preshow(unit, widget)
 
         ---@type special_skill_config
         local comp = skills_table[i]
-        local lvl = unit:custom_variables().special_skills[comp.name] or 0
+        local lvl = unit:custom_variables().special_skills[comp.id] or 0
         if lvl == comp.max_lvl then
             text_pres_suiv.marked_up_text = MAX_LVL_REACHED
             titre_pres.label = ""
@@ -236,7 +236,7 @@ local function special_skills_preshow(unit, widget)
             titre_pres.marked_up_text = _ "<span style='italic' color ='#BFA63F'>Next level : </span>"
 
             local formatted_desc = format_description(lvl + 1,
-                skills_table[comp.name],
+                skills_table[comp.id],
                 comp.desc, comp.color)
             text_pres_suiv.marked_up_text = formatted_desc
             if state.xp_dispo >= comp.costs[lvl + 1] then
@@ -270,7 +270,7 @@ local function special_skills_preshow(unit, widget)
             local img_lvl = lcomp:find(i, "img_lvl") --[[@as image]]
 
             local max_lvl = v["max_lvl"]
-            local lvl = unit:custom_variables().special_skills[v.name] or 0
+            local lvl = unit:custom_variables().special_skills[v.id] or 0
             for j = 1, lvl, 1 do
                 state.xp_dispo = state.xp_dispo - v.costs[j]
             end
@@ -278,10 +278,10 @@ local function special_skills_preshow(unit, widget)
                 if not v.require_avancement or
                     (unit:skills_level()[v.require_avancement.id] ~= nil) then
                     local formatted_title =
-                        string.format("<span color='%s'>%s</span>", v.color, v.name_aff)
+                        string.format("<span color='%s'>%s</span>", v.color, v.name)
                     local formatted_desc = lvl == 0
                         and LVL_0_DESC
-                        or format_description(lvl, skills_table[v.name],
+                        or format_description(lvl, skills_table[v.id],
                             v.desc, v.color)
                     text_comp.marked_up_text = formatted_title .. "\n" .. formatted_desc
                     img_comp.label = v.img
@@ -295,15 +295,15 @@ local function special_skills_preshow(unit, widget)
                 end
             else
                 text_comp.marked_up_text = _ "<span style='italic'>Require level " .. v.require_lvl ..
-                    "</span>"
+                    ". </span>"
                 img_comp.label = v.img
                 state.is_skill_active[i] = false
             end
         end
 
         -- show xp amount
-        text_xp_dispo.marked_up_text = _ " <span font_style='italic' ><span color ='#BFA63F'  >Available points  :  </span><span font_weight ='bold' >" ..
-            state.xp_dispo .. "</span></span>"
+        text_xp_dispo.marked_up_text = _ " <span font_style='italic' ><span color ='#BFA63F'  >Available points  :  </span><b>" ..
+            state.xp_dispo .. "</b></span>"
         text_xp_total.marked_up_text = _ " <span font_style='italic'  color ='#BFA63F'  >Total points:  " ..
             state.xp_total .. "</span>"
     end
@@ -331,10 +331,10 @@ local function special_skills_preshow(unit, widget)
             local i = lcomp.selected_index
             local comp = skills_table[i]
             local ss = unit:custom_variables().special_skills
-            local newlvl = (ss[comp.name] or 0) + 1
-            ss[comp.name] = newlvl
+            local newlvl = (ss[comp.id] or 0) + 1
+            ss[comp.id] = newlvl
             unit:custom_variables().special_skills = ss
-            SPECIAL_SKILLS[comp.name](newlvl, unit)
+            SPECIAL_SKILLS[comp.id](newlvl, unit)
             AMLA.update_lvl(unit)  -- needed not to loose extras LVL, removed by u:remove_modifications
             special_skills_reset() -- reset graphics
         else
