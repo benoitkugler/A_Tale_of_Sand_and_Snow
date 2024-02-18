@@ -44,7 +44,7 @@ Conf.amlas.bunshop = {
         id = "defense",
         _short_desc = "Better defense",
         image = "icons/dress_silk_green.png",
-        require_amla = "pm,pm",
+        require_amla = "skirmisher",
         max_times = 3,
         always_display = 1,
         description = Fmt(_ "More nimble, +%d%% defense", V.BONUS_DEF),
@@ -77,7 +77,7 @@ Conf.amlas.bunshop = {
             name = "fangs",
             T.set_specials {
                 mode = "append",
-                T.bersek {
+                T.berserk {
                     active_on = "offense",
                     id = "berserk",
                     name = _ "berserk",

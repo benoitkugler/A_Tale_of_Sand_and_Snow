@@ -14,7 +14,7 @@ local function setup_units()
         { id = "drumar", type = "drumar4", name = "Drumar" },
         { id = "rymor",  type = "rymor4",  name = "Rymor" },
         { id = "bunshop", type = "bunshop3", name = "Bunshop",
-            T.abilities { T.customName { id = "elusive", name = "Elusive", _level = 1 } },
+            -- T.abilities { T.customName { id = "elusive", name = "Elusive", _level = 1 } },
         },
         { id = "sword_spirit", type = "sword_spirit4", name = "Gondhul",
             T.abilities { T.customName { id = "war_jump", name = "War jump", _level = 1 } },
