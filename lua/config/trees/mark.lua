@@ -86,6 +86,28 @@ Conf.amlas.mark = {
         AddDefenses(V.BONUS_DEF),
         table.unpack(StandardAmlaHeal(5))
     },
+    {
+        id = "elusive",
+        _level_bonus = true,
+        _short_desc = "Elusive",
+        image = "icons/boots_elven.png",
+        require_amla = "defense,defense,defense",
+        max_times = 1,
+        always_display = 1,
+        description = _ "Mark is so swift that he may now sneak behind ennemies.",
+        T.effect {
+            apply_to = "new_ability",
+            T.abilities {
+                T.customName {
+                    id = "elusive",
+                    _level = 1,
+                    description = _ "Mark may access hex behind ennemy lines.",
+                    name = "Elusive"
+                }
+            }
+        },
+        table.unpack(StandardAmlaHeal(10))
+    },
     -- offense tree
     {
         id = "mace_dmg",
