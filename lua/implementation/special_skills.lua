@@ -101,7 +101,8 @@ function SPECIAL_SKILLS.atk_brut(lvl, unit)
         damage = atk.damage * ratio / 100,
         number = atk.number,
         description = _ "ether sword",
-        icon = "attacks/atk_brut.png"
+        icon = "attacks/atk_brut.png",
+        T.specials(atk:specials()),
     }
 
     unit:add_modification(
@@ -139,6 +140,8 @@ function SPECIAL_SKILLS.transposition(lvl, unit)
             }
         }
     )
+
+    UI.refresh_special_skills_menu()
 end
 
 -- ----------------------------------- Brinx -----------------------------------

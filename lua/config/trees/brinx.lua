@@ -43,7 +43,7 @@ Conf.amlas.brinx = {
                 type = "fire",
                 description = _ "burning bow",
                 damage = atk_bow.damage,
-                T.specials(atk_bow.specials)
+                T.specials(atk_bow:specials())
             }
             return effect
         end,

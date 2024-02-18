@@ -144,8 +144,8 @@ Conf.special_skills.vranken = {
         desc = _ "Grants a sword which deals <span color='#e7cfa9'>true damage</span>, but deals %s%% of your usual sword damage ",
         costs = { 100, 50, 50 }
     },
-    ---@type fun(lvl:integer): integer
-    atk_brut = function(lvl) return 65 + (lvl * 15) end,
+    ---@param lvl integer
+    atk_brut = function(lvl) return 60 + (lvl * 10) end,
     {
         img = "special_skills/transposition.png",
         max_lvl = 2,

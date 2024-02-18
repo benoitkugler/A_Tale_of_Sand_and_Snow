@@ -11,13 +11,12 @@ local function show_special_skill_cd(unit)
     local skill_data = Conf.heroes.actif_skills[unit.id]
     if not skill_data then return end
     local vars = unit:custom_variables()
-    local skill_name = skill_data[1]
-    local level = (vars.special_skills or {})[skill_name]
+    local level = (vars.special_skills or {})[skill_data.id]
     if not level then return end
     local cd = vars.special_skill_cd or 0
     local tooltip = (cd > 0) and
-        Fmt(_ "Special skill cooldown : <b>%d</b> turn%s", cd, cd == 1 and "" or "s")
-        or _ "Special skill <b>ready</b> !"
+        Fmt(_ "Special skill (%s) cooldown : <b>%d</b> turn%s", skill_data.name, cd, cd == 1 and "" or "s")
+        or Fmt(_ "Special skill %s <b>ready</b> !", skill_data.name)
     return T.element { image = IMAGE_SPECIAL_SKILL, tooltip = tooltip }
 end
 

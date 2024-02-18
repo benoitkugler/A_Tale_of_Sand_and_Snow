@@ -76,6 +76,10 @@ function weapon_mt:special_level(id_special, special_name)
     return (spe or {})._level
 end
 
+function weapon_mt:specials()
+    return wml.get_child(self, "specials")
+end
+
 ---Returns the weapon used by the primary unit
 ---@return weapon
 function PWeapon()

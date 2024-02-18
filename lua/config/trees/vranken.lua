@@ -308,8 +308,8 @@ Conf.amlas.vranken = {
         always_display = 1,
         description = _ "Attacking with swords deals 75% damage to nearby ennemies.",
         T.effect {
-            name = "sword",
             apply_to = "attack",
+            name = "sword",
             T.set_specials {
                 mode = "append",
                 T.customName {

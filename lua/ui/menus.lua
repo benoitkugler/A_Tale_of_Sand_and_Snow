@@ -71,7 +71,8 @@ end
 local MENUS_SPECIAL_SKILLS = {
     vranken = { _ "Transposition", AB.transposition }
 }
-function UI.turn_start()
+
+function UI.refresh_special_skills_menu()
     for unit_id, datas in pairs(MENUS_SPECIAL_SKILLS) do
         local label = datas[1]
         local id_menu = unit_id .. "_special_skill"
@@ -89,6 +90,10 @@ function UI.turn_start()
             end
         end
     end
+end
+
+function UI.turn_start()
+    UI.refresh_special_skills_menu()
 end
 
 function UI.set_menu_skills()

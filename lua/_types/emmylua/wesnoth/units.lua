@@ -16,7 +16,6 @@
 ---@field defense_weight number
 ---@field accuracy integer
 ---@field parry integer
----@field specials WMLTable
 ---@field __cfg WMLTable
 
 ---Defines a unit type

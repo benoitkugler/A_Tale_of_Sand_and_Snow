@@ -27,11 +27,11 @@ Conf.heroes = {
 }
 
 -- name, label, action for skills with cooldown
----@alias actif_skill {[1]:string, [2]:string, [3]:string}
+---@alias actif_skill {id:string, name:string}
 ---@type table<Hero, actif_skill>
 Conf.heroes.actif_skills = {
-    vranken = { "transposition", _ "Transposition", "AB.transposition()" },
-    xavier = { "O_formation", _ "Union debuf", "AB.union_debuf()" }
+    vranken = { id = "transposition", name = _ "Transposition" },
+    xavier = { id = "O_formation", name = _ "Union debuf" }
 }
 
 -- Should be called once, at first use of the hero
