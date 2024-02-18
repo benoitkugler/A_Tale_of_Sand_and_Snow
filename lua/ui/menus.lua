@@ -63,7 +63,7 @@ end
 ---@param x integer[]
 ---@param y integer[]
 function UI.setup_menu_elusive(x, y)
-    set_menu_item_at("elusive", _ "Sneak here with Bunshop !", "menu/ellusive.png", x,
+    set_menu_item_at("elusive", _ "Sneak here with Mark !", "menu/ellusive.png", x,
         y)
 end
 
