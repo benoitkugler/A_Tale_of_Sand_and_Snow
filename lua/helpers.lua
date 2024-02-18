@@ -51,6 +51,8 @@ end
 
 
 ---@class special
+---@field name tstring
+---@field description tstring
 ---@field _level integer?
 ---@field value integer?
 

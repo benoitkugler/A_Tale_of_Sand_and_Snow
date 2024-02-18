@@ -233,7 +233,7 @@ Conf.amlas.vranken = {
             T.set_specials {
                 mode = "append",
                 T.customName {
-                    description = _ "Reduces damages of the target by 1per hit, until the end of the scenario.",
+                    description = _ "Reduces damages of the target by 1 per hit, until the end of the scenario.",
                     id = "mayhem",
                     active_on = "offense",
                     name = "mayhem"

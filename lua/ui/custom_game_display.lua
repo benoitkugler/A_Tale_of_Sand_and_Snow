@@ -100,7 +100,45 @@ function wesnoth.interface.game_display.unit_hp()
     return s
 end
 
--- Affichage des traits modifiés pour objets
+local old_unit_weapons = wesnoth.interface.game_display.unit_weapons
+function wesnoth.interface.game_display.unit_weapons()
+    local u = wesnoth.interface.get_displayed_unit()
+    if not u then return {} end
+
+
+    local tooltips = {}
+    for attack in wml.child_range(u.__cfg, "attack") do
+        ---@cast attack weapon
+
+        local specials = {}
+        for _, special_tag in ipairs(wml.get_child(attack, "specials") or {}) do
+            local special = special_tag[2]
+            ---@cast special special
+            table.insert(specials, string.format("\t<b>%s</b> : %s", special.name, special.description))
+        end
+
+        local tooltip = string.format("<b>%d x %d</b> %s\n%s\n",
+            attack.damage, attack.number, attack.description,
+            stringx.join(specials, "\n")
+        )
+
+        table.insert(tooltips, tooltip)
+    end
+
+
+    local elements = old_unit_weapons()
+    --- replace the first element to add a tooltip with all attacks
+    elements[1] = T.element {
+        text = "<span color='#c4b093'>" .. _ "Attacks" .. "</span>\n",
+        tooltip = stringx.join(tooltips, "\n"),
+    }
+
+
+
+    return elements
+end
+
+-- Display objects
 local old_unit_traits = wesnoth.interface.game_display.unit_traits
 function wesnoth.interface.game_display.unit_traits()
     local u = wesnoth.interface.get_displayed_unit()
