@@ -81,7 +81,7 @@ ES = {
         local dying = PrimaryUnit()
         if dying.id == "ennemy_leader1" or dying.id == "ennemy_leader2" then
             -- check if one leader is already dead
-            if not (wesnoth.units.get("ennemy_leader1") and wesnoth.units.get("ennemy_leader1")) then
+            if not (wesnoth.units.get("ennemy_leader1") and wesnoth.units.get("ennemy_leader2")) then
                 Message(dying.id, _ "Herk !")
                 Message("vranken", _ "Nice jobs soldiers, the Ark is ours !")
                 Message("rymor", _ "Congrats to the youngsters for your first fight under the Vranken company !")

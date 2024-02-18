@@ -98,7 +98,7 @@ ES = {
         local dying = PrimaryUnit()
         if dying.id == "leader" then
             Message("xavier",
-                _ "Haha ! We defeated them ! You dont need to be scared anymore, Morgane !")
+                _ "Haha ! We defeated them ! You don't need to be scared anymore, Morgane !")
             Message("morgane",
                 _ "Was I ? ... <i>(Turning back to Bunsop)</i> So, who are you ?")
             Message("xavier",
