@@ -6,7 +6,7 @@ local function on_kill()
     local dying = PrimaryUnit()
     if dying.id == "rymor" then
         Message("rymor", _ "I fall ? Is this even possible ...")
-        Message("vranken", _ "No ! Rymor ! ")
+        Message("vranken", _ "No ! Rymôr ! ")
     elseif dying.id == "drumar" then
         Message("drumar",
             _ "I protected you, Vranken, I can rest in peace now...")

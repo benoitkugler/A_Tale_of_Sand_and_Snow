@@ -49,7 +49,7 @@ local function on_turn1()
     Message("ennemy_leader2", _ "Hurgh !")
 
     Message("vranken",
-        _ "(To Rymor) Hum, I don't like being delayed during such an important expedition, but well .. We have to free the path to the White Ark for the whole army !")
+        _ "(To Rymôr) Hum, I don't like being delayed during such an important expedition, but well .. We have to free the path to the White Ark for the whole army !")
     Message("rymor", _ "(Grinning) Some action is always good for our cadets. The sooner they fight, the better !")
     Message("vranken", _ "To arms, soldiers !")
     Message("ennemy_leader1", _ "Kill them all !")

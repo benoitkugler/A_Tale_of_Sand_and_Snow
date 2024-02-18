@@ -61,7 +61,7 @@ local function bunshop_on_kill(kil, dyi)
     end
 end
 
--- ----------------------- Rymor -----------------------
+-- ----------------------- Rymôr -----------------------
 function on_attack_funcs.rymor(atk, def)
     if def.id == "rymor" then
         def:custom_variables().xp = def:custom_variables().xp + atk.level * V.rymor.DEF -- defense

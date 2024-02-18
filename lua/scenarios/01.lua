@@ -17,13 +17,13 @@ end
 
 local function presente_brinx(is_jod_dead)
     local s = is_jod_dead and
-        _ "As he has lost his revered Lieutenant, Brinx is feeling hatred towards muspellians, \z
-        and this hatred will make him stronger."
+        _ "As he lost his revered Lieutenant, Brinx is feeling hatred towards muspellians, \z
+        and this hatred will make him stronger. "
         or
         _ "As he was struck by the savage muspellian raid on Dead Island, Brinx is feeling \z
-        hatred towards muspellians, and this hatred will make him stronger."
+        hatred towards muspellians, and this hatred will make him stronger. "
     Popup(_ "Welcome", Fmt(_ "\tHello friend, and welcome to this campaign. \z
-        Let me introduce you to your first hero : <span color='%s' ' weight='bold'> Brinx</span>." .. s ..
+        Let me introduce you to your first hero : <span color='%s' weight='bold'>Brinx</span>. " .. s ..
         "<span weight='bold'>Fighting muspellians</span> will eventually unlock unique \z
         skills for Brinx.\z
         \n\tYou can access more information in the <span style=\'italic\'>Skills</span> menu, \z

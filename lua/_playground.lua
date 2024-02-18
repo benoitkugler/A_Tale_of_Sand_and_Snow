@@ -12,7 +12,7 @@ local function setup_units()
     for __, cfg in ipairs({
         { id = "brinx",  type = "brinx4",  name = "Brinx" },
         { id = "drumar", type = "drumar4", name = "Drumar" },
-        { id = "rymor",  type = "rymor4",  name = "Rymor" },
+        { id = "rymor",  type = "rymor4",  name = "Rymôr" },
         { id = "bunshop", type = "bunshop3", name = "Bunshop",
             -- T.abilities { T.customName { id = "elusive", name = "Elusive", _level = 1 } },
         },

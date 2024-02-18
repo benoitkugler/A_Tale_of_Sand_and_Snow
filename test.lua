@@ -90,7 +90,7 @@ function Start()
     local rymor = wesnoth.units.create {
         type = "rymor4",
         id = "rymor",
-        name = "Rymor",
+        name = "Rymôr",
         moves = 10
     }
     rymor:init_hero()
