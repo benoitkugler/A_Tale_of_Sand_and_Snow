@@ -79,6 +79,16 @@ local function turn1()
     wesnoth.units.to_map({ type = "Bowman_nifhell", side = 1 }, 12, 27)
     wesnoth.units.to_map({ type = "Heavy Infantryman_nifhell", side = 1 }, 10, 26)
     Message("brinx", _ "Thanks sir !")
+
+
+    wml.fire("objectives", {
+        { "objective", { description = _ "Resist until turn 12.", condition = "win" } },
+        { "objective", { description = _ "Death of Brinx.", condition = "lose" } },
+        { "note",      { description = _ "No gold carry over next scenario." } },
+        { "note", {
+            description = _ "<span style='italic'>Hint: You can't kill their leader, just play it safe and run if need be.</span>"
+        } }
+    })
 end
 
 local function turn2()
