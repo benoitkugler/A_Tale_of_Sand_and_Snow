@@ -6,12 +6,15 @@ _ = wesnoth.textdomain "wesnoth-A_Tale_of_Sand_and_Snow"
 
 ---CustomGlobalVariables is a WML table storing
 ---variables used by this campaing
+---This is a shallow proxy : writing the direct fields
+---will update the underlying state (but nested objects must be updated and stored back)
 ---@class CustomGlobalVariables
 ---@field showed_menus table<string, boolean>
 ---@field table_status any
 ---@field table_status_shielded any
 ---@field player_objects table<string,string> # object -> owner
 ---@field player_heroes string # comma separated
+---@field s6_gates_activated_turn integer? # turn starting the activation
 
 ---InitVariables creates global variables.
 ---It should be called once at campaign startup

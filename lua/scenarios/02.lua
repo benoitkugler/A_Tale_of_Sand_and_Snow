@@ -28,7 +28,7 @@ local function create_sword_spirit()
         "' weight='bold'> Göndhul</span>, " ..
         "the Xaintrailles family warden. He is linked to Vranken by oath, " ..
         "advising Vranken and finally enhancing Vranken's skills. " ..
-        '\n\tYou will find more information in the <span style=\'italic\'>"Skills"</span> menu, ' ..
+        '\n\tYou will find more information in the <span style=\'italic\'>Skills</span> menu, ' ..
         "by right-clicking on Vranken. " ..
         "\n\t<span style='italic'>Special note : Göndhul struggle with living beings.. " ..
         'Pay attention to his <span color=\'red\'>"Fear of love"</span> ability.</span>')
@@ -60,7 +60,7 @@ local function create_sword_spirit()
 end
 
 local function on_see_ennemy()
-    -- check if we already have seen one
+    -- this function is called several times
     if wesnoth.units.get("sword_spirit") then return end
     create_sword_spirit()
 end
@@ -96,7 +96,7 @@ local function presentation()
         "<span color='" .. Conf.heroes.colors.bunshop ..
         "' weight='bold'>Bunshop</span>, as nimble and fast as a storm. " ..
         "\nEach of them has unique skills and ways of enhancing them." ..
-        '\nYou will find more information in the <span style=\'italic\'>"Skills"</span> menu, ' ..
+        '\nYou will find more information in the <span style=\'italic\'>Skills</span> menu, ' ..
         "by right-clicking on heroes.")
 end
 

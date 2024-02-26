@@ -275,3 +275,20 @@ end
 function wesnoth.units.get_recall(id)
     return wesnoth.units.find_on_recall({ id = id })[1]
 end
+
+---Returns the list of all the unit types with
+---race 'muspell' and level included in [min_level, max_level]
+---Special units like otchigin are not returned
+---@param min_level integer
+---@param max_level integer
+function MuspellUnits(min_level, max_level)
+    local ids = {} ---@type string[]
+    for id, ut in pairs(wesnoth.unit_types) do
+        local level = ut.__cfg.level -- workaround bug https://github.com/wesnoth/wesnoth/issues/8456
+        if (not id:find("otchigin")) and ut.race == 'muspell' and
+            min_level <= level and level <= max_level then
+            table.insert(ids, id)
+        end
+    end
+    return ids
+end

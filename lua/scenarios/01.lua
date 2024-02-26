@@ -42,6 +42,9 @@ local function prestart()
     wml.fire("label", { x = 13, y = 1, text = _ "Towards North White Ark" })
     wml.fire("label", { x = 55, y = 6, text = _ "East White Ark" })
     wml.fire("label", { x = 16, y = 23, text = _ "White Arks Facility" })
+
+    -- setup the enemy recruit list
+    wesnoth.sides.get(3).recruit = MuspellUnits(1, 2)
 end
 
 local function start()

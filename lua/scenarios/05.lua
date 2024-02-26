@@ -31,7 +31,7 @@ local function on_presente_mark()
         Conf.heroes.colors.mark .. "' weight='bold'>Mârk</span>, " ..
         "a bold and brave kid. His strengh and power will grow over the battles," ..
         " making it a fierce melee fighter !" ..
-        '\n\tYou will find more information in the <span style=\'italic\'>"Skills"</span> menu, ' ..
+        '\n\tYou will find more information in the <span style=\'italic\'>Skills</span> menu, ' ..
         "by right-clicking on Mârk. ")
     mark.status._was_presented = true
 end
@@ -67,7 +67,7 @@ local function on_turn1()
         { "objective", { description = _ "Death of any of your heroes.", condition = "lose" } },
         { "note",      { description = _ "No gold carry over next scenario." } },
         { "note", {
-            description = _ "<span style='italic'>Hint:This is your first battle, and your are still quite weak. " ..
+            description = _ "<span style='italic'>Hint: This is your first battle, and your are still quite weak. " ..
                 "Recruit some expendable units and train your heroes as well as possible.</span>"
         }
         }

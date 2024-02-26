@@ -40,7 +40,7 @@ local function on_presente_xavier()
         Conf.heroes.colors.xavier .. "' weight='bold'>Xavier</span>, " ..
         "a young and talented military student. His intuition on military tactics " ..
         " have to be battle-tested, but may become very useful to you..." ..
-        '\n\tYou will find more information in the <span style=\'italic\'>"Skills"</span> menu, ' ..
+        '\n\tYou will find more information in the <span style=\'italic\'>Skills</span> menu, ' ..
         "by right-clicking on Xavier. ")
     xavier.status._was_presented = true
 end
