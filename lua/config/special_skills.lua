@@ -23,8 +23,6 @@ Conf.special_skills = {}
 ---@field help_ratios tstring
 ---@field [integer] special_skill_config
 
--- TODO: A implémenter
-Conf.special_skills.rymor = {}
 
 Conf.special_skills.mark = {}
 Conf.special_skills.sword_spirit = {}
@@ -365,4 +363,24 @@ Conf.special_skills.bunshop = {
     },
     ---@param lvl integer
     fangs_heal = function(lvl) return 2 + lvl * 2 end
+}
+
+Conf.special_skills.rymor = {
+    help_des = _ "Rymôr excels in defense, and his aura makes nearby allies fight better as well. \z
+    Rymôr earns experience everytime he or an adjacent ally is under attack.",
+    help_ratios = Fmt(
+        _ "(<b>+ %d</b> per self defense, <b>+ %d</b> per ally defense, scaling with opponent level)",
+        V.rymor.DEF, V.rymor.ADJ_NEXT),
+    {
+        img = "attacks/heater-shield.png",
+        max_lvl = 3,
+        id = "combat_shield",
+        color = "#f36e0a",
+        name = _ "Shield : ",
+        require_lvl = 3,
+        desc = _ "At each new turn, Rymôr grants himself and adjacent allies a shield of %s%% of his maximum hitpoints.",
+        costs = { 60, 30, 30 }
+    },
+    ---@param lvl integer # the percentage of rymor max hp
+    combat_shield = function(lvl) return 5 + lvl * 5 end
 }

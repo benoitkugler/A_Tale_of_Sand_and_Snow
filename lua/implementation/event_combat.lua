@@ -193,17 +193,20 @@ end
 
 -- Cleave
 function apply.cleave(event, pri, snd, dmg)
-    if event == "attacker_hits" and PWeapon():special_level("cleave") then
-        local l = wesnoth.current.map:find {
-            T.filter_adjacent_location { x = pri.x, y = pri.y },
-            T.filter_adjacent_location { x = snd.x, y = snd.y }
+    if event == "attacker_hits" and PWeapon():special("cleave") then
+        local l = wesnoth.units.find_on_map {
+            T.filter_side { T.ennemy_of { side = pri.side } },
+            T.filter_location {
+                T.filter_adjacent_location { x = pri.x, y = pri.y },
+                T.filter_adjacent_location { x = snd.x, y = snd.y },
+            }
         }
         local att = PWeapon()
         for i, v in pairs(l) do
             wml.fire("harm_unit", {
+                T.filter { id = v.id },
                 T.filter_second { id = pri.id },
                 experience = true,
-                T.filter { x = v[1], y = v[2], { "not", { side = pri.side } } },
                 fire_event = true,
                 annimate = true,
                 damage_type = att.type,

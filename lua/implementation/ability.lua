@@ -472,6 +472,28 @@ local function porthos_pain_adept(unit)
     })
 end
 
+---refresh the shield at startup
+---@param unit unit
+local function rymor_combat_shield(unit)
+    local ab = unit:get_ability("combat_shield")
+    if not ab then return end
+
+    local shield_value = Round(unit.max_hitpoints * ab.value / 100)
+    if shield_value == 0 then return end
+
+    local COLOR_SHIELDED = "#4A4257"
+    local msg = Fmt(_ "<span color='%s'>Shielded !</span>", COLOR_SHIELDED)
+
+    local units_to_shield = wesnoth.units.find_on_map {
+        T.filter_side { T.allied_with { side = unit.side } },
+        T.filter_location { x = unit.x, y = unit.y, radius = 1 },
+    }
+    for __, u in ipairs(units_to_shield) do
+        wesnoth.interface.float_label(u, msg)
+        u.status.shielded = true
+        u:custom_variables().status_shielded_hp = shield_value
+    end
+end
 
 
 -- BRINX and MARK special skill
@@ -582,6 +604,9 @@ function AB.turn_start()
 
     local porthos = wesnoth.units.get("porthos")
     if porthos then porthos_pain_adept(porthos) end
+
+    local rymor = wesnoth.units.get("rymor")
+    if rymor then rymor_combat_shield(rymor) end
 end
 
 function AB.attack_end()

@@ -105,7 +105,7 @@ Conf.amlas.rymor = {
                 T.customName {
                     id = "cleave",
                     description = _ "Deals 75% damage to enemies between attacker and defender.",
-                    name = "cleave"
+                    name = "cleave",
                 }
             }
         },

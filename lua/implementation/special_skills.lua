@@ -614,3 +614,26 @@ function SPECIAL_SKILLS.fangs_heal(lvl, unit)
         }
     })
 end
+
+--------------------------------------- Rymor ---------------------------------------
+function SPECIAL_SKILLS.combat_shield(lvl, unit)
+    local id, old_id = _get_ids(lvl, "combat_shield")
+    unit:remove_modifications({ id = old_id }, "object")
+
+    local percent = Conf.special_skills.rymor.combat_shield(lvl)
+    unit:add_modification('object', {
+        id = id,
+        T.effect {
+            apply_to = "new_ability",
+            T.abilities {
+                T.customName {
+                    id = "combat_shield",
+                    _level = lvl,
+                    value = percent,
+                    name = _ "Shielder " .. ROMANS[lvl],
+                    description = Fmt(_ "At each turn, grants a shield of %d%% of his maximum hipoints to adjacent allies.", percent)
+                }
+            }
+        }
+    })
+end

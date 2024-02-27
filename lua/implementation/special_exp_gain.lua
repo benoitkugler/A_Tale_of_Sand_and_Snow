@@ -3,24 +3,16 @@ local V = Conf.special_xp_gain -- shortcut
 
 -- Functions called only when the given hero is fighting
 ---@type table<string, fun(attacker:unit, defender:unit)>
-local on_attack_funcs = {
-    -- sword_spirit = {},
-    -- brinx = {},
-    -- drumar = {},
-    -- rymor = {},
-    -- bunshop = {},
-    -- xavier = {},
-}
+local on_attack_funcs = {}
 
 -- Funtion called on every unit fighting
 ---@param atk unit
 ---@param def unit
 local function on_attack_common(atk, def)
     local rymor = wesnoth.units.get("rymor")
-    if rymor and rymor:matches { side = def.side, T.filter_adjacent { id = def.id } } then -- defender is ally and next to rymor
-        rymor:custom_variables().xp = rymor:custom_variables().xp + atk.level +
-            V.rymor
-            .ADJ_NEXT -- def next to rymor
+    if rymor and rymor:matches { side = def.side, T.filter_adjacent { id = def.id } } then  -- defender is ally and next to rymor
+        local gain = atk.level * V.rymor.ADJ_NEXT
+        rymor:custom_variables().xp = rymor:custom_variables().xp + gain
     end
     local xavier = wesnoth.units.get("xavier")
     if xavier then

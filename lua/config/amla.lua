@@ -40,3 +40,4 @@ wesnoth.dofile "~add-ons/A_Tale_of_Sand_and_Snow/lua/config/trees/sword_spirit.l
 wesnoth.dofile "~add-ons/A_Tale_of_Sand_and_Snow/lua/config/trees/mark.lua"
 wesnoth.dofile "~add-ons/A_Tale_of_Sand_and_Snow/lua/config/trees/porthos.lua"
 wesnoth.dofile "~add-ons/A_Tale_of_Sand_and_Snow/lua/config/trees/bunshop.lua"
+wesnoth.dofile "~add-ons/A_Tale_of_Sand_and_Snow/lua/config/trees/rymor.lua"

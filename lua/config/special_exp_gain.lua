@@ -1,8 +1,8 @@
 -- Track special experience gains
 Conf.special_xp_gain = {
     rymor = {
-        ADJ_NEXT = 2, -- + atk.level
-        DEF = 2       -- * atk.level
+        ADJ_NEXT = 2, -- * atk.level
+        DEF = 3       -- * atk.level
     },
     brinx = {
         DEF_MUSPELL = 1, -- + atk.level
