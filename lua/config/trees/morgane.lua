@@ -1,6 +1,6 @@
 local V = {                -- numerical values
     LONG_HEAL_RATIO = 0.8, -- * lvl / distance
-    BETTER_HEAL = 10,      -- bonus per level
+    BETTER_HEAL = 8,       -- bonus per level
     TRANSFUSION = 4,       -- * lvl
 }
 Conf.amlas.morgane = {

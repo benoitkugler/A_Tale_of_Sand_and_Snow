@@ -218,11 +218,11 @@ Conf.special_skills.brinx = {
 
 Conf.special_skills.xavier = {
     help_des = _ "Xavier thrives in battefield strategy. Every time Xavier <b>\z
-        helps allies</b>, he builds confidence with them (scaling level). This will eventually make Xavier stronger, when \z
+        helps allies</b>, he builds confidence with them (scaling with level). This will eventually make Xavier stronger, when \z
         fighting in precise formations.",
     help_ratios = Fmt(
-        _ "(<b>x %.1f</b> per lead, <b>x %.1f</b> per Y-formation, " ..
-        "<b>x %.1f</b> per I-formation and <b>+ %d</b> per A-formation)",
+        _ "(<b>x %.1f</b> per lead, <b>x %.1f</b> per back formation, " ..
+        "<b>x %.1f</b> per spear formation and <b>+ %d</b> per wedge formation)",
         V.xavier.LEADERSHIP, V.xavier.Y_FORMATION, V.xavier.I_FORMATION,
         V.xavier.A_FORMATION),
     {
