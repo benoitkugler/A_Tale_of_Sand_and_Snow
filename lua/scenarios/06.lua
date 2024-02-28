@@ -152,10 +152,24 @@ local function on_enter_hex()
         Message("brinx", _ "Hurra, Nifhellians brothers. Thank you for the rescue !")
         Message("porthos", _ "Me.. fight..")
         Message("brinx", _ "This fellow was with me in jail. Not very talkative, but he seems resilient !")
-        Message("vranken", _ "This is fine, we need all the help we can get against Muspell ! Let's end this !")
+        Message("vranken", _ "This is fine, we need all the help we can get against Muspell !")
 
-        Message("ennemy_leader", _ "Soldiers ! Kill the prisonners !")
-        spawn_ennemies(5, MuspellUnits(3, 3), { x = 20, y = 5 })
+        -- If the ennemy leader is already dead, fire victory
+        if not (wesnoth.units.get("ennemy_leader")) then
+            Message("vranken", _ "Now, let's get some rest before marching on the Facility.")
+            Victory()
+            return
+        else
+            Message("ennemy_leader", _ "Soldiers ! Kill the prisonners !")
+            spawn_ennemies(5, MuspellUnits(3, 3), { x = 20, y = 5 })
+            Message("vranken", _ "Alright, protect our comrades !")
+
+            wml.fire("objectives", {
+                { "objective", { description = _ "Defeat the ennemy leader.", condition = "win" } },
+                { "objective", { description = _ "Death of any of your heroes.", condition = "lose" } },
+                { "note",      { description = _ "No gold carry over next scenario." } },
+            })
+        end
     end
 end
 
@@ -211,15 +225,13 @@ ES = {
     atk = function() end,
     kill = function()
         local dying = PrimaryUnit()
-        if dying.id == "ennemy_leader1" or dying.id == "ennemy_leader2" then
-            -- check if one leader is already dead
-            if not (wesnoth.units.get("ennemy_leader1") and wesnoth.units.get("ennemy_leader2")) then
-                Message(dying.id, _ "Herk !")
-                Message("vranken", _ "Nice jobs soldiers, the Ark is ours !")
-                Message("rymor", _ "Congrats to the youngsters for your first fight under the Vranken company !")
+        if dying.id == "ennemy_leader" then
+            -- check the jail has been opened
+            if is_jail_opened() then
+                Message("vranken", _ "Nice job ! Let's get some rest before marching on the Facility.")
                 Victory()
             else
-                Message(dying.id, _ "Hurgh, these youngsters are more useful then expected..")
+                Message("vranken", _ "And now, let's free our soldiers !.")
             end
         end
     end
