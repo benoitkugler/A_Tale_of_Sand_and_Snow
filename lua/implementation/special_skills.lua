@@ -637,3 +637,26 @@ function SPECIAL_SKILLS.combat_shield(lvl, unit)
         }
     })
 end
+
+function SPECIAL_SKILLS.atk_aura(lvl, unit)
+    local id, old_id = _get_ids(lvl, "atk_aura")
+    unit:remove_modifications({ id = old_id }, "object")
+
+    local nb_atk = Conf.special_skills.rymor.atk_aura(lvl)
+    unit:add_modification('object', {
+        id = id,
+        T.effect {
+            apply_to = "new_ability",
+            T.abilities {
+                T.attacks {
+                    affect_self = false,
+                    affect_allies = true,
+                    T.affect_adjacent {},
+                    add = nb_atk,
+                    name = _ "Attack aura",
+                    description = Fmt(_ "Rymôr grants his adjacent allies %d bonus attack.", nb_atk)
+                }
+            }
+        }
+    })
+end

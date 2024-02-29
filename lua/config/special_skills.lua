@@ -377,10 +377,22 @@ Conf.special_skills.rymor = {
         id = "combat_shield",
         color = "#f36e0a",
         name = _ "Shield : ",
-        require_lvl = 3,
+        require_lvl = 4,
         desc = _ "At each new turn, Rymôr grants himself and adjacent allies a shield of %s%% of his maximum hitpoints.",
         costs = { 60, 30, 30 }
     },
     ---@param lvl integer # the percentage of rymor max hp
-    combat_shield = function(lvl) return 5 + lvl * 5 end
+    combat_shield = function(lvl) return 5 + lvl * 5 end,
+    {
+        img = "icons/crossed_sword_and_hammer.png",
+        max_lvl = 2,
+        id = "atk_aura",
+        color = "#f36e0a",
+        name = _ "Haste aura : ",
+        require_lvl = 5,
+        desc = _ "Rymôr grants adjacent allies %s bonus attack.",
+        costs = { 100, 80 }
+    },
+    ---@param lvl integer
+    atk_aura = function(lvl) return lvl end
 }
