@@ -653,7 +653,7 @@ function SPECIAL_SKILLS.atk_aura(lvl, unit)
                     affect_allies = true,
                     T.affect_adjacent {},
                     add = nb_atk,
-                    name = _ "Attack aura",
+                    name = _ "Attack aura " .. ROMANS[lvl],
                     description = Fmt(_ "Rymôr grants his adjacent allies %d bonus attack.", nb_atk)
                 }
             }
