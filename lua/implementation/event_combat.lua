@@ -216,6 +216,23 @@ function apply.cleave(event, pri, snd, dmg)
     end
 end
 
+-- Counter
+function apply.counter(event, pri, snd, dmg)
+    if event ~= "attacker_hits" then return end -- defense only
+    local ab = snd:get_ability("counter")
+    if not ab then return end
+    local percent = ab.value
+    local dmg = Round(dmg * percent / 100)
+    wml.fire("harm_unit", {
+        T.filter { id = pri.id },
+        T.filter_second { id = snd.id },
+        experience = true,
+        amount = dmg,
+        fire_event = true,
+    })
+    -- state.label_snd = state.label_snd .. "<span color='orange'>Counter !</span>"
+end
+
 function apply.res_magic(event, pri, snd, dmg)
     if event == "attacker_hits" then
         local lvl = PWeapon():special_level("res_magic")

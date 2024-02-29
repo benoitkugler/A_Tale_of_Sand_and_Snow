@@ -2,6 +2,7 @@ local V = {        -- numerical values
     BONUS_RES = 8, -- * lvl
     BONUS_DEF = 5, -- * lvl
     MAX_HP = 25,   -- * lvl
+    COUNTER_PERCENT = 20,
 }
 
 Conf.amlas.rymor = {
@@ -38,6 +39,28 @@ Conf.amlas.rymor = {
         always_display = 1,
         description = Fmt(_ "Healthier, + %d hitpoints", V.MAX_HP),
         table.unpack(StandardAmlaHeal(7, V.MAX_HP))
+    },
+    {
+        id = "counter",
+        require_amla = "juggernaut,though,though",
+        _short_desc = "Counter",
+        image = "icons/cuirass_leather_studded.png",
+        max_times = 1,
+        always_display = 1,
+        description = Fmt(_ "In defense, able to return %d%% of the damage taken to the attacker.", V.COUNTER_PERCENT),
+        T.effect {
+            apply_to = "new_ability",
+            T.abilities {
+                T.customName {
+                    id = "counter",
+                    value = V.COUNTER_PERCENT,
+                    _level = 1,
+                    description = Fmt(_ "Rymôr armor is so efficient that %d%% of incoming damage is returned to the attacker.", V.COUNTER_PERCENT),
+                    name = _ "Counter"
+                }
+            }
+        },
+        table.unpack(StandardAmlaHeal(10)),
     },
     -- Offense tree
     {
