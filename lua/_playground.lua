@@ -67,3 +67,43 @@ wesnoth.game_events.add({
         unit:advance(true, true)
     end
 })
+
+wml.fire("set_menu_item", {
+    id = "add_otchigins",
+    description = "Create otchigins",
+})
+wesnoth.game_events.add({
+    name = "menu item add_otchigins",
+    first_time_only = false,
+    action = function()
+        local o1 = Limbes.create_otchigin(1, 2)
+        local o2 = Limbes.create_otchigin(2, 2)
+        local o3 = Limbes.create_otchigin(3, 2)
+        local pos = wesnoth.sides.get(2).starting_location
+        o1:to_map(wesnoth.paths.find_vacant_hex(pos, o1))
+        o2:to_map(wesnoth.paths.find_vacant_hex(pos, o2))
+        o3:to_map(wesnoth.paths.find_vacant_hex(pos, o3))
+
+        Limbes.refresh_otchigin_buff()
+    end
+})
+
+local in_limbe = false
+local function switch_limbes()
+    if in_limbe then
+        Limbes.close()
+    else
+        local ok = Limbes.enter()
+        if not ok then return end
+    end
+    in_limbe = not in_limbe
+end
+wml.fire("set_menu_item", {
+    id = "switch_limbes",
+    description = "Toggle Limbes",
+})
+wesnoth.game_events.add({
+    name = "menu item switch_limbes",
+    first_time_only = false,
+    action = switch_limbes
+})

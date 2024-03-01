@@ -14,6 +14,7 @@ _ = wesnoth.textdomain "wesnoth-A_Tale_of_Sand_and_Snow"
 ---@field table_status_shielded any
 ---@field player_objects table<string,string> # object -> owner
 ---@field player_heroes string # comma separated
+---@field limbe_terrain compressed_terrains #
 ---@field s6_gates_activated_turn integer? # turn starting the activation
 
 ---InitVariables creates global variables.

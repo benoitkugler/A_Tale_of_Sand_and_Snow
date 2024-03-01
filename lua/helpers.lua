@@ -249,6 +249,13 @@ function wesnoth.units.set_modification(u, id, effect, type)
     u:add_modification(type, { id = id, effect })
 end
 
+---Remove the given trait modification for all units on the map
+---@param trait_id string
+function wesnoth.units.remove_trait(trait_id)
+    local us = wesnoth.units.find_on_map { trait = trait_id }
+    for __, u in pairs(us) do u:remove_modifications({ id = trait_id }, "trait") end
+end
+
 ---Popup window with translatable string
 ---@param title string
 ---@param message tstring

@@ -12,6 +12,8 @@ function wesnoth.kernel_type() end
 function wesnoth.dofile(path, ...) end
 
 ---@class tstring : string
+---@operator concat(string):tstring
+---@operator concat(tstring):tstring
 tstring = {}
 
 tstring.format = string.format

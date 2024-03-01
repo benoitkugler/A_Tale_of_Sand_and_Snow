@@ -12,6 +12,7 @@ local function on_kill()
             _ "I protected you, Vranken, I can rest in peace now...")
         Message("rymor", _ "Frä Drumar...")
     elseif dying.id == "bunshop" then
+        Message("bunshop", _ "(whining) ...")
         Message("rymor", _ "Noo... How could I let him die ?!")
     elseif dying.id == "sword_spirit" then
         Message("sword_spirit", _ "...")
@@ -85,14 +86,20 @@ local Standard_event = {
         first_time_only = false,
         name = "die",
         action = function()
-            EC.on_combat_event(); EXP.on_kill(); ES.kill(); on_kill(); AB.die()
+            EC.on_combat_event(); EXP.on_kill(); ES.kill();
+            on_kill(); AB.die(); Limbes.refresh_otchigin_buff();
         end
     },
     {
         id = "turn_end",
         first_time_only = false,
         name = "turn end",
-        action = EC.end_turn,
+        action = function()
+            EC.end_turn();
+            --- to apply the buff on recruited units
+            --- without calling if for each recruit event
+            Limbes.refresh_otchigin_buff();
+        end
     },
     {
         id = "select",

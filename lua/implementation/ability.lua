@@ -62,18 +62,10 @@ local function available_tiles(unit)
     return tiles
 end
 
---- remove the given trait modification for all units on the map
-local function remove_trait(trait_id)
-    local us = wesnoth.units.find_on_map { trait = trait_id }
-    for __, u in pairs(us) do u:remove_modifications({ id = trait_id }, "trait") end
-end
-
-
 ---@class _
 ---@field elusive unit?
 ---@field war_jump unit?
 local menu_items_data = {}
-
 
 ---@param unit unit
 local function show_war_jump(unit)
@@ -163,7 +155,7 @@ local function update_defense_auras()
         if not ab then return end
 
         local trait_id = "def_aura_bonus_" .. unit.id
-        remove_trait(trait_id)
+        wesnoth.units.remove_trait(trait_id)
 
         local adjacent_units = wesnoth.units.find_on_map {
             T.filter_adjacent { id = unit.id },
@@ -296,8 +288,8 @@ local function update_sword_spirit_auras()
 
     --- remove current traits
     local res_trait_id, def_trait_id = "_tmp_res_aura", "_tmp_def_aura"
-    remove_trait(res_trait_id)
-    remove_trait(def_trait_id)
+    wesnoth.units.remove_trait(res_trait_id)
+    wesnoth.units.remove_trait(def_trait_id)
 
     --- find ennemies
     local candidates = wesnoth.units.find_on_map {
