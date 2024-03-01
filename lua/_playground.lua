@@ -17,7 +17,7 @@ local function setup_units()
             -- T.abilities { T.customName { id = "elusive", name = "Elusive", _level = 1 } },
         },
         { id = "sword_spirit", type = "sword_spirit4", name = "Gondhul",
-            T.abilities { T.customName { id = "war_jump", name = "War jump", _level = 1 } },
+            -- T.abilities { T.customName { id = "war_jump", name = "War jump", _level = 1 } },
         },
         { id = "morgane", type = "morgane3", name = "Morgane" },
         { id = "xavier",  type = "xavier4",  name = "Xavier" },
