@@ -100,11 +100,47 @@ Conf.amlas.bunshop = {
         table.unpack(StandardAmlaHeal(8))
     },
 
-    -- Lymbe tree : TODO
+    {
+        id = "mental_atk",
+        _short_desc = "Mental control",
+        image = "attacks/curse.png",
+        max_times = 1,
+        always_display = 1,
+        description = _ "Bunshop may paralize his opponents.",
+        T.effect {
+            apply_to = "new_attack",
+            name = "mental",
+            icon = "attacks/curse.png",
+            range = "ranged",
+            type = "arcane",
+            number = 2,
+            damage = 10,
+            description = _ "mental",
+            T.specials {
+                T.slow {
+                    id = "slow",
+                    description = _ "This attack slows the target until it ends a turn. Slow halves the damage caused by attacks and the movement cost for a slowed unit is doubled. A unit that is slowed will feature a snail icon in its sidebar information when it is selected.",
+                    name = "slows"
+                }
+            }
+        },
+        table.unpack(StandardAmlaHeal(8)),
+    },
+    {
+        id = "mental_dmg",
+        _short_desc = "Mental control <BR /> <B> +2</B> dmg",
+        require_amla = "mental_atk",
+        image = "attacks/curse.png",
+        max_times = 3,
+        always_display = 1,
+        description = _ "Better at mentral control",
+        T.effect { apply_to = "attack", increase_damage = 2, name = "mental" },
+        table.unpack(StandardAmlaHeal(5)),
+    },
 
     {
         id = "default",
-        require_amla = "fangs_atk,fangs_atk,fangs_atk,defense,defense,defense",
+        require_amla = "fangs_atk,fangs_atk,fangs_atk,defense,defense,defense,mental_dmg,mental_dmg,mental_dmg",
         max_times = -1,
         description = _ " Whow, you've completed all the tree. Bravo !",
         table.unpack(StandardAmlaHeal(5, 10))
