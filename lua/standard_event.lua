@@ -86,8 +86,11 @@ local Standard_event = {
         first_time_only = false,
         name = "die",
         action = function()
-            EC.on_combat_event(); EXP.on_kill(); ES.kill();
-            on_kill(); AB.die(); Limbes.refresh_otchigin_buff();
+            EC.on_combat_event(); EXP.on_kill(); ES.kill(); on_kill(); AB.die();
+
+            if PrimaryUnit().role == "otchigin" then
+                Limbes.refresh_otchigin_buff();
+            end
         end
     },
     {

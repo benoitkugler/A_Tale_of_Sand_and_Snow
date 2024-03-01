@@ -304,7 +304,24 @@ function MuspellUnits(min_level, max_level)
     local ids = {} ---@type string[]
     for id, ut in pairs(wesnoth.unit_types) do
         local level = ut.__cfg.level -- workaround bug https://github.com/wesnoth/wesnoth/issues/8456
-        if (not id:find("otchigin")) and ut.race == 'muspell' and
+        if (not (id:find("otchigin") or id:find("alyss"))) and ut.race == 'muspell' and
+            min_level <= level and level <= max_level then
+            table.insert(ids, id)
+        end
+    end
+    return ids
+end
+
+---Returns the list of all the unit types with
+---race 'nifhell' and level included in [min_level, max_level]
+---Special units like heroes are not returned
+---@param min_level integer
+---@param max_level integer
+function NifhellUnits(min_level, max_level)
+    local ids = {} ---@type string[]
+    for id, ut in pairs(wesnoth.unit_types) do
+        local level = ut.__cfg.level -- workaround bug https://github.com/wesnoth/wesnoth/issues/8456
+        if ut.race == 'nifhell' and id:find("_nifhell") and
             min_level <= level and level <= max_level then
             table.insert(ids, id)
         end
