@@ -237,6 +237,18 @@ function wesnoth.units.weapon(u, name)
     return new_weapon(u.attacks[name].__cfg)
 end
 
+---Replace the modification with given 'id' by then given 'effect'.
+---'type' defaults to 'object'.
+---@param u unit
+---@param id string
+---@param effect WMLTag
+---@param type modification_type?
+function wesnoth.units.set_modification(u, id, effect, type)
+    type = type or 'object'
+    u:remove_modifications({ id = id }, type)
+    u:add_modification(type, { id = id, effect })
+end
+
 ---Popup window with translatable string
 ---@param title string
 ---@param message tstring

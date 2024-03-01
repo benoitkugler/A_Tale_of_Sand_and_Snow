@@ -143,20 +143,20 @@ end
 
 -- Leeches
 function apply.leeches(event, pri, snd, dmg)
-    local lvl ---@type integer?
+    local spe ---@type special?
     local u ---@type unit?
     if event == "attacker_hits" then
-        lvl = PWeapon():special_level("leeches")
+        spe = PWeapon():special("leeches")
         u = pri
     elseif event == "defender_hits" then
-        lvl = SWeapon():special_level("leeches")
+        spe = SWeapon():special("leeches")
         u = snd
     end
-    if lvl and u then
+    if spe and spe.value and u then
         if u.hitpoints < u.max_hitpoints then
             wml.fire("heal_unit", {
                 T.filter { id = u.id },
-                amount = Round(dmg * (0.05 + 0.05 * lvl)),
+                amount = Round(dmg * spe.value / 100),
                 animate = true,
             }) -- always
         end
@@ -327,10 +327,9 @@ function apply.transfusion(event, pri, snd, _)
 end
 
 function apply.slow_zone(event, pri, snd, dmg)
-    if pri.id ~= "drumar" then return end
-    local lvl = PWeapon():special_level("slow_zone")
-    if event == "attacker_hits" and lvl then
-        local intensity = Conf.special_skills.drumar.slow_zone(lvl)
+    local spe = PWeapon():special("slow_zone")
+    if event == "attacker_hits" and spe then
+        local intensity = spe.value
         local targets = wesnoth.units.find_on_map {
             T.filter_adjacent { id = snd.id, is_enemy = false }
         }
