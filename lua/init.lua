@@ -14,7 +14,7 @@ _ = wesnoth.textdomain "wesnoth-A_Tale_of_Sand_and_Snow"
 ---@field table_status_shielded any
 ---@field player_objects table<string,string> # object -> owner
 ---@field player_heroes string # comma separated
----@field limbe_terrain compressed_terrains #
+---@field limbe_terrain compressed_terrains # not empty when limbes are activated
 ---@field s6_gates_activated_turn integer? # turn starting the activation
 
 ---InitVariables creates global variables.
@@ -29,6 +29,7 @@ function InitVariables()
     vars.table_status_shielded = {}
     vars.player_objects = {}
     vars.player_heroes = "brinx"
+    vars.limbe_terrain = ""
 end
 
 ---Variables is are typed wrapper for wml.variables
@@ -54,7 +55,6 @@ wesnoth.require "implementation/amla"
 wesnoth.require "implementation/special_skills"
 
 wesnoth.require "ui/custom_game_display"
-wesnoth.require "ui/objects"
 wesnoth.require "ui/menus"
 wesnoth.require "standard_event" -- event setup
 

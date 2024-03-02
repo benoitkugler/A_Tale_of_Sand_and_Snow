@@ -185,8 +185,40 @@ local function has_limbe_ennemies()
     return false
 end
 
+function Limbes.is_in_limbes() return CustomVariables().limbe_terrain ~= "" end
+
+local name_index = 1
+local names = {
+    "Priam Ler",
+    "Iudgual Alfons",
+    "Reynaldo Gwillym",
+    "Saturn Severin",
+    "Bhim Stephanus",
+    "Sage Cledwyn",
+    "Levi Pàulu",
+    "Admetus Ernst",
+    "Hiếu Rajaram",
+    "Okeanos Ziya ad-Din",
+    "Borys Nodens",
+    "Brandr Jaropelk",
+    "Shankar Achille",
+    "Catell Fintan",
+    "Greer Fripuriks",
+}
+local function next_name()
+    name_index = name_index + 1
+    return names[name_index % #(names) + 1]
+end
+
+local function limbes_enemies()
+    return wesnoth.units.find_on_map { T.filter_side { T.enemy_of { side = 1 } } }
+end
 
 function Limbes.enter()
+    if Limbes.is_in_limbes() then
+        Popup("Already in the Limbes", _ "You are already fighting in the Limbes...")
+        return false
+    end
     if not has_limbe_ennemies() then
         Popup("No ennemies",
             _ "You can't fight in the Limbes since <b>no ennemy</b> is able to follow you...")
@@ -194,6 +226,16 @@ function Limbes.enter()
     end
     enter_limbe_terrain()
     enter_limbe_units()
+
+    Message("morgane", _ "What are your <i>names</i> ?")
+    local ennemies = limbes_enemies()
+    Message(ennemies[1].id, _ "<i>(annoyed)</i> Naming beings is powerful.. Your wise, little one..")
+    for __, unit in ipairs(ennemies) do
+        local name = next_name()
+        unit.name = name
+        Message(unit.id, Fmt(_ "My name is %s.", name))
+    end
+
     return true
 end
 
@@ -236,6 +278,23 @@ function Limbes.create_otchigin(rank, side)
         },
     }
     return unit
+end
+
+---Event handler which will close the limbes on victory
+---or refresh the buff if needed
+function Limbes.on_die()
+    local dying = PrimaryUnit()
+    if Limbes.is_in_limbes() and is_limbe_actor(dying) and wesnoth.sides.is_enemy(dying.side, 1) then
+        local ennemies = limbes_enemies() -- including the dying unit
+        if #(ennemies) == 1 then          -- victory !
+            Message("morgane", _ "We have prevailed !")
+            Limbes.close()
+            -- refresh the buff here so that it properly include all units
+            Limbes.refresh_otchigin_buff()
+        end
+    elseif dying.role == "otchigin" then
+        Limbes.refresh_otchigin_buff()
+    end
 end
 
 ---Grants allies the bonus, for each Otchigin not defeated

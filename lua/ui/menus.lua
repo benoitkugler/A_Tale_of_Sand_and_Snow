@@ -1,6 +1,5 @@
 UI = {}
 
-UI.show_skills_dialog = wesnoth.require("skills")
 
 --- Remove the item with the given id
 ---@param id string
@@ -22,7 +21,7 @@ end
 ---@param config menu_config
 local function set_menu_item(config)
     wml.fire("set_menu_item", config)
-    -- keep in memory which menu are shown to avoid warnings
+    -- keep in memory which menu are shown to avoid warnings when removing twice
     local menus = CustomVariables().showed_menus or {}
     menus[config.id] = true
     CustomVariables().showed_menus = menus
@@ -41,7 +40,6 @@ local function set_menu_item_at(id, desc, image, x, y)
         T.show_if {
             T.have_location { x = "$x1", y = "$y1", { "and", { x = x, y = y } } }
         },
-        T.command { T.test { a = 5 } }
     })
 end
 
@@ -49,22 +47,19 @@ end
 ---@param x integer
 ---@param y integer
 function UI.setup_menu_debuf(x, y)
-    set_menu_item_at("union_debuf", _ "Xavier's union debuf !",
-        "menu/union_debuf.png", x, y)
+    set_menu_item_at("union_debuf", _ "Xavier's union debuf !", "menu/union_debuf.png", x, y)
 end
 
 ---@param x integer[]
 ---@param y integer[]
 function UI.setup_menu_war_jump(x, y)
-    set_menu_item_at("war_jump", _ "War jump here with Gondhül !",
-        "menu/war_jump.png", x, y)
+    set_menu_item_at("war_jump", _ "War jump here with Gondhül !", "menu/war_jump.png", x, y)
 end
 
 ---@param x integer[]
 ---@param y integer[]
 function UI.setup_menu_elusive(x, y)
-    set_menu_item_at("elusive", _ "Sneak here with Mark !", "menu/ellusive.png", x,
-        y)
+    set_menu_item_at("elusive", _ "Sneak here with Mark !", "menu/ellusive.png", x, y)
 end
 
 -- Setup menu needed by abilities with cooldown
@@ -105,14 +100,29 @@ function UI.set_menu_skills()
     })
 end
 
+local show_skills_dialog = wesnoth.require("skills")
+local show_objects_dialog = wesnoth.require("inventory")
+
 function UI.setup_menus()
     UI.set_menu_skills()
 
     set_menu_item({ id = "objects", description = _ "Objects" })
 
+    -- display the limbes access on morgane
+    set_menu_item({
+        id = "enter_limbes",
+        description = _ "Enter the Limbes",
+        T.show_if {
+            T.have_unit { x = "$x1", y = "$y1", id = "morgane", { "not", { status = "_limbe" } } },
+            T.have_unit { role = "otchigin" },
+        },
+    })
+
     -- register all possible events triggered by menu items
-    wesnoth.game_events.add({ name = "menu item objects", first_time_only = false, action = O.showObjectsDialog })
-    wesnoth.game_events.add({ name = "menu item show_skills", first_time_only = false, action = UI.show_skills_dialog })
+    wesnoth.game_events.add({ name = "menu item objects", first_time_only = false, action = show_objects_dialog })
+    wesnoth.game_events.add({ name = "menu item show_skills", first_time_only = false, action = show_skills_dialog })
+
+    wesnoth.game_events.add({ name = "menu item enter_limbes", first_time_only = false, action = Limbes.enter })
 
     wesnoth.game_events.add({ name = "menu item elusive", first_time_only = false, action = AB.elusive })
     wesnoth.game_events.add({ name = "menu item war_jump", first_time_only = false, action = AB.war_jump })

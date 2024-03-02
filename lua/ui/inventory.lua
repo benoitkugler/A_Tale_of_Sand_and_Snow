@@ -397,9 +397,8 @@ local function preshow(window)
     init()
 end
 
-O = {}
 
-function O.showObjectsDialog()
+local function show_objects_dialog()
     local obj_poss = CustomVariables().player_objects
     if next(obj_poss) == nil then
         Popup(_ "Note", _ "You still have to collect artifacts...")
@@ -407,3 +406,5 @@ function O.showObjectsDialog()
         gui.show_dialog(dialog, preshow)
     end
 end
+
+return show_objects_dialog

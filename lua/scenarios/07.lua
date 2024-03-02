@@ -26,10 +26,47 @@ local function on_turn1()
         u:to_map(wesnoth.paths.find_vacant_hex(vr.x, vr.y, u))
     end
 
+    local otchigins = wesnoth.units.find_on_map { role = "otchigin" }
 
     Message("vranken", _ "And here is the White Arks Facility. Hum, nothing seems damaged, that is good news !")
+    Message("rymor", _ "But Muspell units have taken a strong position. It won't be easy to defeat them.")
+    Message("vranken", _ "Especially since the Octopus is actually fighting !")
+    wesnoth.interface.scroll_to_hex(otchigins[1])
+    wesnoth.interface.delay(300)
+    wesnoth.interface.scroll_to_hex(otchigins[2])
+    wesnoth.interface.delay(300)
+    Message("drumar", _ "Be careful Vranken, two <i>Otchigins</i> are present on Muspell side. \z
+    These strong sorcerers are very efficient on the battefield.")
+    Message("allied_leader", _ "Pfeu, I'm not impressed by these frail mens. Nifhell will prevail !")
+    Message("allied_leader", _ "To arms, men ! For our fallen brothers and for Nifhell !")
+
+    wml.fire("objectives", {
+        { "objective", { description = _ "Defeat the ennemy leaders.", condition = "win" } },
+        { "objective", { description = _ "Death of any of your heroes.", condition = "lose" } },
+        { "note",      { description = _ "No gold carry over next scenario." } },
+    })
 end
 
+
+local function on_turn2()
+    Message("drumar", _ "See ? The Muspell warriors are helped by the Tengi.. These damned Otchigins..")
+    Message("vranken", _ "Hum, this is a problem indeed.. We will have to be very careful..")
+    Message("morgane",
+        _ "<i>(thinking)</i> I'm feeling something.. I'm kind of attracted to these sorcerers.. How strange !")
+end
+
+local function on_turn3()
+    Message("morgane",
+        _ "<i>(To Drümar)</i> This is so weird, I'm hearing like a calling.. It seems somehow related to the Otchigins.")
+    Message("drumar",
+        "<i>(surprised)</i> Hum ? Could you have a connection with the Limbes ? This is so unusual for novices. \z
+    Elder Fräs sometimes accomplish this after a long life of study and pratice...")
+    Message("morgane", _ "What should I do ? Perhaps joining the Limbes could help ?")
+    Message("drumar", "It is you call, child...")
+    Popup(_ "Fighting in the Limbes", _ "The great power hidden in Morgäne allows her to freely enter the Limbes. \z
+    Whenever Otchigins are present in a battle, Morgäne may start a fight with them (right-click on her).\n\z
+    <i>Be careful: once you have entered the Limbes, the only way out is defeating you opponents. Also, dying in the Limbes amounts to dying in the material plan...</i>")
+end
 
 ---@type ScenarioEvents
 ES = {
@@ -46,6 +83,8 @@ ES = {
 local scenario_events = {
     { id = "s7_prestart", name = "prestart", action = on_prestart },
     { id = "s7_turn1",    name = "turn_1",   action = on_turn1 },
+    { id = "s7_turn2",    name = "turn_2",   action = on_turn2 },
+    { id = "s7_turn3",    name = "turn_3",   action = on_turn3 },
     -- { id = "s6_click_porthos", name = "select",    action = on_presente_porthos, filter = { T.filter { id = "porthos" } } },
     -- { id = "s6_see",           name = "sighted",   action = on_see_ennemy,       filter = { T.filter { side = 2 } } },
     -- { id = "s6_enter_hex",     name = "enter_hex", action = on_enter_hex,        first_time_only = false,                 filter = { T.filter { side = 1 } } },
