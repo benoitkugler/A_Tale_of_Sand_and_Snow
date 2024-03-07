@@ -3,6 +3,8 @@ local COLOR_CHILLED = "#1ED9D0"
 local IMAGE_SPECIAL_SKILL = "special_skills/star.png"
 local IMAGE_FEAR_OF_LOVE = "menu/fear_of_love.png"
 
+-- TODO: better Limbes icon !
+
 -- Customs status
 ---@param unit unit
 ---@return WMLTag?
@@ -53,6 +55,14 @@ local function show_chilled(unit)
     }
 end
 
+---@param unit unit
+local function show_may_enter_limbes(unit)
+    if unit.id ~= "morgane" then return end
+    if Limbes.is_allowed_entrance() then
+        return T.element { image = "special_skills/forecast.png", tooltip = _ "Morgäne senses nearby ennemies and may enter the Limbes !" }
+    end
+end
+
 
 local old_unit_status = wesnoth.interface.game_display.unit_status
 function wesnoth.interface.game_display.unit_status()
@@ -78,6 +88,9 @@ function wesnoth.interface.game_display.unit_status()
 
     local el = show_special_skill_cd(u)
     if el then table.insert(s, el) end
+
+    local li = show_may_enter_limbes(u)
+    if li then table.insert(s, li) end
 
     return s
 end

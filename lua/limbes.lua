@@ -178,12 +178,10 @@ local function close_limbe_terrain()
     CustomVariables().limbe_terrain = ""
 end
 
-local function has_limbe_ennemies()
-    for __, u in pairs(wesnoth.units.find_on_map({})) do
-        if wesnoth.sides.is_enemy(1, u.side) and is_limbe_actor(u) then return true end
-    end
-    return false
+local function player_ennemies()
+    return wesnoth.units.find_on_map { T.filter_side { T.enemy_of { side = 1 } } }
 end
+
 
 function Limbes.is_in_limbes() return CustomVariables().limbe_terrain ~= "" end
 
@@ -210,8 +208,24 @@ local function next_name()
     return names[name_index % #(names) + 1]
 end
 
-local function limbes_enemies()
-    return wesnoth.units.find_on_map { T.filter_side { T.enemy_of { side = 1 } } }
+
+
+---Returns true if the player may enter the limbes,
+---that is, if some limbes actors are at most at 7 hexes from
+---an allied unit
+function Limbes.is_allowed_entrance()
+    if Limbes.is_in_limbes() then return false end
+    for __, u in pairs(player_ennemies()) do
+        if is_limbe_actor(u) then
+            -- check if it is in range
+            local allies_in_range = wesnoth.units.find_on_map {
+                T.filter_side { T.allied_with { side = 1 } },
+                T.filter_location { x = u.x, y = u.y, radius = 7 },
+            }
+            if #(allies_in_range) >= 1 then return true end
+        end
+    end
+    return false
 end
 
 function Limbes.enter()
@@ -219,16 +233,16 @@ function Limbes.enter()
         Popup("Already in the Limbes", _ "You are already fighting in the Limbes...")
         return false
     end
-    if not has_limbe_ennemies() then
+    if not Limbes.is_allowed_entrance() then
         Popup("No ennemies",
-            _ "You can't fight in the Limbes since <b>no ennemy</b> is able to follow you...")
+            _ "You can't reach any ennemies in the Limbes...")
         return false
     end
     enter_limbe_terrain()
     enter_limbe_units()
 
     Message("morgane", _ "What are your <i>names</i> ?")
-    local ennemies = limbes_enemies()
+    local ennemies = player_ennemies()
     Message(ennemies[1].id, _ "<i>(annoyed)</i> Naming beings is powerful.. Your wise, little one..")
     for __, unit in ipairs(ennemies) do
         local name = next_name()
@@ -285,8 +299,8 @@ end
 function Limbes.on_die()
     local dying = PrimaryUnit()
     if Limbes.is_in_limbes() and is_limbe_actor(dying) and wesnoth.sides.is_enemy(dying.side, 1) then
-        local ennemies = limbes_enemies() -- including the dying unit
-        if #(ennemies) == 1 then          -- victory !
+        local ennemies = player_ennemies() -- including the dying unit
+        if #(ennemies) == 1 then           -- victory !
             Message("morgane", _ "We have prevailed !")
             Limbes.close()
             -- refresh the buff here so that it properly include all units

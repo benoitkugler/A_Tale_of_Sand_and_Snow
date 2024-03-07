@@ -112,6 +112,7 @@ function UI.setup_menus()
     set_menu_item({
         id = "enter_limbes",
         description = _ "Enter the Limbes",
+        image = "special_skills/forecast.png",
         T.show_if {
             T.have_unit { x = "$x1", y = "$y1", id = "morgane", { "not", { status = "_limbe" } } },
             T.have_unit { role = "otchigin" },
