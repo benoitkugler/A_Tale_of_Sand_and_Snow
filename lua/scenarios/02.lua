@@ -166,6 +166,9 @@ ES = {
             Message("jod",
                 _ "<span style='italic'>(Shouting)</span> Sir ! Urgent message from the capital ! Seems like the Council needs you !")
             Message("rymor", _ "I guess the rest will wait...")
+
+            wesnoth.units.get(x, y):extract() -- remove the messenger to avoid having it on the recall list
+
             Victory()
         end
     end

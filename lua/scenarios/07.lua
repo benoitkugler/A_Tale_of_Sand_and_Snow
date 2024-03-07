@@ -4,7 +4,7 @@ local function on_prestart()
     wml.fire("label", { x = 55, y = 6, text = _ "East White Ark" })
     wml.fire("label", { x = 16, y = 23, text = _ "White Arks Facility" })
 
-    -- setup ennemy units
+    -- setup allies and ennemy units
     wesnoth.sides.get(2).recruit = NifhellUnits(1, 2)
     wesnoth.sides.get(3).recruit = MuspellUnits(1, 2) -- the octopus
     wesnoth.sides.get(4).recruit = MuspellUnits(1, 1)
@@ -40,15 +40,15 @@ local function on_turn1()
     Message("allied_leader", _ "Pfeu, I'm not impressed by these frail mens. Nifhell will prevail !")
     Message("allied_leader", _ "To arms, men ! For our fallen brothers and for Nifhell !")
 
+    Popup(_ "About recall", _ "You may now recall regular units. In this campaign, <i>Bowmen</i> and <i>Spearman</i> \z
+    may gain decent power through AMLA, but won't have the same potential than your heroes. Albeit, you should recruit and train some of them, to assist \z
+    your squad in large battles.")
+
     wml.fire("objectives", {
         { "objective", { description = _ "Defeat the ennemy leaders.", condition = "win" } },
         { "objective", { description = _ "Death of any of your heroes.", condition = "lose" } },
         { "note",      { description = _ "No gold carry over next scenario." } },
     })
-
-    Popup(_ "About recall", _ "You may now recall regular units. In this campaign, <i>Bowmen</i> and <i>Spearman</i> \z
-    may gain decent power through AMLA, but won't have the same potential than your heroes. Albeit, you should recruit and train some of them, to assist \z
-    your squad in large battles.")
 end
 
 
