@@ -140,11 +140,12 @@ local function on_turn1()
     Message("bunshop", _ "<span style='italic'>(enthusiastic barking)</span>")
 
     presentation()
+
     Popup(_ "Note",
-        _ "As you might have guessed, this campaign is not about war strategy, " ..
-        "manipulating a lot of units, but rather about training and mastering your heroes." ..
-        "\nAs such, you should not focus too much on recruiting troops : they should only protect you heroes. " ..
-        "Besides, gold should never be an issue, as you heroes will always be recalled at your side.")
+        _ "As you might have guessed, this campaign is not about war strategy, \z
+        manipulating a lot of units, but rather about training and mastering your heroes, \z
+        who will always be recalled at your side.\n\z
+        Having said that, you still may want to recruit some regular units to support your team when the need arise...")
 end
 
 

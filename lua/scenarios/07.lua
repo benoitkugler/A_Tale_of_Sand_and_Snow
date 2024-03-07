@@ -45,6 +45,10 @@ local function on_turn1()
         { "objective", { description = _ "Death of any of your heroes.", condition = "lose" } },
         { "note",      { description = _ "No gold carry over next scenario." } },
     })
+
+    Popup(_ "About recall", _ "You may now recall regular units. In this campaign, <i>Bowmen</i> and <i>Spearman</i> \z
+    may gain decent power through AMLA, but won't have the same potential than your heroes. Albeit, you should recruit and train some of them, to assist \z
+    your squad in large battles.")
 end
 
 

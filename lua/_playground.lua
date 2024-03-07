@@ -27,7 +27,10 @@ local function setup_units()
             -- T.abilities { T.customName { id = "pain_adept", _level = 1 } },
             -- T.abilities { T.customName { id = "sacrifice", name = "Sacrifice", _level = 3 } }
         },
-        { id = "alyss", type = "alyss2", name = "The Octopus" },
+        { id = "alyss",                  type = "alyss2", name = "The Octopus" },
+        { type = "Royal Guard_nifhell" },
+        { type = "Halberdier_nifhell" },
+        { type = "Master Bowman_nifhell" },
     }) do
         local hero = wesnoth.units.create(cfg)
         hero:to_map(wesnoth.paths.find_vacant_hex(14, 16, hero))
