@@ -35,8 +35,8 @@ Conf.special_skills.drumar = {
          <b>chilling</b> states to her targets, \z
         as well as using <b>cold</b> attacks.",
     help_ratios = Fmt(
-        _ "(<b>+ %.1f<b> per cold attack, <b>x %.1f<b> " ..
-        "per slow, <b>x %.1f<b> per snare, <b>x %.1f<b> per chilling state)",
+        _ "(<b>+ %.1f</b> per cold attack, <b>x %.1f</b> " ..
+        "per slow, <b>x %.1f</b> per snare, <b>x %.1f</b> per chilling state)",
         V.drumar.ATK_COLD, V.drumar.ATK_SLOW, V.drumar.ATK_SNARE,
         V.drumar.ATK_CHILLING_TOUCH),
     {
@@ -47,7 +47,7 @@ Conf.special_skills.drumar = {
         name = _ "Cold Strengh :",
         require_lvl = 4,
         desc = _ "Grants %s%% additionnal bonus damage and %s bonus attack on the chilling wave.",
-        costs = { 50, 50, 60 }
+        costs = { 75, 50, 75 }
     },
     ---@type fun(lvl:integer): {[1]:integer, [2]:integer}
     wave_dmg = function(lvl) return lvl == 3 and { 15, 1 } or { 10, 0 } end,
@@ -91,7 +91,7 @@ Conf.special_skills.drumar = {
         },
         require_lvl = 6,
         desc = _ "Increases Chilling bonus damage to %s%% and %s turns duration.",
-        costs = { 40, 40, 60 }
+        costs = { 80, 50, 50 }
     },
     ---@type fun(lvl:integer): {[1]:integer, [2]:integer}
     bonus_cold_mistress = function(lvl)
@@ -116,7 +116,7 @@ Conf.special_skills.vranken = {
         name = _ "Leeches :",
         require_lvl = 4,
         desc = _ "Leeches %s%% of damage dealt with swords ",
-        costs = { 40, 35, 40 }
+        costs = { 80, 60, 60 }
     },
     ---@type fun(lvl:integer): integer
     leeches_cac = function(lvl) return 5 + lvl * 5 end,
@@ -128,7 +128,7 @@ Conf.special_skills.vranken = {
         name = _ "Drain :",
         require_lvl = 4,
         desc = _ "Drains %s%% of damage dealt with swords, if Göndhul is at most <b>%s</b> hexes away from Vranken",
-        costs = { 50, 35, 35 }
+        costs = { 80, 60, 60 }
     },
     ---@type fun(lvl:integer): {[1]:integer, [2]:integer}
     drain_cac = function(lvl) return { 20 + lvl * 10, 2 ^ (lvl + 1) } end,
@@ -140,7 +140,7 @@ Conf.special_skills.vranken = {
         name = _ "Lightning sword :",
         require_lvl = 5,
         desc = _ "Grants a sword which deals <span color='#e7cfa9'>true damage</span>, but deals %s%% of your usual sword damage ",
-        costs = { 100, 50, 50 }
+        costs = { 150, 100, 100 }
     },
     ---@param lvl integer
     atk_brut = function(lvl) return 60 + (lvl * 10) end,
@@ -152,7 +152,7 @@ Conf.special_skills.vranken = {
         name = _ "<span style='italic'>War link</span>",
         require_lvl = 6,
         desc = _ "Enables Vranken and Göndhul to <span color='#9E25C7'>switch position</span>. Cooldown : <b>%s</b> turns.",
-        costs = { 150, 100 }
+        costs = { 200, 150 }
     },
     ---@type fun(lvl:integer): integer
     transposition = function(lvl) return 3 - lvl end

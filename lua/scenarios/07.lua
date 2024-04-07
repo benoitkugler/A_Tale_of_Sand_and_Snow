@@ -68,8 +68,8 @@ local function on_turn3()
     Message("morgane", _ "What should I do ? Perhaps joining the Limbes could help ?")
     Message("drumar", "It is you call, child...")
     Popup(_ "Fighting in the Limbes", _ "The great power hidden in Morgäne allows her to freely enter the Limbes. \z
-    Whenever Otchigins are present in a battle, Morgäne may start a fight with them (right-click on her).\n\z
-    <i>Be careful: once you have entered the Limbes, the only way out is defeating you opponents. Also, dying in the Limbes amounts to dying in the material plan...</i>")
+    Whenever <b>Otchigins</b> are present in a battle, and when an ally is near one of them, Morgäne may start a fight in the Limbes (right-click on her).\n\z
+    <i>Be careful: once you have entered the Limbes, the only way out is defeating your opponents. Also, dying in the Limbes amounts to dying in the material plan...</i>")
 end
 
 ---@type ScenarioEvents

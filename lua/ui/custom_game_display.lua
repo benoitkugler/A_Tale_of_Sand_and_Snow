@@ -58,7 +58,7 @@ end
 ---@param unit unit
 local function show_may_enter_limbes(unit)
     if unit.id ~= "morgane" then return end
-    if Limbes.is_allowed_entrance() then
+    if Limbes.is_allowed_entrance() == true then
         return T.element { image = "special_skills/forecast.png", tooltip = _ "Morgäne senses nearby ennemies and may enter the Limbes !" }
     end
 end

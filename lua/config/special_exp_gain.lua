@@ -1,8 +1,8 @@
 -- Track special experience gains
 Conf.special_xp_gain = {
     rymor = {
-        ADJ_NEXT = 2, -- * atk.level
-        DEF = 3       -- * atk.level
+        ADJ_NEXT = 1, -- * atk.level
+        DEF = 2       -- * atk.level
     },
     brinx = {
         DEF_MUSPELL = 1, -- + atk.level
@@ -11,10 +11,10 @@ Conf.special_xp_gain = {
     },
     -- xp goes to vranken
     sword_spirit = {
-        LEVEL_UP = 60, -- on level up
-        ATK = 2,       -- * def.level
+        LEVEL_UP = 50, -- on level up
+        ATK = 1,       -- * def.level
         DEF = 1,       -- + atk.level
-        KILL = 3       -- * dying.level
+        KILL = 2       -- * dying.level
     },
     drumar = {
         DEF_COLD = 1,            -- + atk.level
@@ -30,9 +30,9 @@ Conf.special_xp_gain = {
     },
     xavier = {
         LEADERSHIP = 1,  -- * ally level
-        Y_FORMATION = 4, -- * def level
-        I_FORMATION = 5, -- * def level
-        A_FORMATION = 5  -- + atk level
+        Y_FORMATION = 2, -- * def level
+        I_FORMATION = 3, -- * def level
+        A_FORMATION = 3  -- + atk level
     },
     morgane = {
         ATK = 10, -- * def.level

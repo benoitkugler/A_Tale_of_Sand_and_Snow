@@ -183,7 +183,7 @@ local function player_ennemies()
 end
 
 
-function Limbes.is_in_limbes() return CustomVariables().limbe_terrain ~= "" end
+local function is_in_limbes() return CustomVariables().limbe_terrain ~= "" end
 
 local name_index = 1
 local names = {
@@ -212,11 +212,14 @@ end
 
 ---Returns true if the player may enter the limbes,
 ---that is, if some limbes actors are at most at 7 hexes from
----an allied unit
+---an allied unit.
+---@return true | "in_limbes" | "no_actor" | "not_in_range"
 function Limbes.is_allowed_entrance()
-    if Limbes.is_in_limbes() then return false end
+    if is_in_limbes() then return "in_limbes" end
+    local has_actor = false
     for __, u in pairs(player_ennemies()) do
         if is_limbe_actor(u) then
+            has_actor = true
             -- check if it is in range
             local allies_in_range = wesnoth.units.find_on_map {
                 T.filter_side { T.allied_with { side = 1 } },
@@ -225,17 +228,21 @@ function Limbes.is_allowed_entrance()
             if #(allies_in_range) >= 1 then return true end
         end
     end
-    return false
+    return has_actor and "not_in_range" or "no_actor"
 end
 
 function Limbes.enter()
-    if Limbes.is_in_limbes() then
+    local may_enter = Limbes.is_allowed_entrance()
+    if may_enter == "in_limbes" then
         Popup("Already in the Limbes", _ "You are already fighting in the Limbes...")
         return false
-    end
-    if not Limbes.is_allowed_entrance() then
+    elseif may_enter == "no_actor" then
         Popup("No ennemies",
             _ "You can't reach any ennemies in the Limbes...")
+        return false
+    elseif may_enter == "not_in_range" then
+        Popup("Too far",
+            _ "Your ennemies are not close enough to reach them...")
         return false
     end
     enter_limbe_terrain()
@@ -263,7 +270,7 @@ end
 ---@param rank 1|2|3
 ---@param side integer
 function Limbes.create_otchigin(rank, side)
-    local regen_value = 40 + rank --[[@as integer]] * 20
+    local regen_value = 20 + rank --[[@as integer]] * 20
     local unit = wesnoth.units.create {
         side = side,
         type = "otchigin" .. tostring(rank),
@@ -298,7 +305,7 @@ end
 ---or refresh the buff if needed
 function Limbes.on_die()
     local dying = PrimaryUnit()
-    if Limbes.is_in_limbes() and is_limbe_actor(dying) and wesnoth.sides.is_enemy(dying.side, 1) then
+    if is_in_limbes() and is_limbe_actor(dying) and wesnoth.sides.is_enemy(dying.side, 1) then
         local ennemies = player_ennemies() -- including the dying unit
         if #(ennemies) == 1 then           -- victory !
             Message("morgane", _ "We have prevailed !")
@@ -347,8 +354,8 @@ function Limbes.refresh_otchigin_buff()
         AddResistances(bonus_res),
         T.effect {
             apply_to = "attack",
-            increase_damage = Round(total_level * 0.75),
-            increase_attacks = o_count,
+            increase_damage = Round(total_level * 0.5),
+            increase_attacks = total_level >= 10 and 2 or 1,
         }
     }
     for __, unit in ipairs(wesnoth.units.find_on_map {
