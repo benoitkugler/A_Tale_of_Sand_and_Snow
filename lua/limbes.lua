@@ -250,7 +250,7 @@ function Limbes.enter()
 
     Message("morgane", _ "What are your <i>names</i> ?")
     local ennemies = player_ennemies()
-    Message(ennemies[1].id, _ "<i>(annoyed)</i> Naming beings is powerful.. Your wise, little one..")
+    Message(ennemies[1].id, _ "<i>(annoyed)</i> Naming beings is powerful.. You're wise, little one..")
     for __, unit in ipairs(ennemies) do
         local name = next_name()
         unit.name = name
@@ -337,7 +337,7 @@ function Limbes.refresh_otchigin_buff()
     if total_level == 0 then return end
 
     -- With 3 elder othigins, total_level = 18
-    local bonus_res = total_level * 3
+    local bonus_res = total_level * 2
 
     local desc = (o_count == 1 and
         Fmt(_ "The power of one Otchingin (level %d) enhances Muspell fighters.", total_level) or
@@ -354,8 +354,8 @@ function Limbes.refresh_otchigin_buff()
         AddResistances(bonus_res),
         T.effect {
             apply_to = "attack",
-            increase_damage = Round(total_level * 0.5),
-            increase_attacks = total_level >= 10 and 2 or 1,
+            increase_damage = Round(total_level * 0.7),
+            increase_attacks = math.floor((total_level - 1) / 6), -- 0, 1, 2
         }
     }
     for __, unit in ipairs(wesnoth.units.find_on_map {

@@ -233,7 +233,7 @@ Conf.special_skills.xavier = {
         name = _ "Back formation : ",
         require_lvl = 4,
         desc = _ "Xavier gains %s bonus attack(s) when attacking in Y",
-        costs = { 50, 20, 30 }
+        costs = { 100, 90, 90 }
     },
     ---@type fun(lvl:integer): integer
     Y_formation = function(lvl) return lvl end,
@@ -245,7 +245,7 @@ Conf.special_skills.xavier = {
         name = _ "Wedge formation : ",
         require_lvl = 4,
         desc = _ "Xavier gains %s%% defense when fighting in A",
-        costs = { 70, 40, 40 }
+        costs = { 80, 50, 50 }
     },
     ---@type fun(lvl:integer): integer
     A_formation = function(lvl) return lvl * 5 end,
@@ -257,7 +257,7 @@ Conf.special_skills.xavier = {
         name = _ "Spear formation : ",
         require_lvl = 5,
         desc = _ "Xavier deals %s bonus damage when attacking in I",
-        costs = { 50, 20, 30 }
+        costs = { 90, 60, 60 }
     },
     ---@type fun(lvl:integer): integer
     I_formation = function(lvl) return 1 + lvl * 3 end,
@@ -379,7 +379,7 @@ Conf.special_skills.rymor = {
         name = _ "Shield : ",
         require_lvl = 4,
         desc = _ "At each new turn, Rymôr grants himself and adjacent allies a shield of %s%% of his maximum hitpoints.",
-        costs = { 60, 30, 30 }
+        costs = { 100, 50, 50 }
     },
     ---@param lvl integer # the percentage of rymor max hp
     combat_shield = function(lvl) return 5 + lvl * 5 end,
@@ -391,7 +391,7 @@ Conf.special_skills.rymor = {
         name = _ "Haste aura : ",
         require_lvl = 5,
         desc = _ "Rymôr grants adjacent allies %s bonus attack.",
-        costs = { 100, 80 }
+        costs = { 120, 100 }
     },
     ---@param lvl integer
     atk_aura = function(lvl) return lvl end
